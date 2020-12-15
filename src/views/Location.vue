@@ -177,17 +177,19 @@
         />
       </template>
     </Dialog>
-    <ToastDoc />
+    <Toast/>
   </div>
 </template>
 
 <script>
 import Location from "../data/LocationService.js";
 import Button from "primevue/button";
+import Toast from 'primevue/toast';
 
 export default {
   components: {
     Button,
+    Toast
   },
   data() {
     return {
@@ -209,12 +211,6 @@ export default {
 
   mounted() {
     this.locationService.getLocation().then((data) => (this.products = data));
-    this.$toast.add({
-      severity: "success",
-      summary: "Success Message",
-      detail: "Message Content",
-      life: 3000,
-    });
   },
   methods: {
     openNew() {

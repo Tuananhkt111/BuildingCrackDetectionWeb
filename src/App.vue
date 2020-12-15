@@ -16,6 +16,7 @@ import TopNav from "../src/views/TopNav.vue";
 import Location from "../src/views/Location.vue";
 
 export default {
+  name: "app",
   components: {
     TopNav,
     Location,
