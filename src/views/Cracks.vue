@@ -20,6 +20,7 @@
 
             <span class="p-input-icon-left">
               <Button
+                label="Export"
                 icon="pi pi-upload"
                 class="p-button-help"
                 @click="exportCSV($event)"
@@ -49,27 +50,83 @@
         <Column
           field="locationName"
           header="Location Name"
-          :sortable="true"
-          headerStyle="width: 150px"
-        ></Column>
+          headerStyle="width: 200px"
+        >
+          <template #body="slotProps">
+            {{ slotProps.data.locationName }}
+          </template>
+          <template #filter>
+            <InputText
+              type="text"
+              v-model="filters['locationName']"
+              class="p-column-filter"
+              placeholder="Search"
+            />
+          </template>
+        </Column>
         <Column
           field="ReporterName"
           header="Reporter Name"
-          :sortable="true"
-          headerStyle="width: 150px"
-        ></Column>
+          headerStyle="width: 200px"
+        >
+          <template #body="slotProps">
+            {{ slotProps.data.ReporterName }}
+          </template>
+          <template #filter>
+            <InputText
+              type="text"
+              v-model="filters['ReporterName']"
+              class="p-column-filter"
+              placeholder="Search"
+            />
+          </template>
+        </Column>
         <Column
-          field="Position"
+          filterField="country.name"
+          filterMatchMode="contains"
           header="Position"
-          :sortable="true"
-          headerStyle="width: 150px"
-        ></Column>
+          headerStyle="width: 200px"
+        >
+          <template #body="slotProps">
+            {{ slotProps.data.Position }}
+          </template>
+          <template #filter>
+            <InputText
+              type="text"
+              v-model="filters['Position']"
+              class="p-column-filter"
+              placeholder="Search"
+            />
+          </template>
+        </Column>
         <Column
           field="Severity"
           header="Severity"
-          :sortable="true"
+          filterMatchMode="equals"
           headerStyle="width: 150px"
-        ></Column>
+        >
+          <template #body="slotProps">
+            <span :class="'customer-badge status-' + slotProps.data.Severity">{{
+              slotProps.data.Severity
+            }}</span>
+          </template>
+          <template #filter>
+            <Dropdown
+              appendTo="body"
+              v-model="filters['Severity']"
+              :options="severitys"
+              placeholder="Severity"
+              class="p-column-filter"
+              :showClear="true"
+            >
+              <template #option="slotProps">
+                <span :class="'customer-badge status-' + slotProps.option">{{
+                  slotProps.option
+                }}</span>
+              </template>
+            </Dropdown>
+          </template>
+        </Column>
         <Column
           field="status"
           header="Status"
@@ -81,12 +138,13 @@
               slotProps.data.status
             }}</span>
           </template>
+
           <template #filter>
             <Dropdown
               appendTo="body"
               v-model="filters['status']"
               :options="statuses"
-              placeholder="Select a Status"
+              placeholder="Status"
               class="p-column-filter"
               :showClear="true"
             >
@@ -103,7 +161,12 @@
           header="Description"
           :sortable="true"
           headerStyle="width: 150px"
-        ></Column>
+          ><template #body="slotProps">
+            <ScrollPanel style="width: 100%; height: 80px">
+              {{ slotProps.data.description }}
+            </ScrollPanel>
+          </template>
+        </Column>
         <Column
           field="Created"
           header="Created"
@@ -125,18 +188,27 @@
           </template>
         </Column>
         <Column
-          field="LatsModified"
+          field="LastModified"
           header="LastModified"
-          :sortable="true"
-          headerStyle="width: 150px"
-        ></Column>
-        <Column :exportable="false">
+          filterMatchMode="custom"
+          :filterFunction="filterDate"
+          headerStyle="width: 250px"
+        >
           <template #body="slotProps">
-            <Button
-              icon="pi pi-eye"
-              class="p-button-rounded p-button-info p-button-text p-mr-1"
-              @click="editProduct(slotProps.data)"
+            <span>{{ slotProps.data.LastModified }}</span>
+          </template>
+          <template #filter>
+            <Calendar
+              appendTo="body"
+              v-model="filters['LastModified']"
+              dateFormat="dd-mm-yy"
+              class="p-column-filter"
+              placeholder="CreatedDate"
             />
+          </template>
+        </Column>
+        <Column>
+          <template #body="slotProps">
             <Button
               icon="pi pi-star"
               class="p-button-rounded p-button-warning p-button-text"
@@ -144,54 +216,13 @@
             />
             <Button
               icon="pi pi-calendar-minus"
-              class="p-button-rounded p-button-warning p-button-text"
+              class="p-button-rounded p-button-danger p-button-text"
               @click="showAssessmentDialog(slotProps.data)"
             />
           </template>
         </Column>
       </DataTable>
     </div>
-    <Dialog
-      v-model:visible="productDialog"
-      :style="{ width: '450px' }"
-      header="Cracks Details"
-      :modal="true"
-      class="p-fluid"
-    >
-      <div class="p-field">
-        <label for="name">LocationName</label>
-        <InputText
-          disabled
-          id="id"
-          v-model.trim="product.locationName"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.locationName }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.locationName"
-          >Crakcs id is required.</small
-        >
-      </div>
-      <div class="p-field">
-        <label for="description">Description</label>
-        <Textarea
-          id="description"
-          v-model="product.description"
-          required="true"
-          rows="3"
-          cols="20"
-        />
-      </div>
-      <template #footer>
-        <Button
-          label="Close"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="hideDialog"
-        />
-      </template>
-    </Dialog>
-
     <Dialog
       v-model:visible="showAssessment"
       :style="{ width: '450px' }"
@@ -200,7 +231,12 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <Rating :modelValue="product.AssessmentResult.Rating" :readonly="true" :stars="5" :cancel="false" />
+        <Rating
+          :modelValue="product.AssessmentResult.Rating"
+          :readonly="true"
+          :stars="5"
+          :cancel="false"
+        />
       </div>
       <div class="p-field">
         <label for="description">Description</label>
@@ -233,6 +269,7 @@ import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
 import Rating from "primevue/rating";
+import ScrollPanel from "primevue/scrollpanel";
 
 export default {
   components: {
@@ -240,14 +277,12 @@ export default {
     Toast,
     Calendar,
     Dropdown,
-    Rating
+    Rating,
+    ScrollPanel,
   },
   data() {
     return {
       products: null,
-      productDialog: false,
-      deleteProductDialog: false,
-      deleteProductsDialog: false,
       showAssessment: false,
       product: {},
       selectedProducts: null,
@@ -255,6 +290,7 @@ export default {
       submitted: false,
       messages: [],
       statuses: ["Waiting for maintenance", "Completed"],
+      severitys: ["Low", "Medium", "High"],
     };
   },
   locationService: null,
@@ -267,13 +303,8 @@ export default {
   },
   methods: {
     hideDialog() {
-      this.productDialog = false;
       this.showAssessment = false;
       this.submitted = false;
-    },
-    editProduct(product) {
-      this.product = { ...product };
-      this.productDialog = true;
     },
     showAssessmentDialog(product) {
       this.product = { ...product };
@@ -304,8 +335,8 @@ export default {
       if (value === undefined || value === null) {
         return false;
       }
-
-      return value === this.formatDate(filter);
+      let tmp = value.substring(0,10);
+      return tmp === this.formatDate(filter);
     },
     formatDate(date) {
       let month = date.getMonth() + 1;
