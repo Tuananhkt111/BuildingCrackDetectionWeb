@@ -1,11 +1,13 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import store from "./stores";
+import router from "./routers";
 
 import PrimeVue from "primevue/config";
-
 import "primevue/resources/themes/saga-blue/theme.css"; //theme
 import "primevue/resources/primevue.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
+
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup";
@@ -19,7 +21,10 @@ import ToastService from "primevue/toastservice";
 
 import "primeflex/primeflex.css";
 
+
 const app = createApp(App);
+app.use(store);
+app.use(router);
 app.use(PrimeVue);
 app.component("InputText", InputText);
 app.component("Button", Button);
@@ -30,7 +35,6 @@ app.component("Dialog", Dialog);
 app.component("Textarea", Textarea);
 app.component("RadioButton", RadioButton);
 app.component("InputNumber", InputNumber);
-
 app.use(ToastService);
 
 app.mount("#app");
