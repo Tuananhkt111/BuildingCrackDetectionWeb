@@ -2,6 +2,7 @@
   <div>
     <div class="card">
       <DataTable
+        :scrollable="true"
         ref="dt"
         :value="products"
         v-model:selection="selectedProducts"
@@ -15,16 +16,17 @@
       >
         <template #header>
           <div class="table-header">
-            <h3 class="p-m-2">Manage Products</h3>
-
+            <h3 class="p-m-2">Manage Cracks</h3>
             <span class="p-input-icon-left">
               <Button
                 icon="pi pi-plus"
                 class="p-button-success p-mr-2"
                 @click="openNew"
                 style="margin:2px"
+                label="New"
               />
               <Button
+                label="Export"
                 icon="pi pi-upload"
                 class="p-button-help"
                 @click="exportCSV($event)"
@@ -41,23 +43,74 @@
           </div>
         </template>
 
+        <Column headerStyle="width: 3rem"></Column>
+        <Column field="locationName" header="Location Name" headerStyle="width: 200px">
+          <template #body="slotProps">
+            {{ slotProps.data.locationName }}
+          </template>
+          <template #filter>
+            <InputText
+              type="text"
+              v-model="filters['locationName']"
+              class="p-column-filter"
+              placeholder="Search"
+            />
+          </template>
+        </Column>
+        <Column field="description" header="Description" headerStyle="width: 200px">
+          <template #body="slotProps">
+            {{ slotProps.data.description }}
+          </template>
+          <template #filter>
+            <InputText
+              type="text"
+              v-model="filters['description']"
+              class="p-column-filter"
+              placeholder="Search"
+            />
+          </template>
+        </Column>
         <Column
-          selectionMode="multiple"
-          headerStyle="width: 3rem"
-          :exportable="false"
-        ></Column>
-        <Column field="id" header="Id" :sortable="true"></Column>
+          field="Created"
+          header="Created"
+          filterMatchMode="custom"
+          :filterFunction="filterDate"
+          headerStyle="width: 250px"
+        >
+          <template #body="slotProps">
+            <span>{{ slotProps.data.Created }}</span>
+          </template>
+          <template #filter>
+            <Calendar
+              appendTo="body"
+              v-model="filters['Created']"
+              dateFormat="dd-mm-yy"
+              class="p-column-filter"
+              placeholder="CreatedDate"
+            />
+          </template>
+        </Column>
         <Column
-          field="locationName"
-          header="Location Name"
-          :sortable="true"
-        ></Column>
-        <Column
-          field="description"
-          header="Description"
-          :sortable="true"
-        ></Column>
-        <Column :exportable="false">
+          field="LastModified"
+          header="LastModified"
+          filterMatchMode="custom"
+          :filterFunction="filterDate"
+          headerStyle="width: 250px"
+        >
+          <template #body="slotProps">
+            <span>{{ slotProps.data.LastModified }}</span>
+          </template>
+          <template #filter>
+            <Calendar
+              appendTo="body"
+              v-model="filters['LastModified']"
+              dateFormat="dd-mm-yy"
+              class="p-column-filter"
+              placeholder="CreatedDate"
+            />
+          </template>
+        </Column>
+        <Column>
           <template #body="slotProps">
             <Button
               icon="pi pi-pencil"
@@ -83,27 +136,30 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="name">LocationName</label>
+        <label for="locationName"> Location Name</label>
         <InputText
-          id="locationName"
+          id="Name"
           v-model.trim="product.locationName"
           required="true"
           autofocus
           :class="{ 'p-invalid': submitted && !product.locationName }"
         />
         <small class="p-invalid" v-if="submitted && !product.locationName"
-          >locationName is required.</small
+          >Location Name is required.</small
         >
       </div>
       <div class="p-field">
         <label for="description">Description</label>
-        <Textarea
-          id="description"
-          v-model="product.description"
+        <InputText
+          id="Phone"
+          v-model.trim="product.description"
           required="true"
-          rows="3"
-          cols="20"
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.description }"
         />
+        <small class="p-invalid" v-if="submitted && !product.description"
+          >Description is required.</small
+        >
       </div>
       <template #footer>
         <Button
@@ -120,36 +176,6 @@
         />
       </template>
     </Dialog>
-
-    <Dialog
-      v-model:visible="deleteProductDialog"
-      :style="{ width: '450px' }"
-      header="Confirm"
-      :modal="true"
-    >
-      <div class="confirmation-content">
-        <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
-        <span v-if="product"
-          >Are you sure you want to delete <b>{{ product.locationName }}</b
-          >?</span
-        >
-      </div>
-      <template #footer>
-        <Button
-          label="No"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="deleteProductDialog = false"
-        />
-        <Button
-          label="Yes"
-          icon="pi pi-check"
-          class="p-button-text"
-          @click="deleteProduct"
-        />
-      </template>
-    </Dialog>
-
     <Dialog
       v-model:visible="deleteProductsDialog"
       :style="{ width: '450px' }"
@@ -159,7 +185,7 @@
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
         <span v-if="product"
-          >Are you sure you want to delete the selected products?</span
+          >Are you sure to delete the location {{ product.locationName }}?</span
         >
       </div>
       <template #footer>
@@ -177,31 +203,33 @@
         />
       </template>
     </Dialog>
-    <Toast/>
+    <Toast />
   </div>
 </template>
 
 <script>
 import Location from "../data/LocationService.js";
 import Button from "primevue/button";
-import Toast from 'primevue/toast';
+import Calendar from "primevue/calendar";
+import Toast from "primevue/toast";
 
 export default {
   components: {
     Button,
-    Toast
+    Toast,
+    Calendar,
   },
   data() {
     return {
       products: null,
-      productDialog: false,
-      deleteProductDialog: false,
       deleteProductsDialog: false,
+      productDialog: false,
       product: {},
       selectedProducts: null,
       filters: {},
       submitted: false,
       messages: [],
+      statuses: ["Available", "Unavailable"],
     };
   },
   locationService: null,
@@ -210,11 +238,22 @@ export default {
   },
 
   mounted() {
-    this.locationService.getLocation().then((data) => (this.products = data));
+    this.locationService
+      .getLocation()
+      .then((data) => (this.products = data));
   },
   methods: {
+    confirmDeleteProduct(product) {
+      this.product = product;
+      this.deleteProductsDialog = true;
+    },
     openNew() {
       this.product = {};
+      this.submitted = false;
+      this.productDialog = true;
+    },
+    editProduct(product) {
+      this.product = product;
       this.submitted = false;
       this.productDialog = true;
     },
@@ -222,37 +261,9 @@ export default {
       this.productDialog = false;
       this.submitted = false;
     },
-    saveProduct() {
-      this.submitted = true;
-      this.product.id = this.createId();
-      this.products.push(this.product);
-      this.productDialog = false;
-      this.product = {};
-      this.$toast.add({
-        severity: "success",
-        summary: "Success Message",
-        detail: "Message Content",
-        life: 3000,
-      });
-    },
-    editProduct(product) {
+    showAssessmentDialog(product) {
       this.product = { ...product };
-      this.productDialog = true;
-    },
-    confirmDeleteProduct(product) {
-      this.product = product;
-      this.deleteProductDialog = true;
-    },
-    deleteProduct() {
-      this.products = this.products.filter((val) => val.id !== this.product.id);
-      this.deleteProductDialog = false;
-      this.product = {};
-      this.$toast.add({
-        severity: "success",
-        summary: "Successful",
-        detail: "Product Deleted",
-        life: 3000,
-      });
+      this.showAssessment = true;
     },
     findIndexById(id) {
       let index = -1;
@@ -264,33 +275,36 @@ export default {
       }
       return index;
     },
-    createId() {
-      let id = "";
-      var chars =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      for (var i = 0; i < 5; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return id;
-    },
     exportCSV() {
       this.$refs.dt.exportCSV();
     },
-    confirmDeleteSelected() {
-      this.deleteProductsDialog = true;
+    filterDate(value, filter) {
+      if (
+        filter === undefined ||
+        filter === null ||
+        (typeof filter === "string" && filter.trim() === "")
+      ) {
+        return true;
+      }
+
+      if (value === undefined || value === null) {
+        return false;
+      }
+      let tmp = value.substring(0, 10);
+      return tmp === this.formatDate(filter);
     },
-    deleteSelectedProducts() {
-      this.products = this.products.filter(
-        (val) => !this.selectedProducts.includes(val)
-      );
-      this.deleteProductsDialog = false;
-      this.selectedProducts = null;
-      this.$toast.add({
-        severity: "success",
-        summary: "Successful",
-        detail: "Products Deleted",
-        life: 3000,
-      });
+    formatDate(date) {
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+
+      if (month < 10) {
+        month = "0" + month;
+      }
+
+      if (day < 10) {
+        day = "0" + day;
+      }
+      return day + "-" + month + "-" + date.getFullYear();
     },
   },
 };

@@ -1,0 +1,40 @@
+{
+    "data" : [
+        {
+           "UserId": 1,
+           "Email": "NQH@Gmail.com" ,
+           "UserName" : "Zen",
+           "PhoneNumber" : "0934073158",
+           "Name" : "Viet Hung",
+           "Address" : "TPHCM",
+           "Role" : "Administrator",
+           "IsNewUser" : "False",
+           "Created" : "16-12-2020 10:00:00",
+           "LastModified" : "16-12-2020 10:00:00"
+        },
+        {
+            "UserId": 2,
+           "Email": "NQH@Gmail.com" ,
+           "UserName" : "Tung",
+           "PhoneNumber" : "0934073158",
+           "Name" : "Tuan Anh",
+           "Address" : "TPHCM",
+           "Role" : "Manager",
+           "IsNewUser" : "False",
+           "Created" : "15-12-2020 10:00:00",
+           "LastModified" : "16-12-2020 10:00:00"
+        },
+        {
+            "UserId": 3,
+           "Email": "NQH@Gmail.com" ,
+           "UserName" : "NQH",
+           "PhoneNumber" : "0934073158",
+           "Name" : "Nguyen Quang Huy",
+           "Address" : "TPHCM",
+           "Role" : "Staff",
+           "IsNewUser" : "False",
+           "Created" : "13-12-2020 10:00:00",
+           "LastModified" : "16-12-2020 10:00:00"
+        }
+    ]
+}

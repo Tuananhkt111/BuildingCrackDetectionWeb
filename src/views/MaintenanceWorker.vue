@@ -17,8 +17,14 @@
         <template #header>
           <div class="table-header">
             <h3 class="p-m-2">Manage Cracks</h3>
-
             <span class="p-input-icon-left">
+              <Button
+                icon="pi pi-plus"
+                class="p-button-success p-mr-2"
+                @click="openNew"
+                style="margin:2px"
+                label="New"
+              />
               <Button
                 label="Export"
                 icon="pi pi-upload"
@@ -38,111 +44,66 @@
         </template>
 
         <Column headerStyle="width: 3rem"></Column>
-        <Column header="Image" headerStyle="width: 100px">
+        <Column field="Name" header="Name" headerStyle="width: 200px">
           <template #body="slotProps">
-            <img
-              :src="'demo/images/product/' + slotProps.data.image"
-              :alt="slotProps.data.image"
-              class="product-image"
-            />
-          </template>
-        </Column>
-        <Column
-          field="locationName"
-          header="Location Name"
-          headerStyle="width: 200px"
-        >
-          <template #body="slotProps">
-            {{ slotProps.data.locationName }}
+            {{ slotProps.data.Name }}
           </template>
           <template #filter>
             <InputText
               type="text"
-              v-model="filters['locationName']"
+              v-model="filters['Name']"
+              class="p-column-filter"
+              placeholder="Search"
+            />
+          </template>
+        </Column>
+        <Column field="Phone" header="Phone" headerStyle="width: 200px">
+          <template #body="slotProps">
+            {{ slotProps.data.Phone }}
+          </template>
+          <template #filter>
+            <InputText
+              type="text"
+              v-model="filters['Phone']"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
         <Column
-          field="ReporterName"
-          header="Reporter Name"
-          headerStyle="width: 200px"
-        >
-          <template #body="slotProps">
-            {{ slotProps.data.ReporterName }}
-          </template>
-          <template #filter>
-            <InputText
-              type="text"
-              v-model="filters['ReporterName']"
-              class="p-column-filter"
-              placeholder="Search"
-            />
-          </template>
-        </Column>
-        <Column
-          filterField="Position"
+          filterField="Address"
           filterMatchMode="contains"
-          header="Position"
+          header="Address"
           headerStyle="width: 200px"
         >
           <template #body="slotProps">
-            {{ slotProps.data.Position }}
+            {{ slotProps.data.Address }}
           </template>
           <template #filter>
             <InputText
               type="text"
-              v-model="filters['Position']"
+              v-model="filters['Address']"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
         <Column
-          field="Severity"
-          header="Severity"
-          filterMatchMode="equals"
-          headerStyle="width: 150px"
-        >
-          <template #body="slotProps">
-            <span :class="'customer-badge status-' + slotProps.data.Severity">{{
-              slotProps.data.Severity
-            }}</span>
-          </template>
-          <template #filter>
-            <Dropdown
-              appendTo="body"
-              v-model="filters['Severity']"
-              :options="severitys"
-              placeholder="Severity"
-              class="p-column-filter"
-              :showClear="true"
-            >
-              <template #option="slotProps">
-                <span :class="'customer-badge status-' + slotProps.option">{{
-                  slotProps.option
-                }}</span>
-              </template>
-            </Dropdown>
-          </template>
-        </Column>
-        <Column
-          field="status"
+          field="Status"
           header="Status"
           filterMatchMode="equals"
           headerStyle="width: 150px"
         >
           <template #body="slotProps">
-            <span :class="'customer-badge status-' + slotProps.data.status">{{
-              slotProps.data.status
+            <span :class="'customer-badge status-' + slotProps.data.Status">{{
+              slotProps.data.Status
             }}</span>
           </template>
 
           <template #filter>
             <Dropdown
               appendTo="body"
-              v-model="filters['status']"
+              v-model="filters['Status']"
               :options="statuses"
               placeholder="Status"
               class="p-column-filter"
@@ -154,17 +115,6 @@
                 }}</span>
               </template>
             </Dropdown>
-          </template>
-        </Column>
-        <Column
-          field="description"
-          header="Description"
-          :sortable="true"
-          headerStyle="width: 150px"
-          ><template #body="slotProps">
-            <ScrollPanel style="width: 100%; height: 80px">
-              {{ slotProps.data.description }}
-            </ScrollPanel>
           </template>
         </Column>
         <Column
@@ -210,51 +160,106 @@
         <Column>
           <template #body="slotProps">
             <Button
-              icon="pi pi-star"
-              class="p-button-rounded p-button-warning p-button-text"
-              @click="showAssessmentDialog(slotProps.data)"
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-info p-button-text p-mr-2"
+              @click="editProduct(slotProps.data)"
+              style="margin: 2px"
             />
             <Button
-              icon="pi pi-calendar-minus"
+              icon="pi pi-trash"
               class="p-button-rounded p-button-danger p-button-text"
-              @click="showAssessmentDialog(slotProps.data)"
+              @click="confirmDeleteProduct(slotProps.data)"
+              style="margin: 2px"
             />
           </template>
         </Column>
       </DataTable>
     </div>
     <Dialog
-      v-model:visible="showAssessment"
+      v-model:visible="productDialog"
       :style="{ width: '450px' }"
-      header="Assessment"
+      header="Location Details"
       :modal="true"
       class="p-fluid"
     >
       <div class="p-field">
-        <Rating
-          :modelValue="product.AssessmentResult.Rating"
-          :readonly="true"
-          :stars="5"
-          :cancel="false"
+        <label for="Name">Name</label>
+        <InputText
+          id="Name"
+          v-model.trim="product.Name"
+          required="true"
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.Name }"
         />
+        <small class="p-invalid" v-if="submitted && !product.Name"
+          >Name is required.</small
+        >
       </div>
       <div class="p-field">
-        <label for="description">Description</label>
-        <Textarea
-          id="description"
-          v-model="product.AssessmentResult.Description"
+        <label for="Phone">Phone</label>
+        <InputText
+          id="Phone"
+          v-model.trim="product.Phone"
           required="true"
-          rows="3"
-          cols="20"
-          disabled
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.Phone }"
         />
+        <small class="p-invalid" v-if="submitted && !product.Phone"
+          >Phone is required.</small
+        >
+      </div>
+      <div class="p-field">
+        <label for="Address">Address</label>
+        <InputText
+          id="Address"
+          v-model.trim="product.Address"
+          required="true"
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.Address }"
+        />
+        <small class="p-invalid" v-if="submitted && !product.Address"
+          >Address is required.</small
+        >
       </div>
       <template #footer>
         <Button
-          label="Close"
+          label="Cancel"
           icon="pi pi-times"
           class="p-button-text"
           @click="hideDialog"
+        />
+        <Button
+          label="Save"
+          icon="pi pi-check"
+          class="p-button-text"
+          @click="saveProduct"
+        />
+      </template>
+    </Dialog>
+    <Dialog
+      v-model:visible="deleteProductsDialog"
+      :style="{ width: '450px' }"
+      header="Confirm"
+      :modal="true"
+    >
+      <div class="confirmation-content">
+        <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
+        <span v-if="product"
+          >Are you sure you want to delete the Worker {{ product.Name }}?</span
+        >
+      </div>
+      <template #footer>
+        <Button
+          label="No"
+          icon="pi pi-times"
+          class="p-button-text"
+          @click="deleteProductsDialog = false"
+        />
+        <Button
+          label="Yes"
+          icon="pi pi-check"
+          class="p-button-text"
+          @click="deleteSelectedProducts"
         />
       </template>
     </Dialog>
@@ -268,8 +273,6 @@ import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
-import Rating from "primevue/rating";
-import ScrollPanel from "primevue/scrollpanel";
 
 export default {
   components: {
@@ -277,20 +280,18 @@ export default {
     Toast,
     Calendar,
     Dropdown,
-    Rating,
-    ScrollPanel,
   },
   data() {
     return {
       products: null,
-      showAssessment: false,
+      deleteProductsDialog: false,
+      productDialog: false,
       product: {},
       selectedProducts: null,
       filters: {},
       submitted: false,
       messages: [],
-      statuses: ["Waiting for maintenance", "Completed"],
-      severitys: ["Low", "Medium", "High"],
+      statuses: ["Available", "Unavailable"],
     };
   },
   locationService: null,
@@ -299,11 +300,27 @@ export default {
   },
 
   mounted() {
-    this.locationService.getCracks().then((data) => (this.products = data));
+    this.locationService
+      .getMainteanceWorker()
+      .then((data) => (this.products = data));
   },
   methods: {
+    confirmDeleteProduct(product) {
+      this.product = product;
+      this.deleteProductsDialog = true;
+    },
+    openNew() {
+      this.product = {};
+      this.submitted = false;
+      this.productDialog = true;
+    },
+    editProduct(product) {
+      this.product = product;
+      this.submitted = false;
+      this.productDialog = true;
+    },
     hideDialog() {
-      this.showAssessment = false;
+      this.productDialog = false;
       this.submitted = false;
     },
     showAssessmentDialog(product) {
@@ -335,7 +352,7 @@ export default {
       if (value === undefined || value === null) {
         return false;
       }
-      let tmp = value.substring(0,10);
+      let tmp = value.substring(0, 10);
       return tmp === this.formatDate(filter);
     },
     formatDate(date) {

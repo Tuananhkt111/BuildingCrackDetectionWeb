@@ -1,0 +1,104 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "description": "vết nứt khá to",
+      "AassessmentResult": 4,
+      "Status": "Waiting for maintenance",
+      "RepairTime": "16-12-2020 10:00:00",
+      "Cracks": [
+        {
+          "id": 1,
+          "locationName": "Library",
+          "ReporterName": "NQH",
+          "Position": "bên trái",
+          "description": "vết nứt khá to",
+          "Severity": "Low",
+          "status": "Waiting for maintenance",
+          "Image": "image.jpg",
+          "Created": "16-12-2020 10:00:00",
+          "LastModified": "16-12-2020 10:00:00"
+        },
+        {
+          "id": 2,
+          "locationName": "P.191",
+          "ReporterName": "NQHuy",
+          "Position": "bên trái",
+          "description": "vết nứt khá nhỏ",
+          "Severity": "Medium",
+          "status": "Completed",
+          "Image": "image.jpg",
+          "Created": "13-12-2020 10:00:00",
+          "LastModified": "16-12-2020 10:00:00"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "description": "vết nứt khá to",
+      "AassessmentResult": 3,
+      "Status": "Waiting for maintenance",
+      "RepairTime": "16-12-2020 10:00:00",
+      "Cracks": [
+        {
+          "id": 1,
+          "locationName": "Library",
+          "ReporterName": "NQH",
+          "Position": "bên trái",
+          "description": "vết nứt khá to",
+          "Severity": "Low",
+          "status": "Waiting for maintenance",
+          "Image": "image.jpg",
+          "Created": "16-12-2020 10:00:00",
+          "LastModified": "16-12-2020 10:00:00"
+        },
+        {
+          "id": 2,
+          "locationName": "P.191",
+          "ReporterName": "NQHuy",
+          "Position": "bên trái",
+          "description": "vết nứt khá nhỏ",
+          "Severity": "Medium",
+          "status": "Completed",
+          "Image": "image.jpg",
+          "Created": "13-12-2020 10:00:00",
+          "LastModified": "16-12-2020 10:00:00"
+        }
+      ]
+    },
+
+    {
+      "id": 3,
+      "description": "vết nứt khá to",
+      "AassessmentResult": 5,
+      "Status": "Waiting for maintenance",
+      "RepairTime": "16-12-2020 10:00:00",
+      "Cracks": [
+        {
+          "id": 1,
+          "locationName": "Library",
+          "ReporterName": "NQH",
+          "Position": "bên trái",
+          "description": "vết nứt khá to",
+          "Severity": "Low",
+          "status": "Waiting for maintenance",
+          "Image": "image.jpg",
+          "Created": "16-12-2020 10:00:00",
+          "LastModified": "16-12-2020 10:00:00"
+        },
+        {
+          "id": 2,
+          "locationName": "P.191",
+          "ReporterName": "NQHuy",
+          "Position": "bên trái",
+          "description": "vết nứt khá nhỏ",
+          "Severity": "Medium",
+          "status": "Completed",
+          "Image": "image.jpg",
+          "Created": "13-12-2020 10:00:00",
+          "LastModified": "16-12-2020 10:00:00"
+        }
+      ]
+    }
+  ]
+}
