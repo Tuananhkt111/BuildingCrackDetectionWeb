@@ -36,7 +36,9 @@
             </span>
           </div>
         </template>
-
+        <template #empty>
+          No Cracks found.
+        </template>
         <Column headerStyle="width: 3rem"></Column>
         <Column header="Image" headerStyle="width: 100px">
           <template #body="slotProps">
@@ -173,6 +175,7 @@
           filterMatchMode="custom"
           :filterFunction="filterDate"
           headerStyle="width: 250px"
+          
         >
           <template #body="slotProps">
             <span>{{ slotProps.data.Created }}</span>
@@ -335,7 +338,7 @@ export default {
       if (value === undefined || value === null) {
         return false;
       }
-      let tmp = value.substring(0,10);
+      let tmp = value.substring(0, 10);
       return tmp === this.formatDate(filter);
     },
     formatDate(date) {

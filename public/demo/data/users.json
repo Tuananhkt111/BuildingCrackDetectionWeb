@@ -2,7 +2,7 @@
     "data" : [
         {
            "UserId": 1,
-           "Email": "NQH@Gmail.com" ,
+           "Email": "NQH@gmail.com" ,
            "UserName" : "Zen",
            "PhoneNumber" : "0934073158",
            "Name" : "Viet Hung",
@@ -14,7 +14,7 @@
         },
         {
             "UserId": 2,
-           "Email": "NQH@Gmail.com" ,
+           "Email": "Tunganh@gmail.com" ,
            "UserName" : "Tung",
            "PhoneNumber" : "0934073158",
            "Name" : "Tuan Anh",
@@ -26,7 +26,7 @@
         },
         {
             "UserId": 3,
-           "Email": "NQH@Gmail.com" ,
+           "Email": "Zen@gmail.com" ,
            "UserName" : "NQH",
            "PhoneNumber" : "0934073158",
            "Name" : "Nguyen Quang Huy",

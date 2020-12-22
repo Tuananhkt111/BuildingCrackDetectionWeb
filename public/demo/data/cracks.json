@@ -1,53 +1,53 @@
 {
-    "data" : [
-        {
-           "id":1,
-           "locationName": "Library" ,
-           "ReporterName" : "NQH",
-           "Position" : "bên trái",
-           "description" : "vết nứt khá to",
-           "Severity" : "Low",
-           "status" : "Waiting for maintenance",
-           "Image" : "image.jpg",
-           "Created" : "16-12-2020 10:00:00",
-           "LastModified" : "16-12-2020 10:00:00",
-           "AssessmentResult" : {
-               "Rating" : "4",
-               "Description" : "Sua tot"
-           }
-        },
-        {
-            "id": 2,
-           "locationName": "P.191" ,
-           "ReporterName" : "NQHuy",
-           "Position" : "bên trái",
-           "description" : "vết nứt khá nhỏ",
-           "Severity" : "Medium",
-           "status" : "Completed",
-           "Image" : "image.jpg",
-           "Created" : "13-12-2020 10:00:00",
-           "LastModified" : "16-12-2020 10:00:00",
-           "AssessmentResult" : {
-            "Rating" : "3",
-            "Description" : "Sua tam"
-            }
-        },
-        
-        {
-            "id":3,
-           "locationName": "P.202" ,
-           "ReporterName" : "Tuan anh",
-           "Position" : "bên trái",
-           "description" : "vết nứt khá to aaa aaa aaaaa aaaaaa aaaa aaaaa aaaaa aaaaa aaaaa to aaa aaa aaaaa aaaaaa aaaa aaaaa aaaaa to aaa aaa aaaaa aaaaaa aaaa aaaaa aaaaa",
-           "Severity" : "High",
-           "status" : "Waiting for maintenance",
-           "Image" : "image.jpg",
-           "Created" : "10-12-2020 10:00:00",
-           "LastModified" : "17-12-2020 10:00:00",
-           "AssessmentResult" : {
-            "Rating" : "1",
-            "Description" : "Sua ko dc"
-            }
-        }
-    ]
+  "data": [
+    {
+      "id": 1,
+      "locationName": "Library",
+      "ReporterName": "NQH",
+      "Position": "bên trái",
+      "description": "vết nứt khá to",
+      "Severity": "Low",
+      "status": "Waiting for maintenance",
+      "Image": "image.jpg",
+      "Created": "16-12-2020 10:00:00",
+      "LastModified": "16-12-2020 10:00:00",
+      "AssessmentResult": {
+        "Rating": "4",
+        "Description": "Sua tot"
+      }
+    },
+    {
+      "id": 2,
+      "locationName": "P.191",
+      "ReporterName": "NQHuy",
+      "Position": "bên trái",
+      "description": "vết nứt khá nhỏ",
+      "Severity": "Medium",
+      "status": "Completed",
+      "Image": "image.jpg",
+      "Created": "13-12-2020 10:00:00",
+      "LastModified": "16-12-2020 10:00:00",
+      "AssessmentResult": {
+        "Rating": "3",
+        "Description": "Sua tam"
+      }
+    },
+
+    {
+      "id": 3,
+      "locationName": "P.202",
+      "ReporterName": "Tuan anh",
+      "Position": "bên trái",
+      "description": "vết nứt khá to aaa aaa aaaaa aaaaaa aaaa aaaaa aaaaa aaaaa aaaaa to aaa aaa aaaaa aaaaaa aaaa aaaaa aaaaa to aaa aaa aaaaa aaaaaa aaaa aaaaa aaaaa",
+      "Severity": "High",
+      "status": "Waiting for maintenance",
+      "Image": "image.jpg",
+      "Created": "10-12-2020 10:00:00",
+      "LastModified": "17-12-2020 10:00:00",
+      "AssessmentResult": {
+        "Rating": "1",
+        "Description": "Sua ko dc"
+      }
+    }
+  ]
 }

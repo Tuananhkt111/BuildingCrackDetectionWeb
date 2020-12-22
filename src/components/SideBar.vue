@@ -12,19 +12,19 @@
       class="layout-menu-icon p-d-flex p-flex-column p-ai-center p-jc-evenly p-mt-3"
     >
       <div class="menu-item p-flex p-jc-center">
-        <i class="pi pi-table icon-menu"></i><span>Locations</span>
+        <a href="../locations"><i class="pi pi-table icon-menu"></i><span>Locations</span></a>
       </div>
       <div class="menu-item p-flex p-jc-center">
-        <i class="pi pi-table icon-menu"></i><span>Cracks</span>
+        <a href="../cracks"><i class="pi pi-table icon-menu"></i><span>Cracks</span></a>
       </div>
       <div class="menu-item p-flex p-jc-center">
-        <i class="pi pi-table icon-menu"></i><span>Maintenance Workers</span>
+        <a href="../maintenanceWorkers"> <i class="pi pi-table icon-menu"></i><span>Maintenance Workers</span></a>
       </div>
       <div class="menu-item p-flex p-jc-center">
-        <i class="pi pi-table icon-menu"></i><span>Maintenance Orders</span>
+        <a href="../maintenanceOrders"><i class="pi pi-table icon-menu"></i><span>Maintenance Orders</span></a>
       </div>
       <div class="menu-item p-flex p-jc-center">
-        <i class="pi pi-table icon-menu"></i><span>Users</span>
+        <a href="../users"><i class="pi pi-table icon-menu"></i><span>Users</span></a>
       </div>
     </div>
   </div>
@@ -45,8 +45,6 @@ export default {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-weight: 450;
-}
-.layout-menu-icon {
 }
 
 .menu-item:hover {

@@ -18,20 +18,7 @@
       >
         <template #header>
           <div class="table-header">
-            <div class="table-header-container">
-              <h3 class="p-m-2">Manage Maintenance Order</h3>
-              <Button
-                icon="pi pi-plus"
-                label="Expand All"
-                @click="expandAll"
-                class="p-mr-2"
-              />
-              <Button
-                icon="pi pi-minus"
-                label="Collapse All"
-                @click="collapseAll"
-              />
-            </div>
+            <h3 class="p-m-2">Manage Maintenance Order</h3>
             <span class="p-input-icon-left">
               <Button
                 label="Export"
@@ -70,7 +57,7 @@
         <Column
           field="AassessmentResult"
           header="Aassessment Result"
-          headerStyle="width: 100px"
+          headerStyle="width: 130px"
           ><template #body="slotProps">
             <Rating
               :modelValue="slotProps.data.AassessmentResult"
@@ -133,7 +120,12 @@
           <div class="orders-subtable">
             <h5>Orders for {{ slotProps.data.id }}</h5>
             <DataTable :value="slotProps.data.Cracks">
-              <Column field="id" header="Error Id" sortable headerStyle="width: 50px"></Column>
+              <Column
+                field="id"
+                header="Error Id"
+                sortable
+                headerStyle="width: 50px"
+              ></Column>
               <Column header="Image" headerStyle="width: 150px">
                 <template #body="slotProps">
                   <img
@@ -214,8 +206,6 @@ export default {
   methods: {
     onRowExpand() {},
     onRowCollapse() {},
-    expandAll() {},
-    collapseAll() {},
     hideDialog() {
       this.showAssessment = false;
       this.submitted = false;

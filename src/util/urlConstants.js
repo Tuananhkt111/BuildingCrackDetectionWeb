@@ -1,5 +1,5 @@
 //Base url
-export const BASE_URL = "https://transoon.azurewebsites.net/api/";
+export const BASE_URL = "https://localhost:5001/api/v1/";
 
 export const HASHTAG_URL = "hash-tags";
 export const LANGUAGE_URL = "languages";

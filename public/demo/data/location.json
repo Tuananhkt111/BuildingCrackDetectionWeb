@@ -1,18 +1,18 @@
 {
-    "data" : [
-        {
-           "id":1, 
-            "locationName": "Library" ,
-            "description":"Library in FPTU",
-           "Created" : "13-12-2020 10:00:00",
-           "LastModified" : "16-12-2020 10:00:00"
-        },
-        {
-            "id":2,
-              "locationName": "P202" ,
-               "description":"Room in FPTU",
-            "Created" : "13-12-2020 10:00:00",
-           "LastModified" : "16-12-2020 10:00:00"
-        }
-    ]
+  "data": [
+    {
+      "id": 1,
+      "locationName": "Library",
+      "description": "Library in FPTU",
+      "Created": "13-12-2020 10:00:00",
+      "LastModified": "16-12-2020 10:00:00"
+    },
+    {
+      "id": 2,
+      "locationName": "P202",
+      "description": "Room in FPTU",
+      "Created": "13-12-2020 10:00:00",
+      "LastModified": "16-12-2020 10:00:00"
+    }
+  ]
 }

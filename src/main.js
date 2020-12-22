@@ -20,7 +20,11 @@ import InputText from "primevue/inputtext";
 import ToastService from "primevue/toastservice";
 
 import "primeflex/primeflex.css";
+import Tooltip from 'primevue/tooltip';
 
+import mitt from 'mitt';
+
+const emitter = mitt();
 
 const app = createApp(App);
 app.use(store);
@@ -36,5 +40,7 @@ app.component("Textarea", Textarea);
 app.component("RadioButton", RadioButton);
 app.component("InputNumber", InputNumber);
 app.use(ToastService);
+app.directive('tooltip', Tooltip);
 
+app.config.globalProperties.emitter = emitter
 app.mount("#app");

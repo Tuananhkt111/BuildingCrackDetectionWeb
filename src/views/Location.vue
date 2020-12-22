@@ -16,7 +16,7 @@
       >
         <template #header>
           <div class="table-header">
-            <h3 class="p-m-2">Manage Cracks</h3>
+            <h3 class="p-m-2">Manage Locations</h3>
             <span class="p-input-icon-left">
               <Button
                 icon="pi pi-plus"
