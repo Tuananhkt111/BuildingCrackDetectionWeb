@@ -21,14 +21,11 @@ const router = new createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  alert("Tao dang check role");
   // redirect to login page if not logged in and trying to access a restricted page
   const publicPages = ['/login'];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem('jwtToken');
-
   if (authRequired && !loggedIn) {
-    alert("M eo co role");
     return next('/login');
   }
   next();

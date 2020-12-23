@@ -1,5 +1,5 @@
 <template>
-  <div class="p-grid">
+  <div class="p-grid" id="app">
     <div
       class="p-col-12 main-app"
       :class="{ active: getIsActive, inactive: !getIsActive }"

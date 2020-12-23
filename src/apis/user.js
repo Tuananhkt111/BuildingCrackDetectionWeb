@@ -15,12 +15,8 @@ async function login(userName, password) {
     "password": password
   };
   const res = await ApiHelper.post(urlConstants.USER_URL + "/authenticate", data);
-  alert(userName);
   if (res && res.data) {
-    alert("ZZ" + res.data);
-    alert(urlConstants.USER_URL + "/authenticate" + data);
     localStorage.setItem('jwtToken', res.data.jwtToken);
-    alert(localStorage.getItem('jwtToken'));
   }
   return res.data;
 }

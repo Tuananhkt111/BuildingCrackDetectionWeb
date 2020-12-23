@@ -3,7 +3,7 @@ import urlConstants from '../util/urlConstants';
 import router from "../routers";
 
 // api service
-var ApiHelper = axios.create({
+const ApiHelper = axios.create({
   baseURL: urlConstants.BASE_URL
 });
 

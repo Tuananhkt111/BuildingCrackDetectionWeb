@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div>
-      <form @submit="handleSubmit()">
+      <form @submit.prevent="handleSubmit()">
         <h2 style="text-align: center">Login Page</h2>
         <div class="container">
           <label for="userName"><b>User Name</b></label>
@@ -35,7 +35,6 @@
 
 <script>
 import { userApi } from "../apis/user";
-// import router from "../routers";
 import Toast from "primevue/toast";
 
 export default {
@@ -49,20 +48,14 @@ export default {
     };
   },
   created() {
-    // reset login status
-    // userApi.logout();
   },
   methods: {
     handleSubmit() {
-      alert(this.userName);
-      alert(this.password);
       if (this.userName && this.password) {
-        alert("QQ");
         userApi
           .login(this.userName, this.password)
           .then(() => {
             this.$router.push("/");
-            alert("CC");
           })
           .catch((err) => {
             alert(err);
