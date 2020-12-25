@@ -50,6 +50,7 @@
 <script>
 import TieredMenu from "primevue/tieredmenu";
 import { mapActions, mapGetters } from "vuex";
+import { userApi } from "../apis/user";
 export default {
   components: {
     TieredMenu,
@@ -62,6 +63,10 @@ export default {
         },
         {
           label: "Logout",
+          command: () => {
+            userApi.logout();
+            this.$router.push("/login");
+          },
         },
       ],
     };

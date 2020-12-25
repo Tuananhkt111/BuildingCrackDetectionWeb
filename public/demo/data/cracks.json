@@ -3,14 +3,14 @@
     {
       "id": 1,
       "locationName": "Library",
-      "ReporterName": "NQH",
-      "Position": "bên trái",
+      "reporterName": "NQH",
+      "position": "bên trái",
       "description": "vết nứt khá to",
-      "Severity": "Low",
+      "severity": "Low",
       "status": "Waiting for maintenance",
       "Image": "image.jpg",
-      "Created": "16-12-2020 10:00:00",
-      "LastModified": "16-12-2020 10:00:00",
+      "created": "16-12-2020 10:00:00",
+      "lastModified": "16-12-2020 10:00:00",
       "AssessmentResult": {
         "Rating": "4",
         "Description": "Sua tot"
@@ -19,14 +19,14 @@
     {
       "id": 2,
       "locationName": "P.191",
-      "ReporterName": "NQHuy",
-      "Position": "bên trái",
+      "reporterName": "NQHuy",
+      "position": "bên trái",
       "description": "vết nứt khá nhỏ",
-      "Severity": "Medium",
+      "severity": "Medium",
       "status": "Completed",
       "Image": "image.jpg",
-      "Created": "13-12-2020 10:00:00",
-      "LastModified": "16-12-2020 10:00:00",
+      "created": "13-12-2020 10:00:00",
+      "lastModified": "16-12-2020 10:00:00",
       "AssessmentResult": {
         "Rating": "3",
         "Description": "Sua tam"
@@ -36,14 +36,14 @@
     {
       "id": 3,
       "locationName": "P.202",
-      "ReporterName": "Tuan anh",
-      "Position": "bên trái",
+      "reporterName": "Tuan anh",
+      "position": "bên trái",
       "description": "vết nứt khá to aaa aaa aaaaa aaaaaa aaaa aaaaa aaaaa aaaaa aaaaa to aaa aaa aaaaa aaaaaa aaaa aaaaa aaaaa to aaa aaa aaaaa aaaaaa aaaa aaaaa aaaaa",
-      "Severity": "High",
+      "severity": "High",
       "status": "Waiting for maintenance",
       "Image": "image.jpg",
-      "Created": "10-12-2020 10:00:00",
-      "LastModified": "17-12-2020 10:00:00",
+      "created": "10-12-2020 10:00:00",
+      "lastModified": "17-12-2020 10:00:00",
       "AssessmentResult": {
         "Rating": "1",
         "Description": "Sua ko dc"

@@ -44,20 +44,24 @@
         </template>
 
         <Column headerStyle="width: 3rem"></Column>
-        <Column field="locationName" header="Location Name" headerStyle="width: 200px">
+        <Column field="name" header="Location Name" headerStyle="width: 200px">
           <template #body="slotProps">
-            {{ slotProps.data.locationName }}
+            {{ slotProps.data.name }}
           </template>
           <template #filter>
             <InputText
               type="text"
-              v-model="filters['locationName']"
+              v-model="filters['name']"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
-        <Column field="description" header="Description" headerStyle="width: 200px">
+        <Column
+          field="description"
+          header="Description"
+          headerStyle="width: 200px"
+        >
           <template #body="slotProps">
             {{ slotProps.data.description }}
           </template>
@@ -71,19 +75,19 @@
           </template>
         </Column>
         <Column
-          field="Created"
+          field="created"
           header="Created"
           filterMatchMode="custom"
           :filterFunction="filterDate"
           headerStyle="width: 250px"
         >
           <template #body="slotProps">
-            <span>{{ slotProps.data.Created }}</span>
+            <span>{{ callDate(slotProps.data.created) }}</span>
           </template>
           <template #filter>
             <Calendar
               appendTo="body"
-              v-model="filters['Created']"
+              v-model="filters['created']"
               dateFormat="dd-mm-yy"
               class="p-column-filter"
               placeholder="CreatedDate"
@@ -91,22 +95,22 @@
           </template>
         </Column>
         <Column
-          field="LastModified"
+          field="lastModified"
           header="LastModified"
           filterMatchMode="custom"
           :filterFunction="filterDate"
           headerStyle="width: 250px"
         >
           <template #body="slotProps">
-            <span>{{ slotProps.data.LastModified }}</span>
+            <span>{{ callDate(slotProps.data.lastModified) }}</span>
           </template>
           <template #filter>
             <Calendar
               appendTo="body"
-              v-model="filters['LastModified']"
+              v-model="filters['lastModified']"
               dateFormat="dd-mm-yy"
               class="p-column-filter"
-              placeholder="CreatedDate"
+              placeholder="Last Modified"
             />
           </template>
         </Column>
@@ -129,14 +133,14 @@
       </DataTable>
     </div>
     <Dialog
-      v-model:visible="productDialog"
+      v-model:visible="createLocationDiaglog"
       :style="{ width: '450px' }"
-      header="Location Details"
+      header="Location Information"
       :modal="true"
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="locationName"> Location Name</label>
+        <label for="name"> Location Name</label>
         <InputText
           id="Name"
           v-model.trim="product.locationName"
@@ -151,7 +155,7 @@
       <div class="p-field">
         <label for="description">Description</label>
         <InputText
-          id="Phone"
+          id="Description"
           v-model.trim="product.description"
           required="true"
           autofocus
@@ -172,7 +176,55 @@
           label="Save"
           icon="pi pi-check"
           class="p-button-text"
-          @click="saveProduct"
+          @click="createLocation"
+        />
+      </template>
+    </Dialog>
+    <Dialog
+      v-model:visible="productDialog"
+      :style="{ width: '450px' }"
+      header="Location Details"
+      :modal="true"
+      class="p-fluid"
+    >
+      <div class="p-field">
+        <label for="name"> Location Name</label>
+        <InputText
+          id="Name"
+          v-model.trim="product.name"
+          required="true"
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.name }"
+        />
+        <small class="p-invalid" v-if="submitted && !product.name"
+          >Location Name is required.</small
+        >
+      </div>
+      <div class="p-field">
+        <label for="description">Description</label>
+        <InputText
+          id="Description"
+          v-model.trim="product.description"
+          required="true"
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.description }"
+        />
+        <small class="p-invalid" v-if="submitted && !product.description"
+          >Description is required.</small
+        >
+      </div>
+      <template #footer>
+        <Button
+          label="Cancel"
+          icon="pi pi-times"
+          class="p-button-text"
+          @click="hideDialog"
+        />
+        <Button
+          label="Save"
+          icon="pi pi-check"
+          class="p-button-text"
+          @click="updateLocation"
         />
       </template>
     </Dialog>
@@ -185,7 +237,7 @@
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
         <span v-if="product"
-          >Are you sure to delete the location {{ product.locationName }}?</span
+          >Are you sure to delete the location {{ product.name }}?</span
         >
       </div>
       <template #footer>
@@ -199,7 +251,7 @@
           label="Yes"
           icon="pi pi-check"
           class="p-button-text"
-          @click="deleteSelectedProducts"
+          @click="deleteSelectedLocation"
         />
       </template>
     </Dialog>
@@ -212,6 +264,8 @@ import Location from "../data/LocationService.js";
 import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
+import { locationApi } from "../apis/location";
+import moment from "moment";
 
 export default {
   components: {
@@ -224,6 +278,7 @@ export default {
       products: null,
       deleteProductsDialog: false,
       productDialog: false,
+      createLocationDiaglog: false,
       product: {},
       selectedProducts: null,
       filters: {},
@@ -238,9 +293,7 @@ export default {
   },
 
   mounted() {
-    this.locationService
-      .getLocation()
-      .then((data) => (this.products = data));
+    this.locationService.getLocation().then((data) => (this.products = data));
   },
   methods: {
     confirmDeleteProduct(product) {
@@ -250,20 +303,52 @@ export default {
     openNew() {
       this.product = {};
       this.submitted = false;
-      this.productDialog = true;
+      this.createLocationDiaglog = true;
+    },
+    createLocation() {
+      locationApi
+        .create(this.product.locationName, this.product.description)
+        .catch((err) => {
+          alert(err);
+        });
+      this.$router.reload();
+      this.hideDialog();
     },
     editProduct(product) {
-      this.product = product;
+      this.product = {...product};
       this.submitted = false;
       this.productDialog = true;
     },
     hideDialog() {
+      this.createLocationDiaglog = false;
       this.productDialog = false;
       this.submitted = false;
+      this.product = {};
+      // this.$router.go();
     },
     showAssessmentDialog(product) {
       this.product = { ...product };
       this.showAssessment = true;
+    },
+    deleteSelectedLocation() {
+      this.products = this.products.filter(
+        (val) => val.locationId !== this.product.locationId
+      );
+      this.deleteProductDialog = false;
+      locationApi.disable(this.product.locationId);
+      this.product = {};
+      this.$toast.add({
+        severity: "success",
+        summary: "Successful",
+        detail: "Location is disabled",
+        life: 3000,
+      });
+    },
+    updateLocation() {
+      this.products[this.findIndexById(this.product.locationId)] = this.product;
+      locationApi.update(this.product.locationId, this.product.name, this.product.description);
+      this.productDialog = false;
+      this.$router.go();
     },
     findIndexById(id) {
       let index = -1;
@@ -278,6 +363,10 @@ export default {
     exportCSV() {
       this.$refs.dt.exportCSV();
     },
+    callDate(date) {
+      const date1 = new Date(date);
+      return moment(date1).format("DD-MM-YYYY hh:mm:ss");
+    },
     filterDate(value, filter) {
       if (
         filter === undefined ||
@@ -290,7 +379,7 @@ export default {
       if (value === undefined || value === null) {
         return false;
       }
-      let tmp = value.substring(0, 10);
+      let tmp = this.callDate(value).substring(0, 10);
       return tmp === this.formatDate(filter);
     },
     formatDate(date) {

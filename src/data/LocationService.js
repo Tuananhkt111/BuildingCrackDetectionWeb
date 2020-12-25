@@ -1,13 +1,15 @@
 import axios from 'axios';
-
+import { locationApi } from "../apis/location";
+import { crackApi } from "../apis/cracks";
+import { mainteanceOrderApi } from "../apis/maintenanceOrder";
 export default class Location {
 
     getLocation() {
-		return axios.get('demo/data/location.json').then(res => res.data.data);
+		return locationApi.getAll();
 	}
 
 	getCracks() {
-		return axios.get('demo/data/cracks.json').then(res => res.data.data);
+		return crackApi.getAll();
 	}
 
 	getUsers() {
@@ -15,7 +17,11 @@ export default class Location {
 	}
 
 	getMainteanceOrder() {
-		return axios.get('demo/data/mainteanceOrder.json').then(res => res.data.data);
+		return mainteanceOrderApi.getAll();
+	}
+
+	getMainteanceOrderById(id) {
+		return mainteanceOrderApi.getById(id);
 	}
 
 	getMainteanceWorker() {

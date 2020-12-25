@@ -39,21 +39,11 @@
         </template>
         <Column :expander="true" headerStyle="width: 3rem" />
         <Column
-          field="id"
+          field="maintenanceOrderId"
           header="Id"
           sortable
           headerStyle="width: 40px"
         ></Column>
-        <Column
-          field="description"
-          header="Description"
-          headerStyle="width: 100px"
-          ><template #body="slotProps">
-            <ScrollPanel style="width: 100%; height: 40px">
-              {{ slotProps.data.description }}
-            </ScrollPanel>
-          </template>
-        </Column>
         <Column
           field="AassessmentResult"
           header="Aassessment Result"
@@ -168,7 +158,6 @@ import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
 import Rating from "primevue/rating";
-import ScrollPanel from "primevue/scrollpanel";
 
 export default {
   components: {
@@ -177,7 +166,6 @@ export default {
     Calendar,
     Dropdown,
     Rating,
-    ScrollPanel,
   },
   data() {
     return {
