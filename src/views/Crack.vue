@@ -4,8 +4,7 @@
       <DataTable
         :scrollable="true"
         ref="dt"
-        :value="products"
-        v-model:selection="selectedProducts"
+        :value="getCrackList"
         dataKey="id"
         :paginator="true"
         :rows="10"
@@ -98,7 +97,7 @@
             <Dropdown
               appendTo="body"
               v-model="filters['severity']"
-              :options="severitys"
+              :options="getSeveritysList"
               placeholder="Severity"
               class="p-column-filter"
               :showClear="true"
@@ -127,7 +126,7 @@
             <Dropdown
               appendTo="body"
               v-model="filters['status']"
-              :options="statuses"
+              :options="getStatusList"
               placeholder="Status"
               class="p-column-filter"
               :showClear="true"
@@ -138,27 +137,6 @@
                 }}</span>
               </template>
             </Dropdown>
-          </template>
-        </Column>
-        <Column
-          field="created"
-          header="created"
-          filterMatchMode="custom"
-          :filterFunction="filterDate"
-          headerStyle="width: 250px"
-        >
-          <template #body="slotProps">
-            <span>{{ callDate(slotProps.data.created) }}</span>
-            <!-- <span>{{ slotProps.data.created }}</span> -->
-          </template>
-          <template #filter>
-            <Calendar
-              appendTo="body"
-              v-model="filters['created']"
-              dateFormat="dd-mm-yy"
-              class="p-column-filter"
-              placeholder="Created Date"
-            />
           </template>
         </Column>
         <Column>
@@ -294,25 +272,27 @@
           />
         </div>
       </div>
-      <div class="p-field">
-        <label for="created"> Created Date</label>
-        <InputText
-          id="created"
-          v-model.trim="product.created"
-          required="true"
-          disabled="true"
-          autofocus
-        />
-      </div>
-      <div class="p-field">
-        <label for="lastModified"> Last Modified</label>
-        <InputText
-          id="lastModified"
-          v-model.trim="product.lastModified"
-          required="true"
-          disabled="true"
-          autofocus
-        />
+      <div class="p-formgrid p-grid">
+        <div class="p-field p-col-6">
+          <label for="created"> Created Date</label>
+          <InputText
+            id="created"
+            v-model.trim="product.created"
+            required="true"
+            disabled="true"
+            autofocus
+          />
+        </div>
+        <div class="p-field p-col-6">
+          <label for="lastModified"> Last Modified</label>
+          <InputText
+            id="lastModified"
+            v-model.trim="product.lastModified"
+            required="true"
+            disabled="true"
+            autofocus
+          />
+        </div>
       </div>
       <template #footer>
         <Button
@@ -328,47 +308,48 @@
 </template>
 
 <script>
-import Location from "../data/LocationService.js";
 import Button from "primevue/button";
-import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
 import Rating from "primevue/rating";
 import Textarea from "primevue/textarea";
 import moment from "moment";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     Button,
     Toast,
-    Calendar,
     Dropdown,
     Rating,
     Textarea,
   },
+  computed: {
+    ...mapGetters("crack", [
+      "getCrackList",
+      "getStatusList",
+      "getSeveritysList",
+    ]),
+
+    data() {
+      return this.getCrackList;
+    },
+  },
   data() {
     return {
-      products: null,
-      crackInfoDialog: null,
+      crackInfoDialog: false,
       showAssessment: false,
       product: {},
-      selectedProducts: null,
       filters: {},
       submitted: false,
       messages: [],
-      statuses: ["Waiting for maintenance", "Completed"],
-      severitys: ["Low", "Medium", "High"],
     };
   },
-  locationService: null,
-  created() {
-    this.locationService = new Location();
-  },
-
-  mounted() {
-    this.locationService.getCracks().then((data) => (this.products = data));
+  async created() {
+    await this.setCrackList();
   },
   methods: {
+    ...mapActions("crack", ["setCrackList"]),
     hideDialog() {
       this.showAssessment = false;
       this.crackInfoDialog = false;
@@ -394,9 +375,7 @@ export default {
       }
       return index;
     },
-    redirectMainteanceOrder() {
-      
-    },
+    redirectMainteanceOrder() {},
     exportCSV() {
       this.$refs.dt.exportCSV();
     },

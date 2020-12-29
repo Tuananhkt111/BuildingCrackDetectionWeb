@@ -4,11 +4,11 @@
       <DataTable
         :scrollable="true"
         ref="dt"
-        :value="products"
+        :value="getMaintenanceWorkerList"
         v-model:selection="selectedProducts"
         dataKey="id"
         :paginator="true"
-        :rows="10"
+        :rows="5"
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
@@ -16,7 +16,7 @@
       >
         <template #header>
           <div class="table-header">
-            <h3 class="p-m-2">Manage Cracks</h3>
+            <h3 class="p-m-2">Manage Maintenance Worker</h3>
             <span class="p-input-icon-left">
               <Button
                 icon="pi pi-plus"
@@ -44,132 +44,101 @@
         </template>
 
         <Column headerStyle="width: 3rem"></Column>
-        <Column field="Name" header="Name" headerStyle="width: 200px">
+        <Column field="name" header="Name" headerStyle="width: 200px">
           <template #body="slotProps">
-            {{ slotProps.data.Name }}
+            {{ slotProps.data.name }}
           </template>
           <template #filter>
             <InputText
               type="text"
-              v-model="filters['Name']"
+              v-model="filters['name']"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
-        <Column field="Phone" header="Phone" headerStyle="width: 200px">
+        <Column field="phone" header="Phone" headerStyle="width: 200px">
           <template #body="slotProps">
-            {{ slotProps.data.Phone }}
+            {{ slotProps.data.phone }}
           </template>
           <template #filter>
             <InputText
               type="text"
-              v-model="filters['Phone']"
+              v-model="filters['phone']"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
         <Column
-          filterField="Address"
+          filterField="email"
+          filterMatchMode="contains"
+          header="Email"
+          headerStyle="width: 200px"
+        >
+          <template #body="slotProps">
+            {{ slotProps.data.email }}
+          </template>
+          <template #filter>
+            <InputText
+              type="text"
+              v-model="filters['email']"
+              class="p-column-filter"
+              placeholder="Search"
+            />
+          </template>
+        </Column>
+        <Column
+          filterField="address"
           filterMatchMode="contains"
           header="Address"
           headerStyle="width: 200px"
         >
           <template #body="slotProps">
-            {{ slotProps.data.Address }}
+            {{ slotProps.data.address }}
           </template>
           <template #filter>
             <InputText
               type="text"
-              v-model="filters['Address']"
+              v-model="filters['address']"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
         <Column
-          field="Status"
-          header="Status"
-          filterMatchMode="equals"
-          headerStyle="width: 150px"
-        >
-          <template #body="slotProps">
-            <span :class="'customer-badge status-' + slotProps.data.Status">{{
-              slotProps.data.Status
-            }}</span>
-          </template>
-
-          <template #filter>
-            <Dropdown
-              appendTo="body"
-              v-model="filters['Status']"
-              :options="statuses"
-              placeholder="Status"
-              class="p-column-filter"
-              :showClear="true"
-            >
-              <template #option="slotProps">
-                <span :class="'customer-badge status-' + slotProps.option">{{
-                  slotProps.option
-                }}</span>
-              </template>
-            </Dropdown>
-          </template>
-        </Column>
-        <Column
-          field="Created"
-          header="Created"
+          field="created"
+          header="Created Date"
           filterMatchMode="custom"
           :filterFunction="filterDate"
-          headerStyle="width: 250px"
+          headerStyle="width: 180px"
         >
           <template #body="slotProps">
-            <span>{{ slotProps.data.Created }}</span>
+            <span>{{ callDate(slotProps.data.created) }}</span>
           </template>
           <template #filter>
             <Calendar
               appendTo="body"
-              v-model="filters['Created']"
+              v-model="filters['created']"
               dateFormat="dd-mm-yy"
               class="p-column-filter"
-              placeholder="CreatedDate"
+              placeholder="Created Date"
             />
           </template>
         </Column>
-        <Column
-          field="LastModified"
-          header="LastModified"
-          filterMatchMode="custom"
-          :filterFunction="filterDate"
-          headerStyle="width: 250px"
-        >
-          <template #body="slotProps">
-            <span>{{ slotProps.data.LastModified }}</span>
-          </template>
-          <template #filter>
-            <Calendar
-              appendTo="body"
-              v-model="filters['LastModified']"
-              dateFormat="dd-mm-yy"
-              class="p-column-filter"
-              placeholder="CreatedDate"
-            />
-          </template>
-        </Column>
-        <Column>
+        <Column headerStyle="width: 130px">
           <template #body="slotProps">
             <Button
               icon="pi pi-pencil"
-              class="p-button-rounded p-button-info p-button-text p-mr-2"
+              class="p-button-rounded p-button-info p-button-text p-mr-1"
               @click="editProduct(slotProps.data)"
-              style="margin: 2px"
+              style="margin: 1px"
             />
             <Button
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger p-button-text"
               @click="confirmDeleteProduct(slotProps.data)"
-              style="margin: 2px"
+              style="margin: 1px"
             />
           </template>
         </Column>
@@ -178,48 +147,84 @@
     <Dialog
       v-model:visible="productDialog"
       :style="{ width: '450px' }"
-      header="Location Details"
+      header="Maintenance Worker Details"
       :modal="true"
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="Name">Name</label>
+        <label for="name">Name</label>
         <InputText
-          id="Name"
-          v-model.trim="product.Name"
+          id="name"
+          v-model.trim="product.name"
           required="true"
           autofocus
-          :class="{ 'p-invalid': submitted && !product.Name }"
+          :class="{ 'p-invalid': submitted && !product.name }"
         />
-        <small class="p-invalid" v-if="submitted && !product.Name"
+        <small class="p-invalid" v-if="submitted && !product.name"
           >Name is required.</small
         >
       </div>
       <div class="p-field">
-        <label for="Phone">Phone</label>
+        <label for="phone">Phone</label>
         <InputText
-          id="Phone"
-          v-model.trim="product.Phone"
+          id="phone"
+          v-model.trim="product.phone"
           required="true"
           autofocus
-          :class="{ 'p-invalid': submitted && !product.Phone }"
+          :class="{ 'p-invalid': submitted && !product.phone }"
         />
-        <small class="p-invalid" v-if="submitted && !product.Phone"
+        <small class="p-invalid" v-if="submitted && !product.phone"
           >Phone is required.</small
         >
       </div>
       <div class="p-field">
-        <label for="Address">Address</label>
+        <label for="address">Address</label>
         <InputText
-          id="Address"
-          v-model.trim="product.Address"
+          id="address"
+          v-model.trim="product.address"
           required="true"
           autofocus
-          :class="{ 'p-invalid': submitted && !product.Address }"
+          :class="{ 'p-invalid': submitted && !product.address }"
         />
-        <small class="p-invalid" v-if="submitted && !product.Address"
+        <small class="p-invalid" v-if="submitted && !product.address"
           >Address is required.</small
         >
+      </div>
+      <div class="p-field">
+        <label for="email">Email</label>
+        <InputText
+          type="email"
+          id="email"
+          v-model.trim="product.email"
+          required="true"
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.email }"
+        />
+        <small class="p-invalid" v-if="submitted && !product.email"
+          >Email is required.</small
+        >
+      </div>
+      <div class="p-formgrid p-grid">
+        <div class="p-field p-col-6">
+          <label for="created"> Created Date</label>
+          <InputText
+            id="created"
+            v-model.trim="product.created"
+            required="true"
+            disabled="true"
+            autofocus
+          />
+        </div>
+        <div class="p-field p-col-6">
+          <label for="lastModified"> Last Modified</label>
+          <InputText
+            id="lastModified"
+            v-model.trim="product.lastModified"
+            required="true"
+            disabled="true"
+            autofocus
+          />
+        </div>
       </div>
       <template #footer>
         <Button
@@ -232,7 +237,82 @@
           label="Save"
           icon="pi pi-check"
           class="p-button-text"
-          @click="saveProduct"
+          @click="editMaintenanceWorker"
+        />
+      </template>
+    </Dialog>
+    <Dialog
+      v-model:visible="CreateProductDialog"
+      :style="{ width: '450px' }"
+      header="Create Maintenance Worker"
+      :modal="true"
+      class="p-fluid"
+    >
+      <div class="p-field">
+        <label for="name">Name</label>
+        <InputText
+          id="name"
+          v-model.trim="product.name"
+          required="true"
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.name }"
+        />
+        <small class="p-invalid" v-if="submitted && !product.name"
+          >Name is required.</small
+        >
+      </div>
+      <div class="p-field">
+        <label for="phone">Phone</label>
+        <InputText
+          id="phone"
+          v-model.trim="product.phone"
+          required="true"
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.phone }"
+        />
+        <small class="p-invalid" v-if="submitted && !product.phone"
+          >Phone is required.</small
+        >
+      </div>
+      <div class="p-field">
+        <label for="address">Address</label>
+        <InputText
+          id="address"
+          v-model.trim="product.address"
+          required="true"
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.address }"
+        />
+        <small class="p-invalid" v-if="submitted && !product.address"
+          >Address is required.</small
+        >
+      </div>
+      <div class="p-field">
+        <label for="email">Email</label>
+        <InputText
+          type="email"
+          id="email"
+          v-model.trim="product.email"
+          required="true"
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.email }"
+        />
+        <small class="p-invalid" v-if="submitted && !product.email"
+          >Email is required.</small
+        >
+      </div>
+      <template #footer>
+        <Button
+          label="Cancel"
+          icon="pi pi-times"
+          class="p-button-text"
+          @click="hideDialog"
+        />
+        <Button
+          label="Create"
+          icon="pi pi-check"
+          class="p-button-text"
+          @click="createMaintenanceWorker"
         />
       </template>
     </Dialog>
@@ -245,7 +325,7 @@
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
         <span v-if="product"
-          >Are you sure you want to delete the Worker {{ product.Name }}?</span
+          >Are you sure you want to delete the Worker {{ product.name }}?</span
         >
       </div>
       <template #footer>
@@ -268,22 +348,29 @@
 </template>
 
 <script>
-import Location from "../data/LocationService.js";
 import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
-import Dropdown from "primevue/dropdown";
+import { mapGetters, mapActions } from "vuex";
+import moment from "moment";
+import maintenanceWorkerApi from "../apis/maintenanceWorker.js";
 
 export default {
   components: {
     Button,
     Toast,
     Calendar,
-    Dropdown,
+  },
+  computed: {
+    ...mapGetters("maintenanceWorker", ["getMaintenanceWorkerList"]),
+
+    data() {
+      return this.getMaintenanceWorkerList;
+    },
   },
   data() {
     return {
-      products: null,
+      CreateProductDialog: false,
       deleteProductsDialog: false,
       productDialog: false,
       product: {},
@@ -294,33 +381,66 @@ export default {
       statuses: ["Available", "Unavailable"],
     };
   },
-  locationService: null,
-  created() {
-    this.locationService = new Location();
+  async created() {
+    await this.setMaintenanceWorkerList();
   },
 
-  mounted() {
-    this.locationService
-      .getMainteanceWorker()
-      .then((data) => (this.products = data));
-  },
   methods: {
+    ...mapActions("maintenanceWorker", ["setMaintenanceWorkerList"]),
     confirmDeleteProduct(product) {
       this.product = product;
       this.deleteProductsDialog = true;
     },
+    async createMaintenanceWorker() {
+      await maintenanceWorkerApi
+        .create(
+          this.product.name,
+          this.product.address,
+          this.product.phone,
+          this.product.email
+        )
+        .catch((err) => {
+          alert(err);
+        });
+      await this.setMaintenanceWorkerList();
+      this.hideDialog();
+    },
+    async editMaintenanceWorker() {
+      this.getMaintenanceWorkerList[
+        this.findIndexById(this.product.maintenanceWorkerId)
+      ] = this.product;
+      await maintenanceWorkerApi.update(
+        this.product.maintenanceWorkerId,
+        this.product.name,
+        this.product.address,
+        this.product.phone,
+        this.product.email,
+      );
+      await this.setMaintenanceWorkerList();
+      this.productDialog = false;
+    },
+
+    async deleteSelectedProducts(){
+      await maintenanceWorkerApi.disable(this.product.maintenanceWorkerId);
+      await this.setMaintenanceWorkerList();
+      this.hideDialog();
+    },
     openNew() {
       this.product = {};
       this.submitted = false;
-      this.productDialog = true;
+      this.CreateProductDialog = true;
     },
     editProduct(product) {
-      this.product = product;
+      this.product = { ...product };
+      this.product.created = this.callDate(this.product.created);
+      this.product.lastModified = this.callDate(this.product.lastModified);
       this.submitted = false;
       this.productDialog = true;
     },
     hideDialog() {
       this.productDialog = false;
+      this.CreateProductDialog = false;
+      this.deleteProductsDialog = false;
       this.submitted = false;
     },
     showAssessmentDialog(product) {
@@ -329,8 +449,8 @@ export default {
     },
     findIndexById(id) {
       let index = -1;
-      for (let i = 0; i < this.products.length; i++) {
-        if (this.products[i].id === id) {
+      for (let i = 0; i < this.getMaintenanceWorkerList.length; i++) {
+        if (this.getMaintenanceWorkerList[i].id === id) {
           index = i;
           break;
         }
@@ -339,6 +459,10 @@ export default {
     },
     exportCSV() {
       this.$refs.dt.exportCSV();
+    },
+    callDate(date) {
+      const date1 = new Date(date);
+      return moment(date1).format("DD-MM-YYYY hh:mm:ss");
     },
     filterDate(value, filter) {
       if (
@@ -352,7 +476,7 @@ export default {
       if (value === undefined || value === null) {
         return false;
       }
-      let tmp = value.substring(0, 10);
+      let tmp = this.callDate(value).substring(0, 10);
       return tmp === this.formatDate(filter);
     },
     formatDate(date) {

@@ -35,3 +35,10 @@ async function update(locationId, locationName, description){
     const res = await ApiHelper.post(urlConstants.LOCATION_URL + "/" + locationId + "/", data);
   return res;
 }
+
+export default {
+  create,
+  getAll,
+  disable,
+  update,
+};

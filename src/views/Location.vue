@@ -4,11 +4,10 @@
       <DataTable
         :scrollable="true"
         ref="dt"
-        :value="products"
-        v-model:selection="selectedProducts"
+        :value="getLocationList"
         dataKey="id"
         :paginator="true"
-        :rows="10"
+        :rows="5"
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
@@ -79,7 +78,7 @@
           header="Created"
           filterMatchMode="custom"
           :filterFunction="filterDate"
-          headerStyle="width: 250px"
+          headerStyle="width: 200px"
         >
           <template #body="slotProps">
             <span>{{ callDate(slotProps.data.created) }}</span>
@@ -90,7 +89,7 @@
               v-model="filters['created']"
               dateFormat="dd-mm-yy"
               class="p-column-filter"
-              placeholder="CreatedDate"
+              placeholder="Created Date"
             />
           </template>
         </Column>
@@ -213,6 +212,28 @@
           >Description is required.</small
         >
       </div>
+      <div class="p-formgrid p-grid">
+        <div class="p-field p-col-6">
+          <label for="created"> Created Date</label>
+          <InputText
+            id="created"
+            v-model.trim="product.created"
+            required="true"
+            disabled="true"
+            autofocus
+          />
+        </div>
+        <div class="p-field p-col-6">
+          <label for="lastModified"> Last Modified</label>
+          <InputText
+            id="lastModified"
+            v-model.trim="product.lastModified"
+            required="true"
+            disabled="true"
+            autofocus
+          />
+        </div>
+      </div>
       <template #footer>
         <Button
           label="Cancel"
@@ -260,12 +281,12 @@
 </template>
 
 <script>
-import Location from "../data/LocationService.js";
 import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import { locationApi } from "../apis/location";
 import moment from "moment";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
@@ -273,29 +294,30 @@ export default {
     Toast,
     Calendar,
   },
+  computed: {
+    ...mapGetters("location", ["getLocationList"]),
+
+    data() {
+      return this.getLocationList;
+    },
+  },
   data() {
     return {
-      products: null,
       deleteProductsDialog: false,
       productDialog: false,
       createLocationDiaglog: false,
       product: {},
-      selectedProducts: null,
       filters: {},
       submitted: false,
       messages: [],
-      statuses: ["Available", "Unavailable"],
     };
   },
-  locationService: null,
-  created() {
-    this.locationService = new Location();
-  },
-
-  mounted() {
-    this.locationService.getLocation().then((data) => (this.products = data));
+  async created() {
+    await this.setLocationList();
   },
   methods: {
+    ...mapActions("location", ["setLocationList"]),
+    
     confirmDeleteProduct(product) {
       this.product = product;
       this.deleteProductsDialog = true;
@@ -305,17 +327,19 @@ export default {
       this.submitted = false;
       this.createLocationDiaglog = true;
     },
-    createLocation() {
+    async createLocation() {
       locationApi
         .create(this.product.locationName, this.product.description)
         .catch((err) => {
           alert(err);
         });
-      this.$router.reload();
+      await this.setLocationList();
       this.hideDialog();
     },
     editProduct(product) {
-      this.product = {...product};
+      this.product = { ...product };
+      this.product.created = this.callDate(product.created);
+      this.product.lastModified = this.callDate(product.lastModified);
       this.submitted = false;
       this.productDialog = true;
     },
@@ -324,18 +348,14 @@ export default {
       this.productDialog = false;
       this.submitted = false;
       this.product = {};
-      // this.$router.go();
+      this.deleteProductsDialog = false;
     },
     showAssessmentDialog(product) {
       this.product = { ...product };
       this.showAssessment = true;
     },
-    deleteSelectedLocation() {
-      this.products = this.products.filter(
-        (val) => val.locationId !== this.product.locationId
-      );
-      this.deleteProductDialog = false;
-      locationApi.disable(this.product.locationId);
+    async deleteSelectedLocation() {
+      await locationApi.disable(this.product.locationId);
       this.product = {};
       this.$toast.add({
         severity: "success",
@@ -343,17 +363,25 @@ export default {
         detail: "Location is disabled",
         life: 3000,
       });
+      this.setLocationList();
+      this.hideDialog();
     },
-    updateLocation() {
-      this.products[this.findIndexById(this.product.locationId)] = this.product;
-      locationApi.update(this.product.locationId, this.product.name, this.product.description);
+    async updateLocation() {
+      this.getLocationList[
+        this.findIndexById(this.product.locationId)
+      ] = this.product;
+      await locationApi.update(
+        this.product.locationId,
+        this.product.name,
+        this.product.description
+      );
       this.productDialog = false;
-      this.$router.go();
+      await this.setLocationList();
     },
     findIndexById(id) {
       let index = -1;
-      for (let i = 0; i < this.products.length; i++) {
-        if (this.products[i].id === id) {
+      for (let i = 0; i < this.getLocationList.length; i++) {
+        if (this.getLocationList[i].id === id) {
           index = i;
           break;
         }
