@@ -7,7 +7,7 @@
         :value="getCrackList"
         dataKey="id"
         :paginator="true"
-        :rows="10"
+        :rows="5"
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
@@ -39,12 +39,13 @@
           No Cracks found.
         </template>
         <Column headerStyle="width: 3rem"></Column>
-        <Column header="Image" headerStyle="width: 100px">
+        <Column header="Image" headerStyle="width: 110px">
           <template #body="slotProps">
             <img
-              :src="'demo/images/product/' + slotProps.data.image"
+              :src="slotProps.data.image"
               :alt="slotProps.data.image"
               class="product-image"
+              style="width: 100px ; height: 100px"
             />
           </template>
         </Column>
@@ -391,7 +392,6 @@ export default {
       ) {
         return true;
       }
-
       if (value === undefined || value === null) {
         return false;
       }

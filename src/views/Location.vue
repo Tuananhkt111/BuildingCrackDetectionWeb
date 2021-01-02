@@ -328,7 +328,7 @@ export default {
       this.createLocationDiaglog = true;
     },
     async createLocation() {
-      locationApi
+      await locationApi
         .create(this.product.locationName, this.product.description)
         .catch((err) => {
           alert(err);
@@ -413,11 +413,9 @@ export default {
     formatDate(date) {
       let month = date.getMonth() + 1;
       let day = date.getDate();
-
       if (month < 10) {
         month = "0" + month;
       }
-
       if (day < 10) {
         day = "0" + day;
       }

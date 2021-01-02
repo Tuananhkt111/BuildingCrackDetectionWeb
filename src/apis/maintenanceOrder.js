@@ -8,11 +8,16 @@ export const mainteanceOrderApi = {
 
 
 async function getAll(){
-    const res = await ApiHelper.get(urlConstants.CRACK_URL);
+    const res = await ApiHelper.get(urlConstants.MAINTEANANCE_ORDER_URL);
     return res.data;
 }
 
 async function getById(id){
-    const res = await ApiHelper.get(urlConstants.CRACK_URL + "/" + id);
+    const res = await ApiHelper.get(urlConstants.MAINTEANANCE_ORDER_URL + "/" + id);
     return res.data;
+}
+
+export default {
+  getAll,
+  getById
 }
