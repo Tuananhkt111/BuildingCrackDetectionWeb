@@ -38,8 +38,7 @@
         <template #empty>
           No Cracks found.
         </template>
-        <Column headerStyle="width: 3rem"></Column>
-        <Column header="Image" headerStyle="width: 110px">
+        <Column header="Image">
           <template #body="slotProps">
             <img
               :src="slotProps.data.image"
@@ -52,7 +51,7 @@
         <Column
           field="locationName"
           header="Location Name"
-          headerStyle="width: 200px"
+          filterMatchMode="contains"
         >
           <template #body="slotProps">
             {{ slotProps.data.locationName }}
@@ -69,7 +68,6 @@
         <Column
           field="reporterName"
           header="Reporter Name"
-          headerStyle="width: 200px"
         >
           <template #body="slotProps">
             {{ slotProps.data.reporterName }}
@@ -87,7 +85,6 @@
           field="severity"
           header="Severity"
           filterMatchMode="equals"
-          headerStyle="width: 150px"
         >
           <template #body="slotProps">
             <span :class="'customer-badge status-' + slotProps.data.severity">{{
@@ -115,7 +112,6 @@
           field="status"
           header="Status"
           filterMatchMode="equals"
-          headerStyle="width: 150px"
         >
           <template #body="slotProps">
             <span :class="'customer-badge status-' + slotProps.data.status">{{

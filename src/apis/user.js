@@ -9,7 +9,8 @@ export const userApi = {
   getUsersCount,
   createUser,
   updateUser,
-  changedRole
+  resetPassword,
+  forgotPassword
 };
 
 async function login(userName, password) {
@@ -24,6 +25,7 @@ async function login(userName, password) {
   );
   if (res && res.data) {
     localStorage.setItem("jwtToken", res.data.jwtToken);
+    localStorage.setItem("userId", res.data.userId);
   }
   return res.data;
 }
@@ -50,9 +52,9 @@ async function createUser(role, name, email, phoneNumber, address, location) {
 }
 
 async function updateUser(id, name, email, phoneNumber, address, location){
-  var locations = null;
+  var locations = [];
   if(location.locationId != null) {
-    locations = location.locationId;
+    locations[0] = location.locationId;
   } else {
     locations = [];
     for (let i = 0; i != location.length; i++) {
@@ -62,27 +64,27 @@ async function updateUser(id, name, email, phoneNumber, address, location){
   }
   const data = {
     phoneNumber: phoneNumber,
-    address: address,
     name: name,
+    address: address,
     email: email,
     locationIds: locations,
   };
-  const res = await ApiHelper.post(urlConstants.USER_URL + "/" + id + "/", data);
+  const res = await ApiHelper.post(urlConstants.USER_URL + "/" + id, data);
   return res;
 }
 
-async function changedRole(id, role) {
-  const res = await ApiHelper.post(urlConstants.USER_URL + "/" + id + "/role", role, {
-    headers: {
-      'Content-Type' : 'text/plain'
-    }
-  });
+async function resetPassword(id) {
+  const res = await ApiHelper.post(urlConstants.USER_URL + "/" + id + "/resetpass");
   return res;
 }
-
+async function forgotPassword(userName) {
+  const res = await ApiHelper.post(urlConstants.USER_URL + "/forgotpass-confirm?userName=" + userName);
+  return res;
+}
 function logout() {
   // remove user from local storage to log user out
   localStorage.removeItem("jwtToken");
+  localStorage.removeItem("userId");
 }
 
 async function getAll() {
@@ -112,5 +114,6 @@ export default {
   getUsersCount,
   createUser,
   updateUser,
-  changedRole,
+  resetPassword,
+  forgotPassword
 };

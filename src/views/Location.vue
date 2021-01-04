@@ -41,9 +41,7 @@
             </span>
           </div>
         </template>
-
-        <Column headerStyle="width: 3rem"></Column>
-        <Column field="name" header="Location Name" headerStyle="width: 200px">
+        <Column field="name" header="Location Name" >
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
@@ -59,7 +57,6 @@
         <Column
           field="description"
           header="Description"
-          headerStyle="width: 200px"
         >
           <template #body="slotProps">
             {{ slotProps.data.description }}
@@ -78,7 +75,7 @@
           header="Created"
           filterMatchMode="custom"
           :filterFunction="filterDate"
-          headerStyle="width: 200px"
+         
         >
           <template #body="slotProps">
             <span>{{ callDate(slotProps.data.created) }}</span>
@@ -98,7 +95,7 @@
           header="LastModified"
           filterMatchMode="custom"
           :filterFunction="filterDate"
-          headerStyle="width: 250px"
+          
         >
           <template #body="slotProps">
             <span>{{ callDate(slotProps.data.lastModified) }}</span>

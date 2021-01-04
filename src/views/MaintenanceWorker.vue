@@ -43,8 +43,7 @@
           </div>
         </template>
 
-        <Column headerStyle="width: 3rem"></Column>
-        <Column field="name" header="Name" headerStyle="width: 200px">
+        <Column field="name" header="Name" >
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
@@ -57,7 +56,7 @@
             />
           </template>
         </Column>
-        <Column field="phone" header="Phone" headerStyle="width: 200px">
+        <Column field="phone" header="Phone" >
           <template #body="slotProps">
             {{ slotProps.data.phone }}
           </template>
@@ -74,7 +73,6 @@
           filterField="email"
           filterMatchMode="contains"
           header="Email"
-          headerStyle="width: 200px"
         >
           <template #body="slotProps">
             {{ slotProps.data.email }}
@@ -92,7 +90,6 @@
           filterField="address"
           filterMatchMode="contains"
           header="Address"
-          headerStyle="width: 200px"
         >
           <template #body="slotProps">
             {{ slotProps.data.address }}
@@ -111,7 +108,6 @@
           header="Created Date"
           filterMatchMode="custom"
           :filterFunction="filterDate"
-          headerStyle="width: 180px"
         >
           <template #body="slotProps">
             <span>{{ callDate(slotProps.data.created) }}</span>
@@ -126,19 +122,17 @@
             />
           </template>
         </Column>
-        <Column headerStyle="width: 130px">
+        <Column>
           <template #body="slotProps">
             <Button
               icon="pi pi-pencil"
-              class="p-button-rounded p-button-info p-button-text p-mr-1"
+              class="p-button-rounded p-button-info p-button-text"
               @click="editProduct(slotProps.data)"
-              style="margin: 1px"
             />
             <Button
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger p-button-text"
               @click="confirmDeleteProduct(slotProps.data)"
-              style="margin: 1px"
             />
           </template>
         </Column>

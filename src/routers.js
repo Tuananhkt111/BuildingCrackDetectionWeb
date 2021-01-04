@@ -5,6 +5,7 @@ import MaintenanceOrder from "./views/MaintenanceOrder.vue";
 import MaintenanceWorker from "./views/MaintenanceWorker.vue";
 import User from "./views/User.vue";
 import Login from "./views/LoginPage.vue";
+import urlConstants from "./util/urlConstants";
 
 
 const router = new createRouter({
@@ -23,10 +24,22 @@ const router = new createRouter({
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
   const publicPages = ['/login'];
+ 
   const authRequired = !publicPages.includes(to.path);
+  
   const loggedIn = localStorage.getItem('jwtToken');
+ 
   if (authRequired && !loggedIn) {
     return next('/login');
+  } 
+  const checkAdmin = localStorage.getItem('userId');
+  if(checkAdmin != null){
+    const managerPages = ['/users','/cracks', '/maintenanceOrders'];
+    const managerRequired = !managerPages.includes(to.path);
+    console.log(managerRequired);
+    if (managerRequired && checkAdmin!=(urlConstants.ADMIN_ID)){
+      return next('/cracks');
+    } 
   }
   next();
 });

@@ -21,15 +21,48 @@
             required
           />
           <button type="submit">Login</button>
-          <!-- <label>
-            <input type="checkbox" checked="checked" name="remember" /> Remember
-            me
-            <span class="psw"><a href="#">Forgot password?</a></span>
-          </label> -->
+          <label>
+            <span class="psw"
+              ><a href="#" @click="forgotPassword">Forgot password?</a></span
+            >
+          </label>
         </div>
       </form>
     </div>
-    <Toast/>
+    <Toast />
+    <Dialog
+      v-model:visible="ForgotPasswordDialog"
+      :style="{ width: '350px' }"
+      header="Fogot Password"
+      :modal="true"
+      class="p-fluid"
+    >
+      <div class="p-field">
+        <label for="userName">User Name</label>
+        <InputText
+          id="userName"
+          v-model.trim="userName"
+          required="true"
+        />
+        <small class="p-invalid" v-if="userName == null"
+          >Full Name is required.</small
+        >
+      </div>
+      <template #footer>
+        <Button
+          label="Cancel"
+          icon="pi pi-times"
+          class="p-button-text"
+          @click="ForgotPasswordDialog = false"
+        />
+        <Button
+          label="Confirm"
+          icon="pi pi-check"
+          class="p-button-text"
+          @click="confirmForgotPassword"
+        />
+      </template>
+    </Dialog>
   </div>
 </template>
 
@@ -45,10 +78,10 @@ export default {
     return {
       userName: "",
       password: "",
+      ForgotPasswordDialog : false,
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     handleSubmit() {
       if (this.userName && this.password) {
@@ -61,6 +94,21 @@ export default {
             alert(err);
           });
       }
+    },
+    forgotPassword(){
+      this.userName = "";
+      this.ForgotPasswordDialog = true;
+    },
+
+    async confirmForgotPassword(){
+      await userApi.forgotPassword(this.userName).catch((err) => console.log(err)).then(
+        (res) => this.$toast.add({
+            severity: "info",
+            summary: res.data,
+            life: 3000,
+          })
+        );
+      this.ForgotPasswordDialog = false;
     },
   },
 };

@@ -3,11 +3,11 @@
     <div class="card">
       <DataTable
         ref="dt"
+        dataKey="maintenanceOrderId"
         :value="getMaintenanceOrderList"
         v-model:expandedRows="expandedRows"
         @row-expand="onRowExpand"
         @row-collapse="onRowCollapse"
-        dataKey="id"
         :paginator="true"
         :rows="5"
         :filters="filters"
@@ -149,21 +149,16 @@
               <Column field="severity" header="Severity" sortable>
                 <template #body="slotProps">
                   <span
-                    :class="
-                      'order-badge order-' + slotProps.data.severity
-                    "
+                    :class="'order-badge order-' + slotProps.data.severity"
                     >{{ slotProps.data.severity }}</span
                   >
                 </template>
               </Column>
               <Column field="status" header="Status" sortable>
                 <template #body="slotProps">
-                  <span
-                    :class="
-                      'order-badge order-' + slotProps.data.status
-                    "
-                    >{{ slotProps.data.status }}</span
-                  >
+                  <span :class="'order-badge order-' + slotProps.data.status">{{
+                    slotProps.data.status
+                  }}</span>
                 </template>
               </Column>
               <Column field="created" header="Created Date" sortable>
@@ -171,10 +166,13 @@
                   <span>{{ callDate(slotProps.data.created) }}</span>
                 </template>
               </Column>
-              
+
               <Column headerStyle="width:4rem">
                 <template #body="slotProps">
-                  <Button icon="pi pi-search" @click="showDetail(slotProps.data)"/>
+                  <Button
+                    icon="pi pi-search"
+                    @click="showDetail(slotProps.data)"
+                  />
                 </template>
               </Column>
             </DataTable>
@@ -216,19 +214,15 @@
       <div class="p-field">
         <label for="assessmentResult">Assessment Result</label>
         <Rating
-              :modelValue="product.assessmentResult"
-              :readonly="true"
-              :stars="5"
-              :cancel="false"
-            />
+          :modelValue="product.assessmentResult"
+          :readonly="true"
+          :stars="5"
+          :cancel="false"
+        />
       </div>
       <div class="p-field">
         <label for="status">Status</label>
-        <InputText
-          v-model.trim="product.status"
-          required="true"
-          disabled
-        />
+        <InputText v-model.trim="product.status" required="true" disabled />
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
@@ -383,7 +377,6 @@ export default {
 
   computed: {
     ...mapGetters("maintenanceOrder", ["getMaintenanceOrderList"]),
-
     data() {
       return this.getMaintenanceOrderList;
     },
@@ -396,7 +389,7 @@ export default {
   data() {
     return {
       crackInfoDialog: false,
-      productDialog : false,
+      productDialog: false,
       showAssessment: false,
       product: {},
       crack: {},
@@ -414,6 +407,7 @@ export default {
     onRowExpand() {},
     onRowCollapse() {},
     hideDialog() {
+      this.productDialog = false;
       this.showAssessment = false;
       this.submitted = false;
       this.crackInfoDialog = false;
@@ -425,8 +419,10 @@ export default {
       this.crackInfoDialog = true;
     },
     editProduct(product) {
-      this.product = {...product};
-      this.product.maintenanceDate = this.callDate(this.product.maintenanceDate);
+      this.product = { ...product };
+      this.product.maintenanceDate = this.callDate(
+        this.product.maintenanceDate
+      );
       this.productDialog = true;
     },
     showAssessmentDialog(product) {

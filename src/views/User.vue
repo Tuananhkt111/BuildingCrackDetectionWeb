@@ -128,7 +128,7 @@
             </Dropdown>
           </template>
         </Column>
-        <Column headerStyle="width: 230px">
+        <Column headerStyle="width: 150px">
           <template #body="slotProps">
             <Button
               icon="pi pi-user-edit"
@@ -145,18 +145,6 @@
               icon="pi pi-ban"
               class="p-button-rounded p-button-danger p-button-text"
               @click="Disable(slotProps.data)"
-            />
-            <Button
-              icon="pi pi-chevron-circle-right"
-              class="p-button-rounded p-button-info p-button-text"
-              @click="toggle"
-              aria:haspopup="true"
-              aria-controls="overlay_panel"
-            />
-            <Button
-              icon="pi pi-key"
-              class="p-button-rounded p-button-warning p-button-text"
-              @click="changeRole(slotProps.data)"
             />
           </template>
         </Column>
@@ -451,37 +439,6 @@
       </template>
     </Dialog>
     <Dialog
-      v-model:visible="ChangeRoleDialog"
-      :style="{ width: '450px' }"
-      header="Role"
-      :modal="true"
-      class="p-fluid"
-    >
-      <div v-for="role of roles" :key="role.key" class="p-field-radiobutton">
-        <RadioButton
-          :id="role.key"
-          name="role"
-          :value="role"
-          v-model="selectedRole"
-        />
-        <label :for="role.key">{{ role }}</label>
-      </div>
-      <template #footer>
-        <Button
-          label="Cancel"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="hideDialog"
-        />
-        <Button
-          label="Create"
-          icon="pi pi-check"
-          class="p-button-text"
-          @click="updateRole"
-        />
-      </template>
-    </Dialog>
-    <Dialog
       v-model:visible="ResetPasswordDialog"
       :style="{ width: '450px' }"
       header="Confirm"
@@ -505,7 +462,7 @@
           label="Yes"
           icon="pi pi-check"
           class="p-button-text"
-          @click="deleteProduct"
+          @click="confirmResetPassword"
         />
       </template>
     </Dialog>
@@ -538,24 +495,6 @@
       </template>
     </Dialog>
     <Toast />
-    <OverlayPanel
-      ref="op"
-      appendTo="body"
-      :showCloseIcon="true"
-      id="overlay_panel"
-      style="width: 450px"
-    >
-      <DataTable
-        :value="getLocationList"
-        selectionMode="single"
-        :paginator="true"
-        :rows="3"
-        @row-select="onProductSelect"
-      >
-        <Column field="name" header="Location Name" sortable></Column>
-        <Column field="description" header="Description" sortable></Column>
-      </DataTable>
-    </OverlayPanel>
   </div>
 </template>
 
@@ -564,8 +503,6 @@ import Button from "primevue/button";
 import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
 import Rating from "primevue/rating";
-import OverlayPanel from "primevue/overlaypanel";
-import RadioButton from "primevue/radiobutton";
 import MultiSelect from "primevue/multiselect";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
@@ -577,8 +514,6 @@ export default {
     Toast,
     Dropdown,
     Rating,
-    OverlayPanel,
-    RadioButton,
     MultiSelect,
   },
   computed: {
@@ -587,7 +522,6 @@ export default {
   },
   data() {
     return {
-      ChangeRoleDialog: false,
       changedRole: null,
       selectedRole: null,
       selectedLocation: null,
@@ -600,7 +534,6 @@ export default {
       filters: {},
       submitted: false,
       messages: [],
-      statuses: ["Waiting for maintenance", "Completed"],
       roles: ["Manager", "Staff"],
     };
   },
@@ -613,33 +546,6 @@ export default {
     ...mapActions("user", ["setUserList"]),
     ...mapActions("location", ["setLocationList"]),
 
-    changeRole(product) {
-      this.product = { ...product };
-      this.selectedRole = product.role;
-      this.ChangeRoleDialog = true;
-    },
-    async updateRole() {
-      await userApi
-        .changedRole(this.product.userId, this.selectedRole)
-        .catch((err) => {
-          console.log(err);
-        });
-      await this.setUserList();
-      this.hideDialog();
-    },
-    toggle(event) {
-      this.$refs.op.toggle(event);
-    },
-    onProductSelect(event) {
-      this.$refs.op.hide();
-      this.$toast.add({
-        severity: "info",
-        summary: "Location Selected",
-        detail: event.data.locationName,
-        life: 3000,
-      });
-    },
-
     openNew() {
       this.product = {};
       this.submitted = false;
@@ -648,6 +554,21 @@ export default {
     ResetPassowrd(product) {
       this.product = product;
       this.ResetPasswordDialog = true;
+    },
+    async confirmResetPassword() {
+      await userApi
+        .resetPassword(this.product.userId)
+        .catch((err) => {
+          console.log(err);
+        })
+        .then(() => {
+          this.ResetPasswordDialog = false;
+          this.$toast.add({
+            severity: "info",
+            summary: "Reset Password Success",
+            life: 3000,
+          });
+        });
     },
     async CreateUser() {
       this.submitted = true;
@@ -668,7 +589,7 @@ export default {
     },
     async UpdateUser() {
       await userApi
-        .createUser(
+        .updateUser(
           this.product.userId,
           this.product.name,
           this.product.email,
@@ -680,7 +601,7 @@ export default {
           console.log(err);
         });
       await this.setUserList();
-      this.UserDialog = false;
+      this.UserUpdateDialog = false;
     },
     Disable(product) {
       this.product = product;
@@ -696,7 +617,6 @@ export default {
       this.submitted = false;
       this.UserDialog = false;
       this.UserUpdateDialog = false;
-      this.ChangeRoleDialog = false;
     },
     showAssessmentDialog(product) {
       this.product = { ...product };
@@ -749,6 +669,8 @@ export default {
       this.product = { ...product };
       this.product.created = this.callDate(product.created);
       this.product.lastModified = this.callDate(product.lastModified);
+      this.selectedRole = this.product.role;
+      this.selectedLocation = this.product.location;
       this.UserUpdateDialog = true;
     },
   },
