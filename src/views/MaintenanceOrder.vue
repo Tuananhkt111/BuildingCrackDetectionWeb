@@ -41,33 +41,50 @@
           field="maintenanceWorkerName"
           header="Worker Name"
           sortable
-          headerStyle="width: 80px"
-        ></Column>
+          headerStyle="width: 120px"
+          ><template #body="slotProps">
+            {{ slotProps.data.maintenanceWorkerName }}
+          </template>
+          <template #filter>
+            <InputText
+              type="text"
+              v-model="filters['maintenanceWorkerName']"
+              class="p-column-filter"
+              placeholder="Search"
+            />
+          </template>
+        </Column>
         <Column
           field="assessorName"
           header="Assessor Name"
           sortable
-          headerStyle="width: 100px"
-        ></Column>
-        <Column
-          field="assessmentResult"
-          header="Aassessment Result"
           headerStyle="width: 120px"
           ><template #body="slotProps">
-            <Rating
-              :modelValue="slotProps.data.assessmentResult"
-              :readonly="true"
-              :stars="5"
-              :cancel="false"
-            />
+            {{ slotProps.data.assessorName }}
           </template>
-        </Column>
-
+          <template #filter>
+            <InputText
+              type="text"
+              v-model="filters['assessorName']"
+              class="p-column-filter"
+              placeholder="Search"
+            /> </template
+        ></Column>
         <Column
-          field="location.name"
+          field="location"
           header="Location Name"
           sortable
-          headerStyle="width: 100px"
+          headerStyle="width: 120px"
+          ><template #body="slotProps">
+            {{ slotProps.data.location }}
+          </template>
+          <template #filter>
+            <InputText
+              type="text"
+              v-model="filters['location']"
+              class="p-column-filter"
+              placeholder="Search"
+            /> </template
         ></Column>
         <Column
           field="status"
@@ -84,7 +101,7 @@
           <template #filter>
             <Dropdown
               appendTo="body"
-              v-model="filters['Status']"
+              v-model="filters['status']"
               :options="statuses"
               placeholder="Status"
               class="p-column-filter"

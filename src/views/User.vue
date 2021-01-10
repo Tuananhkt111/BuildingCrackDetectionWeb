@@ -42,8 +42,6 @@
             </span>
           </div>
         </template>
-
-        <Column headerStyle="width: 3rem"></Column>
         <Column field="userName" header="User Name" headerStyle="width: 200px">
           <template #body="slotProps">
             {{ slotProps.data.userName }}
@@ -104,7 +102,7 @@
           field="role"
           header="Role"
           filterMatchMode="equals"
-          headerStyle="width: 200px"
+          headerStyle="width: 100px"
         >
           <template #body="slotProps">
             <span :class="'customer-badge status-' + slotProps.data.role">{{
@@ -198,7 +196,6 @@
           id="userName"
           v-model.trim="product.userName"
           required="true"
-          autofocus
           :class="{ 'p-invalid': submitted && !product.userName }"
           disabled
         />
@@ -212,7 +209,6 @@
           id="name"
           v-model.trim="product.name"
           required="true"
-          autofocus
           :class="{ 'p-invalid': submitted && !product.name }"
         />
         <small class="p-invalid" v-if="submitted && !product.name"
@@ -226,7 +222,6 @@
           id="email"
           v-model.trim="product.email"
           required="true"
-          autofocus
           :class="{ 'p-invalid': submitted && !product.email }"
         />
         <small class="p-invalid" v-if="submitted && !product.email"
@@ -240,7 +235,6 @@
           id="phoneNumber"
           v-model.trim="product.phoneNumber"
           required="true"
-          autofocus
           :class="{ 'p-invalid': submitted && !product.phoneNumber }"
         />
         <small class="p-invalid" v-if="submitted && !product.phoneNumber"
@@ -283,10 +277,12 @@
             placeholder="Select Location"
             :filter="true"
             class="multiselect-custom"
+            key="locationId"
           />
           <Dropdown
             v-if="selectedRole === 'Staff'"
             v-model="selectedLocation"
+            inputId="locationId"
             :options="getLocationList"
             optionLabel="name"
             placeholder="Select a Location"
@@ -302,7 +298,6 @@
             v-model.trim="product.created"
             required="true"
             disabled="true"
-            autofocus
           />
         </div>
         <div class="p-field p-col-6">
@@ -312,7 +307,6 @@
             v-model.trim="product.lastModified"
             required="true"
             disabled="true"
-            autofocus
           />
         </div>
       </div>
@@ -389,12 +383,7 @@
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="role">Role</label>
-          <Dropdown
-            v-model="selectedRole"
-            appendTo="body"
-            :options="roles"
-            placeholder="Role"
-          >
+          <Dropdown v-model="selectedRole" :options="roles" placeholder="Role">
             <template #option="slotProps">
               <span :class="'customer-badge status-' + slotProps.option">{{
                 slotProps.option
@@ -522,6 +511,7 @@ export default {
   },
   data() {
     return {
+      createStaffLocation: null,
       changedRole: null,
       selectedRole: null,
       selectedLocation: null,
@@ -550,6 +540,8 @@ export default {
       this.product = {};
       this.submitted = false;
       this.UserDialog = true;
+      this.selectedRole = null;
+      this.selectedLocation = null;
     },
     ResetPassowrd(product) {
       this.product = product;
@@ -624,8 +616,8 @@ export default {
     },
     findIndexById(id) {
       let index = -1;
-      for (let i = 0; i < this.getUserList.length; i++) {
-        if (this.getUserList[i].id === id) {
+      for (let i = 0; i < this.getLocationList.length; i++) {
+        if (this.getLocationList[i].locationId === id) {
           index = i;
           break;
         }
@@ -667,10 +659,22 @@ export default {
     },
     editProduct(product) {
       this.product = { ...product };
+      this.selectedLocation = null;
       this.product.created = this.callDate(product.created);
       this.product.lastModified = this.callDate(product.lastModified);
       this.selectedRole = this.product.role;
-      this.selectedLocation = this.product.location;
+      const tmp = this.product.locationIds;
+      console.log(this.getLocationList);
+      if(tmp.length == 1 && this.selectedRole == "Staff"){
+        this.selectedLocation = this.getLocationList[this.findIndexById(this.product.locationIds[0])];
+      } else {
+        this.selectedLocation = [];
+        for(let i = 0; i< tmp.length; i++){
+          this.selectedLocation.push(this.getLocationList[this.findIndexById(tmp[i])]);
+        }
+      }
+      // this.selectedLocation = this.product.locationIds;
+      console.log(this.selectedLocation);
       this.UserUpdateDialog = true;
     },
   },

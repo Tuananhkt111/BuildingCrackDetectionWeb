@@ -60,7 +60,7 @@ export default {
 .layout-menu {
   overflow: auto;
   position: fixed;
-  width: 266.5px;
+  width: 250px;
   z-index: 99;
   left: 0;
   top: 68px;
@@ -70,7 +70,7 @@ export default {
   transition: transform 0.2s;
 }
 .main-layout-details {
-  padding: 15px;
+  padding: 10px;
 }
 .main-layout {
   width: 100%;

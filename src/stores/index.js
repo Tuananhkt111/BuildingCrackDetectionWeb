@@ -5,6 +5,7 @@ import crackStore from './crackStore';
 import maintenanceWorkerStore from './maintenanceWorkerStore';
 import userStore from './userStore';
 import maintenanceOrderStore from './maintenanceOrderStore';
+import notificationStore from './notificationStore';
 
 const store = createStore({
   modules: {
@@ -14,6 +15,7 @@ const store = createStore({
     maintenanceWorker : maintenanceWorkerStore,
     user : userStore,
     maintenanceOrder : maintenanceOrderStore,
+    noti : notificationStore,
   }
 });
 

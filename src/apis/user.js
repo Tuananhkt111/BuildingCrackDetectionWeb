@@ -10,13 +10,17 @@ export const userApi = {
   createUser,
   updateUser,
   resetPassword,
-  forgotPassword
+  forgotPassword,
+  changePassword,
 };
 
 async function login(userName, password) {
+  const token = localStorage.getItem("fcm");
+  localStorage.removeItem("fcm");
   const data = {
     userName: userName,
     password: password,
+    fcmToken : token,
   };
 
   const res = await ApiHelper.post(
@@ -32,9 +36,9 @@ async function login(userName, password) {
 
 async function createUser(role, name, email, phoneNumber, address, location) {
   var locations = [];
-  if(location.locationId != null) {
+  if (role == "Staff" && location != null) {
     locations[0] = location.locationId;
-  } else {
+  } else if(location != null) {
     for (let i = 0; i != location.length; i++) {
       locations[i] = location[i].locationId;
     }
@@ -51,15 +55,14 @@ async function createUser(role, name, email, phoneNumber, address, location) {
   return res;
 }
 
-async function updateUser(id, name, email, phoneNumber, address, location){
+async function updateUser(id, name, email, phoneNumber, address, location) {
   var locations = [];
-  if(location.locationId != null) {
+  if (location.locationId != null) {
     locations[0] = location.locationId;
   } else {
     locations = [];
     for (let i = 0; i != location.length; i++) {
       locations[i] = location[i].locationId;
-      console.log(locations[i]);
     }
   }
   const data = {
@@ -72,13 +75,28 @@ async function updateUser(id, name, email, phoneNumber, address, location){
   const res = await ApiHelper.post(urlConstants.USER_URL + "/" + id, data);
   return res;
 }
+async function changePassword(id, oldPass, newPass) {
+  const data = {
+    oldPass: oldPass,
+    newPass: newPass,
+  };
+  const res = await ApiHelper.post(
+    urlConstants.USER_URL + "/" + id + "/password",
+    data
+  );
+  return res;
+}
 
 async function resetPassword(id) {
-  const res = await ApiHelper.post(urlConstants.USER_URL + "/" + id + "/resetpass");
+  const res = await ApiHelper.post(
+    urlConstants.USER_URL + "/" + id + "/resetpass"
+  );
   return res;
 }
 async function forgotPassword(userName) {
-  const res = await ApiHelper.post(urlConstants.USER_URL + "/forgotpass-confirm?userName=" + userName);
+  const res = await ApiHelper.post(
+    urlConstants.USER_URL + "/forgotpass-confirm?userName=" + userName
+  );
   return res;
 }
 function logout() {
@@ -115,5 +133,6 @@ export default {
   createUser,
   updateUser,
   resetPassword,
-  forgotPassword
+  forgotPassword,
+  changePassword,
 };

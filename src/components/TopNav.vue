@@ -26,62 +26,86 @@
           aria-haspopup="true"
           aria-controls="overlay_tmenu"
         >
-          <i class="pi pi-bell" style="cursor: pointer;"></i>
+          <i class="pi pi-bell">{{ getCount }}</i>
         </div>
-        <TieredMenu
-          id="overlay_tmenu"
-          ref="menu"
-          :model="items"
-          :popup="true"
-        />
-        <div
-          class="btn-nav p-mr-3"
-          @click="toggle"
-          aria-haspopup="true"
-          aria-controls="overlay_tmenu"
+        <OverlayPanel
+          ref="op"
+          style="width: 400px; margin-top:-20px; margin-right: 20px"
         >
-          <i class="pi pi-user" style="cursor: pointer;"></i>
-        </div>
+          <ScrollPanel style="width: 100%; height: 300px">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div
+                  class="alert alert-info"
+                  v-for="item in getNotificationList"
+                  v-bind:key="item"
+                >
+                  <p class="title">
+                    <i class="pi pi-check"></i><strong>{{ item.title }}</strong>
+                    <button
+                      type="button"
+                      class="close"
+                      @click="deleteNoti(item.pushNotificationId)"
+                    >
+                      ×
+                    </button>
+                  </p>
+                  {{ item.body }}
+                  <p class="time">{{ callDate(item.created) }}</p>
+                </div>
+              </div>
+            </div>
+          </ScrollPanel>
+        </OverlayPanel>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import TieredMenu from "primevue/tieredmenu";
-import { mapActions, mapGetters } from "vuex";
-import { userApi } from "../apis/user";
+import ScrollPanel from "primevue/scrollpanel";
+import OverlayPanel from "primevue/overlaypanel";
+import { mapGetters, mapActions } from "vuex";
+import moment from "moment";
+import { notificationApi } from "../apis/notification";
 export default {
   components: {
-    TieredMenu,
+    OverlayPanel,
+    ScrollPanel,
+  },
+  computed: {
+    ...mapGetters("noti", ["getNotificationList", "getCount"]),
+    ...mapGetters("application", ["getIsActive"]),
+    data() {
+      return this.getNotificationList.filter((noti) => !noti.isRead);
+    },
+  },
+  async created() {
+    await this.setNotificationList();
+    console.log(this.getNotificationList.filter((noti) => !noti.isRead));
+    console.log(this.getCount);
   },
   data() {
     return {
-      items: [
-        {
-          label: "Profile",
-        },
-        {
-          label: "Logout",
-          command: () => {
-            userApi.logout();
-            this.$router.push("/login");
-          },
-        },
-      ],
+      display: false,
     };
   },
   methods: {
     ...mapActions("application", ["setIsActive"]),
+    ...mapActions("noti", ["setNotificationList"]),
+    callDate(date) {
+      const date1 = new Date(date);
+      return moment(date1).format("DD-MM-YYYY hh:mm:ss");
+    },
+    deleteNoti(id) {
+      notificationApi.deleteNoti(id);
+    },
     toggle(event) {
-      this.$refs.menu.toggle(event);
+      this.$refs.op.toggle(event);
     },
     toggleSidebar() {
       this.setIsActive(!this.getIsActive);
     },
-  },
-  computed: {
-    ...mapGetters("application", ["getIsActive"]),
   },
 };
 </script>
@@ -124,5 +148,79 @@ export default {
 }
 .active #menu-button {
   transform: rotate(0deg);
+}
+
+.panel panel-default {
+  border-radius: 5px;
+}
+.panel-body {
+  font-size: 14px;
+  padding: 0px;
+}
+div {
+  display: block;
+}
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.alert {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+button.close {
+  -webkit-appearance: none;
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+}
+.close {
+  float: right;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 0.3;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: 0.2;
+}
+
+.title {
+  margin: 0;
+  font-size: 14px;
+}
+.time {
+  font-size: 12px;
+  margin: 0;
+  padding-bottom: 0;
 }
 </style>

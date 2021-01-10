@@ -5,6 +5,7 @@ import MaintenanceOrder from "./views/MaintenanceOrder.vue";
 import MaintenanceWorker from "./views/MaintenanceWorker.vue";
 import User from "./views/User.vue";
 import Login from "./views/LoginPage.vue";
+import Notification from "./views/Notification.vue";
 import urlConstants from "./util/urlConstants";
 
 
@@ -18,6 +19,7 @@ const router = new createRouter({
     { path: "/maintenanceOrders", name: "maintenanceOrder", component: MaintenanceOrder },
     { path: "/maintenanceWorkers", name: "maintenanceWorker", component: MaintenanceWorker },
     { path: "/users", name: "user", component: User },
+    { path: "/notis", name: "notification", component: Notification },
   ],
 });
 
@@ -34,9 +36,8 @@ router.beforeEach((to, from, next) => {
   } 
   const checkAdmin = localStorage.getItem('userId');
   if(checkAdmin != null){
-    const managerPages = ['/users','/cracks', '/maintenanceOrders'];
+    const managerPages = ['/users','/cracks', '/maintenanceOrders', '/notis', '/account'];
     const managerRequired = !managerPages.includes(to.path);
-    console.log(managerRequired);
     if (managerRequired && checkAdmin!=(urlConstants.ADMIN_ID)){
       return next('/cracks');
     } 
