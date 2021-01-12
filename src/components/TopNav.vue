@@ -84,7 +84,7 @@ export default {
   async created() {
     await this.setNotificationList();
   },
-  mounted () {
+  mounted() {
     this.prepareFcm();
   },
   data() {
@@ -99,16 +99,25 @@ export default {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");
     },
-    prepareFcm () {
-      firebase.messaging.getToken().then(async fcmToken => {
-        localStorage.setItem("fcm", fcmToken);
-        firebase.messaging.onMessage(payload => {
-          window.alert(payload);
-          this.setNotificationList();
-        })
-      }).catch(() => {
-        this.$store.commit('toast/setError', 'An error occured to push notification.')
-      })
+    prepareFcm() {
+      firebase.messaging
+        .requestPermission()
+        .then(
+          firebase.messaging.getToken().then(async (fcmToken) => {
+            localStorage.setItem("fcm", fcmToken);
+            console.log("TOKEN " + fcmToken);
+            firebase.messaging.onMessage((payload) => {
+              window.alert(payload);
+              this.setNotificationList();
+            });
+          })
+        )
+        .catch(() => {
+          this.$store.commit(
+            "toast/setError",
+            "An error occured to push notification."
+          );
+        });
     },
     deleteNoti(id) {
       notificationApi.deleteNoti(id);
