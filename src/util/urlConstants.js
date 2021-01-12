@@ -6,8 +6,9 @@ export const USER_URL = "users";
 export const MAINTEANANCE_WORKER_URL = "maintenance-workers";
 export const MAINTEANANCE_ORDER_URL = "maintenance-orders";
 export const ADMIN_ID = "3f7497c5-7f83-43d5-a276-b9c0bc34fcc4";
+export const ADMIN_ROLE = "Administrator";
+export const STAFF_ROLE = "Staff";
 export const NOTIFICATION_URL = "notifications";
-
 export default {
     BASE_URL,
     LOCATION_URL,
@@ -16,5 +17,7 @@ export default {
     MAINTEANANCE_WORKER_URL,
     MAINTEANANCE_ORDER_URL,
     ADMIN_ID,
-    NOTIFICATION_URL
+    NOTIFICATION_URL,
+    ADMIN_ROLE,
+    STAFF_ROLE
 };

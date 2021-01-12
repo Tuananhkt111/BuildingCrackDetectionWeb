@@ -22,25 +22,13 @@ import ToastService from "primevue/toastservice";
 import "primeflex/primeflex.css";
 import Tooltip from "primevue/tooltip";
 
-import firebase from "firebase/app";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyABojssKDK-JQReXikpuiCKsajEVlNTiMY",
-  authDomain: "building-cracks-detection.firebaseapp.com",
-  projectId: "building-cracks-detection",
-  storageBucket: "building-cracks-detection.appspot.com",
-  messagingSenderId: "1047943924708",
-  appId: "1:1047943924708:web:7a342d12551cbc3ede15f1",
-  measurementId: "G-BXS7P799EY",
-};
-
-firebase.initializeApp(firebaseConfig);
 
 import mitt from "mitt";
 
 const emitter = mitt();
 
 const app = createApp(App);
+
 app.use(store);
 app.use(router);
 app.use(PrimeVue);
@@ -55,7 +43,6 @@ app.component("RadioButton", RadioButton);
 app.component("InputNumber", InputNumber);
 app.use(ToastService);
 app.directive("tooltip", Tooltip);
-
 
 app.config.globalProperties.emitter = emitter;
 app.mount("#app");

@@ -29,6 +29,8 @@ async function login(userName, password) {
   );
   if (res && res.data) {
     localStorage.setItem("jwtToken", res.data.jwtToken);
+    const user = await ApiHelper.get(urlConstants.USER_URL + "/" + res.data.userId);
+    localStorage.setItem("role", user.data.role);
     localStorage.setItem("userId", res.data.userId);
   }
   return res.data;
@@ -103,6 +105,7 @@ function logout() {
   // remove user from local storage to log user out
   localStorage.removeItem("jwtToken");
   localStorage.removeItem("userId");
+  localStorage.removeItem("role");
 }
 
 async function getAll() {

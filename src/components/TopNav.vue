@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import firebase from "../util/firebase.js";
 import ScrollPanel from "primevue/scrollpanel";
 import OverlayPanel from "primevue/overlaypanel";
 import { mapGetters, mapActions } from "vuex";
@@ -82,8 +83,9 @@ export default {
   },
   async created() {
     await this.setNotificationList();
-    console.log(this.getNotificationList.filter((noti) => !noti.isRead));
-    console.log(this.getCount);
+  },
+  mounted () {
+    this.prepareFcm();
   },
   data() {
     return {
@@ -96,6 +98,17 @@ export default {
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");
+    },
+    prepareFcm () {
+      firebase.messaging.getToken().then(async fcmToken => {
+        localStorage.setItem("fcm", fcmToken);
+        firebase.messaging.onMessage(payload => {
+          window.alert(payload);
+          this.setNotificationList();
+        })
+      }).catch(() => {
+        this.$store.commit('toast/setError', 'An error occured to push notification.')
+      })
     },
     deleteNoti(id) {
       notificationApi.deleteNoti(id);

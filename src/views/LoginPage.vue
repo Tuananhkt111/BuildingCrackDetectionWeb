@@ -1,448 +1,178 @@
 <template>
-  <div>
-    <div class="card">
-      <DataTable
-        :scrollable="true"
-        ref="dt"
-        :value="getLocationList"
-        dataKey="id"
-        :paginator="true"
-        :rows="5"
-        :filters="filters"
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        :rowsPerPageOptions="[5, 10, 25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-      >
-        <template #header>
-          <div class="table-header">
-            <h3 class="p-m-2">Manage Locations</h3>
-            <span class="p-input-icon-left">
-              <Button
-                icon="pi pi-plus"
-                class="p-button-success p-mr-2"
-                @click="openNew"
-                style="margin:2px"
-                label="New"
-              />
-              <Button
-                label="Export"
-                icon="pi pi-upload"
-                class="p-button-help"
-                @click="exportCSV($event)"
-                style="margin:2px"
-              />
-              <span class="p-input-icon-left" style="margin:2px">
-                <i class="pi pi-search" />
-                <InputText
-                  v-model="filters['global']"
-                  placeholder="Search..."
-                />
-              </span>
-            </span>
-          </div>
-        </template>
-        <Column field="name" header="Location Name" >
-          <template #body="slotProps">
-            {{ slotProps.data.name }}
-          </template>
-          <template #filter>
-            <InputText
-              type="text"
-              v-model="filters['name']"
-              class="p-column-filter"
-              placeholder="Search"
-            />
-          </template>
-        </Column>
-        <Column
-          field="description"
-          header="Description"
-        >
-          <template #body="slotProps">
-            {{ slotProps.data.description }}
-          </template>
-          <template #filter>
-            <InputText
-              type="text"
-              v-model="filters['description']"
-              class="p-column-filter"
-              placeholder="Search"
-            />
-          </template>
-        </Column>
-        <Column
-          field="created"
-          header="Created"
-          filterMatchMode="custom"
-          :filterFunction="filterDate"
-         
-        >
-          <template #body="slotProps">
-            <span>{{ callDate(slotProps.data.created) }}</span>
-          </template>
-          <template #filter>
-            <Calendar
-              appendTo="body"
-              v-model="filters['created']"
-              dateFormat="dd-mm-yy"
-              class="p-column-filter"
-              placeholder="Created Date"
-            />
-          </template>
-        </Column>
-        <Column
-          field="lastModified"
-          header="LastModified"
-          filterMatchMode="custom"
-          :filterFunction="filterDate"
-          
-        >
-          <template #body="slotProps">
-            <span>{{ callDate(slotProps.data.lastModified) }}</span>
-          </template>
-          <template #filter>
-            <Calendar
-              appendTo="body"
-              v-model="filters['lastModified']"
-              dateFormat="dd-mm-yy"
-              class="p-column-filter"
-              placeholder="Last Modified"
-            />
-          </template>
-        </Column>
-        <Column>
-          <template #body="slotProps">
-            <Button
-              icon="pi pi-pencil"
-              class="p-button-rounded p-button-info p-button-text p-mr-2"
-              @click="editProduct(slotProps.data)"
-              style="margin: 2px"
-            />
-            <Button
-              icon="pi pi-trash"
-              class="p-button-rounded p-button-danger p-button-text"
-              @click="confirmDeleteProduct(slotProps.data)"
-              style="margin: 2px"
-            />
-          </template>
-        </Column>
-      </DataTable>
+  <div class="">
+    <div>
+      <form @submit.prevent="handleSubmit()">
+        <h2 style="text-align: center">Login Page</h2>
+        <div class="container">
+          <label for="userName"><b>User Name</b></label>
+          <InputText
+            type="text"
+            v-model="userName"
+            class="p-column-filter"
+            placeholder="userName"
+            required
+          />
+          <label for="password"><b>Password</b></label>
+          <InputText
+            type="password"
+            v-model="password"
+            class="p-column-filter"
+            placeholder="Password"
+            required
+          />
+          <button type="submit">Login</button>
+          <label>
+            <span class="psw"
+              ><a href="#" @click="forgotPassword">Forgot password?</a></span
+            >
+          </label>
+        </div>
+      </form>
     </div>
-    <Dialog
-      v-model:visible="createLocationDiaglog"
-      :style="{ width: '450px' }"
-      header="Location Information"
-      :modal="true"
-      class="p-fluid"
-    >
-      <div class="p-field">
-        <label for="name"> Location Name</label>
-        <InputText
-          id="Name"
-          v-model.trim="product.locationName"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.locationName }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.locationName"
-          >Location Name is required.</small
-        >
-      </div>
-      <div class="p-field">
-        <label for="description">Description</label>
-        <InputText
-          id="Description"
-          v-model.trim="product.description"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.description }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.description"
-          >Description is required.</small
-        >
-      </div>
-      <template #footer>
-        <Button
-          label="Cancel"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="hideDialog"
-        />
-        <Button
-          label="Save"
-          icon="pi pi-check"
-          class="p-button-text"
-          @click="createLocation"
-        />
-      </template>
-    </Dialog>
-    <Dialog
-      v-model:visible="productDialog"
-      :style="{ width: '450px' }"
-      header="Location Details"
-      :modal="true"
-      class="p-fluid"
-    >
-      <div class="p-field">
-        <label for="name"> Location Name</label>
-        <InputText
-          id="Name"
-          v-model.trim="product.name"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.name }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.name"
-          >Location Name is required.</small
-        >
-      </div>
-      <div class="p-field">
-        <label for="description">Description</label>
-        <InputText
-          id="Description"
-          v-model.trim="product.description"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.description }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.description"
-          >Description is required.</small
-        >
-      </div>
-      <div class="p-formgrid p-grid">
-        <div class="p-field p-col-6">
-          <label for="created"> Created Date</label>
-          <InputText
-            id="created"
-            v-model.trim="product.created"
-            required="true"
-            disabled="true"
-            autofocus
-          />
-        </div>
-        <div class="p-field p-col-6">
-          <label for="lastModified"> Last Modified</label>
-          <InputText
-            id="lastModified"
-            v-model.trim="product.lastModified"
-            required="true"
-            disabled="true"
-            autofocus
-          />
-        </div>
-      </div>
-      <template #footer>
-        <Button
-          label="Cancel"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="hideDialog"
-        />
-        <Button
-          label="Save"
-          icon="pi pi-check"
-          class="p-button-text"
-          @click="updateLocation"
-        />
-      </template>
-    </Dialog>
-    <Dialog
-      v-model:visible="deleteProductsDialog"
-      :style="{ width: '450px' }"
-      header="Confirm"
-      :modal="true"
-    >
-      <div class="confirmation-content">
-        <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
-        <span v-if="product"
-          >Are you sure to delete the location {{ product.name }}?</span
-        >
-      </div>
-      <template #footer>
-        <Button
-          label="No"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="deleteProductsDialog = false"
-        />
-        <Button
-          label="Yes"
-          icon="pi pi-check"
-          class="p-button-text"
-          @click="deleteSelectedLocation"
-        />
-      </template>
-    </Dialog>
     <Toast />
+    <Dialog
+      v-model:visible="ForgotPasswordDialog"
+      :style="{ width: '350px' }"
+      header="Fogot Password"
+      :modal="true"
+      class="p-fluid"
+    >
+      <div class="p-field">
+        <label for="userName">User Name</label>
+        <InputText id="userName" v-model.trim="userName" required="true" />
+        <small class="p-invalid" v-if="userName == null"
+          >Full Name is required.</small
+        >
+      </div>
+      <template #footer>
+        <Button
+          label="Cancel"
+          icon="pi pi-times"
+          class="p-button-text"
+          @click="ForgotPasswordDialog = false"
+        />
+        <Button
+          label="Confirm"
+          icon="pi pi-check"
+          class="p-button-text"
+          @click="confirmForgotPassword"
+        />
+      </template>
+    </Dialog>
+    <Dialog
+      v-model:visible="ChangePasswordDialog"
+      :style="{ width: '350px' }"
+      header="Change Password"
+      :modal="true"
+      class="p-fluid"
+    >
+      <div class="p-field">
+        <label for="newPassword">New Password</label>
+        <Password v-model="newPassword" />
+      </div>
+      <div class="p-field">
+        <label for="confirmPassword">Confirm Password</label>
+        <Password v-model="confirmPassword" />
+        <small class="p-invalid" v-if="newPassword != confirmPassword"
+          >New Password and Confirm Password must be match.</small
+        >
+      </div>
+      <template #footer>
+        <Button
+          label="Cancel"
+          icon="pi pi-times"
+          class="p-button-text"
+          @click="cancelChangePassword"
+        />
+        <Button
+          label="Confirm"
+          icon="pi pi-check"
+          class="p-button-text"
+          v-if="newPassword == confirmPassword"
+          @click="changePassword"
+        />
+      </template>
+    </Dialog>
   </div>
 </template>
 
 <script>
-import Button from "primevue/button";
-import Calendar from "primevue/calendar";
+import { userApi } from "../apis/user";
 import Toast from "primevue/toast";
-import { locationApi } from "../apis/location";
-import moment from "moment";
-import { mapGetters, mapActions } from "vuex";
+import Password from "primevue/password";
 
 export default {
   components: {
-    Button,
     Toast,
-    Calendar,
-  },
-  computed: {
-    ...mapGetters("location", ["getLocationList"]),
-
-    data() {
-      return this.getLocationList;
-    },
+    Password,
   },
   data() {
     return {
-      deleteProductsDialog: false,
-      productDialog: false,
-      createLocationDiaglog: false,
-      product: {},
-      filters: {},
-      submitted: false,
-      messages: [],
+      userName: "",
+      password: "",
+      newPassword: "",
+      confirmPassword: "",
+      ForgotPasswordDialog: false,
+      ChangePasswordDialog: false,
     };
   },
-  async created() {
-    await this.setLocationList();
-  },
+  created() {},
   methods: {
-    ...mapActions("location", ["setLocationList"]),
-    
-    confirmDeleteProduct(product) {
-      this.product = product;
-      this.deleteProductsDialog = true;
-    },
-    openNew() {
-      this.product = {};
-      this.submitted = false;
-      this.createLocationDiaglog = true;
-    },
-    async createLocation() {
-      await locationApi
-        .create(this.product.locationName, this.product.description)
-        .catch((err) => {
-          alert(err);
-        });
-      await this.setLocationList();
-      this.hideDialog();
-    },
-    editProduct(product) {
-      this.product = { ...product };
-      this.product.created = this.callDate(product.created);
-      this.product.lastModified = this.callDate(product.lastModified);
-      this.submitted = false;
-      this.productDialog = true;
-    },
-    hideDialog() {
-      this.createLocationDiaglog = false;
-      this.productDialog = false;
-      this.submitted = false;
-      this.product = {};
-      this.deleteProductsDialog = false;
-    },
-    showAssessmentDialog(product) {
-      this.product = { ...product };
-      this.showAssessment = true;
-    },
-    async deleteSelectedLocation() {
-      await locationApi.disable(this.product.locationId);
-      this.product = {};
-      this.$toast.add({
-        severity: "success",
-        summary: "Successful",
-        detail: "Location is disabled",
-        life: 3000,
-      });
-      this.setLocationList();
-      this.hideDialog();
-    },
-    async updateLocation() {
-      this.getLocationList[
-        this.findIndexById(this.product.locationId)
-      ] = this.product;
-      await locationApi.update(
-        this.product.locationId,
-        this.product.name,
-        this.product.description
-      );
-      this.productDialog = false;
-      await this.setLocationList();
-    },
-    findIndexById(id) {
-      let index = -1;
-      for (let i = 0; i < this.getLocationList.length; i++) {
-        if (this.getLocationList[i].id === id) {
-          index = i;
-          break;
-        }
+    handleSubmit() {
+      if (this.userName && this.password) {
+        userApi
+          .login(this.userName, this.password)
+          .then((res) => {
+            if (res.isNewUser) {
+              this.ChangePasswordDialog = true;
+            } else {
+              this.$router.push("/");
+            }
+          })
+          .catch((err) => {
+            alert(err);
+          });
       }
-      return index;
     },
-    exportCSV() {
-      this.$refs.dt.exportCSV();
-    },
-    callDate(date) {
-      const date1 = new Date(date);
-      return moment(date1).format("DD-MM-YYYY hh:mm:ss");
-    },
-    filterDate(value, filter) {
-      if (
-        filter === undefined ||
-        filter === null ||
-        (typeof filter === "string" && filter.trim() === "")
-      ) {
-        return true;
+    async changePassword() {
+      if (this.newPassword != this.confirmPassword) {
+        console.log(this.newPassword);
+      } else {
+        await userApi
+          .changePassword(
+            localStorage.getItem("userId"),
+            this.password,
+            this.newPassword
+          )
+          .then(() => {
+            this.$router.push("/");
+          });
       }
+    },
+    forgotPassword() {
+      this.userName = "";
+      this.ForgotPasswordDialog = true;
+    },
 
-      if (value === undefined || value === null) {
-        return false;
-      }
-      let tmp = this.callDate(value).substring(0, 10);
-      return tmp === this.formatDate(filter);
-    },
-    formatDate(date) {
-      let month = date.getMonth() + 1;
-      let day = date.getDate();
-      if (month < 10) {
-        month = "0" + month;
-      }
-      if (day < 10) {
-        day = "0" + day;
-      }
-      return day + "-" + month + "-" + date.getFullYear();
+    async confirmForgotPassword() {
+      await userApi
+        .forgotPassword(this.userName)
+        .catch((err) => console.log(err))
+        .then((res) =>
+          this.$toast.add({
+            severity: "info",
+            summary: res.data,
+            life: 3000,
+          })
+        );
+      this.ForgotPasswordDialog = false;
     },
   },
 };
 </script>
 
-<style scoped>
-.table-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.product-image {
-  width: 100px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
-
-.p-dialog .product-image {
-  width: 150px;
-  margin: 0 auto 2rem auto;
-  display: block;
-}
-
-.confirmation-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>
