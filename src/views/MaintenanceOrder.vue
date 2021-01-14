@@ -394,9 +394,6 @@ export default {
 
   computed: {
     ...mapGetters("maintenanceOrder", ["getMaintenanceOrderList"]),
-    data() {
-      return this.getMaintenanceOrderList;
-    },
   },
 
   async created() {

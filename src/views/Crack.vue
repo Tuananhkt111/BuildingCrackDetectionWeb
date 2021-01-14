@@ -152,7 +152,7 @@
             <Button
               icon="pi pi-calendar-minus"
               class="p-button-rounded p-button-danger p-button-text"
-              @click="showAssessmentDialog(slotProps.data)"
+              @click="showMaintenanceOrder(slotProps.data)"
             />
           </template>
         </Column>
@@ -355,6 +355,10 @@ export default {
     showAssessmentDialog(product) {
       this.product = { ...product };
       this.showAssessment = true;
+    },
+    showMaintenanceOrder(product) {
+      localStorage.setItem("orderId", product.maintenanceOrderId);
+      this.$router.push("/maintenanceOrders?orderId=" + product.maintenanceOrderId);
     },
     showDetail(product) {
       this.product = { ...product };

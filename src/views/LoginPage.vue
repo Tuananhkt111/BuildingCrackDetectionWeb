@@ -126,7 +126,7 @@ export default {
             if (res.isNewUser) {
               this.ChangePasswordDialog = true;
             } else {
-              this.$router.push("/");
+              this.$router.go();
             }
           })
           .catch((err) => {

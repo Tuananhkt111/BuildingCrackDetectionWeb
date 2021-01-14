@@ -32,22 +32,25 @@ router.beforeEach((to, from, next) => {
   
   const loggedIn = localStorage.getItem('jwtToken');
  
-  const role = localStorage.getItem('role');
-  if (authRequired && !loggedIn ) {
-    return next('/login');
-  }  else if(role == urlConstants.STAFF_ROLE){
-    userApi.logout();
-    alert("Staff can't login into web");
-    return next('/login');
-  }
-  const checkAdmin = localStorage.getItem('userId');
-  if(checkAdmin != null){
-    const managerPages = ['/users','/cracks', '/maintenanceOrders', '/notis', '/account'];
-    const managerRequired = !managerPages.includes(to.path);
-    if (managerRequired && checkAdmin!=(urlConstants.ADMIN_ID)){
-      return next('/cracks');
-    } 
-  }
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  if(user != null){
+    if (authRequired && !loggedIn ) {
+      return next('/login');
+    }  else if(user.role == urlConstants.STAFF_ROLE){
+      userApi.logout();
+      alert("Staff can't login into web");
+      return next('/login');
+    }
+    const checkAdmin = JSON.parse(localStorage.getItem('user')).userId;
+    if(checkAdmin != null){
+      const managerPages = ['/users','/cracks', '/maintenanceOrders', '/notis', '/account'];
+      const managerRequired = !managerPages.includes(to.path);
+      if (managerRequired && checkAdmin!=(urlConstants.ADMIN_ID)){
+        return next('/cracks');
+      } 
+    }
+  } 
   next();
 });
 

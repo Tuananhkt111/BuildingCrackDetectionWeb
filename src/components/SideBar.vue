@@ -1,22 +1,14 @@
 <template>
   <div class="side-bar-layout">
-    <!-- <div
-      class="img-container p-d-flex p-flex-column p-ai-center p-jc-center p-shadow-2"
-    >
-      <img src="assets/icons8-admin-settings-male-100.png" />
-      <div class="admin-container">
-        User's Name
-      </div>
-    </div> -->
     <div class="layout-profile">
       <div>
         <img src="assets/icons8-admin-settings-male-100.png" alt="" />
       </div>
       <button class="p-link layout-profile-link" @click="onClick">
-        <span class="username">Claire Williams</span>
+        <span class="username">{{userName}}</span>
         <i class="pi pi-fw pi-cog"></i>
       </button>
-      <transition name="layout-submenu-wrapper">
+      <div class="layout-submenu-wrapper">
         <ul v-show="expanded">
           <li>
             <button class="p-link">
@@ -28,18 +20,18 @@
           <li>
             <button class="p-link">
               <a href="/notis"
-                ><i class="pi pi-fw pi-inbox"></i><span>Notifications</span
+                ><i class="pi pi-fw pi-bell"></i><span>Notifications</span
                 ><span class="menuitem-badge">2</span></a
               >
             </button>
           </li>
           <li>
             <button class="p-link" @click="logOut">
-              <i class="pi pi-fw pi-power-off"></i><span>Logout</span>
+              <a><i class="pi pi-fw pi-power-off"></i><span>Logout</span></a>
             </button>
           </li>
         </ul>
-      </transition>
+      </div>
     </div>
     <div>
       <div class="layout-profile">
@@ -47,33 +39,39 @@
           <li>
             <button class="p-link">
               <a href="/locations"
-                ><i class="pi pi-fw pi-user"></i><span>Locations</span></a
+                ><i class="pi pi-fw pi-map-marker"></i><span>Locations</span></a
               >
             </button>
           </li>
           <li>
             <button class="p-link">
               <a href="/cracks"
-                ><i class="pi pi-fw pi-inbox"></i><span>Cracks</span></a>
+                ><i class="pi pi-fw pi-exclamation-triangle"></i
+                ><span>Cracks</span></a
+              >
             </button>
           </li>
           <li>
             <button class="p-link">
               <a href="/maintenanceWorkers"
-                ><i class="pi pi-fw pi-inbox"></i
-                ><span>Maintenance Workers</span></a>
+                ><i class="pi pi-fw pi-users"></i
+                ><span>Maintenance Workers</span></a
+              >
             </button>
           </li>
           <li>
             <button class="p-link">
               <a href="/maintenanceOrders"
-                ><i class="pi pi-fw pi-inbox"></i><span>Maintenance Orders</span></a>
+                ><i class="pi pi-fw pi-shopping-cart"></i
+                ><span>Maintenance Orders</span></a
+              >
             </button>
           </li>
           <li>
             <button class="p-link">
               <a href="/users"
-                ><i class="pi pi-fw pi-inbox"></i><span>Users</span></a>
+                ><i class="pi pi-fw pi-users"></i><span>Users</span></a
+              >
             </button>
           </li>
         </ul>
@@ -88,7 +86,11 @@ export default {
   data() {
     return {
       expanded: false,
+      userName: null,
     };
+  },
+  created() {
+    this.userName = JSON.parse(localStorage.getItem('user')).name;
   },
   methods: {
     onClick(event) {
@@ -97,16 +99,20 @@ export default {
     },
     logOut() {
       userApi.logout();
-      this.$router.push("/login");
+      this.$router.go();
     },
   },
 };
 </script>
 
 <style scoped>
+.layout-submenu-wrapper{
+  margin-top:10px;
+  background-color: #2e3035;
+}
 .layout-profile {
+  margin-top:30px;
   text-align: center;
-  padding: 10px;
 }
 .side-bar-layout {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
@@ -117,10 +123,11 @@ export default {
   height: 100%;
   z-index: 999;
   overflow-y: auto;
+  background: linear-gradient(180deg, #4d505b 0, #3b3e47);
 }
 
 .layout-profile .layout-profile-link {
-  color: rgb(44, 24, 24);
+  color: rgb(255, 255, 255);
 }
 
 .layout-profile ul {
@@ -212,14 +219,13 @@ ul {
   background-color: red;
   border-radius: 50%;
 }
-a:hover,
-a:visited,
-a:link,
-a:active {
+a:hover{
   text-decoration: none;
+  color: #0388e5;
 }
 a {
-  color: black;
+  color: rgb(255, 255, 255);
+  text-decoration: none;
 }
 .menu-item:hover {
   background-color: rgb(236, 236, 236);

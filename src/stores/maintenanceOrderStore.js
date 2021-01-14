@@ -8,7 +8,15 @@ const maintenanceOrderStore = {
 
   getters: {
     getMaintenanceOrderList(state) {
-      return state.maintenanceOrderList;
+      if (localStorage.getItem("orderId") != null) {
+        console.log("CC Order");
+        const orderId = localStorage.getItem("orderId");
+        localStorage.removeItem("orderId");
+        return state.maintenanceOrderList.filter((oder) => oder.maintenanceOrderId == orderId);
+      } else {
+        console.log("run BTH");
+        return state.maintenanceOrderList;
+      }
     },
   },
 

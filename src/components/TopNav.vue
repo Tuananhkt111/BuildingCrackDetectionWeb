@@ -1,23 +1,15 @@
 <template>
   <div class="top-nav-layout">
-    <div class="top-nav p-shadow-2 p-d-flex p-ai-center p-jc-between">
-      <div class="p-d-flex p-ai-center logo-container">
+    <div class="top-nav p-d-flex p-ai-center p-jc-between">
+      <div class="p-d-flex p-ai-center p-jc-between"  @click="toggleSidebar">
         <img
           src="/assets/logoCrack.png"
           alt="logo"
-          height="40"
+          height="20"
           class="p-mr-2"
           style="padding-left:10px"
         />
         <span class="logo-text">BCD System</span>
-        <div class="button-menu">
-          <Button
-            id="menu-button"
-            icon="pi pi-angle-left"
-            class="p-button-rounded"
-            @click="toggleSidebar"
-          ></Button>
-        </div>
       </div>
       <div class="top-nav-right p-d-flex p-ai-center p-jc-between">
         <div
@@ -32,7 +24,7 @@
           ref="op"
           style="width: 400px; margin-top:-20px; margin-right: 20px"
         >
-          <ScrollPanel style="width: 100%; height: 300px">
+          <ScrollPanel style="width: 100%; max-height: 300px" v-if="showListNoti">
             <div class="panel panel-default">
               <div class="panel-body">
                 <div
@@ -55,7 +47,12 @@
                 </div>
               </div>
             </div>
+          <button type="submit">View all</button>
+
           </ScrollPanel>
+          <div v-else>
+            <p>No Notification now</p>
+          </div>
         </OverlayPanel>
       </div>
     </div>
@@ -82,6 +79,9 @@ export default {
     },
   },
   async created() {
+    if(this.getNotificationList != null){
+      this.showListNoti = true;
+    }
     await this.setNotificationList();
   },
   mounted() {
@@ -90,6 +90,7 @@ export default {
   data() {
     return {
       display: false,
+      showListNoti : false,
     };
   },
   methods: {
@@ -105,9 +106,13 @@ export default {
         .then(
           firebase.messaging.getToken().then(async (fcmToken) => {
             localStorage.setItem("fcm", fcmToken);
-            console.log("TOKEN " + fcmToken);
             firebase.messaging.onMessage((payload) => {
-              window.alert(payload);
+              this.$toast.add({
+                severity: "success",
+                summary: payload.notification.title,
+                detail: payload.notification.body,
+                life: 3000,
+              });
               this.setNotificationList();
             });
           })
@@ -138,13 +143,13 @@ export default {
   z-index: 2;
 }
 .top-nav {
-  background-color: #3fb57c;
+  background-color: #0388e5;
   border: 0;
   border-radius: 0 0 3px 3px;
 }
 .logo-text {
   color: white;
-  font-size: 26px;
+  font-size: 20px;
 }
 .logo-container {
   background-color: #2a8358;
