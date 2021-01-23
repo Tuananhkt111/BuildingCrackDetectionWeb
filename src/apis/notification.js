@@ -12,9 +12,14 @@ async function getAll() {
 }
 async function deleteNoti(id) {
   const payload = [id];
+<<<<<<< HEAD
   return await ApiHelper.delete(urlConstants.NOTIFICATION_URL, {
     data: payload,
   });
+=======
+  const res = await ApiHelper.delete(urlConstants.NOTIFICATION_URL, {data: payload});
+  return res;
+>>>>>>> 7e3f171821260bd4121469a9f8962e226d82a30a
 }
 export default {
   getAll,
