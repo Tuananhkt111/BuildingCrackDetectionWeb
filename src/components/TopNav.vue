@@ -106,6 +106,7 @@ export default {
         .then(
           firebase.messaging.getToken().then(async (fcmToken) => {
             localStorage.setItem("fcm", fcmToken);
+            console.log(fcmToken);
             firebase.messaging.onMessage((payload) => {
               this.$toast.add({
                 severity: "success",

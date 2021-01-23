@@ -11,13 +11,10 @@ async function getAll() {
   return res.data;
 }
 async function deleteNoti(id) {
-  const tmp = JSON.stringify(id);
-  const data = {
-    tmp
-  };
-  console.log(data);
-  const res = await ApiHelper.delete(urlConstants.NOTIFICATION_URL, data);
-  return res;
+  const payload = [id];
+  return await ApiHelper.delete(urlConstants.NOTIFICATION_URL, {
+    data: payload,
+  });
 }
 export default {
   getAll,

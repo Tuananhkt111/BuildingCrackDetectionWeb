@@ -17,7 +17,8 @@ const notificationStore = {
 
   mutations: {
     setNotificationList(state, notificationList) {
-      state.notificationList = notificationList.filter((noti) => !noti.isRead);
+      // state.notificationList = notificationList.filter((noti) => !noti.isRead);
+      state.notificationList = notificationList;
     },
   },
 

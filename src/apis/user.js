@@ -24,7 +24,7 @@ async function login(userName, password) {
   };
 
   const res = await ApiHelper.post(
-    urlConstants.USER_URL + "/authenticate",
+    urlConstants.USER_URL + "/authenticate/manager",
     data
   );
   if (res && res.data) {

@@ -191,17 +191,7 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="userName">User Name</label>
-        <InputText
-          id="userName"
-          v-model.trim="product.userName"
-          required="true"
-          :class="{ 'p-invalid': submitted && !product.userName }"
-          disabled
-        />
-        <small class="p-invalid" v-if="submitted && !product.userName"
-          >UserName is required.</small
-        >
+        <label for="userName">User Name : {{ product.userName }}</label>
       </div>
       <div class="p-field">
         <label for="name">Full Name</label>
@@ -254,25 +244,14 @@
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="role">Role</label>
-          <Dropdown
-            v-model="selectedRole"
-            appendTo="body"
-            :options="roles"
-            placeholder="Role"
-          >
-            <template #option="slotProps">
-              <span :class="'customer-badge status-' + slotProps.option">{{
-                slotProps.option
-              }}</span>
-            </template>
-          </Dropdown>
+          <p>{{ selectedRole }}</p>
         </div>
         <div class="p-field p-col-6">
           <label for="Location">Location</label>
           <MultiSelect
             v-if="selectedRole === 'Manager'"
             v-model="selectedLocation"
-            :options="getLocationList"
+            :options="getAvailableLocationManager"
             optionLabel="name"
             placeholder="Select Location"
             :filter="true"
@@ -283,7 +262,7 @@
             v-if="selectedRole === 'Staff'"
             v-model="selectedLocation"
             inputId="locationId"
-            :options="getLocationList"
+            :options="getAvailableLocationStaff"
             optionLabel="name"
             placeholder="Select a Location"
             :filter="true"
@@ -293,21 +272,11 @@
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="created"> Created Date</label>
-          <InputText
-            id="created"
-            v-model.trim="product.created"
-            required="true"
-            disabled="true"
-          />
+          <p>{{ product.created }}</p>
         </div>
         <div class="p-field p-col-6">
           <label for="lastModified"> Last Modified</label>
-          <InputText
-            id="lastModified"
-            v-model.trim="product.lastModified"
-            required="true"
-            disabled="true"
-          />
+          <p>{{ product.lastModified }}</p>
         </div>
       </div>
       <template #footer>
@@ -370,16 +339,6 @@
           >PhoneNumber is required.</small
         >
       </div>
-      <div class="p-field">
-        <label for="address">Address</label>
-        <Textarea
-          id="address"
-          v-model="product.address"
-          required="true"
-          rows="3"
-          cols="20"
-        />
-      </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="role">Role</label>
@@ -396,7 +355,7 @@
           <MultiSelect
             v-if="selectedRole === 'Manager'"
             v-model="selectedLocation"
-            :options="getLocationList"
+            :options="getAvailableLocationManager"
             optionLabel="name"
             placeholder="Select Location"
             :filter="true"
@@ -405,12 +364,22 @@
           <Dropdown
             v-if="selectedRole === 'Staff'"
             v-model="selectedLocation"
-            :options="getLocationList"
+            :options="getAvailableLocationStaff"
             optionLabel="name"
             placeholder="Select a Location"
             :filter="true"
           />
         </div>
+      </div>
+      <div class="p-field">
+        <label for="address">Address</label>
+        <Textarea
+          id="address"
+          v-model="product.address"
+          required="true"
+          rows="3"
+          cols="20"
+        />
       </div>
       <template #footer>
         <Button
@@ -507,7 +476,11 @@ export default {
   },
   computed: {
     ...mapGetters("user", ["getUserList"]),
-    ...mapGetters("location", ["getLocationList"]),
+    ...mapGetters("location", [
+      "getLocationList",
+      "getAvailableLocationStaff",
+      "getAvailableLocationManager",
+    ]),
   },
   data() {
     return {
@@ -534,9 +507,15 @@ export default {
   },
   methods: {
     ...mapActions("user", ["setUserList"]),
-    ...mapActions("location", ["setLocationList"]),
+    ...mapActions("location", [
+      "setLocationList",
+      "setAvailableLocationStaff",
+      "setAvailableLocationManager",
+    ]),
 
     openNew() {
+      this.setAvailableLocationStaff(null);
+      this.setAvailableLocationManager(null);
       this.product = {};
       this.submitted = false;
       this.UserDialog = true;
@@ -616,10 +595,19 @@ export default {
     },
     findIndexById(id) {
       let index = -1;
-      for (let i = 0; i < this.getLocationList.length; i++) {
-        if (this.getLocationList[i].locationId === id) {
-          index = i;
-          break;
+      if (this.selectedRole == "Staff") {
+        for (let i = 0; i < this.getAvailableLocationStaff.length; i++) {
+          if (this.getAvailableLocationStaff[i].locationId === id) {
+            index = i;
+            break;
+          }
+        }
+      } else {
+        for (let i = 0; i < this.getAvailableLocationManager.length; i++) {
+          if (this.getAvailableLocationManager[i].locationId === id) {
+            index = i;
+            break;
+          }
         }
       }
       return index;
@@ -657,24 +645,26 @@ export default {
       }
       return day + "-" + month + "-" + date.getFullYear();
     },
-    editProduct(product) {
+    async editProduct(product) {
       this.product = { ...product };
       this.selectedLocation = null;
       this.product.created = this.callDate(product.created);
       this.product.lastModified = this.callDate(product.lastModified);
       this.selectedRole = this.product.role;
       const tmp = this.product.locationIds;
-      console.log(this.getLocationList);
-      if(tmp.length == 1 && this.selectedRole == "Staff"){
-        this.selectedLocation = this.getLocationList[this.findIndexById(this.product.locationIds[0])];
+      if (tmp.length == 1 && this.selectedRole == "Staff") {
+        await this.setAvailableLocationStaff(product.userId);
+        this.selectedLocation = this.getAvailableLocationStaff[
+          this.findIndexById(this.product.locationIds[0])
+        ];
       } else {
         this.selectedLocation = [];
-        for(let i = 0; i< tmp.length; i++){
-          this.selectedLocation.push(this.getLocationList[this.findIndexById(tmp[i])]);
+        for (let i = 0; i < tmp.length; i++) {
+          this.selectedLocation.push(
+            this.getLocationList[this.findIndexById(tmp[i])]
+          );
         }
       }
-      // this.selectedLocation = this.product.locationIds;
-      console.log(this.selectedLocation);
       this.UserUpdateDialog = true;
     },
   },

@@ -4,6 +4,7 @@ import Location from "./views/Location.vue";
 import MaintenanceOrder from "./views/MaintenanceOrder.vue";
 import MaintenanceWorker from "./views/MaintenanceWorker.vue";
 import User from "./views/User.vue";
+import UserByManager from "./views/UserByManager.vue";
 import Login from "./views/LoginPage.vue";
 import Notification from "./views/Notification.vue";
 import urlConstants from "./util/urlConstants";
@@ -20,6 +21,7 @@ const router = new createRouter({
     { path: "/maintenanceOrders", name: "maintenanceOrder", component: MaintenanceOrder },
     { path: "/maintenanceWorkers", name: "maintenanceWorker", component: MaintenanceWorker },
     { path: "/users", name: "user", component: User },
+    { path: "/userByManager", name: "userByManager", component: UserByManager },
     { path: "/notis", name: "notification", component: Notification },
   ],
 });
@@ -42,13 +44,17 @@ router.beforeEach((to, from, next) => {
       alert("Staff can't login into web");
       return next('/login');
     }
-    const checkAdmin = JSON.parse(localStorage.getItem('user')).userId;
-    if(checkAdmin != null){
-      const managerPages = ['/users','/cracks', '/maintenanceOrders', '/notis', '/account'];
+    if(user.role != urlConstants.ADMIN_ROLE){
+      const managerPages = ['/user','/userByManager','/cracks', '/maintenanceOrders', '/notis', '/account'];
       const managerRequired = !managerPages.includes(to.path);
-      if (managerRequired && checkAdmin!=(urlConstants.ADMIN_ID)){
-        return next('/cracks');
-      } 
+      if (!managerRequired){
+        next();
+      }
+      else if(to.path == "/users" ) {
+        return next('/userByManager');
+      } else {
+        return next('/cracks'); 
+      }
     }
   } 
   next();

@@ -71,17 +71,17 @@
             /> </template
         ></Column>
         <Column
-          field="location"
+          field="locationName"
           header="Location Name"
           sortable
           headerStyle="width: 120px"
           ><template #body="slotProps">
-            {{ slotProps.data.location }}
+            {{ slotProps.data.locationName }}
           </template>
           <template #filter>
             <InputText
               type="text"
-              v-model="filters['location']"
+              v-model="filters['locationName']"
               class="p-column-filter"
               placeholder="Search"
             /> </template
@@ -146,14 +146,7 @@
         </Column>
         <template #expansion="slotProps">
           <div class="orders-subtable">
-            <h5>Mainteance Order id {{ slotProps.data.maintenanceOrderId }}</h5>
             <DataTable :value="slotProps.data.cracks">
-              <Column
-                field="crackId"
-                header="Error Id"
-                sortable
-                headerStyle="width: 50px"
-              ></Column>
               <Column header="Image" headerStyle="width: 150px">
                 <template #body="slotProps">
                   <img
@@ -165,17 +158,16 @@
               </Column>
               <Column field="severity" header="Severity" sortable>
                 <template #body="slotProps">
-                  <span
-                    :class="'order-badge order-' + slotProps.data.severity"
-                    >{{ slotProps.data.severity }}</span
-                  >
+                  <div :class="stockClass(slotProps.data)">
+                    {{ slotProps.data.severity }}
+                  </div>
                 </template>
               </Column>
               <Column field="status" header="Status" sortable>
                 <template #body="slotProps">
-                  <span :class="'order-badge order-' + slotProps.data.status">{{
-                    slotProps.data.status
-                  }}</span>
+                  <div :class="stockClass(slotProps.data)">
+                    {{ slotProps.data.status }}
+                  </div>
                 </template>
               </Column>
               <Column field="created" header="Created Date" sortable>
@@ -183,7 +175,6 @@
                   <span>{{ callDate(slotProps.data.created) }}</span>
                 </template>
               </Column>
-
               <Column headerStyle="width:4rem">
                 <template #body="slotProps">
                   <Button
@@ -200,33 +191,23 @@
     <Dialog
       v-model:visible="productDialog"
       :style="{ width: '450px' }"
-      header="Maintenance Worker Details"
+      header="Maintenance Order Details"
       :modal="true"
       class="p-fluid"
     >
-      <div class="p-field">
-        <label for="maintenanceWorkerName">Maintenance Worker Name</label>
-        <InputText
-          v-model.trim="product.maintenanceWorkerName"
-          required="true"
-          disabled
-        />
+      <div class="p-formgrid p-grid">
+        <div class="p-field p-col-6">
+          <p>Maintenance Worker</p>
+          <span>{{ product.maintenanceWorkerName }}</span>
+        </div>
+        <div class="p-field p-col-6">
+          <p>Assessor Name</p>
+          <span>{{ product.assessorName }}</span>
+        </div>
       </div>
       <div class="p-field">
-        <label for="assessorName">Assessor Name</label>
-        <InputText
-          v-model.trim="product.assessorName"
-          required="true"
-          disabled
-        />
-      </div>
-      <div class="p-field">
-        <label for="description">Description</label>
-        <InputText
-          v-model.trim="product.description"
-          required="true"
-          disabled
-        />
+        <p>Description</p>
+        <span>{{ product.description }}</span>
       </div>
       <div class="p-field">
         <label for="assessmentResult">Assessment Result</label>
@@ -237,28 +218,14 @@
           :cancel="false"
         />
       </div>
-      <div class="p-field">
-        <label for="status">Status</label>
-        <InputText v-model.trim="product.status" required="true" disabled />
-      </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <label for="created"> Created Date</label>
-          <InputText
-            id="created"
-            v-model.trim="product.created"
-            required="true"
-            disabled="true"
-            autofocus
-          />
+          <p>Status</p>
+          <span>{{ product.status }}</span>
         </div>
         <div class="p-field p-col-6">
-          <label for="maintenanceDate"> Maintenance Date</label>
-          <InputText
-            v-model.trim="product.maintenanceDate"
-            required="true"
-            disabled="true"
-          />
+          <p>Maintenance Date</p>
+          <span>{{ product.maintenanceDate }}</span>
         </div>
       </div>
       <template #footer>
@@ -283,82 +250,33 @@
         class="product-image"
         v-if="crack.image"
       />
+
       <div class="p-field">
-        <label for="locationName"> Location Name</label>
-        <InputText
-          id="locationName"
-          v-model.trim="crack.locationName"
-          required="true"
-          disabled="true"
-        />
+        <p>Position</p>
+        <label>{{ crack.position }}</label>
       </div>
       <div class="p-field">
-        <label for="reporterName"> Reporter Name</label>
-        <InputText
-          id="reporterName"
-          v-model.trim="crack.reporter.name"
-          required="true"
-          disabled="true"
-        />
-      </div>
-      <div class="p-field">
-        <label for="position"> Position</label>
-        <InputText
-          id="reporterName"
-          v-model.trim="crack.position"
-          required="true"
-          disabled="true"
-        />
-      </div>
-      <div class="p-field">
-        <label for="description"> Description</label>
-        <Textarea
-          id="description"
-          v-model="crack.description"
-          required="true"
-          rows="3"
-          cols="20"
-          disabled="true"
-        />
+        <p>Description</p>
+        <label>{{ crack.description }}</label>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-4">
-          <label for="severity"> Severity</label>
-          <InputText
-            id="severity"
-            v-model.trim="crack.severity"
-            required="true"
-            disabled="true"
-          />
+          <p>Severity</p>
+          <label>{{ crack.severity }}</label>
         </div>
         <div class="p-field p-col-8">
-          <label for="status">Status</label>
-          <InputText
-            id="status"
-            v-model.trim="crack.status"
-            required="true"
-            disabled="true"
-          />
+          <p>Status</p>
+          <label>{{ crack.status }}</label>
         </div>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <label for="created"> Created Date</label>
-          <InputText
-            id="created"
-            v-model.trim="crack.created"
-            required="true"
-            disabled="true"
-          />
+          <p>Created Date</p>
+          <label>{{ crack.created }}</label>
         </div>
         <div class="p-field p-col-6">
-          <label for="lastModified"> Last Modified</label>
-          <InputText
-            id="lastModified"
-            v-model.trim="crack.lastModified"
-            required="true"
-            disabled="true"
-          />
+          <p>Last Modified</p>
+          <label>{{ crack.lastModified }}</label>
         </div>
       </div>
       <template #footer>
@@ -453,6 +371,20 @@ export default {
       }
       return index;
     },
+    stockClass(data) {
+      return [
+        {
+          low: data.severity === "Low",
+          medium: data.severity === "Medium",
+          high: data.severity === "High",
+          detectedFailed: data.status === "DetectedFailed",
+          unconfirmed: data.status === "Unconfirmed",
+          unscheduled: data.status === "Unscheduled for maintenance",
+          scheduledformaintenace: data.status === "Scheduled for maintenace",
+          fix: data.status === "Fixed",
+        },
+      ];
+    },
     exportCSV() {
       this.$refs.dt.exportCSV();
     },
@@ -514,5 +446,45 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.underline {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  border-bottom: 1px solid black;
+}
+.low {
+  font-weight: 700;
+  color: #66bb6a;
+}
+
+.medium {
+  font-weight: 700;
+  color: #ffa726;
+}
+
+.high {
+  font-weight: 700;
+  color: #ff5252;
+}
+.detectedFailed {
+  font-weight: 700;
+  color: #ff5252;
+}
+.unconfirmed {
+  font-weight: 700;
+  color: #ffa726;
+}
+.unscheduled {
+  font-weight: 700;
+  color: #66bb6a;
+}
+.scheduledformaintenace {
+  font-weight: 700;
+  color: #ff5252;
+}
+.fix {
+  font-weight: 700;
+  color: #ff5252;
 }
 </style>

@@ -14,7 +14,7 @@
       @row-unselect="onRowUnselect"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       :rowsPerPageOptions="[5, 10, 25]"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} notis"
     >
       <template #header>
         <div class="table-header">
@@ -28,9 +28,8 @@
         </div>
       </template>
       <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-      <Column field="title"></Column>
-      <Column field="body"></Column>
-      <Column field="messageType" header="Message Type"></Column>
+      <Column field="title" header="Title"></Column>
+      <Column field="body" header="Body"></Column>
       <Column
         field="created"
         header="Created"
@@ -41,7 +40,6 @@
           <span>{{ callDate(slotProps.data.created) }}</span>
         </template>
       </Column>
-      <Column field="isRead" header="isRead"></Column>
     </DataTable>
   </div>
 </template>

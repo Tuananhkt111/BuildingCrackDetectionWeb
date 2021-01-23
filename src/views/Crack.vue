@@ -11,7 +11,7 @@
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} cracks"
       >
         <template #header>
           <div class="table-header">
@@ -45,6 +45,7 @@
               :alt="slotProps.data.image"
               class="product-image"
               style="width: 100px ; height: 100px"
+              @click="showImage(slotProps.data.image)"
             />
           </template>
         </Column>
@@ -65,10 +66,7 @@
             />
           </template>
         </Column>
-        <Column
-          field="reporterName"
-          header="Reporter Name"
-        >
+        <Column field="reporterName" header="Reporter Name">
           <template #body="slotProps">
             {{ slotProps.data.reporterName }}
           </template>
@@ -81,15 +79,11 @@
             />
           </template>
         </Column>
-        <Column
-          field="severity"
-          header="Severity"
-          filterMatchMode="equals"
-        >
+        <Column field="severity" header="Severity" filterMatchMode="equals">
           <template #body="slotProps">
-            <span :class="'customer-badge status-' + slotProps.data.severity">{{
-              slotProps.data.severity
-            }}</span>
+                  <div :class="stockClass(slotProps.data)">
+                    {{ slotProps.data.severity }}
+                  </div>
           </template>
           <template #filter>
             <Dropdown
@@ -108,11 +102,7 @@
             </Dropdown>
           </template>
         </Column>
-        <Column
-          field="status"
-          header="Status"
-          filterMatchMode="equals"
-        >
+        <Column field="status" header="Status" filterMatchMode="equals">
           <template #body="slotProps">
             <span :class="'customer-badge status-' + slotProps.data.status">{{
               slotProps.data.status
@@ -143,16 +133,19 @@
               class="p-button-rounded p-button-info p-button-text p-mr-2"
               @click="showDetail(slotProps.data)"
               style="margin: 2px"
+              v-tooltip.bottom="'View Crack Detail'"
             />
             <Button
               icon="pi pi-star"
               class="p-button-rounded p-button-warning p-button-text"
               @click="showAssessmentDialog(slotProps.data)"
+              v-tooltip.bottom="'Show Assesment'"
             />
             <Button
               icon="pi pi-calendar-minus"
               class="p-button-rounded p-button-danger p-button-text"
               @click="showMaintenanceOrder(slotProps.data)"
+              v-tooltip.bottom="'View Maintenance Order'"
             />
           </template>
         </Column>
@@ -179,7 +172,7 @@
           id="description"
           v-model="product.assessmentDescription"
           required="true"
-          rows="3"
+          rows="2"
           cols="20"
           disabled
         />
@@ -206,35 +199,19 @@
         class="product-image"
         v-if="product.image"
       />
-      <div class="p-field">
-        <label for="locationName"> Location Name</label>
-        <InputText
-          id="locationName"
-          v-model.trim="product.locationName"
-          required="true"
-          disabled="true"
-          autofocus
-        />
+      <div class="p-formgrid p-grid">
+        <div class="p-field p-col-6">
+          <p>Location Name</p>
+          <span>{{ product.locationName }}</span>
+        </div>
+        <div class="p-field p-col-6">
+          <p>Reporter Name</p>
+          <span>{{ product.reporterName }}</span>
+        </div>
       </div>
       <div class="p-field">
-        <label for="reporterName"> Reporter Name</label>
-        <InputText
-          id="reporterName"
-          v-model.trim="product.reporterName"
-          required="true"
-          disabled="true"
-          autofocus
-        />
-      </div>
-      <div class="p-field">
-        <label for="position"> Position</label>
-        <InputText
-          id="reporterName"
-          v-model.trim="product.position"
-          required="true"
-          disabled="true"
-          autofocus
-        />
+        <p>Position</p>
+        <span>{{ product.position }}</span>
       </div>
       <div class="p-field">
         <label for="description"> Description</label>
@@ -242,53 +219,27 @@
           id="description"
           v-model="product.description"
           required="true"
-          rows="3"
-          cols="20"
           disabled="true"
         />
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-4">
-          <label for="severity"> Severity</label>
-          <InputText
-            id="severity"
-            v-model.trim="product.severity"
-            required="true"
-            disabled="true"
-            autofocus
-          />
+          <p>Severity</p>
+          <span>{{ product.severity }}</span>
         </div>
         <div class="p-field p-col-8">
-          <label for="status">Status</label>
-          <InputText
-            id="status"
-            v-model.trim="product.status"
-            required="true"
-            disabled="true"
-            autofocus
-          />
+          <p>Status</p>
+          <span>{{ product.status }}</span>
         </div>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <label for="created"> Created Date</label>
-          <InputText
-            id="created"
-            v-model.trim="product.created"
-            required="true"
-            disabled="true"
-            autofocus
-          />
+          <p>Created Date</p>
+          <span>{{ product.created }}</span>
         </div>
         <div class="p-field p-col-6">
-          <label for="lastModified"> Last Modified</label>
-          <InputText
-            id="lastModified"
-            v-model.trim="product.lastModified"
-            required="true"
-            disabled="true"
-            autofocus
-          />
+          <p>Last Modified</p>
+          <span>{{ product.lastModified }}</span>
         </div>
       </div>
       <template #footer>
@@ -347,6 +298,18 @@ export default {
   },
   methods: {
     ...mapActions("crack", ["setCrackList"]),
+    showImage(image) {
+      console.log(image);
+    },
+    stockClass(data) {
+      return [
+        {
+          low: data.severity === "Low",
+          medium: data.severity === "Medium",
+          high: data.severity === "High",
+        },
+      ];
+    },
     hideDialog() {
       this.showAssessment = false;
       this.crackInfoDialog = false;
@@ -358,7 +321,9 @@ export default {
     },
     showMaintenanceOrder(product) {
       localStorage.setItem("orderId", product.maintenanceOrderId);
-      this.$router.push("/maintenanceOrders?orderId=" + product.maintenanceOrderId);
+      this.$router.push(
+        "/maintenanceOrders?orderId=" + product.maintenanceOrderId
+      );
     },
     showDetail(product) {
       this.product = { ...product };
@@ -437,5 +402,30 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+textarea {
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    resize: none; /*remove the resize handle on the bottom right*/
+}
+.low {
+    font-weight: 700;
+    color: #66BB6A;
+}
+
+.medium {
+    font-weight: 700;
+    color: #FFA726;
+}
+
+.high {
+    font-weight: 700;
+    color: #FF5252;
 }
 </style>

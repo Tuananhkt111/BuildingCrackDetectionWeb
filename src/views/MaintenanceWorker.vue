@@ -12,7 +12,7 @@
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} maintenance workers"
       >
         <template #header>
           <div class="table-header">
@@ -128,11 +128,13 @@
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info p-button-text"
               @click="editProduct(slotProps.data)"
+              v-tooltip.bottom="'Edit'"
             />
             <Button
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger p-button-text"
               @click="confirmDeleteProduct(slotProps.data)"
+              v-tooltip.bottom="'Disable'"
             />
           </template>
         </Column>
@@ -200,24 +202,12 @@
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <label for="created"> Created Date</label>
-          <InputText
-            id="created"
-            v-model.trim="product.created"
-            required="true"
-            disabled="true"
-            autofocus
-          />
+          <p> Created Date</p>
+          <span>{{product.created}}</span>
         </div>
         <div class="p-field p-col-6">
-          <label for="lastModified"> Last Modified</label>
-          <InputText
-            id="lastModified"
-            v-model.trim="product.lastModified"
-            required="true"
-            disabled="true"
-            autofocus
-          />
+          <p> Last Modified</p>
+          <span>{{product.lastModified}}</span>
         </div>
       </div>
       <template #footer>
@@ -319,7 +309,7 @@
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
         <span v-if="product"
-          >Are you sure you want to delete the Worker {{ product.name }}?</span
+          >Are you sure to disable this worker <span style="color:red; font-weight: bold;">{{ product.name }}</span>?</span
         >
       </div>
       <template #footer>

@@ -5,7 +5,7 @@
         <img src="assets/icons8-admin-settings-male-100.png" alt="" />
       </div>
       <button class="p-link layout-profile-link" @click="onClick">
-        <span class="username">{{userName}}</span>
+        <span class="username">{{ userName }}</span>
         <i class="pi pi-fw pi-cog"></i>
       </button>
       <div class="layout-submenu-wrapper">
@@ -20,8 +20,7 @@
           <li>
             <button class="p-link">
               <a href="/notis"
-                ><i class="pi pi-fw pi-bell"></i><span>Notifications</span
-                ><span class="menuitem-badge">2</span></a
+                ><i class="pi pi-fw pi-bell"></i><span>Notifications</span></a
               >
             </button>
           </li>
@@ -90,7 +89,7 @@ export default {
     };
   },
   created() {
-    this.userName = JSON.parse(localStorage.getItem('user')).name;
+    this.userName = JSON.parse(localStorage.getItem("user")).name;
   },
   methods: {
     onClick(event) {
@@ -106,12 +105,12 @@ export default {
 </script>
 
 <style scoped>
-.layout-submenu-wrapper{
-  margin-top:10px;
+.layout-submenu-wrapper {
+  margin-top: 10px;
   background-color: #2e3035;
 }
 .layout-profile {
-  margin-top:30px;
+  margin-top: 30px;
   text-align: center;
 }
 .side-bar-layout {
@@ -219,7 +218,7 @@ ul {
   background-color: red;
   border-radius: 50%;
 }
-a:hover{
+a:hover {
   text-decoration: none;
   color: #0388e5;
 }

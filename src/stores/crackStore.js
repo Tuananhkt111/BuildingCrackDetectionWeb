@@ -4,7 +4,7 @@ const crackStore = {
     namespaced: true,
     state: {
       crackList: [],
-      statuses: ["Waiting for maintenance", "Completed"],
+      statuses: ["DetectedFailed", "Unconfirmed", "Unscheduled for maintenace", "Scheduled for maintenace", "Fixed"],
       severitys: ["Low", "Medium", "High"],
     },
   
