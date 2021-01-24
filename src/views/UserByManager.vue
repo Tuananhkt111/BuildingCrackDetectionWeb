@@ -16,7 +16,6 @@
         <template #header>
           <div class="table-header">
             <h3 class="p-m-2">Manage User</h3>
-
             <span class="p-input-icon-left">
               <Button
                 label="Export"
@@ -129,91 +128,46 @@
       :modal="true"
       class="p-fluid"
     >
-    <div class="p-formgrid p-grid">
+      <div class="p-formgrid p-grid">
         <div class="p-field p-col-5">
-        <p for="userName">User Name</p>
-        <label>{{product.userName}}</label>
+          <p for="userName">User Name</p>
+          <label>{{ product.userName }}</label>
+        </div>
+        <div class="p-field p-col-7">
+          <p for="name">Full Name</p>
+          <label>{{ product.name }}</label>
+        </div>
       </div>
-      <div class="p-field p-col-7">
-        <p for="name">Full Name</p>
-        <label>{{product.name}}</label>
-      </div>
-    </div>
       <div class="p-field">
         <p for="email">Email</p>
-        <label>{{product.email}}</label>
+        <label>{{ product.email }}</label>
       </div>
       <div class="p-field">
         <p for="phoneNumber">Phone Number</p>
-        <label>{{product.phoneNumber}}</label>
+        <label>{{ product.phoneNumber }}</label>
       </div>
       <div class="p-field">
-        <label for="address">Address</label>
-        <Textarea
-          id="address"
-          v-model="product.address"
-          required="true"
-          rows="3"
-          cols="20"
-        />
+        <p>Address</p>
+        <label>{{ product.address }}</label>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <label for="role">Role</label>
-          <Dropdown
-            v-model="selectedRole"
-            appendTo="body"
-            :options="roles"
-            placeholder="Role"
-          >
-            <template #option="slotProps">
-              <span :class="'customer-badge status-' + slotProps.option">{{
-                slotProps.option
-              }}</span>
-            </template>
-          </Dropdown>
+          <p>Role</p>
+          <label>{{ product.role }}</label>
         </div>
         <div class="p-field p-col-6">
-          <label for="Location">Location</label>
-          <MultiSelect
-            v-if="selectedRole === 'Manager'"
-            v-model="selectedLocation"
-            :options="getLocationList"
-            optionLabel="name"
-            placeholder="Select Location"
-            :filter="true"
-            class="multiselect-custom"
-            key="locationId"
-          />
-          <Dropdown
-            v-if="selectedRole === 'Staff'"
-            v-model="selectedLocation"
-            inputId="locationId"
-            :options="getLocationList"
-            optionLabel="name"
-            placeholder="Select a Location"
-            :filter="true"
-          />
+          <p>Location</p>
+          <label>{{ selectedLocation.name }}</label>
         </div>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <label for="created"> Created Date</label>
-          <InputText
-            id="created"
-            v-model.trim="product.created"
-            required="true"
-            disabled="true"
-          />
+          <p>Created Date</p>
+          <label>{{ product.created }}</label>
         </div>
         <div class="p-field p-col-6">
-          <label for="lastModified"> Last Modified</label>
-          <InputText
-            id="lastModified"
-            v-model.trim="product.lastModified"
-            required="true"
-            disabled="true"
-          />
+          <p>Last Modified</p>
+          <label>{{ product.lastModified }}</label>
         </div>
       </div>
       <template #footer>
@@ -239,7 +193,6 @@
 import Button from "primevue/button";
 import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
-import MultiSelect from "primevue/multiselect";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 
@@ -248,7 +201,6 @@ export default {
     Button,
     Toast,
     Dropdown,
-    MultiSelect,
   },
   computed: {
     ...mapGetters("user", ["getUserList"]),

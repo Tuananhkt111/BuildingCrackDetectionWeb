@@ -66,7 +66,14 @@
               >
             </button>
           </li>
-          <li>
+          <li v-if="role === 'Manager'">
+            <button class="p-link">
+              <a href="/userByManager"
+                ><i class="pi pi-fw pi-users"></i><span>Staff</span></a
+              >
+            </button>
+          </li>
+          <li v-else>
             <button class="p-link">
               <a href="/users"
                 ><i class="pi pi-fw pi-users"></i><span>Users</span></a
@@ -86,10 +93,12 @@ export default {
     return {
       expanded: false,
       userName: null,
+      role : null,
     };
   },
   created() {
     this.userName = JSON.parse(localStorage.getItem("user")).name;
+    this.role = JSON.parse(localStorage.getItem('user')).role;
   },
   methods: {
     onClick(event) {

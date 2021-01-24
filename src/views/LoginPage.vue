@@ -147,7 +147,7 @@ export default {
             this.newPassword
           )
           .then(() => {
-            this.$router.push("/");
+            this.$router.go();
           });
       }
     },
@@ -155,7 +155,9 @@ export default {
       this.userName = "";
       this.ForgotPasswordDialog = true;
     },
-
+    cancelChangePassword() {
+      this.ChangePasswordDialog = false;
+    },
     async confirmForgotPassword() {
       await userApi
         .forgotPassword(this.userName)

@@ -16,6 +16,7 @@ export const userApi = {
 
 async function login(userName, password) {
   const token = localStorage.getItem("fcm");
+  console.log(token);
   localStorage.removeItem("fcm");
   const data = {
     userName: userName,

@@ -10,7 +10,6 @@ import Notification from "./views/Notification.vue";
 import urlConstants from "./util/urlConstants";
 import userApi from "./apis/user";
 
-
 const router = new createRouter({
   history: createWebHistory(),
   routes: [
@@ -18,8 +17,16 @@ const router = new createRouter({
     { path: "/login", name: "login", component: Login },
     { path: "/cracks", name: "crack", component: Crack },
     { path: "/locations", name: "location", component: Location },
-    { path: "/maintenanceOrders", name: "maintenanceOrder", component: MaintenanceOrder },
-    { path: "/maintenanceWorkers", name: "maintenanceWorker", component: MaintenanceWorker },
+    {
+      path: "/maintenanceOrders",
+      name: "maintenanceOrder",
+      component: MaintenanceOrder,
+    },
+    {
+      path: "/maintenanceWorkers",
+      name: "maintenanceWorker",
+      component: MaintenanceWorker,
+    },
     { path: "/users", name: "user", component: User },
     { path: "/userByManager", name: "userByManager", component: UserByManager },
     { path: "/notis", name: "notification", component: Notification },
@@ -28,37 +35,40 @@ const router = new createRouter({
 
 router.beforeEach((to, from, next) => {
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['/login'];
- 
-  const authRequired = !publicPages.includes(to.path);
-  
-  const loggedIn = localStorage.getItem('jwtToken');
- 
-  const user = JSON.parse(localStorage.getItem('user'));
+  const publicPages = ["/login"];
 
-  if(user != null){
-    if (authRequired && !loggedIn ) {
-      return next('/login');
-    }  else if(user.role == urlConstants.STAFF_ROLE){
+  const authRequired = !publicPages.includes(to.path);
+
+  const loggedIn = localStorage.getItem("jwtToken");
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user != null) {
+    if (authRequired && !loggedIn) {
+      return next("/login");
+    } else if (user.role == urlConstants.STAFF_ROLE) {
       userApi.logout();
       alert("Staff can't login into web");
-      return next('/login');
+      return next("/login");
     }
-    if(user.role != urlConstants.ADMIN_ROLE){
-      const managerPages = ['/user','/userByManager','/cracks', '/maintenanceOrders', '/notis', '/account'];
+    if (user.role != urlConstants.ADMIN_ROLE) {
+      const managerPages = [
+        "/userByManager",
+        "/cracks",
+        "/maintenanceOrders",
+        "/notis",
+        "/account",
+      ];
       const managerRequired = !managerPages.includes(to.path);
-      if (!managerRequired){
+      if (!managerRequired) {
         next();
-      }
-      else if(to.path == "/users" ) {
-        return next('/userByManager');
       } else {
-        return next('/cracks'); 
+        return next("/cracks");
       }
+    } else {
+      next();
     }
-  } 
-  next();
+  }
 });
 
 export default router;
-

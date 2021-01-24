@@ -11,7 +11,7 @@
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users"
       >
         <template #header>
           <div class="table-header">
@@ -41,6 +41,9 @@
               </span>
             </span>
           </div>
+        </template>
+        <template #empty>
+          No Users found.
         </template>
         <Column field="userName" header="User Name" headerStyle="width: 200px">
           <template #body="slotProps">
@@ -652,6 +655,7 @@ export default {
       this.product.lastModified = this.callDate(product.lastModified);
       this.selectedRole = this.product.role;
       const tmp = this.product.locationIds;
+      console.log("CC" + tmp);
       if (tmp.length == 1 && this.selectedRole == "Staff") {
         await this.setAvailableLocationStaff(product.userId);
         this.selectedLocation = this.getAvailableLocationStaff[
@@ -659,9 +663,12 @@ export default {
         ];
       } else {
         this.selectedLocation = [];
+        await this.setAvailableLocationManager(product.userId);
+        console.log(product.userId);
+        console.log(this.getAvailableLocationManager);
         for (let i = 0; i < tmp.length; i++) {
           this.selectedLocation.push(
-            this.getLocationList[this.findIndexById(tmp[i])]
+            this.getAvailableLocationManager[this.findIndexById(tmp[i])]
           );
         }
       }

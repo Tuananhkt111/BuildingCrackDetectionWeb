@@ -1,7 +1,7 @@
 <template>
   <div class="top-nav-layout">
     <div class="top-nav p-d-flex p-ai-center p-jc-between">
-      <div class="p-d-flex p-ai-center p-jc-between"  @click="toggleSidebar">
+      <div class="p-d-flex p-ai-center p-jc-between" @click="toggleSidebar">
         <img
           src="/assets/logoCrack.png"
           alt="logo"
@@ -24,31 +24,27 @@
           ref="op"
           style="width: 400px; margin-top:-20px; margin-right: 20px"
         >
-          <ScrollPanel style="width: 100%; max-height: 300px" v-if="showListNoti">
+          <ScrollPanel
+            style="width: 100%; max-height: 300px"
+            v-if="showListNoti"
+          >
             <div class="panel panel-default">
               <div class="panel-body">
                 <div
                   class="alert alert-info"
                   v-for="item in getNotificationList"
                   v-bind:key="item"
+                  @click="deleteNoti(item.pushNotificationId)"
                 >
                   <p class="title">
-                    <i class="pi pi-check"></i><strong>{{ item.title }}</strong>
-                    <button
-                      type="button"
-                      class="close"
-                      @click="deleteNoti(item.pushNotificationId)"
-                    >
-                      ×
-                    </button>
+                    <strong>{{ item.title }}</strong>
                   </p>
                   {{ item.body }}
                   <p class="time">{{ callDate(item.created) }}</p>
                 </div>
               </div>
             </div>
-          <button type="submit">View all</button>
-
+            <button type="submit">View all</button>
           </ScrollPanel>
           <div v-else>
             <p>No Notification now</p>
@@ -79,7 +75,7 @@ export default {
     },
   },
   async created() {
-    if(this.getNotificationList != null){
+    if (this.getNotificationList != null) {
       this.showListNoti = true;
     }
     await this.setNotificationList();
@@ -90,7 +86,7 @@ export default {
   data() {
     return {
       display: false,
-      showListNoti : false,
+      showListNoti: false,
     };
   },
   methods: {
@@ -126,7 +122,8 @@ export default {
         });
     },
     deleteNoti(id) {
-      notificationApi.deleteNoti(id);
+      console.log(id);
+      notificationApi.deleteNoti(id).catch((err) => console.log(err));
     },
     toggle(event) {
       this.$refs.op.toggle(event);

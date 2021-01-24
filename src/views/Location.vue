@@ -41,6 +41,9 @@
             </span>
           </div>
         </template>
+        <template #empty>
+          No Locations found.
+        </template>
         <Column field="name" header="Location Name" >
           <template #body="slotProps">
             {{ slotProps.data.name }}

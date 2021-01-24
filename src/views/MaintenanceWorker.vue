@@ -12,7 +12,7 @@
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} maintenance workers"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Maintenance Workers"
       >
         <template #header>
           <div class="table-header">
@@ -42,8 +42,10 @@
             </span>
           </div>
         </template>
-
-        <Column field="name" header="Name" >
+        <template #empty>
+          No Maintenance Worker found.
+        </template>
+        <Column field="name" header="Name">
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
@@ -56,7 +58,7 @@
             />
           </template>
         </Column>
-        <Column field="phone" header="Phone" >
+        <Column field="phone" header="Phone">
           <template #body="slotProps">
             {{ slotProps.data.phone }}
           </template>
@@ -69,11 +71,7 @@
             />
           </template>
         </Column>
-        <Column
-          filterField="email"
-          filterMatchMode="contains"
-          header="Email"
-        >
+        <Column filterField="email" filterMatchMode="contains" header="Email">
           <template #body="slotProps">
             {{ slotProps.data.email }}
           </template>
@@ -202,12 +200,12 @@
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <p> Created Date</p>
-          <span>{{product.created}}</span>
+          <p>Created Date</p>
+          <span>{{ product.created }}</span>
         </div>
         <div class="p-field p-col-6">
-          <p> Last Modified</p>
-          <span>{{product.lastModified}}</span>
+          <p>Last Modified</p>
+          <span>{{ product.lastModified }}</span>
         </div>
       </div>
       <template #footer>
@@ -309,7 +307,9 @@
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
         <span v-if="product"
-          >Are you sure to disable this worker <span style="color:red; font-weight: bold;">{{ product.name }}</span>?</span
+          >Are you sure to disable this worker
+          <span style="color:red; font-weight: bold;">{{ product.name }}</span
+          >?</span
         >
       </div>
       <template #footer>
@@ -398,13 +398,13 @@ export default {
         this.product.name,
         this.product.address,
         this.product.phone,
-        this.product.email,
+        this.product.email
       );
       await this.setMaintenanceWorkerList();
       this.productDialog = false;
     },
 
-    async deleteSelectedProducts(){
+    async deleteSelectedProducts() {
       await maintenanceWorkerApi.disable(this.product.maintenanceWorkerId);
       await this.setMaintenanceWorkerList();
       this.hideDialog();

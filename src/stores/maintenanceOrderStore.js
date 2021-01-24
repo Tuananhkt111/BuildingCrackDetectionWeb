@@ -4,6 +4,7 @@ const maintenanceOrderStore = {
   namespaced: true,
   state: {
     maintenanceOrderList: [],
+    status: ["Waiting for confirm", "Waiting for maintenance", "Completed"],
   },
 
   getters: {
@@ -18,6 +19,9 @@ const maintenanceOrderStore = {
         return state.maintenanceOrderList;
       }
     },
+    getStatusList(state){
+      return state.status;
+    }
   },
 
   mutations: {

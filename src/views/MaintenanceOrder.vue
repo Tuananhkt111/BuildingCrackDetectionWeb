@@ -13,7 +13,7 @@
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Maintenance Orders"
       >
         <template #header>
           <div class="table-header">
@@ -35,6 +35,9 @@
               </span>
             </span>
           </div>
+        </template>
+        <template #empty>
+          No Maintenance Order found.
         </template>
         <Column :expander="true" headerStyle="width: 30px" />
         <Column
@@ -93,16 +96,16 @@
           headerStyle="width: 150px"
         >
           <template #body="slotProps">
-            <span :class="'customer-badge status-' + slotProps.data.status">{{
-              slotProps.data.status
-            }}</span>
+            <div :class="stockStatusOrder(slotProps.data)">
+              {{ slotProps.data.status }}
+            </div>
           </template>
 
           <template #filter>
             <Dropdown
               appendTo="body"
               v-model="filters['status']"
-              :options="statuses"
+              :options="getStatusList"
               placeholder="Status"
               class="p-column-filter"
               :showClear="true"
@@ -165,7 +168,7 @@
               </Column>
               <Column field="status" header="Status" sortable>
                 <template #body="slotProps">
-                  <div :class="stockClass(slotProps.data)">
+                  <div :class="stockStatus(slotProps.data)">
                     {{ slotProps.data.status }}
                   </div>
                 </template>
@@ -311,7 +314,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters("maintenanceOrder", ["getMaintenanceOrderList"]),
+    ...mapGetters("maintenanceOrder", [
+      "getMaintenanceOrderList",
+      "getStatusList",
+    ]),
   },
 
   async created() {
@@ -377,11 +383,26 @@ export default {
           low: data.severity === "Low",
           medium: data.severity === "Medium",
           high: data.severity === "High",
+        },
+      ];
+    },
+    stockStatus(data) {
+      return [
+        {
           detectedFailed: data.status === "DetectedFailed",
           unconfirmed: data.status === "Unconfirmed",
           unscheduled: data.status === "Unscheduled for maintenance",
-          scheduledformaintenace: data.status === "Scheduled for maintenace",
+          scheduledformaintenace: data.status === "Scheduled for maintenance",
           fix: data.status === "Fixed",
+        },
+      ];
+    },
+    stockStatusOrder(data) {
+      return [
+        {
+          detectedFailed: data.status === "Waiting for confirm",
+          unconfirmed: data.status === "Waiting for maintenance",
+          fix: data.status === "Completed",
         },
       ];
     },

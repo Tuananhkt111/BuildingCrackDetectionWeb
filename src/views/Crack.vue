@@ -11,7 +11,7 @@
         :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} cracks"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Cracks"
       >
         <template #header>
           <div class="table-header">
@@ -104,9 +104,9 @@
         </Column>
         <Column field="status" header="Status" filterMatchMode="equals">
           <template #body="slotProps">
-            <span :class="'customer-badge status-' + slotProps.data.status">{{
-              slotProps.data.status
-            }}</span>
+            <div :class="stockStatus(slotProps.data)">
+                    {{ slotProps.data.status }}
+                  </div>
           </template>
 
           <template #filter>
@@ -310,6 +310,17 @@ export default {
         },
       ];
     },
+    stockStatus(data) {
+      return [
+        {
+          detectedFailed: data.status === "DetectedFailed",
+          unconfirmed: data.status === "Unconfirmed",
+          unscheduled: data.status === "Unscheduled for maintenance",
+          scheduledformaintenace: data.status === "Scheduled for maintenance",
+          fix: data.status === "Fixed",
+        },
+      ];
+    },
     hideDialog() {
       this.showAssessment = false;
       this.crackInfoDialog = false;
@@ -428,4 +439,25 @@ textarea {
     font-weight: 700;
     color: #FF5252;
 }
+.detectedFailed {
+  font-weight: 700;
+  color: #ff5252;
+}
+.unconfirmed {
+  font-weight: 700;
+  color: red;
+}
+.unscheduled {
+  font-weight: 700;
+  color: blue;
+}
+.scheduledformaintenace {
+  font-weight: 700;
+  color: red;
+}
+.fix {
+  font-weight: 700;
+  color: #ff5252;
+}
+
 </style>
