@@ -18,14 +18,16 @@
           aria-haspopup="true"
           aria-controls="overlay_tmenu"
         >
-          <i class="pi pi-bell">{{ getCount }}</i>
+          <i class="pi pi-bell" style="fontSize: 1.1rem"
+            ><div class="count" v-if="getCount != 0">{{ getCount }}</div></i
+          >
         </div>
         <OverlayPanel
           ref="op"
-          style="width: 400px; margin-top:-20px; margin-right: 20px"
+          style="width: 350px; margin-top:-20px; margin-right: 20px ; position : absolute"
         >
           <ScrollPanel
-            style="width: 100%; max-height: 300px"
+            style="width: 100%; max-height: 250px; "
             v-if="showListNoti"
           >
             <div class="panel panel-default">
@@ -44,11 +46,9 @@
                 </div>
               </div>
             </div>
-            <button type="submit">View all</button>
           </ScrollPanel>
-          <div v-else>
-            <p>No Notification now</p>
-          </div>
+          <a v-if="getCount != 0" class="left">Mark all as read</a>
+          <a class="right">Show more</a>
         </OverlayPanel>
       </div>
     </div>
@@ -102,7 +102,6 @@ export default {
         .then(
           firebase.messaging.getToken().then(async (fcmToken) => {
             localStorage.setItem("fcm", fcmToken);
-            console.log(fcmToken);
             firebase.messaging.onMessage((payload) => {
               this.$toast.add({
                 severity: "success",
@@ -247,5 +246,35 @@ button.close {
   font-size: 12px;
   margin: 0;
   padding-bottom: 0;
+}
+.count {
+  right: 19px;
+  top: 18px;
+  position: absolute;
+  padding-top: 2.5px;
+  width: 15px;
+  height: 15px;
+  color: #fff;
+  font-size: 12px;
+  font-family: Arial;
+  font-weight: bold;
+  text-align: center;
+  background-color: #d4453b;
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.left{
+  font-size: 14px;
+  float: left;
+  padding-bottom: 5px;
+  color: blue;
+}
+
+.right{
+  font-size: 14px;
+   padding-bottom: 5px;
+  float: right;
+  color: blue;
 }
 </style>

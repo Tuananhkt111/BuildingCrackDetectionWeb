@@ -1,32 +1,47 @@
 <template>
-  <div>
-    <div class="loginpage">
-      <div class="loginInfo">
+  <div class="limitter">
+    <div class="container-login100">
+      <div class="wrap-login100">
         <form @submit.prevent="handleSubmit()">
-          <h2 style="text-align: center">Login Page</h2>
-          <div class="container">
-            <label for="userName"><b>User Name</b></label>
-            <InputText
-              type="text"
-              v-model="userName"
-              class="p-column-filter"
-              placeholder="userName"
-              required
+          <span class="login100-form-title">Login Page</span>
+          <div class="wrap-input100">
+            <!-- <label for="userName"><b>User Name</b></label>
+              <InputText
+                type="text"
+                v-model="userName"
+                class="p-column-filter"
+                placeholder="User Name"
+                required
+              /> -->
+            <div class="p-float-label p-mb-5">
+              <InputText
+                id="username"
+                type="text"
+                v-model="userName"
+                style="width: 270px"
+              />
+              <label>USER NAME</label>
+            </div>
+            <div class="p-float-label p-mb-3">
+              <InputText
+                id="username"
+                type="password"
+                v-model="password"
+                style="width: 270px"
+              />
+              <label>PASSWORD</label>
+            </div>
+            <Button
+              label="Login"
+              type="submit"
+              class="p-button-raised p-button-success p-button-text"
+              style="width: 270px; float : left"
             />
-            <label for="password"><b>Password</b></label>
-            <InputText
-              type="password"
-              v-model="password"
-              class="p-column-filter"
-              placeholder="Password"
-              required
-            />
-            <button type="submit">Login</button>
-            <label>
-              <span class="psw"
-                ><a href="#" @click="forgotPassword">Forgot password?</a></span
-              >
-            </label>
+            <br/>
+            <!-- <button type="submit">Login</button> -->
+            <a href="#" @click="forgotPassword" style="float: right;text-decoration: none" class="p-mt-2"
+              >Forgot password?</a
+            >
           </div>
         </form>
       </div>
@@ -102,11 +117,13 @@
 import { userApi } from "../apis/user";
 import Toast from "primevue/toast";
 import Password from "primevue/password";
+import Button from "primevue/button";
 
 export default {
   components: {
     Toast,
     Password,
+    Button,
   },
   data() {
     return {
@@ -177,15 +194,65 @@ export default {
 
 <style>
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Poppins-Bold;
 }
-.loginpage {
+.limiter {
   width: 100%;
-  height: 100%;
-  text-align: center;
+  margin: 0 auto;
 }
-.loginInfo {
-  display: inline-block;
-  width: 400px;
+.container-login100 {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  /* background: #f2f2f2; */
+  background-image: url(../asset/background1.jpg);
+}
+
+.wrap-login100 {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 30px 55px 33px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+}
+div {
+  display: block;
+}
+
+.login100-form-title {
+  display: block;
+  font-family: Poppins-Bold;
+  font-size: 30px;
+  color: #333;
+  line-height: 1.2;
+  text-align: center;
+  padding-bottom: 35px;
+}
+.wrap-input100 {
+  font-family: Poppins-Bold;
+  width: 100%;
 }
 </style>

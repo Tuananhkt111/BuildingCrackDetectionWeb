@@ -1,24 +1,26 @@
 <template>
-  <div class="p-grid" id="app">
-    <div
-      class="p-col-12 main-app"
-      :class="{ active: getIsActive, inactive: !getIsActive }"
-      v-if="display"
-    >
-      <TopNav></TopNav>
-      <div class="main-layout-container p-d-flex">
-        <div class="layout-menu">
-          <SideBar></SideBar>
-        </div>
-        <div class="main-layout">
-          <div class="main-layout-details">
-            <router-view class="view"></router-view>
-            <!-- <Crack></Crack> -->
+  <div>
+    <div class="p-grid" id="app">
+      <div
+        class="p-col-12 main-app"
+        :class="{ active: getIsActive, inactive: !getIsActive }"
+        v-if="display"
+      >
+        <TopNav></TopNav>
+        <div class="main-layout-container p-d-flex">
+          <div class="layout-menu">
+            <SideBar></SideBar>
+          </div>
+          <div class="main-layout">
+            <div class="main-layout-details">
+              <router-view class="view"></router-view>
+              <!-- <Crack></Crack> -->
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div v-else>
+    <div v-if="!display">
       <Login></Login>
     </div>
   </div>

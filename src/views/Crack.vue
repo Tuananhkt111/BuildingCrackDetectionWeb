@@ -38,7 +38,7 @@
         <template #empty>
           No Cracks found.
         </template>
-        <Column header="Image">
+        <Column header="Image" headerStyle="width: 120px">
           <template #body="slotProps">
             <img
               :src="slotProps.data.image"
@@ -79,11 +79,11 @@
             />
           </template>
         </Column>
-        <Column field="severity" header="Severity" filterMatchMode="equals">
+        <Column field="severity" header="Severity" >
           <template #body="slotProps">
-                  <div :class="stockClass(slotProps.data)">
-                    {{ slotProps.data.severity }}
-                  </div>
+            <span :class="stockClass(slotProps.data)">
+              {{ slotProps.data.severity }}
+            </span>
           </template>
           <template #filter>
             <Dropdown
@@ -102,11 +102,11 @@
             </Dropdown>
           </template>
         </Column>
-        <Column field="status" header="Status" filterMatchMode="equals">
+        <Column field="status" header="Status" headerStyle="width: 270px">
           <template #body="slotProps">
-            <div :class="stockStatus(slotProps.data)">
-                    {{ slotProps.data.status }}
-                  </div>
+            <span :class="stockStatus(slotProps.data)">
+              {{ slotProps.data.status }}
+            </span>
           </template>
 
           <template #filter>
@@ -126,7 +126,7 @@
             </Dropdown>
           </template>
         </Column>
-        <Column>
+        <Column headerStyle="width: 160px">
           <template #body="slotProps">
             <Button
               icon="pi pi-pencil"
@@ -415,49 +415,94 @@ export default {
   justify-content: center;
 }
 textarea {
-    border: none;
-    overflow: auto;
-    outline: none;
-
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-
-    resize: none; /*remove the resize handle on the bottom right*/
+  border: none;
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  resize: none; /*remove the resize handle on the bottom right*/
 }
 .low {
-    font-weight: 700;
-    color: #66BB6A;
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
+  text-transform: uppercase;
+  color: #256029;
 }
 
 .medium {
-    font-weight: 700;
-    color: #FFA726;
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
+  color: #ffa726;
+  text-transform: uppercase;
 }
 
 .high {
-    font-weight: 700;
-    color: #FF5252;
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  background: #c8e6c9;
+  color: #ff5252;
 }
 .detectedFailed {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
   color: #ff5252;
 }
 .unconfirmed {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  background: #c8e6c9;
   color: red;
 }
 .unscheduled {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  background: #c8e6c9;
   color: blue;
 }
 .scheduledformaintenace {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
   color: red;
 }
 .fix {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
   color: #ff5252;
 }
-
 </style>

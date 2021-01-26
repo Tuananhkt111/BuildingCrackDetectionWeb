@@ -96,9 +96,9 @@
           headerStyle="width: 150px"
         >
           <template #body="slotProps">
-            <div :class="stockStatusOrder(slotProps.data)">
+            <span :class="stockStatusOrder(slotProps.data)">
               {{ slotProps.data.status }}
-            </div>
+            </span>
           </template>
 
           <template #filter>
@@ -161,16 +161,16 @@
               </Column>
               <Column field="severity" header="Severity" sortable>
                 <template #body="slotProps">
-                  <div :class="stockClass(slotProps.data)">
+                  <span :class="stockClass(slotProps.data)">
                     {{ slotProps.data.severity }}
-                  </div>
+                  </span>
                 </template>
               </Column>
               <Column field="status" header="Status" sortable>
                 <template #body="slotProps">
-                  <div :class="stockStatus(slotProps.data)">
+                  <span :class="stockStatus(slotProps.data)">
                     {{ slotProps.data.status }}
-                  </div>
+                  </span>
                 </template>
               </Column>
               <Column field="created" header="Created Date" sortable>
@@ -475,37 +475,77 @@ export default {
   border-bottom: 1px solid black;
 }
 .low {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
   color: #66bb6a;
 }
 
 .medium {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
   color: #ffa726;
 }
 
 .high {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
   color: #ff5252;
 }
 .detectedFailed {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
   color: #ff5252;
 }
 .unconfirmed {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
   color: #ffa726;
 }
 .unscheduled {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
   color: #66bb6a;
 }
 .scheduledformaintenace {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
   color: #ff5252;
 }
 .fix {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
   font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  background: #c8e6c9;
   color: #ff5252;
 }
 </style>
