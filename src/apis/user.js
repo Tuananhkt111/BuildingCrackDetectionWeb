@@ -12,35 +12,39 @@ export const userApi = {
   resetPassword,
   forgotPassword,
   changePassword,
+  changeForgotPassword
 };
 
 async function login(userName, password) {
   const token = localStorage.getItem("fcm");
-  console.log(token);
   localStorage.removeItem("fcm");
   const data = {
     userName: userName,
     password: password,
-    fcmToken : token,
+    fcmToken: token,
   };
 
   const res = await ApiHelper.post(
     urlConstants.USER_URL + "/authenticate/manager",
     data
   );
-  if (res && res.data) {
+  if (res != null) {
     localStorage.setItem("jwtToken", res.data.jwtToken);
-    const user = await ApiHelper.get(urlConstants.USER_URL + "/" + res.data.userId);
+    const user = await ApiHelper.get(
+      urlConstants.USER_URL + "/" + res.data.userId
+    );
     localStorage.setItem("user", JSON.stringify(user.data));
+    return res.data;
+  } else {
+    return null;
   }
-  return res.data;
 }
 
 async function createUser(role, name, email, phoneNumber, address, location) {
   var locations = [];
   if (role == "Staff" && location != null) {
     locations[0] = location.locationId;
-  } else if(location != null) {
+  } else if (location != null) {
     for (let i = 0; i != location.length; i++) {
       locations[i] = location[i].locationId;
     }
@@ -84,6 +88,18 @@ async function changePassword(id, oldPass, newPass) {
   };
   const res = await ApiHelper.post(
     urlConstants.USER_URL + "/" + id + "/password",
+    data
+  );
+  return res;
+}
+
+async function changeForgotPassword(id, token, newPass) {
+  const data = {
+    newPass: newPass,
+    token  : token,
+  };
+  const res = await ApiHelper.post(
+    urlConstants.USER_URL + "/" + id + "/forgotpass",
     data
   );
   return res;
@@ -137,4 +153,5 @@ export default {
   resetPassword,
   forgotPassword,
   changePassword,
+  changeForgotPassword
 };

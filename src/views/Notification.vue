@@ -84,10 +84,7 @@ export default {
     markAsRead() {},
 
     rowClass(data) {
-        console.log(data);
-        console.log("aa");
-        console.log(data.isRead ? 'row-accessories' : null);
-      return data.isRead ? "row-accessories" : null;
+      return !data.isRead ? "row-accessories" : null;
     },
     callDate(date) {
       const date1 = new Date(date);

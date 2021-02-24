@@ -44,7 +44,7 @@
         <template #empty>
           No Locations found.
         </template>
-        <Column field="name" header="Location Name" >
+        <Column field="name" header="Location Name">
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
@@ -57,10 +57,7 @@
             />
           </template>
         </Column>
-        <Column
-          field="description"
-          header="Description"
-        >
+        <Column field="description" header="Description">
           <template #body="slotProps">
             {{ slotProps.data.description }}
           </template>
@@ -78,7 +75,6 @@
           header="Created"
           filterMatchMode="custom"
           :filterFunction="filterDate"
-         
         >
           <template #body="slotProps">
             <span>{{ callDate(slotProps.data.created) }}</span>
@@ -98,7 +94,6 @@
           header="LastModified"
           filterMatchMode="custom"
           :filterFunction="filterDate"
-          
         >
           <template #body="slotProps">
             <span>{{ callDate(slotProps.data.lastModified) }}</span>
@@ -143,28 +138,19 @@
       <div class="p-field">
         <label for="name"> Location Name</label>
         <InputText
-          id="Name"
-          v-model.trim="product.locationName"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.locationName }"
+          id="locationName"
+          v-model.trim="locationName"
+          maxlength="30"
         />
-        <small class="p-invalid" v-if="submitted && !product.locationName"
-          >Location Name is required.</small
-        >
+        <small class="p-invalid">{{ errors.locationName }}</small>
       </div>
       <div class="p-field">
         <label for="description">Description</label>
         <InputText
-          id="Description"
-          v-model.trim="product.description"
+          id="description"
+          v-model.trim="description"
           required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.description }"
         />
-        <small class="p-invalid" v-if="submitted && !product.description"
-          >Description is required.</small
-        >
       </div>
       <template #footer>
         <Button
@@ -191,37 +177,25 @@
       <div class="p-field">
         <label for="name"> Location Name</label>
         <InputText
-          id="Name"
-          v-model.trim="product.name"
+          id="locationName"
+          v-model.trim="locationName"
           required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.name }"
+          maxlength="30"
         />
-        <small class="p-invalid" v-if="submitted && !product.name"
-          >Location Name is required.</small
-        >
+        <small class="p-invalid"> {{ errors.locationName }}</small>
       </div>
       <div class="p-field">
         <label for="description">Description</label>
-        <InputText
-          id="Description"
-          v-model.trim="product.description"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.description }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.description"
-          >Description is required.</small
-        >
+        <InputText id="description" v-model.trim="description" />
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="created"> Created Date</label>
-          <p>{{product.created}}</p>
+          <p>{{ product.created }}</p>
         </div>
         <div class="p-field p-col-6">
           <label for="lastModified"> Last Modified</label>
-          <p>{{product.lastModified}}</p>
+          <p>{{ product.lastModified }}</p>
         </div>
       </div>
       <template #footer>
@@ -248,7 +222,9 @@
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
         <span v-if="product"
-          >Are you sure to delete the location <span style="color:red; font-weight: bold;">{{ product.name }}</span>?</span
+          >Are you sure to delete the location
+          <span style="color:red; font-weight: bold;">{{ product.name }}</span
+          >?</span
         >
       </div>
       <template #footer>
@@ -277,8 +253,34 @@ import Toast from "primevue/toast";
 import { locationApi } from "../apis/location";
 import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
 
 export default {
+  setup() {
+    const schema = yup.object({
+      description: yup.string().max(100),
+      locationName: yup
+        .string()
+        .required("Location Name can't be blank")
+        .max(30),
+    });
+
+    const { errors, meta } = useForm({
+      validationSchema: schema,
+    });
+
+    const { value: description } = useField("description");
+    const { value: locationName } = useField("locationName");
+
+    return {
+      description,
+      locationName,
+      errors,
+      meta,
+    };
+  },
+
   components: {
     Button,
     Toast,
@@ -300,6 +302,7 @@ export default {
       filters: {},
       submitted: false,
       messages: [],
+      warnning: "",
     };
   },
   async created() {
@@ -307,27 +310,34 @@ export default {
   },
   methods: {
     ...mapActions("location", ["setLocationList"]),
-    
+
     confirmDeleteProduct(product) {
       this.product = product;
       this.deleteProductsDialog = true;
     },
     openNew() {
+      this.locationName = "";
+      this.description = "";
       this.product = {};
       this.submitted = false;
       this.createLocationDiaglog = true;
     },
     async createLocation() {
-      await locationApi
-        .create(this.product.locationName, this.product.description)
-        .catch((err) => {
-          alert(err);
-        });
-      await this.setLocationList();
-      this.hideDialog();
+      if (this.meta.valid) {
+        await locationApi
+          .create(this.locationName, this.description)
+          .catch((err) => {
+            alert(err);
+          });
+        await this.setLocationList();
+        this.submitted = false;
+        this.hideDialog();
+      }
     },
     editProduct(product) {
       this.product = { ...product };
+      this.locationName = this.product.name;
+      this.description = this.product.description;
       this.product.created = this.callDate(product.created);
       this.product.lastModified = this.callDate(product.lastModified);
       this.submitted = false;
@@ -357,16 +367,15 @@ export default {
       this.hideDialog();
     },
     async updateLocation() {
-      this.getLocationList[
-        this.findIndexById(this.product.locationId)
-      ] = this.product;
-      await locationApi.update(
-        this.product.locationId,
-        this.product.name,
-        this.product.description
-      );
-      this.productDialog = false;
-      await this.setLocationList();
+      if (this.meta.valid) {
+        await locationApi.update(
+          this.product.locationId,
+          this.locationName,
+          this.description
+        );
+        this.productDialog = false;
+        await this.setLocationList();
+      }
     },
     findIndexById(id) {
       let index = -1;

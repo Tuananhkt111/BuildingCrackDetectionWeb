@@ -147,56 +147,29 @@
     >
       <div class="p-field">
         <label for="name">Name</label>
-        <InputText
-          id="name"
-          v-model.trim="product.name"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.name }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.name"
-          >Name is required.</small
-        >
+        <InputText name="name" v-model.trim="name" />
+        <small>{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="phone">Phone</label>
-        <InputText
-          id="phone"
-          v-model.trim="product.phone"
+        <InputMask
+          name="phone"
+          mask="9999999999"
+          v-model.trim="phone"
+          minlenght="10"
           required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.phone }"
         />
-        <small class="p-invalid" v-if="submitted && !product.phone"
-          >Phone is required.</small
-        >
+        <small>{{ errors.phone }}</small>
       </div>
       <div class="p-field">
         <label for="address">Address</label>
-        <InputText
-          id="address"
-          v-model.trim="product.address"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.address }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.address"
-          >Address is required.</small
-        >
+        <InputText name="address" v-model="address" />
+        <small>{{ errors.address }}</small>
       </div>
       <div class="p-field">
         <label for="email">Email</label>
-        <InputText
-          type="email"
-          id="email"
-          v-model.trim="product.email"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.email }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.email"
-          >Email is required.</small
-        >
+        <InputText type="email" name="email" v-model.trim="email" />
+        <small>{{ errors.email }}</small>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
@@ -232,56 +205,28 @@
     >
       <div class="p-field">
         <label for="name">Name</label>
-        <InputText
-          id="name"
-          v-model.trim="product.name"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.name }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.name"
-          >Name is required.</small
-        >
+        <InputText id="name" v-model="name" />
+        <small class="p-invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="phone">Phone</label>
-        <InputText
+        <InputMask
           id="phone"
-          v-model.trim="product.phone"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.phone }"
+          minlenght="10"
+          mask="9999999999"
+          v-model="phone"
         />
-        <small class="p-invalid" v-if="submitted && !product.phone"
-          >Phone is required.</small
-        >
+        <small class="p-invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
         <label for="address">Address</label>
-        <InputText
-          id="address"
-          v-model.trim="product.address"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.address }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.address"
-          >Address is required.</small
-        >
+        <InputText id="address" v-model="address" />
+        <small class="p-invalid">{{ errors.address }}</small>
       </div>
       <div class="p-field">
         <label for="email">Email</label>
-        <InputText
-          type="email"
-          id="email"
-          v-model.trim="product.email"
-          required="true"
-          autofocus
-          :class="{ 'p-invalid': submitted && !product.email }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.email"
-          >Email is required.</small
-        >
+        <InputText name="email" v-model="email" required="true" />
+        <small class="p-invalid">{{ errors.email }}</small>
       </div>
       <template #footer>
         <Button
@@ -334,16 +279,50 @@
 <script>
 import Button from "primevue/button";
 import Calendar from "primevue/calendar";
+import InputMask from "primevue/inputmask";
 import Toast from "primevue/toast";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import maintenanceWorkerApi from "../apis/maintenanceWorker.js";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
 
 export default {
+  setup() {
+    const schema = yup.object({
+      email: yup
+        .string()
+        .required()
+        .email(),
+      address: yup.string().max(30).label("Address"),
+      name: yup.string().required("Worker Name can't be blank").max(20).label("Name"),
+      phone: yup.string().required().label("Phone"),
+    });
+    const { errors, meta, handleReset } = useForm({
+      validationSchema: schema,
+    });
+
+    const { value: email } = useField("email");
+    const { value: name } = useField("name");
+    const { value: address } = useField("address");
+    const { value: phone } = useField("phone");
+
+    return {
+      handleReset,
+      email,
+      name,
+      address,
+      phone,
+      errors,
+      meta,
+    };
+  },
+
   components: {
     Button,
     Toast,
     Calendar,
+    InputMask,
   },
   computed: {
     ...mapGetters("maintenanceWorker", ["getMaintenanceWorkerList"]),
@@ -376,48 +355,46 @@ export default {
       this.deleteProductsDialog = true;
     },
     async createMaintenanceWorker() {
-      await maintenanceWorkerApi
-        .create(
-          this.product.name,
-          this.product.address,
-          this.product.phone,
-          this.product.email
-        )
-        .catch((err) => {
-          alert(err);
-        });
-      await this.setMaintenanceWorkerList();
-      this.hideDialog();
+      if (this.meta.valid) {
+        await maintenanceWorkerApi
+          .create(this.name, this.address, this.phone, this.email)
+          .catch((err) => {
+            alert(err);
+          });
+        await this.setMaintenanceWorkerList();
+        this.hideDialog();
+      }
     },
     async editMaintenanceWorker() {
-      this.getMaintenanceWorkerList[
-        this.findIndexById(this.product.maintenanceWorkerId)
-      ] = this.product;
-      await maintenanceWorkerApi.update(
-        this.product.maintenanceWorkerId,
-        this.product.name,
-        this.product.address,
-        this.product.phone,
-        this.product.email
-      );
-      await this.setMaintenanceWorkerList();
-      this.productDialog = false;
+      if (this.meta.valid) {
+        await maintenanceWorkerApi.update(
+          this.product.maintenanceWorkerId,
+          this.name,
+          this.address,
+          this.phone,
+          this.email
+        );
+        await this.setMaintenanceWorkerList();
+        this.productDialog = false;
+      }
     },
-
     async deleteSelectedProducts() {
       await maintenanceWorkerApi.disable(this.product.maintenanceWorkerId);
       await this.setMaintenanceWorkerList();
       this.hideDialog();
     },
     openNew() {
-      this.product = {};
-      this.submitted = false;
+      this.handleReset();
       this.CreateProductDialog = true;
     },
     editProduct(product) {
       this.product = { ...product };
       this.product.created = this.callDate(this.product.created);
       this.product.lastModified = this.callDate(this.product.lastModified);
+      this.name = this.product.name;
+      this.address = this.product.address;
+      this.phone = this.product.phone;
+      this.email = this.product.email;
       this.submitted = false;
       this.productDialog = true;
     },

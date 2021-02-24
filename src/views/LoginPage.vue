@@ -5,14 +5,6 @@
         <form @submit.prevent="handleSubmit()">
           <span class="login100-form-title">Login Page</span>
           <div class="wrap-input100">
-            <!-- <label for="userName"><b>User Name</b></label>
-              <InputText
-                type="text"
-                v-model="userName"
-                class="p-column-filter"
-                placeholder="User Name"
-                required
-              /> -->
             <div class="p-float-label p-mb-5">
               <InputText
                 id="username"
@@ -24,22 +16,27 @@
             </div>
             <div class="p-float-label p-mb-3">
               <InputText
-                id="username"
+                id="pass"
                 type="password"
                 v-model="password"
                 style="width: 270px"
               />
               <label>PASSWORD</label>
             </div>
+            <!-- <Password v-model="value" weakLabel="Min is 8 character" mediumLabel="Must have one uppercase and one number" promptLabel="example: Pass1234" placeholder="New Password"/> -->
             <Button
               label="Login"
               type="submit"
               class="p-button-raised p-button-success p-button-text"
               style="width: 270px; float : left"
             />
-            <br/>
+            <br />
             <!-- <button type="submit">Login</button> -->
-            <a href="#" @click="forgotPassword" style="float: right;text-decoration: none" class="p-mt-2"
+            <a
+              href="#"
+              @click="forgotPassword"
+              style="float: right;text-decoration: none"
+              class="p-mt-2"
               >Forgot password?</a
             >
           </div>
@@ -137,20 +134,24 @@ export default {
   },
   created() {},
   methods: {
-    handleSubmit() {
+    async handleSubmit() {
       if (this.userName && this.password) {
-        userApi
-          .login(this.userName, this.password)
-          .then((res) => {
-            if (res.isNewUser) {
-              this.ChangePasswordDialog = true;
-            } else {
-              this.$router.go();
-            }
+        const res = await userApi.login(this.userName, this.password);
+        console.log("D MMM" + res);
+        if (res != null) {
+          if (res.isNewUser) {
+            this.ChangePasswordDialog = true;
+          } else {
+            this.$router.push({ path: '/' });
+            this.$router.go();
+          }
+        } else {
+          this.$toast.add({
+            severity: "warn",
+            summary: "User or Password is wrong!! Try again ",
+            life: 3000,
           })
-          .catch((err) => {
-            alert(err);
-          });
+        }
       }
     },
     async changePassword() {
@@ -164,6 +165,7 @@ export default {
             this.newPassword
           )
           .then(() => {
+            this.$router.push("/");
             this.$router.go();
           });
       }

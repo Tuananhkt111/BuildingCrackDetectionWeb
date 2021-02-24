@@ -11,8 +11,11 @@ const notificationStore = {
       return state.notificationList;
     },
     getCount(state) {
-      return state.notificationList.length;
+      return state.notificationList.filter((noti) => !noti.isRead).length;
     },
+    getUnReadNotificationList(state){
+      return state.notificationList.filter((noti) => !noti.isRead);
+    }
   },
 
   mutations: {

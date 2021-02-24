@@ -29,6 +29,9 @@ ApiHelper.interceptors.response.use(
       router.push('/error');
       return Promise.reject(error);
     }
+    if (error.response.status === 404) {
+      return null;
+    }
   }
 );
 

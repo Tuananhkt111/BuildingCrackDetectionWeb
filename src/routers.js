@@ -7,6 +7,7 @@ import User from "./views/User.vue";
 import UserByManager from "./views/UserByManager.vue";
 import Login from "./views/LoginPage.vue";
 import Notification from "./views/Notification.vue";
+import ForgotPassword from "./views/ForgotPassword.vue";
 import urlConstants from "./util/urlConstants";
 import userApi from "./apis/user";
 
@@ -30,6 +31,11 @@ const router = new createRouter({
     { path: "/users", name: "user", component: User },
     { path: "/userByManager", name: "userByManager", component: UserByManager },
     { path: "/notis", name: "notification", component: Notification },
+    {
+      path: "/users/:id/forgotpass",
+      name: "fogotpass",
+      component: ForgotPassword,
+    },
   ],
 });
 
@@ -39,32 +45,28 @@ router.beforeEach((to, from, next) => {
 
   const authRequired = !publicPages.includes(to.path);
 
+  // const forgotPassPage = ["/users/:id/forgotpass"];\
+  // const forgotPass = forgotPassPage.mat(to.path);
+
+  const checkForgotPass = /\/users\/[a-zA-Z]+\/forgotpass/.test(to.path);
+
+  console.log(checkForgotPass);
+
   const loggedIn = localStorage.getItem("jwtToken");
 
   const user = JSON.parse(localStorage.getItem("user"));
-
-  if (user != null) {
-    if (authRequired && !loggedIn) {
-      return next("/login");
-    } else if (user.role == urlConstants.STAFF_ROLE) {
+  // console.log("LAO " + forgotPass);
+  if (checkForgotPass) {
+    localStorage.setItem("checkForgot" , "true");
+    next();
+    this.$router.go();
+  } else if (authRequired && !loggedIn) {
+    return next("/login");
+  } else if (user != null) {
+    if (user.role == urlConstants.STAFF_ROLE) {
       userApi.logout();
       alert("Staff can't login into web");
       return next("/login");
-    }
-    if (user.role != urlConstants.ADMIN_ROLE) {
-      const managerPages = [
-        "/userByManager",
-        "/cracks",
-        "/maintenanceOrders",
-        "/notis",
-        "/account",
-      ];
-      const managerRequired = !managerPages.includes(to.path);
-      if (!managerRequired) {
-        next();
-      } else {
-        return next("/cracks");
-      }
     } else {
       next();
     }

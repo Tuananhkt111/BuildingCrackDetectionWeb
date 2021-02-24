@@ -34,7 +34,7 @@
               <div class="panel-body">
                 <div
                   class="alert alert-info"
-                  v-for="item in getNotificationList"
+                  v-for="item in getUnReadNotificationList"
                   v-bind:key="item"
                   @click="deleteNoti(item.pushNotificationId)"
                 >
@@ -68,14 +68,15 @@ export default {
     ScrollPanel,
   },
   computed: {
-    ...mapGetters("noti", ["getNotificationList", "getCount"]),
+    ...mapGetters("noti", [
+      "getNotificationList",
+      "getCount",
+      "getUnReadNotificationList",
+    ]),
     ...mapGetters("application", ["getIsActive"]),
-    data() {
-      return this.getNotificationList.filter((noti) => !noti.isRead);
-    },
   },
   async created() {
-    if (this.getNotificationList != null) {
+    if (this.getUnReadNotificationList != null) {
       this.showListNoti = true;
     }
     await this.setNotificationList();
@@ -91,6 +92,7 @@ export default {
   },
   methods: {
     ...mapActions("application", ["setIsActive"]),
+    // ...mapActions("user", ["setIsActive"]),
     ...mapActions("noti", ["setNotificationList"]),
     callDate(date) {
       const date1 = new Date(date);
@@ -120,9 +122,9 @@ export default {
           );
         });
     },
-    deleteNoti(id) {
-      console.log(id);
-      notificationApi.deleteNoti(id).catch((err) => console.log(err));
+    async deleteNoti(id) {
+      await notificationApi.deleteNoti(id).catch((err) => console.log(err));
+      await this.setNotificationList();
     },
     toggle(event) {
       this.$refs.op.toggle(event);
@@ -264,16 +266,16 @@ button.close {
   z-index: 3;
 }
 
-.left{
+.left {
   font-size: 14px;
   float: left;
   padding-bottom: 5px;
   color: blue;
 }
 
-.right{
+.right {
   font-size: 14px;
-   padding-bottom: 5px;
+  padding-bottom: 5px;
   float: right;
   color: blue;
 }

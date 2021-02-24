@@ -20,8 +20,11 @@
         </div>
       </div>
     </div>
-    <div v-if="!display">
+    <div v-if="login">
       <Login></Login>
+    </div>
+    <div v-if="checkForgotPass">
+      <ForgotPassword></ForgotPassword>
     </div>
   </div>
 </template>
@@ -31,6 +34,7 @@ import { mapGetters } from "vuex";
 import TopNav from "../src/components/TopNav.vue";
 import SideBar from "../src/components/SideBar.vue";
 import Login from "../src/views/LoginPage.vue";
+import ForgotPassword from "../src/views/ForgotPassword.vue";
 // import Crack from "../src/views/Crack.vue";
 export default {
   name: "app",
@@ -38,6 +42,7 @@ export default {
     TopNav,
     SideBar,
     Login,
+    ForgotPassword,
     // Location,
     // Crack,
   },
@@ -47,11 +52,23 @@ export default {
   data() {
     return {
       display: false,
+      checkForgotPass: false,
+      login: true,
     };
   },
   mounted() {
     if (localStorage.getItem("user")) {
+      this.login = false;
       this.display = true;
+      this.checkForgotPass = false;
+    } else if (localStorage.getItem("checkForgot")) {
+      this.login = false;
+      this.display = false;
+      this.checkForgotPass = true;
+    } else {
+      this.login = true;
+      this.display = false;
+      this.checkForgotPass = false;
     }
   },
 };

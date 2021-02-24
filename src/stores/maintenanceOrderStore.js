@@ -5,6 +5,7 @@ const maintenanceOrderStore = {
   state: {
     maintenanceOrderList: [],
     status: ["Waiting for confirm", "Waiting for maintenance", "Completed"],
+    schedule: [],
   },
 
   getters: {
@@ -13,15 +14,31 @@ const maintenanceOrderStore = {
         console.log("CC Order");
         const orderId = localStorage.getItem("orderId");
         localStorage.removeItem("orderId");
-        return state.maintenanceOrderList.filter((oder) => oder.maintenanceOrderId == orderId);
+        return state.maintenanceOrderList.filter(
+          (oder) => oder.maintenanceOrderId == orderId
+        );
       } else {
         console.log("run BTH");
         return state.maintenanceOrderList;
       }
     },
-    getStatusList(state){
+    getStatusList(state) {
       return state.status;
-    }
+    },
+    getSchedule(state) {
+      for (let index = 0; index < this.maintenanceOrderList.length; index++) {
+        const tmp = null;
+        tmp.id = index;
+        tmp.title =
+          this.maintenanceOrderList[index].locationName +
+          "-" +
+          this.maintenanceOrderList[index].status;
+        tmp.start = this.maintenanceOrderList[index].maintenanceDate;
+        console.log(tmp);
+        this.schedule.push(tmp);
+      }
+      return state.schedule;
+    },
   },
 
   mutations: {

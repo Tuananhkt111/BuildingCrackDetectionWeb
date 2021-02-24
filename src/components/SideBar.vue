@@ -25,6 +25,11 @@
             </button>
           </li>
           <li>
+            <button class="p-link" @click="changePassword">
+              <a><i class="pi pi-fw pi-key"></i><span>Chane Password</span></a>
+            </button>
+          </li>
+          <li>
             <button class="p-link" @click="logOut">
               <a><i class="pi pi-fw pi-power-off"></i><span>Logout</span></a>
             </button>
@@ -35,37 +40,6 @@
     <div>
       <div class="layout-profile">
         <ul>
-          <li>
-            <button class="p-link">
-              <a href="/locations"
-                ><i class="pi pi-fw pi-map-marker"></i><span>Locations</span></a
-              >
-            </button>
-          </li>
-          <li>
-            <button class="p-link">
-              <a href="/cracks"
-                ><i class="pi pi-fw pi-exclamation-triangle"></i
-                ><span>Cracks</span></a
-              >
-            </button>
-          </li>
-          <li>
-            <button class="p-link">
-              <a href="/maintenanceWorkers"
-                ><i class="pi pi-fw pi-users"></i
-                ><span>Maintenance Workers</span></a
-              >
-            </button>
-          </li>
-          <li>
-            <button class="p-link">
-              <a href="/maintenanceOrders"
-                ><i class="pi pi-fw pi-shopping-cart"></i
-                ><span>Maintenance Orders</span></a
-              >
-            </button>
-          </li>
           <li v-if="role === 'Manager'">
             <button class="p-link">
               <a href="/userByManager"
@@ -80,27 +54,159 @@
               >
             </button>
           </li>
+          <li>
+            <button class="p-link">
+              <a href="/cracks"
+                ><i class="pi pi-fw pi-exclamation-triangle"></i
+                ><span>Cracks</span></a
+              >
+            </button>
+          </li>
+          <li>
+            <button class="p-link">
+              <a href="/locations"
+                ><i class="pi pi-fw pi-map-marker"></i><span>Locations</span></a
+              >
+            </button>
+          </li>
+          <li>
+            <button class="p-link">
+              <a href="/maintenanceOrders"
+                ><i class="pi pi-fw pi-shopping-cart"></i
+                ><span>Maintenance Orders</span></a
+              >
+            </button>
+          </li>
+          <li>
+            <button class="p-link">
+              <a href="/maintenanceWorkers"
+                ><i class="pi pi-fw pi-users"></i
+                ><span>Maintenance Workers</span></a
+              >
+            </button>
+          </li>
         </ul>
       </div>
     </div>
+    <Dialog
+      v-model:visible="ChangePassworDialog"
+      :style="{ width: '450px' }"
+      header="Change Password"
+      :modal="true"
+      class="p-fluid"
+    >
+      <div class="p-field">
+        <label>Old Password</label>
+        <InputText id="oldPassword" v-model="oldPassword" type="password" />
+        <small class="p-invalid">{{ errors.oldPassword }}</small>
+      </div>
+      <div class="p-field">
+        <label>New Password</label>
+        <InputText id="newPassword" v-model="newPassword" type="password" />
+        <small class="p-invalid">{{ errors.newPassword }}</small>
+      </div>
+      <div class="p-field">
+        <label>confirm Password</label>
+        <InputText id="confirmPassword" v-model="confirmPassword" type="password" />
+        <small class="p-invalid">{{ errors.confirmPassword }}</small>
+      </div>
+      <template #footer>
+        <Button
+          label="Create"
+          icon="pi pi-check"
+          class="p-button-text"
+          @click="confirmChangePassword"
+        />
+      </template>
+    </Dialog>
   </div>
 </template>
 <script>
 import userApi from "../apis/user.js";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
 export default {
+  setup() {
+    const schema = yup.object({
+      oldPassword: yup
+        .string()
+        .max(30)
+        .label("Old Password")
+        .required()
+        .matches(
+          /^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+          "Password must contain at least 8 characters, one uppercase, one number"
+        ),
+      newPassword: yup
+        .string()
+        .max(30)
+        .label("Old Password")
+        .required()
+        .matches(
+          /^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+          "Password must contain at least 8 characters, one uppercase, one number"
+        ),
+      confirmPassword: yup
+        .string()
+        .required("Please confirm your password")
+        .oneOf([yup.ref("newPassword"), null], "Passwords don't match."),
+    });
+    const { errors, meta, handleReset } = useForm({
+      validationSchema: schema,
+    });
+
+    const { value: oldPassword } = useField("oldPassword");
+    const { value: newPassword } = useField("newPassword");
+    const { value: confirmPassword } = useField("confirmPassword");
+
+    return {
+      handleReset,
+      oldPassword,
+      newPassword,
+      confirmPassword,
+      errors,
+      meta,
+    };
+  },
+
   components: {},
   data() {
     return {
       expanded: false,
       userName: null,
-      role : null,
+      role: null,
+      ChangePassworDialog: false,
     };
   },
   created() {
     this.userName = JSON.parse(localStorage.getItem("user")).name;
-    this.role = JSON.parse(localStorage.getItem('user')).role;
+    this.role = JSON.parse(localStorage.getItem("user")).role;
   },
   methods: {
+    changePassword() {
+      this.handleReset();
+      this.ChangePassworDialog = true;
+    },
+    async confirmChangePassword() {
+      if (this.meta.valid) {
+        await userApi
+          .changePassword(
+            JSON.parse(localStorage.getItem("user")).userId,
+            this.oldPassword,
+            this.newPassword
+          )
+          .then((res) => {
+            this.$toast.add({
+              severity: "success",
+              summary: "Successful",
+              detail: res.data,
+              life: 3000,
+            });
+            this.ChangePassworDialog = false;
+          })
+          .catch((err) => alert(err));
+      }
+    },
     onClick(event) {
       this.expanded = !this.expanded;
       event.preventDefault();
@@ -199,7 +305,6 @@ ul {
 
 .pi {
   font-family: primeicons;
-  speak: none;
   font-style: normal;
   font-weight: 400;
   font-variant: normal;

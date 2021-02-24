@@ -223,10 +223,10 @@
       </div>
       <div class="p-field">
         <label for="phoneNumber">Phone Number</label>
-        <InputText
-          type="text"
-          id="phoneNumber"
+        <InputMask
+          mask="9999999999"
           v-model.trim="product.phoneNumber"
+          placeholder="ex:0934073158"
           required="true"
           :class="{ 'p-invalid': submitted && !product.phoneNumber }"
         />
@@ -295,6 +295,7 @@
           class="p-button-text"
           @click="UpdateUser"
         />
+        <p style="color:red" v-if="submitted">{{ warnning }}</p>
       </template>
     </Dialog>
     <Dialog
@@ -309,8 +310,10 @@
         <InputText
           id="UserName"
           v-model.trim="product.name"
+          
           required="true"
           :class="{ 'p-invalid': submitted && !product.name }"
+          maxlength="50"
         />
         <small class="p-invalid" v-if="submitted && !product.name"
           >Full Name is required.</small
@@ -324,6 +327,7 @@
           v-model.trim="product.email"
           required="true"
           :class="{ 'p-invalid': submitted && !product.email }"
+          maxlength="50"
         />
         <small class="p-invalid" v-if="submitted && !product.email"
           >Email is required.</small
@@ -331,15 +335,15 @@
       </div>
       <div class="p-field">
         <label for="phoneNumber">Phone Number</label>
-        <InputText
-          type="text"
-          id="phoneNumber"
+        <InputMask
+          mask="9999999999"
           v-model.trim="product.phoneNumber"
+          placeholder="ex:0934073158"
           required="true"
           :class="{ 'p-invalid': submitted && !product.phoneNumber }"
         />
         <small class="p-invalid" v-if="submitted && !product.phoneNumber"
-          >PhoneNumber is required.</small
+          >Phone Number is required.</small
         >
       </div>
       <div class="p-formgrid p-grid">
@@ -352,6 +356,9 @@
               }}</span>
             </template>
           </Dropdown>
+          <small class="p-invalid" v-if="submitted && !selectedRole"
+          >Role is required.</small
+        >
         </div>
         <div class="p-field p-col-6">
           <label for="Location">Location</label>
@@ -397,6 +404,7 @@
           class="p-button-text"
           @click="CreateUser"
         />
+        <p style="color:red" v-if="submitted">{{ warnning }}</p>
       </template>
     </Dialog>
     <Dialog
@@ -463,6 +471,7 @@
 import Button from "primevue/button";
 import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
+import InputMask from "primevue/inputmask";
 import Rating from "primevue/rating";
 import MultiSelect from "primevue/multiselect";
 import { mapGetters, mapActions } from "vuex";
@@ -476,6 +485,7 @@ export default {
     Dropdown,
     Rating,
     MultiSelect,
+    InputMask,
   },
   computed: {
     ...mapGetters("user", ["getUserList"]),
@@ -498,9 +508,10 @@ export default {
       product: {},
       ResetPasswordDialog: false,
       filters: {},
-      submitted: false,
+      submitted: true,
       messages: [],
       roles: ["Manager", "Staff"],
+      warnning: null,
     };
   },
 
@@ -520,7 +531,7 @@ export default {
       this.setAvailableLocationStaff(null);
       this.setAvailableLocationManager(null);
       this.product = {};
-      this.submitted = false;
+      this.submitted = true;
       this.UserDialog = true;
       this.selectedRole = null;
       this.selectedLocation = null;
@@ -545,37 +556,66 @@ export default {
         });
     },
     async CreateUser() {
-      this.submitted = true;
-      await userApi
-        .createUser(
-          this.selectedRole,
-          this.product.name,
-          this.product.email,
-          this.product.phoneNumber,
-          this.product.address,
-          this.selectedLocation
-        )
-        .catch((err) => {
-          console.log(err);
-        });
-      await this.setUserList();
-      this.UserDialog = false;
+      this.checkValidate();
+      if (!this.submitted) {
+        await userApi
+          .createUser(
+            this.selectedRole,
+            this.product.name,
+            this.product.email,
+            this.product.phoneNumber,
+            this.product.address,
+            this.selectedLocation
+          )
+          .catch((err) => {
+            console.log(err);
+          });
+        await this.setUserList();
+        this.UserDialog = false;
+      }
+    },
+    checkValidate() {
+      if (this.product.name == "") {
+        this.warnning = "Name can't be empty";
+        this.submitted = true;
+      } else if (this.product.email == "") {
+        this.warnning = "Email can't be empty";
+        this.submitted = true;
+      } else if (this.product.email != "") {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!re.test(String(this.product.email).toLowerCase())) {
+          this.warnning = "Email isn't valid";
+          this.submitted = true;
+        }
+      } else if (this.product.phoneNumber == "") {
+        this.warnning = "Phone Number can't be empty";
+        this.submitted = true;
+      } else if (this.selectedRole == "") {
+        this.warnning = "Please choose Role";
+        this.submitted = true;
+      } else if (this.selectedLocation == "") {
+        this.warnning = "Please choose location";
+        this.submitted = true;
+      }
     },
     async UpdateUser() {
-      await userApi
-        .updateUser(
-          this.product.userId,
-          this.product.name,
-          this.product.email,
-          this.product.phoneNumber,
-          this.product.address,
-          this.selectedLocation
-        )
-        .catch((err) => {
-          console.log(err);
-        });
-      await this.setUserList();
-      this.UserUpdateDialog = false;
+      this.checkValidate();
+      if (!this.submitted) {
+        await userApi
+          .updateUser(
+            this.product.userId,
+            this.product.name,
+            this.product.email,
+            this.product.phoneNumber,
+            this.product.address,
+            this.selectedLocation
+          )
+          .catch((err) => {
+            console.log(err);
+          });
+        await this.setUserList();
+        this.UserUpdateDialog = false;
+      }
     },
     Disable(product) {
       this.product = product;
@@ -649,13 +689,13 @@ export default {
       return day + "-" + month + "-" + date.getFullYear();
     },
     async editProduct(product) {
+      this.submitted = false;
       this.product = { ...product };
       this.selectedLocation = null;
       this.product.created = this.callDate(product.created);
       this.product.lastModified = this.callDate(product.lastModified);
       this.selectedRole = this.product.role;
       const tmp = this.product.locationIds;
-      console.log("CC" + tmp);
       if (tmp.length == 1 && this.selectedRole == "Staff") {
         await this.setAvailableLocationStaff(product.userId);
         this.selectedLocation = this.getAvailableLocationStaff[
@@ -664,8 +704,6 @@ export default {
       } else {
         this.selectedLocation = [];
         await this.setAvailableLocationManager(product.userId);
-        console.log(product.userId);
-        console.log(this.getAvailableLocationManager);
         for (let i = 0; i < tmp.length; i++) {
           this.selectedLocation.push(
             this.getAvailableLocationManager[this.findIndexById(tmp[i])]
