@@ -47,8 +47,10 @@
               </div>
             </div>
           </ScrollPanel>
-          <a v-if="getCount != 0" class="left">Mark all as read</a>
-          <a class="right">Show more</a>
+          <p v-if="getCount != 0" class="left" @click="markAllAsRead()">
+            Mark all as read
+          </p>
+          <a class="right" @click="$router.push('/notis')">Show more</a>
         </OverlayPanel>
       </div>
     </div>
@@ -124,6 +126,29 @@ export default {
     },
     async deleteNoti(id) {
       await notificationApi.deleteNoti(id).catch((err) => console.log(err));
+      await this.setNotificationList();
+    },
+    async markAllAsRead() {
+      const id = [];
+      for (
+        let index = 0;
+        index < this.getUnReadNotificationList.length;
+        index++
+      ) {
+        id[index] = this.getUnReadNotificationList[index].pushNotificationId;
+      }
+      console.log(id);
+      await notificationApi
+        .deleteAllNoti(id)
+        .catch((err) => console.log(err))
+        .then(() => {
+          this.$toast.add({
+            severity: "success",
+            summary: "Successful",
+            detail: "Clear all Notifications!!",
+            life: 3000,
+          });
+        });
       await this.setNotificationList();
     },
     toggle(event) {

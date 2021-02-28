@@ -12,14 +12,14 @@
         <ul v-show="expanded">
           <li>
             <button class="p-link">
-              <a href="/account"
+              <a @click="$router.push('/account')"
                 ><i class="pi pi-fw pi-user"></i><span>Account</span></a
               >
             </button>
           </li>
           <li>
             <button class="p-link">
-              <a href="/notis"
+              <a @click="$router.push('/notis')"
                 ><i class="pi pi-fw pi-bell"></i><span>Notifications</span></a
               >
             </button>
@@ -42,21 +42,21 @@
         <ul>
           <li v-if="role === 'Manager'">
             <button class="p-link">
-              <a href="/userByManager"
+              <a @click="$router.push('/userByManager')"
                 ><i class="pi pi-fw pi-users"></i><span>Staff</span></a
               >
             </button>
           </li>
           <li v-else>
             <button class="p-link">
-              <a href="/users"
+              <a @click="$router.push('/users')"
                 ><i class="pi pi-fw pi-users"></i><span>Users</span></a
               >
             </button>
           </li>
           <li>
             <button class="p-link">
-              <a href="/cracks"
+              <a @click="$router.push('/cracks')"
                 ><i class="pi pi-fw pi-exclamation-triangle"></i
                 ><span>Cracks</span></a
               >
@@ -64,14 +64,14 @@
           </li>
           <li>
             <button class="p-link">
-              <a href="/locations"
+              <a @click="$router.push('/locations')"
                 ><i class="pi pi-fw pi-map-marker"></i><span>Locations</span></a
               >
             </button>
           </li>
           <li>
             <button class="p-link">
-              <a href="/maintenanceOrders"
+              <a @click="$router.push('/maintenanceOrders')"
                 ><i class="pi pi-fw pi-shopping-cart"></i
                 ><span>Maintenance Orders</span></a
               >
@@ -79,7 +79,7 @@
           </li>
           <li>
             <button class="p-link">
-              <a href="/maintenanceWorkers"
+              <a @click="$router.push('/maintenanceWorkers')"
                 ><i class="pi pi-fw pi-users"></i
                 ><span>Maintenance Workers</span></a
               >
@@ -107,7 +107,11 @@
       </div>
       <div class="p-field">
         <label>confirm Password</label>
-        <InputText id="confirmPassword" v-model="confirmPassword" type="password" />
+        <InputText
+          id="confirmPassword"
+          v-model="confirmPassword"
+          type="password"
+        />
         <small class="p-invalid">{{ errors.confirmPassword }}</small>
       </div>
       <template #footer>
@@ -204,7 +208,15 @@ export default {
             });
             this.ChangePassworDialog = false;
           })
-          .catch((err) => alert(err));
+          .catch((err) => {
+            this.$toast.add({
+              severity: "error",
+              summary: "Failed!",
+              detail: err.data,
+              life: 3000,
+            });
+            this.ChangePassworDialog = false;
+          });
       }
     },
     onClick(event) {

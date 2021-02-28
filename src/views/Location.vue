@@ -242,14 +242,14 @@
         />
       </template>
     </Dialog>
-    <Toast />
+    <Toast/>
   </div>
 </template>
 
 <script>
+import Toast from "primevue/toast";
 import Button from "primevue/button";
 import Calendar from "primevue/calendar";
-import Toast from "primevue/toast";
 import { locationApi } from "../apis/location";
 import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
@@ -263,10 +263,10 @@ export default {
       locationName: yup
         .string()
         .required("Location Name can't be blank")
-        .max(30),
+        .max(20),
     });
 
-    const { errors, meta } = useForm({
+    const { errors, meta, handleReset } = useForm({
       validationSchema: schema,
     });
 
@@ -278,13 +278,14 @@ export default {
       locationName,
       errors,
       meta,
+      handleReset,
     };
   },
 
   components: {
     Button,
-    Toast,
     Calendar,
+    Toast
   },
   computed: {
     ...mapGetters("location", ["getLocationList"]),
@@ -303,6 +304,7 @@ export default {
       submitted: false,
       messages: [],
       warnning: "",
+      search : false
     };
   },
   async created() {
@@ -316,25 +318,37 @@ export default {
       this.deleteProductsDialog = true;
     },
     openNew() {
-      this.locationName = "";
-      this.description = "";
-      this.product = {};
-      this.submitted = false;
+      this.handleReset();
       this.createLocationDiaglog = true;
     },
     async createLocation() {
       if (this.meta.valid) {
         await locationApi
           .create(this.locationName, this.description)
+          .then((res) => {
+            this.$toast.add({
+              severity: "success",
+              summary: "Successful",
+              detail: res.data,
+              life: 3000,
+            });
+            this.setLocationList();
+            this.submitted = false;
+            this.hideDialog();
+          })
           .catch((err) => {
-            alert(err);
+            this.$toast.add({
+              severity: "error",
+              summary: "Failed!",
+              detail: err.data,
+              life: 3000,
+            });
+            this.ChangePassworDialog = false;
           });
-        await this.setLocationList();
-        this.submitted = false;
-        this.hideDialog();
       }
     },
     editProduct(product) {
+      this.handleReset();
       this.product = { ...product };
       this.locationName = this.product.name;
       this.description = this.product.description;
@@ -355,26 +369,52 @@ export default {
       this.showAssessment = true;
     },
     async deleteSelectedLocation() {
-      await locationApi.disable(this.product.locationId);
-      this.product = {};
-      this.$toast.add({
-        severity: "success",
-        summary: "Successful",
-        detail: "Location is disabled",
-        life: 3000,
-      });
-      this.setLocationList();
-      this.hideDialog();
+      await locationApi
+        .disable(this.product.locationId)
+        .then((res) => {
+          this.$toast.add({
+            severity: "success",
+            summary: "Successful",
+            detail: res.data,
+            life: 3000,
+          });
+          this.setLocationList();
+          this.hideDialog();
+        })
+        .catch((err) => {
+          this.$toast.add({
+            severity: "error",
+            summary: "Failed!",
+            detail: err.data,
+            life: 3000,
+          });
+          this.hideDialog();
+        });
     },
     async updateLocation() {
       if (this.meta.valid) {
-        await locationApi.update(
-          this.product.locationId,
-          this.locationName,
-          this.description
-        );
-        this.productDialog = false;
-        await this.setLocationList();
+        await locationApi
+          .update(this.product.locationId, this.locationName, this.description)
+          .then((res) => {
+            this.$toast.add({
+              severity: "success",
+              summary: "Successful",
+              detail: res.data,
+              life: 3000,
+            });
+            this.setLocationList();
+            this.productDialog = false;
+            this.setLocationList();
+          })
+          .catch((err) => {
+            this.$toast.add({
+              severity: "error",
+              summary: "Failed!",
+              detail: err.data,
+              life: 3000,
+            });
+            this.ChangePassworDialog = false;
+          });
       }
     },
     findIndexById(id) {

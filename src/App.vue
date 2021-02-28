@@ -4,7 +4,7 @@
       <div
         class="p-col-12 main-app"
         :class="{ active: getIsActive, inactive: !getIsActive }"
-        v-if="display"
+        v-if="!getIsLogin"
       >
         <TopNav></TopNav>
         <div class="main-layout-container p-d-flex">
@@ -20,17 +20,17 @@
         </div>
       </div>
     </div>
-    <div v-if="login">
+    <div v-if="getIsLogin" style="z-index: 1;">
       <Login></Login>
     </div>
-    <div v-if="checkForgotPass">
+    <div v-if="checkForgotPass" style="z-index: 100;">
       <ForgotPassword></ForgotPassword>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import TopNav from "../src/components/TopNav.vue";
 import SideBar from "../src/components/SideBar.vue";
 import Login from "../src/views/LoginPage.vue";
@@ -47,29 +47,26 @@ export default {
     // Crack,
   },
   computed: {
-    ...mapGetters("application", ["getIsActive"]),
+    ...mapGetters("application", ["getIsActive", "getIsLogin"]),
   },
   data() {
     return {
-      display: false,
       checkForgotPass: false,
-      login: true,
+      login: false,
     };
   },
-  mounted() {
+  created() {
     if (localStorage.getItem("user")) {
-      this.login = false;
-      this.display = true;
-      this.checkForgotPass = false;
-    } else if (localStorage.getItem("checkForgot")) {
-      this.login = false;
-      this.display = false;
-      this.checkForgotPass = true;
-    } else {
-      this.login = true;
-      this.display = false;
-      this.checkForgotPass = false;
+      this.setIsLogin(false);
     }
+  },
+  mounted() {
+    if (localStorage.getItem("checkForgot")) {
+      this.checkForgotPass = true;
+    }
+  },
+  methods: {
+    ...mapActions("application", ["setIsLogin"]),
   },
 };
 </script>

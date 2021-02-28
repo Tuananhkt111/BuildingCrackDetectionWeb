@@ -45,21 +45,16 @@ router.beforeEach((to, from, next) => {
 
   const authRequired = !publicPages.includes(to.path);
 
-  // const forgotPassPage = ["/users/:id/forgotpass"];\
-  // const forgotPass = forgotPassPage.mat(to.path);
-
   const checkForgotPass = /\/users\/[a-zA-Z]+\/forgotpass/.test(to.path);
-
-  console.log(checkForgotPass);
 
   const loggedIn = localStorage.getItem("jwtToken");
 
   const user = JSON.parse(localStorage.getItem("user"));
-  // console.log("LAO " + forgotPass);
+
+  console.log("AA");
   if (checkForgotPass) {
-    localStorage.setItem("checkForgot" , "true");
+    localStorage.setItem("checkForgot", "true");
     next();
-    this.$router.go();
   } else if (authRequired && !loggedIn) {
     return next("/login");
   } else if (user != null) {
@@ -70,6 +65,9 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
+  } else {
+    localStorage.removeItem("checkForgot");
+    next();
   }
 });
 

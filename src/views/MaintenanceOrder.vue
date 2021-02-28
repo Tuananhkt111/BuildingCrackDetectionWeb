@@ -480,7 +480,6 @@ export default {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: #66bb6a;
 }
 
@@ -490,7 +489,6 @@ export default {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: #ffa726;
 }
 
@@ -500,7 +498,6 @@ export default {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: #ff5252;
 }
 .detectedFailed {
@@ -509,7 +506,6 @@ export default {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: #ff5252;
 }
 .unconfirmed {
@@ -518,7 +514,6 @@ export default {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: #ffa726;
 }
 .unscheduled {
@@ -527,7 +522,6 @@ export default {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: #66bb6a;
 }
 .scheduledformaintenace {
@@ -536,7 +530,6 @@ export default {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: #ff5252;
 }
 .fix {
@@ -545,7 +538,6 @@ export default {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: #ff5252;
 }
 </style>

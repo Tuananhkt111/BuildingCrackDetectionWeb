@@ -198,58 +198,30 @@
       </div>
       <div class="p-field">
         <label for="name">Full Name</label>
-        <InputText
-          id="name"
-          v-model.trim="product.name"
-          required="true"
-          :class="{ 'p-invalid': submitted && !product.name }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.name"
-          >Full Name is required.</small
-        >
+        <InputText name="name" v-model.trim="name" />
+        <small>{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="email">Email</label>
-        <InputText
-          type="email"
-          id="email"
-          v-model.trim="product.email"
-          required="true"
-          :class="{ 'p-invalid': submitted && !product.email }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.email"
-          >Email is required.</small
-        >
+        <InputText type="email" name="email" v-model.trim="email" />
+        <small>{{ errors.email }}</small>
       </div>
       <div class="p-field">
         <label for="phoneNumber">Phone Number</label>
-        <InputMask
-          mask="9999999999"
-          v-model.trim="product.phoneNumber"
-          placeholder="ex:0934073158"
-          required="true"
-          :class="{ 'p-invalid': submitted && !product.phoneNumber }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.phoneNumber"
-          >PhoneNumber is required.</small
-        >
+        <InputMask name="phone" mask="9999999999" v-model.trim="phone" />
+        <small>{{ errors.phone }}</small>
       </div>
       <div class="p-field">
         <label for="address">Address</label>
-        <Textarea
-          id="address"
-          v-model="product.address"
-          required="true"
-          rows="3"
-          cols="20"
-        />
+        <Textarea name="address" v-model="address" rows="3" cols="20" />
+        <small>{{ errors.address }}</small>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="role">Role</label>
           <p>{{ selectedRole }}</p>
         </div>
-        <div class="p-field p-col-6">
+        <div class="p-field p-col-6" v-if="selectedRole != null">
           <label for="Location">Location</label>
           <MultiSelect
             v-if="selectedRole === 'Manager'"
@@ -307,45 +279,20 @@
     >
       <div class="p-field">
         <label for="name">Full Name</label>
-        <InputText
-          id="UserName"
-          v-model.trim="product.name"
-          
-          required="true"
-          :class="{ 'p-invalid': submitted && !product.name }"
-          maxlength="50"
-        />
-        <small class="p-invalid" v-if="submitted && !product.name"
-          >Full Name is required.</small
-        >
+        <InputText name="name" v-model.trim="name" />
+        <small>{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="email">Email</label>
-        <InputText
-          type="email"
-          id="Email"
-          v-model.trim="product.email"
-          required="true"
-          :class="{ 'p-invalid': submitted && !product.email }"
-          maxlength="50"
-        />
-        <small class="p-invalid" v-if="submitted && !product.email"
-          >Email is required.</small
-        >
+        <InputText type="email" name="email" v-model.trim="email" />
+        <small>{{ errors.email }}</small>
       </div>
       <div class="p-field">
         <label for="phoneNumber">Phone Number</label>
-        <InputMask
-          mask="9999999999"
-          v-model.trim="product.phoneNumber"
-          placeholder="ex:0934073158"
-          required="true"
-          :class="{ 'p-invalid': submitted && !product.phoneNumber }"
-        />
-        <small class="p-invalid" v-if="submitted && !product.phoneNumber"
-          >Phone Number is required.</small
-        >
+        <InputMask name="phone" mask="9999999999" v-model.trim="phone" />
+        <small>{{ errors.phone }}</small>
       </div>
+
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="role">Role</label>
@@ -356,11 +303,8 @@
               }}</span>
             </template>
           </Dropdown>
-          <small class="p-invalid" v-if="submitted && !selectedRole"
-          >Role is required.</small
-        >
         </div>
-        <div class="p-field p-col-6">
+        <div class="p-field p-col-6" v-if="selectedRole != null">
           <label for="Location">Location</label>
           <MultiSelect
             v-if="selectedRole === 'Manager'"
@@ -383,13 +327,8 @@
       </div>
       <div class="p-field">
         <label for="address">Address</label>
-        <Textarea
-          id="address"
-          v-model="product.address"
-          required="true"
-          rows="3"
-          cols="20"
-        />
+        <Textarea name="address" v-model="address" rows="3" cols="20" />
+        <small>{{ errors.address }}</small>
       </div>
       <template #footer>
         <Button
@@ -477,8 +416,51 @@ import MultiSelect from "primevue/multiselect";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import { userApi } from "../apis/user";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
 
 export default {
+  setup() {
+    const schema = yup.object({
+      name: yup
+        .string()
+        .max(20)
+        .label("Name")
+        .required(),
+      email: yup
+        .string()
+        .required()
+        .email(),
+      address: yup
+        .string()
+        .max(30)
+        .label("Address")
+        .required(),
+      phone: yup
+        .string()
+        .required()
+        .label("Phone"),
+    });
+    const { errors, meta, handleReset } = useForm({
+      validationSchema: schema,
+    });
+
+    const { value: email } = useField("email");
+    const { value: name } = useField("name");
+    const { value: address } = useField("address");
+    const { value: phone } = useField("phone");
+
+    return {
+      handleReset,
+      email,
+      name,
+      address,
+      phone,
+      errors,
+      meta,
+    };
+  },
+
   components: {
     Button,
     Toast,
@@ -499,8 +481,8 @@ export default {
     return {
       createStaffLocation: null,
       changedRole: null,
-      selectedRole: null,
       selectedLocation: null,
+      selectedRole: null,
       UserDialog: false,
       UserUpdateDialog: false,
       showAssessment: false,
@@ -530,8 +512,7 @@ export default {
     openNew() {
       this.setAvailableLocationStaff(null);
       this.setAvailableLocationManager(null);
-      this.product = {};
-      this.submitted = true;
+      this.handleReset();
       this.UserDialog = true;
       this.selectedRole = null;
       this.selectedLocation = null;
@@ -546,75 +527,91 @@ export default {
         .catch((err) => {
           console.log(err);
         })
-        .then(() => {
-          this.ResetPasswordDialog = false;
+        .then((res) => {
           this.$toast.add({
-            severity: "info",
-            summary: "Reset Password Success",
+            severity: "success",
+            summary: "Successful",
+            detail: res.data,
             life: 3000,
           });
+          this.setUserList();
+          this.submitted = false;
+          this.ResetPasswordDialog = false;
+        })
+        .catch((err) => {
+          this.$toast.add({
+            severity: "error",
+            summary: "Failed!",
+            detail: err.data,
+            life: 3000,
+          });
+          this.ResetPasswordDialog = false;
         });
     },
     async CreateUser() {
-      this.checkValidate();
-      if (!this.submitted) {
+      console.log("CC");
+      if (this.meta.valid) {
+        console.log("DD");
         await userApi
           .createUser(
             this.selectedRole,
-            this.product.name,
-            this.product.email,
-            this.product.phoneNumber,
-            this.product.address,
+            this.name,
+            this.email,
+            this.phone,
+            this.address,
             this.selectedLocation
           )
+          .then((res) => {
+            this.$toast.add({
+              severity: "success",
+              summary: "Successful",
+              detail: res.data,
+              life: 3000,
+            });
+            this.setUserList();
+            this.UserDialog = false;
+          })
           .catch((err) => {
-            console.log(err);
+            this.$toast.add({
+              severity: "error",
+              summary: "Failed!",
+              detail: err.data,
+              life: 3000,
+            });
+            this.UserDialog = false;
           });
-        await this.setUserList();
-        this.UserDialog = false;
-      }
-    },
-    checkValidate() {
-      if (this.product.name == "") {
-        this.warnning = "Name can't be empty";
-        this.submitted = true;
-      } else if (this.product.email == "") {
-        this.warnning = "Email can't be empty";
-        this.submitted = true;
-      } else if (this.product.email != "") {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!re.test(String(this.product.email).toLowerCase())) {
-          this.warnning = "Email isn't valid";
-          this.submitted = true;
-        }
-      } else if (this.product.phoneNumber == "") {
-        this.warnning = "Phone Number can't be empty";
-        this.submitted = true;
-      } else if (this.selectedRole == "") {
-        this.warnning = "Please choose Role";
-        this.submitted = true;
-      } else if (this.selectedLocation == "") {
-        this.warnning = "Please choose location";
-        this.submitted = true;
       }
     },
     async UpdateUser() {
-      this.checkValidate();
-      if (!this.submitted) {
+      if (this.meta.valid) {
         await userApi
           .updateUser(
             this.product.userId,
-            this.product.name,
-            this.product.email,
-            this.product.phoneNumber,
-            this.product.address,
+            this.name,
+            this.email,
+            this.phone,
+            this.address,
             this.selectedLocation
           )
+          .then((res) => {
+            this.$toast.add({
+              severity: "success",
+              summary: "Successful",
+              detail: res.data,
+              life: 3000,
+            });
+            this.setUserList();
+            this.UserUpdateDialog = false;
+          })
           .catch((err) => {
-            console.log(err);
+            this.$toast.add({
+              severity: "error",
+              summary: "Failed!",
+              detail: err.data,
+              life: 3000,
+            });
+            this.UserUpdateDialog = false;
           });
-        await this.setUserList();
-        this.UserUpdateDialog = false;
       }
     },
     Disable(product) {
@@ -622,9 +619,27 @@ export default {
       this.DisableDialog = true;
     },
     async DisableAccount() {
-      await userApi.deleteUser(this.product.userId);
-      await this.setUserList();
-      this.DisableDialog = false;
+      await userApi
+        .deleteUser(this.product.userId)
+        .then((res) => {
+          this.$toast.add({
+            severity: "success",
+            summary: "Successful",
+            detail: res.data,
+            life: 3000,
+          });
+          this.setUserList();
+          this.DisableDialog = false;
+        })
+        .catch((err) => {
+          this.$toast.add({
+            severity: "error",
+            summary: "Failed!",
+            detail: err.data,
+            life: 3000,
+          });
+          this.DisableDialog = false;
+        });
     },
     hideDialog() {
       this.showAssessment = false;
@@ -689,8 +704,12 @@ export default {
       return day + "-" + month + "-" + date.getFullYear();
     },
     async editProduct(product) {
-      this.submitted = false;
-      this.product = { ...product };
+      this.handleReset();
+      this.name = product.name;
+      (this.email = product.email),
+        (this.phone = product.phoneNumber),
+        (this.address = product.address),
+        (this.product = { ...product });
       this.selectedLocation = null;
       this.product.created = this.callDate(product.created);
       this.product.lastModified = this.callDate(product.lastModified);

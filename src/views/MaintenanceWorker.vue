@@ -152,13 +152,7 @@
       </div>
       <div class="p-field">
         <label for="phone">Phone</label>
-        <InputMask
-          name="phone"
-          mask="9999999999"
-          v-model.trim="phone"
-          minlenght="10"
-          required="true"
-        />
+        <InputMask name="phone" mask="9999999999" v-model.trim="phone" />
         <small>{{ errors.phone }}</small>
       </div>
       <div class="p-field">
@@ -294,9 +288,19 @@ export default {
         .string()
         .required()
         .email(),
-      address: yup.string().max(30).label("Address"),
-      name: yup.string().required("Worker Name can't be blank").max(20).label("Name"),
-      phone: yup.string().required().label("Phone"),
+      address: yup
+        .string()
+        .max(30)
+        .label("Address"),
+      name: yup
+        .string()
+        .required("Worker Name can't be blank")
+        .max(20)
+        .label("Name"),
+      phone: yup
+        .string()
+        .required()
+        .label("Phone"),
     });
     const { errors, meta, handleReset } = useForm({
       validationSchema: schema,
@@ -360,28 +364,81 @@ export default {
           .create(this.name, this.address, this.phone, this.email)
           .catch((err) => {
             alert(err);
+          })
+          .then((res) => {
+            this.$toast.add({
+              severity: "success",
+              summary: "Successful",
+              detail: res.data,
+              life: 3000,
+            });
+            this.setMaintenanceWorkerList();
+            this.hideDialog();
+          })
+          .catch((err) => {
+            this.$toast.add({
+              severity: "error",
+              summary: "Failed!",
+              detail: err.data,
+              life: 3000,
+            });
+            this.hideDialog();
           });
-        await this.setMaintenanceWorkerList();
-        this.hideDialog();
       }
     },
     async editMaintenanceWorker() {
       if (this.meta.valid) {
-        await maintenanceWorkerApi.update(
-          this.product.maintenanceWorkerId,
-          this.name,
-          this.address,
-          this.phone,
-          this.email
-        );
-        await this.setMaintenanceWorkerList();
-        this.productDialog = false;
+        await maintenanceWorkerApi
+          .update(
+            this.product.maintenanceWorkerId,
+            this.name,
+            this.address,
+            this.phone,
+            this.email
+          )
+          .then((res) => {
+            this.$toast.add({
+              severity: "success",
+              summary: "Successful",
+              detail: res.data,
+              life: 3000,
+            });
+            this.setMaintenanceWorkerList();
+            this.productDialog = false;
+          })
+          .catch((err) => {
+            this.$toast.add({
+              severity: "error",
+              summary: "Failed!",
+              detail: err.data,
+              life: 3000,
+            });
+            this.productDialog = false;
+          });
       }
     },
     async deleteSelectedProducts() {
-      await maintenanceWorkerApi.disable(this.product.maintenanceWorkerId);
-      await this.setMaintenanceWorkerList();
-      this.hideDialog();
+      await maintenanceWorkerApi
+        .disable(this.product.maintenanceWorkerId)
+        .then((res) => {
+          this.$toast.add({
+            severity: "success",
+            summary: "Successful",
+            detail: res.data,
+            life: 3000,
+          });
+          this.setMaintenanceWorkerList();
+          this.hideDialog();
+        })
+        .catch((err) => {
+          this.$toast.add({
+            severity: "error",
+            summary: "Failed!",
+            detail: err.data,
+            life: 3000,
+          });
+          this.hideDialog();
+        });
     },
     openNew() {
       this.handleReset();

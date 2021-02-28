@@ -75,13 +75,12 @@ export default {
         await userApi
           .changeForgotPassword(
             this.$route.params.id,
-            (this.token = this.$route.query.token),
+            this.$route.query.token,
             this.newPassword
           )
           .then(() => {
             localStorage.removeItem("checkForgot");
-            this.$router.push('home'); 
-            this.$router.go();
+            window.location = "/";
           })
           .catch((err) => alert(err));
       }

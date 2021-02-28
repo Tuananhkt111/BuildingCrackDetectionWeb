@@ -251,13 +251,11 @@
         />
       </template>
     </Dialog>
-    <Toast />
   </div>
 </template>
 
 <script>
 import Button from "primevue/button";
-import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
 import Rating from "primevue/rating";
 import Textarea from "primevue/textarea";
@@ -267,7 +265,6 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     Button,
-    Toast,
     Dropdown,
     Rating,
     Textarea,
@@ -429,7 +426,6 @@ textarea {
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   text-transform: uppercase;
   color: #256029;
 }
@@ -440,7 +436,6 @@ textarea {
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: #ffa726;
   text-transform: uppercase;
 }
@@ -452,7 +447,6 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  background: #c8e6c9;
   color: #ff5252;
 }
 .detectedFailed {
@@ -462,7 +456,6 @@ textarea {
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: #ff5252;
 }
 .unconfirmed {
@@ -472,7 +465,6 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  background: #c8e6c9;
   color: red;
 }
 .unscheduled {
@@ -482,7 +474,6 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  background: #c8e6c9;
   color: blue;
 }
 .scheduledformaintenace {
@@ -492,7 +483,6 @@ textarea {
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: red;
 }
 .fix {
@@ -502,7 +492,6 @@ textarea {
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  background: #c8e6c9;
   color: #ff5252;
 }
 </style>

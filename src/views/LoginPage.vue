@@ -115,12 +115,16 @@ import { userApi } from "../apis/user";
 import Toast from "primevue/toast";
 import Password from "primevue/password";
 import Button from "primevue/button";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     Toast,
     Password,
     Button,
+  },
+  computed: {
+    ...mapGetters("application", ["getIsActive", "getIsLogin"]),
   },
   data() {
     return {
@@ -134,23 +138,24 @@ export default {
   },
   created() {},
   methods: {
+    ...mapActions("application", ["setIsActive", "setIsLogin"]),
+
     async handleSubmit() {
       if (this.userName && this.password) {
         const res = await userApi.login(this.userName, this.password);
-        console.log("D MMM" + res);
         if (res != null) {
           if (res.isNewUser) {
             this.ChangePasswordDialog = true;
           } else {
-            this.$router.push({ path: '/' });
-            this.$router.go();
+            this.setIsLogin(!this.getIsLogin);
+            this.$router.push("/");
           }
         } else {
           this.$toast.add({
             severity: "warn",
             summary: "User or Password is wrong!! Try again ",
             life: 3000,
-          })
+          });
         }
       }
     },
@@ -180,10 +185,16 @@ export default {
     async confirmForgotPassword() {
       await userApi
         .forgotPassword(this.userName)
-        .catch((err) => console.log(err))
+        .catch((err) =>
+          this.$toast.add({
+            severity: "error",
+            summary: err.data,
+            life: 3000,
+          })
+        )
         .then((res) =>
           this.$toast.add({
-            severity: "info",
+            severity: "success",
             summary: res.data,
             life: 3000,
           })

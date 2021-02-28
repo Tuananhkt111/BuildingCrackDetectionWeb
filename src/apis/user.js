@@ -5,6 +5,7 @@ export const userApi = {
   login,
   logout,
   getAll,
+  getUserById,
   deleteUser,
   getUsersCount,
   createUser,
@@ -34,7 +35,8 @@ async function login(userName, password) {
       urlConstants.USER_URL + "/" + res.data.userId
     );
     localStorage.setItem("user", JSON.stringify(user.data));
-    return res.data;
+    console.log(user.data);
+    return JSON.stringify(user.data);
   } else {
     return null;
   }
@@ -58,6 +60,11 @@ async function createUser(role, name, email, phoneNumber, address, location) {
     locationIds: locations,
   };
   const res = await ApiHelper.post(urlConstants.USER_URL + "/", data);
+  return res;
+}
+
+async function getUserById(id){
+  const res = ApiHelper.get(urlConstants.USER_URL + "/", id);
   return res;
 }
 
@@ -148,10 +155,11 @@ export default {
   getAll,
   deleteUser,
   getUsersCount,
+  getUserById,
   createUser,
   updateUser,
   resetPassword,
   forgotPassword,
   changePassword,
-  changeForgotPassword
+  changeForgotPassword,
 };
