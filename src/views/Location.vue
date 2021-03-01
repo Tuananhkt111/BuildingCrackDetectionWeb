@@ -8,7 +8,10 @@
         dataKey="id"
         :paginator="true"
         :rows="5"
-        :filters="filters"
+        v-model:filters="filters"
+        :globalFilterFields="['name']"
+        filterDisplay="menu"
+        :loading="loading1"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} locations"
@@ -34,8 +37,8 @@
               <span class="p-input-icon-left" style="margin:2px">
                 <i class="pi pi-search" />
                 <InputText
-                  v-model="filters['global']"
-                  placeholder="Search..."
+                  v-model="filters['global'].value"
+                  placeholder="Keyword Search"
                 />
               </span>
             </span>
@@ -48,14 +51,22 @@
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
+            <InputText
+              type="text"
+              v-model="filterModel.value"
+              class="p-column-filter"
+              placeholder="Search by name"
+            />
+          </template>
+          <!-- <template #filter>
             <InputText
               type="text"
               v-model="filters['name']"
               class="p-column-filter"
               placeholder="Search"
             />
-          </template>
+          </template> -->
         </Column>
         <Column field="description" header="Description">
           <template #body="slotProps">
@@ -90,21 +101,19 @@
           </template>
         </Column>
         <Column
-          field="lastModified"
-          header="LastModified"
-          filterMatchMode="custom"
-          :filterFunction="filterDate"
+          header="Date"
+          filterField="lastModified"
+          dataType="date"
+          style="min-width:10rem"
         >
-          <template #body="slotProps">
-            <span>{{ callDate(slotProps.data.lastModified) }}</span>
+          <template #body="{data}">
+            {{ formatDate(data.lastModified) }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <Calendar
-              appendTo="body"
-              v-model="filters['lastModified']"
-              dateFormat="dd-mm-yy"
-              class="p-column-filter"
-              placeholder="Last Modified"
+              v-model="filterModel.value"
+              dateFormat="mm/dd/yy"
+              placeholder="mm/dd/yyyy"
             />
           </template>
         </Column>
@@ -242,7 +251,7 @@
         />
       </template>
     </Dialog>
-    <Toast/>
+    <Toast />
   </div>
 </template>
 
@@ -252,8 +261,10 @@ import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import { locationApi } from "../apis/location";
 import moment from "moment";
+import contentNoti from "../util/contentNoti.js";
 import { mapGetters, mapActions } from "vuex";
 import { useForm, useField } from "vee-validate";
+import { FilterMatchMode, FilterOperator } from "primevue/api";
 import * as yup from "yup";
 
 export default {
@@ -285,7 +296,7 @@ export default {
   components: {
     Button,
     Calendar,
-    Toast
+    Toast,
   },
   computed: {
     ...mapGetters("location", ["getLocationList"]),
@@ -304,11 +315,14 @@ export default {
       submitted: false,
       messages: [],
       warnning: "",
-      search : false
+      search: false,
+      loading1: true,
     };
   },
   async created() {
+    this.initFilters();
     await this.setLocationList();
+    this.loading1 = false;
   },
   methods: {
     ...mapActions("location", ["setLocationList"]),
@@ -325,22 +339,22 @@ export default {
       if (this.meta.valid) {
         await locationApi
           .create(this.locationName, this.description)
-          .then((res) => {
+          .then(() => {
             this.$toast.add({
               severity: "success",
-              summary: "Successful",
-              detail: res.data,
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.LOCATION_CREATE_SUCCESS,
               life: 3000,
             });
             this.setLocationList();
             this.submitted = false;
             this.hideDialog();
           })
-          .catch((err) => {
+          .catch(() => {
             this.$toast.add({
               severity: "error",
-              summary: "Failed!",
-              detail: err.data,
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.LOCATION_CREATE_FAILED,
               life: 3000,
             });
             this.ChangePassworDialog = false;
@@ -371,21 +385,21 @@ export default {
     async deleteSelectedLocation() {
       await locationApi
         .disable(this.product.locationId)
-        .then((res) => {
+        .then(() => {
           this.$toast.add({
             severity: "success",
-            summary: "Successful",
-            detail: res.data,
+            summary: contentNoti.SUCCESS_SUMMARY,
+            detail: contentNoti.LOCATION_DISABLE_SUCCESS,
             life: 3000,
           });
           this.setLocationList();
           this.hideDialog();
         })
-        .catch((err) => {
+        .catch(() => {
           this.$toast.add({
             severity: "error",
-            summary: "Failed!",
-            detail: err.data,
+            summary: contentNoti.FAIL_SUMMARY,
+            detail: contentNoti.LOCATION_DISABLE_FAILED,
             life: 3000,
           });
           this.hideDialog();
@@ -395,22 +409,22 @@ export default {
       if (this.meta.valid) {
         await locationApi
           .update(this.product.locationId, this.locationName, this.description)
-          .then((res) => {
+          .then(() => {
             this.$toast.add({
               severity: "success",
-              summary: "Successful",
-              detail: res.data,
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.LOCATION_EDIT_SUCCESS,
               life: 3000,
             });
             this.setLocationList();
             this.productDialog = false;
             this.setLocationList();
           })
-          .catch((err) => {
+          .catch(() => {
             this.$toast.add({
               severity: "error",
-              summary: "Failed!",
-              detail: err.data,
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.LOCATION_EDIT_FAILED,
               life: 3000,
             });
             this.ChangePassworDialog = false;
@@ -432,7 +446,7 @@ export default {
     },
     callDate(date) {
       const date1 = new Date(date);
-      return moment(date1).format("DD-MM-YYYY hh:mm:ss");
+      return moment(date1).format("DD/MM/YYYY hh:mm:ss");
     },
     filterDate(value, filter) {
       if (
@@ -449,7 +463,7 @@ export default {
       let tmp = this.callDate(value).substring(0, 10);
       return tmp === this.formatDate(filter);
     },
-    formatDate(date) {
+    formatDateTMP(date) {
       let month = date.getMonth() + 1;
       let day = date.getDate();
       if (month < 10) {
@@ -459,6 +473,32 @@ export default {
         day = "0" + day;
       }
       return day + "-" + month + "-" + date.getFullYear();
+    },
+    formatDate(value) {
+      return new Date(value).toLocaleDateString("en-US", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+    },
+    initFilters() {
+      this.filters = {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        name: {
+          operator: FilterOperator.AND,
+          constraints: [
+            { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+          ],
+        },
+        created: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }],
+        },
+        lastModified: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }],
+        },
+      };
     },
   },
 };

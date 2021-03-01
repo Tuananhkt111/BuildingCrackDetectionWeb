@@ -1,6 +1,6 @@
 <template>
   <div class="limitter">
-    <div class="container-login100">
+    <div class="container-login100" v-if="!ForgotPasswordDialog">
       <div class="wrap-login100">
         <form @submit.prevent="handleSubmit()">
           <span class="login100-form-title">Login Page</span>
@@ -44,13 +44,7 @@
       </div>
     </div>
     <Toast />
-    <Dialog
-      v-model:visible="ForgotPasswordDialog"
-      :style="{ width: '350px' }"
-      header="Fogot Password"
-      :modal="true"
-      class="p-fluid"
-    >
+    <div v-if="ForgotPasswordDialog">
       <div class="p-field">
         <label for="userName">User Name</label>
         <InputText id="userName" v-model.trim="userName" required="true" />
@@ -58,7 +52,6 @@
           >Full Name is required.</small
         >
       </div>
-      <template #footer>
         <Button
           label="Cancel"
           icon="pi pi-times"
@@ -71,8 +64,7 @@
           class="p-button-text"
           @click="confirmForgotPassword"
         />
-      </template>
-    </Dialog>
+    </div>
     <Dialog
       v-model:visible="ChangePasswordDialog"
       :style="{ width: '350px' }"

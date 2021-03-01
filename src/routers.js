@@ -51,22 +51,21 @@ router.beforeEach((to, from, next) => {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  console.log("AA");
-  if (checkForgotPass) {
-    localStorage.setItem("checkForgot", "true");
-    next();
-  } else if (authRequired && !loggedIn) {
-    return next("/login");
-  } else if (user != null) {
+  if (user != null) {
     if (user.role == urlConstants.STAFF_ROLE) {
       userApi.logout();
       alert("Staff can't login into web");
       return next("/login");
+    } else if (checkForgotPass) {
+      next("/");
     } else {
       next();
     }
+  } else if (checkForgotPass) {
+    next();
+  } else if (authRequired && !loggedIn) {
+    return next("/login");
   } else {
-    localStorage.removeItem("checkForgot");
     next();
   }
 });

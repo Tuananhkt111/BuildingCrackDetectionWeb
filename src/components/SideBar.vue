@@ -2,7 +2,7 @@
   <div class="side-bar-layout">
     <div class="layout-profile">
       <div>
-        <img src="assets/icons8-admin-settings-male-100.png" alt="" />
+        <img src="/assets/icons8-admin-settings-male-100.png" alt="" />
       </div>
       <button class="p-link layout-profile-link" @click="onClick">
         <span class="username">{{ userName }}</span>

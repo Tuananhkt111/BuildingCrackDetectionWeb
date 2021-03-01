@@ -85,7 +85,10 @@ async function updateUser(id, name, email, phoneNumber, address, location) {
     email: email,
     locationIds: locations,
   };
-  const res = await ApiHelper.post(urlConstants.USER_URL + "/" + id, data);
+  const res = await ApiHelper.post(urlConstants.USER_URL + "/" + id, data).catch((err) => {
+    console.log(err);
+  });
+  console.log("ÂCSCASC" + res);
   return res;
 }
 async function changePassword(id, oldPass, newPass) {

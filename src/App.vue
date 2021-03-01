@@ -20,12 +20,21 @@
         </div>
       </div>
     </div>
-    <div v-if="getIsLogin" style="z-index: 1;">
+    <div v-if="getIsLogin && !checkForgotPass">
       <Login></Login>
     </div>
-    <div v-if="checkForgotPass" style="z-index: 100;">
+    <div v-if="checkForgotPass">
       <ForgotPassword></ForgotPassword>
     </div>
+    <!-- <Dialog
+      v-model:visible="checkForgotPass"
+      :style="{ width: '450px' }"
+      header="Forgot Password"
+      :modal="true"
+      class="p-fluid"
+    >
+      <ForgotPassword v-if="checkForgotPass"></ForgotPassword>
+    </Dialog> -->
   </div>
 </template>
 
@@ -43,8 +52,6 @@ export default {
     SideBar,
     Login,
     ForgotPassword,
-    // Location,
-    // Crack,
   },
   computed: {
     ...mapGetters("application", ["getIsActive", "getIsLogin"]),
@@ -53,6 +60,7 @@ export default {
     return {
       checkForgotPass: false,
       login: false,
+      reRender: 0,
     };
   },
   created() {
@@ -61,7 +69,10 @@ export default {
     }
   },
   mounted() {
-    if (localStorage.getItem("checkForgot")) {
+    const checkForgotPass = /\/users\/[a-zA-Z]+\/forgotpass/.test(
+      window.location.pathname
+    );
+    if (checkForgotPass && localStorage.getItem("user") == null) {
       this.checkForgotPass = true;
     }
   },

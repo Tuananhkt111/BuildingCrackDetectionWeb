@@ -275,6 +275,7 @@ import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import InputMask from "primevue/inputmask";
 import Toast from "primevue/toast";
+import contentNoti from "../util/contentNoti.js";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import maintenanceWorkerApi from "../apis/maintenanceWorker.js";
@@ -365,21 +366,21 @@ export default {
           .catch((err) => {
             alert(err);
           })
-          .then((res) => {
+          .then(() => {
             this.$toast.add({
               severity: "success",
-              summary: "Successful",
-              detail: res.data,
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.MAINTENANCEWORKER_CREATE_SUCCESS,
               life: 3000,
             });
             this.setMaintenanceWorkerList();
             this.hideDialog();
           })
-          .catch((err) => {
+          .catch(() => {
             this.$toast.add({
               severity: "error",
-              summary: "Failed!",
-              detail: err.data,
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.MAINTENANCEWORKER_CREATE_FAILED,
               life: 3000,
             });
             this.hideDialog();
@@ -396,21 +397,21 @@ export default {
             this.phone,
             this.email
           )
-          .then((res) => {
+          .then(() => {
             this.$toast.add({
               severity: "success",
-              summary: "Successful",
-              detail: res.data,
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.MAINTENANCEWORKER_EDIT_SUCCESS,
               life: 3000,
             });
             this.setMaintenanceWorkerList();
             this.productDialog = false;
           })
-          .catch((err) => {
+          .catch(() => {
             this.$toast.add({
               severity: "error",
-              summary: "Failed!",
-              detail: err.data,
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.MAINTENANCEWORKER_EDIT_FAILED,
               life: 3000,
             });
             this.productDialog = false;
@@ -420,21 +421,21 @@ export default {
     async deleteSelectedProducts() {
       await maintenanceWorkerApi
         .disable(this.product.maintenanceWorkerId)
-        .then((res) => {
+        .then(() => {
           this.$toast.add({
             severity: "success",
-            summary: "Successful",
-            detail: res.data,
+            summary: contentNoti.SUCCESS_SUMMARY, 
+            detail: contentNoti.MAINTENANCEWORKER_DISABLE_SUCCESS,
             life: 3000,
           });
           this.setMaintenanceWorkerList();
           this.hideDialog();
         })
-        .catch((err) => {
+        .catch(() => {
           this.$toast.add({
             severity: "error",
-            summary: "Failed!",
-            detail: err.data,
+            summary: contentNoti.FAIL_SUMMARY,
+            detail: contentNoti.MAINTENANCEWORKER_DISABLE_FAILED,
             life: 3000,
           });
           this.hideDialog();

@@ -199,22 +199,22 @@
       <div class="p-field">
         <label for="name">Full Name</label>
         <InputText name="name" v-model.trim="name" />
-        <small>{{ errors.name }}</small>
+        <small class="p-invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="email">Email</label>
         <InputText type="email" name="email" v-model.trim="email" />
-        <small>{{ errors.email }}</small>
+        <small class="p-invalid">{{ errors.email }}</small>
       </div>
       <div class="p-field">
         <label for="phoneNumber">Phone Number</label>
         <InputMask name="phone" mask="9999999999" v-model.trim="phone" />
-        <small>{{ errors.phone }}</small>
+        <small class="p-invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
         <label for="address">Address</label>
         <Textarea name="address" v-model="address" rows="3" cols="20" />
-        <small>{{ errors.address }}</small>
+        <small class="p-invalid">{{ errors.address }}</small>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
@@ -413,6 +413,7 @@ import Dropdown from "primevue/dropdown";
 import InputMask from "primevue/inputmask";
 import Rating from "primevue/rating";
 import MultiSelect from "primevue/multiselect";
+import contentNoti from "../util/contentNoti.js";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import { userApi } from "../apis/user";
@@ -527,31 +528,29 @@ export default {
         .catch((err) => {
           console.log(err);
         })
-        .then((res) => {
+        .then(() => {
           this.$toast.add({
             severity: "success",
-            summary: "Successful",
-            detail: res.data,
+            summary: contentNoti.SUCCESS_SUMMARY,
+            detail: contentNoti.USER_RESETPASSWORK_SUCCESS,
             life: 3000,
           });
           this.setUserList();
           this.submitted = false;
           this.ResetPasswordDialog = false;
         })
-        .catch((err) => {
+        .catch(() => {
           this.$toast.add({
             severity: "error",
-            summary: "Failed!",
-            detail: err.data,
+            summary: contentNoti.FAIL_SUMMARY,
+            detail: contentNoti.USER_RESETPASSWORK_FAILED,
             life: 3000,
           });
           this.ResetPasswordDialog = false;
         });
     },
     async CreateUser() {
-      console.log("CC");
       if (this.meta.valid) {
-        console.log("DD");
         await userApi
           .createUser(
             this.selectedRole,
@@ -561,11 +560,11 @@ export default {
             this.address,
             this.selectedLocation
           )
-          .then((res) => {
+          .then(() => {
             this.$toast.add({
               severity: "success",
-              summary: "Successful",
-              detail: res.data,
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.USER_CREATE_SUCCESS,
               life: 3000,
             });
             this.setUserList();
@@ -573,8 +572,8 @@ export default {
           })
           .catch((err) => {
             this.$toast.add({
-              severity: "error",
-              summary: "Failed!",
+              severity: contentNoti.FAIL_SUMMARY,
+              summary: contentNoti.USER_CREATE_FAILED,
               detail: err.data,
               life: 3000,
             });
@@ -593,23 +592,24 @@ export default {
             this.address,
             this.selectedLocation
           )
-          .then((res) => {
+          .then(() => {
             this.$toast.add({
               severity: "success",
-              summary: "Successful",
-              detail: res.data,
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.USER_EDIT_SUCCESS,
               life: 3000,
             });
             this.setUserList();
             this.UserUpdateDialog = false;
           })
-          .catch((err) => {
+          .catch(() => {
             this.$toast.add({
               severity: "error",
-              summary: "Failed!",
-              detail: err.data,
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.USER_EDIT_FAILED,
               life: 3000,
             });
+            this.setUserList();
             this.UserUpdateDialog = false;
           });
       }
@@ -621,21 +621,21 @@ export default {
     async DisableAccount() {
       await userApi
         .deleteUser(this.product.userId)
-        .then((res) => {
+        .then(() => {
           this.$toast.add({
             severity: "success",
-            summary: "Successful",
-            detail: res.data,
+            summary: contentNoti.SUCCESS_SUMMARY,
+            detail: contentNoti.USER_DISABLE_SUCCESS,
             life: 3000,
           });
           this.setUserList();
           this.DisableDialog = false;
         })
-        .catch((err) => {
+        .catch(() => {
           this.$toast.add({
             severity: "error",
-            summary: "Failed!",
-            detail: err.data,
+            summary: contentNoti.FAIL_SUMMARY,
+            detail: contentNoti.USER_DISABLE_FAILED,
             life: 3000,
           });
           this.DisableDialog = false;
@@ -706,10 +706,10 @@ export default {
     async editProduct(product) {
       this.handleReset();
       this.name = product.name;
-      (this.email = product.email),
-        (this.phone = product.phoneNumber),
-        (this.address = product.address),
-        (this.product = { ...product });
+      this.email = product.email;
+      this.phone = product.phoneNumber;
+      this.address = product.address;
+      this.product = { ...product };
       this.selectedLocation = null;
       this.product.created = this.callDate(product.created);
       this.product.lastModified = this.callDate(product.lastModified);
