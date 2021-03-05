@@ -20,21 +20,10 @@
         </div>
       </div>
     </div>
-    <div v-if="getIsLogin && !checkForgotPass">
-      <Login></Login>
+    <div v-if="getIsLogin">
+      <Login @hook:mounted="doSomething"></Login>
     </div>
-    <div v-if="checkForgotPass">
-      <ForgotPassword></ForgotPassword>
-    </div>
-    <!-- <Dialog
-      v-model:visible="checkForgotPass"
-      :style="{ width: '450px' }"
-      header="Forgot Password"
-      :modal="true"
-      class="p-fluid"
-    >
-      <ForgotPassword v-if="checkForgotPass"></ForgotPassword>
-    </Dialog> -->
+    <AppFooter></AppFooter>
   </div>
 </template>
 
@@ -42,25 +31,22 @@
 import { mapGetters, mapActions } from "vuex";
 import TopNav from "../src/components/TopNav.vue";
 import SideBar from "../src/components/SideBar.vue";
+import AppFooter from "../src/components/AppFooter.vue";
 import Login from "../src/views/LoginPage.vue";
-import ForgotPassword from "../src/views/ForgotPassword.vue";
-// import Crack from "../src/views/Crack.vue";
 export default {
   name: "app",
   components: {
     TopNav,
     SideBar,
     Login,
-    ForgotPassword,
+    AppFooter
   },
   computed: {
     ...mapGetters("application", ["getIsActive", "getIsLogin"]),
   },
   data() {
     return {
-      checkForgotPass: false,
       login: false,
-      reRender: 0,
     };
   },
   created() {
@@ -68,16 +54,18 @@ export default {
       this.setIsLogin(false);
     }
   },
+
   mounted() {
-    const checkForgotPass = /\/users\/[a-zA-Z]+\/forgotpass/.test(
-      window.location.pathname
-    );
-    if (checkForgotPass && localStorage.getItem("user") == null) {
-      this.checkForgotPass = true;
-    }
+    this.$nextTick(() => {
+      console.log("Finished rendering the complete view");
+    });
   },
   methods: {
     ...mapActions("application", ["setIsLogin"]),
+
+    doSomething() {
+      console.log("AA");
+    },
   },
 };
 </script>
@@ -112,8 +100,11 @@ export default {
 }
 .main-layout-details {
   padding: 10px;
+  background-color: white;
 }
 .main-layout {
+  background-color:  #f2f2f2;
+  padding: 30px;
   width: 100%;
 }
 .active .layout-menu {

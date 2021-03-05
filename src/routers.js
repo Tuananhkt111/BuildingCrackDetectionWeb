@@ -3,6 +3,7 @@ import Crack from "./views/Crack.vue";
 import Location from "./views/Location.vue";
 import MaintenanceOrder from "./views/MaintenanceOrder.vue";
 import MaintenanceWorker from "./views/MaintenanceWorker.vue";
+import Project from "./views/Profile.vue";
 import User from "./views/User.vue";
 import UserByManager from "./views/UserByManager.vue";
 import Login from "./views/LoginPage.vue";
@@ -18,6 +19,7 @@ const router = new createRouter({
     { path: "/login", name: "login", component: Login },
     { path: "/cracks", name: "crack", component: Crack },
     { path: "/locations", name: "location", component: Location },
+    { path: "/profiles", name: "profiles", component: Project },
     {
       path: "/maintenanceOrders",
       name: "maintenanceOrder",

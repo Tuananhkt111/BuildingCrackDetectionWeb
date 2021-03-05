@@ -15,7 +15,7 @@
       >
         <template #header>
           <div class="table-header">
-            <h3 class="p-m-2">Manage Cracks</h3>
+            <h5 class="p-m-2">Manage Cracks</h5>
 
             <span class="p-input-icon-left">
               <Button
@@ -44,7 +44,7 @@
               :src="slotProps.data.image"
               :alt="slotProps.data.image"
               class="product-image"
-              style="width: 100px ; height: 100px"
+              style="width: 80px ; height: 80px"
               @click="showImage(slotProps.data.image)"
             />
           </template>
@@ -79,7 +79,7 @@
             />
           </template>
         </Column>
-        <Column field="severity" header="Severity" >
+        <Column field="severity" header="Severity">
           <template #body="slotProps">
             <span :class="stockClass(slotProps.data)">
               {{ slotProps.data.severity }}
@@ -493,5 +493,46 @@ textarea {
   text-transform: uppercase;
   letter-spacing: 0.3px;
   color: #ff5252;
+}
+
+h5{
+  font-size : 1.25rem;
+}
+
+@media screen and (max-width: 40em) {
+  ::v-deep(.p-datatable) {
+    &.p-datatable-responsive-demo {
+      .p-datatable-thead > tr > th,
+      .p-datatable-tfoot > tr > td {
+        display: none !important;
+      }
+
+      .p-datatable-tbody > tr > td {
+        text-align: left;
+        display: block;
+        width: 100%;
+        float: left;
+        clear: left;
+        border: 0 none;
+
+        .p-column-title {
+          padding: 0.4rem;
+          min-width: 30%;
+          display: inline-block;
+          margin: -0.4em 1em -0.4em -0.4rem;
+          font-weight: bold;
+        }
+
+        &:last-child {
+          border-bottom: 1px solid var(--surface-d);
+          text-align: center;
+        }
+
+        .p-rating {
+          display: inline-block;
+        }
+      }
+    }
+  }
 }
 </style>

@@ -62,6 +62,7 @@ import firebase from "../util/firebase.js";
 import ScrollPanel from "primevue/scrollpanel";
 import OverlayPanel from "primevue/overlaypanel";
 import { mapGetters, mapActions } from "vuex";
+import userApi from "../apis/user.js";
 import moment from "moment";
 import { notificationApi } from "../apis/notification";
 export default {
@@ -96,6 +97,8 @@ export default {
     ...mapActions("application", ["setIsActive"]),
     // ...mapActions("user", ["setIsActive"]),
     ...mapActions("noti", ["setNotificationList"]),
+    ...mapActions("user", ["setUser"]),
+
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");
@@ -114,6 +117,9 @@ export default {
                 life: 3000,
               });
               this.setNotificationList();
+              userApi.getUserById().then((res) => {
+                this.setUser(JSON.parse(res));
+              });
             });
           })
         )
@@ -184,7 +190,8 @@ export default {
   color: white;
 }
 .btn-nav {
-  padding: 1.5rem;
+  padding: 15px;
+  padding-right: 40px;
 }
 #menu-button {
   background-color: white;

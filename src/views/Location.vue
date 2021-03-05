@@ -18,7 +18,7 @@
       >
         <template #header>
           <div class="table-header">
-            <h3 class="p-m-2">Manage Locations</h3>
+            <h5 class="p-m-0" style="font-size:1.25rem">Manage Products</h5>
             <span class="p-input-icon-left">
               <Button
                 icon="pi pi-plus"
@@ -37,13 +37,15 @@
               <span class="p-input-icon-left" style="margin:2px">
                 <i class="pi pi-search" />
                 <InputText
-                  v-model="filters['global'].value"
-                  placeholder="Keyword Search"
-                />
+                v-model="filters['global'].value"
+                placeholder="Keyword Search"
+              />
               </span>
             </span>
+            
           </div>
         </template>
+
         <template #empty>
           No Locations found.
         </template>
@@ -107,7 +109,7 @@
           style="min-width:10rem"
         >
           <template #body="{data}">
-            {{ formatDate(data.lastModified) }}
+            {{ callDate(data.lastModified) }}
           </template>
           <template #filter="{filterModel}">
             <Calendar
@@ -486,9 +488,7 @@ export default {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         name: {
           operator: FilterOperator.AND,
-          constraints: [
-            { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-          ],
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
         },
         created: {
           operator: FilterOperator.AND,
@@ -526,5 +526,42 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (max-width: 40em) {
+  ::v-deep(.p-datatable) {
+    &.p-datatable-responsive-demo {
+      .p-datatable-thead > tr > th,
+      .p-datatable-tfoot > tr > td {
+        display: none !important;
+      }
+
+      .p-datatable-tbody > tr > td {
+        text-align: left;
+        display: block;
+        width: 100%;
+        float: left;
+        clear: left;
+        border: 0 none;
+
+        .p-column-title {
+          padding: 0.4rem;
+          min-width: 30%;
+          display: inline-block;
+          margin: -0.4em 1em -0.4em -0.4rem;
+          font-weight: bold;
+        }
+
+        &:last-child {
+          border-bottom: 1px solid var(--surface-d);
+          text-align: center;
+        }
+
+        .p-rating {
+          display: inline-block;
+        }
+      }
+    }
+  }
 }
 </style>

@@ -13,7 +13,7 @@ export const userApi = {
   resetPassword,
   forgotPassword,
   changePassword,
-  changeForgotPassword
+  changeForgotPassword,
 };
 
 async function login(userName, password) {
@@ -63,9 +63,13 @@ async function createUser(role, name, email, phoneNumber, address, location) {
   return res;
 }
 
-async function getUserById(id){
-  const res = ApiHelper.get(urlConstants.USER_URL + "/", id);
-  return res;
+async function getUserById() {
+  const id = JSON.parse(localStorage.getItem("user")).userId;
+  const user = await ApiHelper.get(
+    urlConstants.USER_URL + "/" + id
+  );
+  localStorage.setItem("user", JSON.stringify(user.data));
+  return JSON.stringify(user.data);
 }
 
 async function updateUser(id, name, email, phoneNumber, address, location) {
@@ -85,7 +89,10 @@ async function updateUser(id, name, email, phoneNumber, address, location) {
     email: email,
     locationIds: locations,
   };
-  const res = await ApiHelper.post(urlConstants.USER_URL + "/" + id, data).catch((err) => {
+  const res = await ApiHelper.post(
+    urlConstants.USER_URL + "/" + id,
+    data
+  ).catch((err) => {
     console.log(err);
   });
   console.log("ÂCSCASC" + res);
@@ -106,7 +113,7 @@ async function changePassword(id, oldPass, newPass) {
 async function changeForgotPassword(id, token, newPass) {
   const data = {
     newPass: newPass,
-    token  : token,
+    token: token,
   };
   const res = await ApiHelper.post(
     urlConstants.USER_URL + "/" + id + "/forgotpass",

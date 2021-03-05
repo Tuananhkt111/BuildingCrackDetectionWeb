@@ -153,7 +153,7 @@
               <Column header="Image" headerStyle="width: 150px">
                 <template #body="slotProps">
                   <img
-                    :src="slotProps.data.image"
+                    :src=slotProps.data.image
                     :alt="slotProps.data.image"
                     class="product-image"
                   />
@@ -248,7 +248,7 @@
       class="p-fluid"
     >
       <img
-        :src="crack.image"
+        :src=crack.image
         :alt="crack.image"
         class="product-image"
         v-if="crack.image"

@@ -5,14 +5,14 @@
         <img src="/assets/icons8-admin-settings-male-100.png" alt="" />
       </div>
       <button class="p-link layout-profile-link" @click="onClick">
-        <span class="username">{{ userName }}</span>
+        <span class="username">{{ getUser.name }}</span>
         <i class="pi pi-fw pi-cog"></i>
       </button>
       <div class="layout-submenu-wrapper">
         <ul v-show="expanded">
           <li>
             <button class="p-link">
-              <a @click="$router.push('/account')"
+              <a @click="$router.push('/profiles')"
                 ><i class="pi pi-fw pi-user"></i><span>Account</span></a
               >
             </button>
@@ -128,6 +128,7 @@
 <script>
 import userApi from "../apis/user.js";
 import { useForm, useField } from "vee-validate";
+import { mapGetters , mapActions} from "vuex";
 import * as yup from "yup";
 export default {
   setup() {
@@ -173,20 +174,29 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters("user", ["getUser"]),
+  },
+
   components: {},
   data() {
     return {
       expanded: false,
-      userName: null,
       role: null,
       ChangePassworDialog: false,
     };
   },
   created() {
-    this.userName = JSON.parse(localStorage.getItem("user")).name;
     this.role = JSON.parse(localStorage.getItem("user")).role;
+    console.log(this.getUser);
+    if(this.getUser == null) {
+      this.setUser(JSON.parse(localStorage.getItem("user")));
+    }
   },
   methods: {
+
+    ...mapActions("user", ["setUser"]),
+
     changePassword() {
       this.handleReset();
       this.ChangePassworDialog = true;

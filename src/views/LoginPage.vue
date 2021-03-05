@@ -1,22 +1,27 @@
 <template>
   <div class="limitter">
-    <div class="container-login100" v-if="!ForgotPasswordDialog">
-      <div class="wrap-login100">
-        <form @submit.prevent="handleSubmit()">
+    <div class="container-login100">
+      <div class="p-grid wrap-login100">
+        <div class="p-col-6" style="text-align:center; padding-top:50px;">
+          <img
+            src="/assets/bcd-logo-black.png"
+            style="width: 180px; height:180px"
+          />
+          <h2>Building Crack Detection</h2>
+        </div>
+        <form
+          @submit.prevent="handleSubmit()"
+          id="login"
+          class="p-col-6 loginForm"
+        >
           <span class="login100-form-title">Login Page</span>
           <div class="wrap-input100">
             <div class="p-float-label p-mb-5">
-              <InputText
-                id="username"
-                type="text"
-                v-model="userName"
-                style="width: 270px"
-              />
+              <InputText type="text" v-model="userName" style="width: 270px" />
               <label>USER NAME</label>
             </div>
             <div class="p-float-label p-mb-3">
               <InputText
-                id="pass"
                 type="password"
                 v-model="password"
                 style="width: 270px"
@@ -28,43 +33,48 @@
               label="Login"
               type="submit"
               class="p-button-raised p-button-success p-button-text"
-              style="width: 270px; float : left"
+              style="width: 270px; float : left; padding-left:30px"
             />
             <br />
             <!-- <button type="submit">Login</button> -->
             <a
-              href="#"
               @click="forgotPassword"
-              style="float: right;text-decoration: none"
+              style="float: right;text-decoration: none; padding-right:50px"
               class="p-mt-2"
               >Forgot password?</a
             >
           </div>
         </form>
+        <div id="forgotPass" class="forgotForm">
+          <span class="login100-form-title">Forgot Password</span>
+          <div class="p-field">
+            <div class="p-float-label p-mb-5">
+              <InputText type="text" v-model="userName" style="width: 270px" />
+              <label>USER NAME</label>
+            </div>
+            <small class="p-invalid" v-if="userName == null"
+              >Full Name is required.</small
+            >
+          </div>
+          <Button
+            label="Cancel"
+            icon="pi pi-times"
+            class="p-button-text"
+            @click="cancelForgotPassword"
+          />
+          <Button
+            label="Confirm"
+            icon="pi pi-check"
+            class="p-button-text"
+            @click="confirmForgotPassword"
+          />
+        </div>
+        <div id="resetPass" class="resetPassFrom">
+          <ForgotPassword></ForgotPassword>
+        </div>
       </div>
     </div>
     <Toast />
-    <div v-if="ForgotPasswordDialog">
-      <div class="p-field">
-        <label for="userName">User Name</label>
-        <InputText id="userName" v-model.trim="userName" required="true" />
-        <small class="p-invalid" v-if="userName == null"
-          >Full Name is required.</small
-        >
-      </div>
-        <Button
-          label="Cancel"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="ForgotPasswordDialog = false"
-        />
-        <Button
-          label="Confirm"
-          icon="pi pi-check"
-          class="p-button-text"
-          @click="confirmForgotPassword"
-        />
-    </div>
     <Dialog
       v-model:visible="ChangePasswordDialog"
       :style="{ width: '350px' }"
@@ -108,12 +118,14 @@ import Toast from "primevue/toast";
 import Password from "primevue/password";
 import Button from "primevue/button";
 import { mapGetters, mapActions } from "vuex";
+import ForgotPassword from "../views/ForgotPassword.vue";
 
 export default {
   components: {
     Toast,
     Password,
     Button,
+    ForgotPassword,
   },
   computed: {
     ...mapGetters("application", ["getIsActive", "getIsLogin"]),
@@ -124,13 +136,26 @@ export default {
       password: "",
       newPassword: "",
       confirmPassword: "",
-      ForgotPasswordDialog: false,
       ChangePasswordDialog: false,
     };
   },
   created() {},
+  mounted() {
+    const checkForgotPass = /\/users\/[a-zA-Z]+\/forgotpass/.test(
+      window.location.pathname
+    );
+    console.log(checkForgotPass);
+    if (checkForgotPass && localStorage.getItem("user") == null) {
+      this.waithide("login", "resetPass");
+    }
+  },
   methods: {
+    doSomething() {
+      console.log("AA");
+    },
     ...mapActions("application", ["setIsActive", "setIsLogin"]),
+
+    ...mapActions("user", ["setUser"]),
 
     async handleSubmit() {
       if (this.userName && this.password) {
@@ -140,6 +165,7 @@ export default {
             this.ChangePasswordDialog = true;
           } else {
             this.setIsLogin(!this.getIsLogin);
+            this.setUser(JSON.parse(res));
             this.$router.push("/");
           }
         } else {
@@ -169,7 +195,7 @@ export default {
     },
     forgotPassword() {
       this.userName = "";
-      this.ForgotPasswordDialog = true;
+      this.waithide("login", "forgotPass");
     },
     cancelChangePassword() {
       this.ChangePasswordDialog = false;
@@ -191,7 +217,23 @@ export default {
             life: 3000,
           })
         );
-      this.ForgotPasswordDialog = false;
+      this.waithide("forgotPass", "login");
+    },
+    cancelForgotPassword() {
+      this.userName = "";
+      this.waithide("forgotPass", "login");
+    },
+    waithide(div1, div2) {
+      var obj = document.getElementById(div1);
+      obj.style.opacity = "0";
+      window.setTimeout(function removethis() {
+        obj.style.display = "none";
+      }, 300);
+      var obj2 = document.getElementById(div2);
+      obj2.style.opacity = "1";
+      window.setTimeout(function show() {
+        obj2.style.display = "block";
+      }, 300);
     },
   },
 };
@@ -213,15 +255,17 @@ body {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  /* background: #f2f2f2; */
-  background-image: url(../asset/background1.jpg);
+  background: #f2f2f2;
+  /* background-image: url(../asset/background1.jpg); */
 }
 
 .wrap-login100 {
+  width: 800px;
+  height: 400px;
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
-  padding: 30px 55px 33px;
+  padding: 30px 0px 33px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
@@ -239,7 +283,6 @@ body {
   margin: 0;
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.5;
   color: #212529;
   background-color: #fff;
 }
@@ -257,7 +300,21 @@ div {
   padding-bottom: 35px;
 }
 .wrap-input100 {
+  justify-content: center;
+  align-items: center;
   font-family: Poppins-Bold;
   width: 100%;
+}
+.loginForm {
+  opacity: 1;
+  transition: all 0.3s;
+}
+.forgotForm {
+  display: none;
+  transition: all 0.3s;
+}
+.resetPassFrom {
+  display: none;
+  transition: all 0.3s;
 }
 </style>
