@@ -499,6 +499,15 @@ h5{
   font-size : 1.25rem;
 }
 
+img:hover
+{
+    -webkit-transform: scale(1.5);
+    -moz-transform: scale(1.5);
+    -o-transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    transform: scale(1.5);
+}
+
 @media screen and (max-width: 40em) {
   ::v-deep(.p-datatable) {
     &.p-datatable-responsive-demo {
@@ -508,11 +517,8 @@ h5{
       }
 
       .p-datatable-tbody > tr > td {
-        text-align: left;
         display: block;
         width: 100%;
-        float: left;
-        clear: left;
         border: 0 none;
 
         .p-column-title {

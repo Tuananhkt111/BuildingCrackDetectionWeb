@@ -153,4 +153,11 @@ export default {
     transition: all 0.2s;
   }
 }
+
+@font-face {
+  font-family: "Poppins";
+  src: local("Poppins"),
+   url(./fonts/Poppins/Poppins-Light.ttf) format("truetype");
+}
+
 </style>

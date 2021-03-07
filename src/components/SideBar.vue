@@ -24,11 +24,11 @@
               >
             </button>
           </li>
-          <li>
+          <!-- <li>
             <button class="p-link" @click="changePassword">
-              <a><i class="pi pi-fw pi-key"></i><span>Chane Password</span></a>
+              <a><i class="pi pi-fw pi-key"></i><span>Change Password</span></a>
             </button>
-          </li>
+          </li> -->
           <li>
             <button class="p-link" @click="logOut">
               <a><i class="pi pi-fw pi-power-off"></i><span>Logout</span></a>
@@ -188,7 +188,6 @@ export default {
   },
   created() {
     this.role = JSON.parse(localStorage.getItem("user")).role;
-    console.log(this.getUser);
     if(this.getUser == null) {
       this.setUser(JSON.parse(localStorage.getItem("user")));
     }

@@ -2,23 +2,21 @@
   <div class="limitter">
     <div class="container-login100">
       <div class="p-grid wrap-login100">
-        <div class="p-col-6" style="text-align:center; padding-top:50px;">
-          <img
-            src="/assets/bcd-logo-black.png"
-            style="width: 180px; height:180px"
-          />
-          <h2>Building Crack Detection</h2>
+        <div class="p-col-7" >
+          <img src="/assets/4.jpg" style="width: 550px; height:500px" />
+          <!-- <h2>Building Crack Detection</h2> -->
         </div>
         <form
           @submit.prevent="handleSubmit()"
           id="login"
-          class="p-col-6 loginForm"
+          style="margin:auto"
+          class="p-col-5 loginForm"
         >
-          <span class="login100-form-title">Login Page</span>
+          <span class="login100-form-title" style="font-weight: bold">Welcome to BCDSystem</span>
           <div class="wrap-input100">
             <div class="p-float-label p-mb-5">
               <InputText type="text" v-model="userName" style="width: 270px" />
-              <label>USER NAME</label>
+              <label style="padding-left: 55px">Username</label>
             </div>
             <div class="p-float-label p-mb-3">
               <InputText
@@ -26,46 +24,49 @@
                 v-model="password"
                 style="width: 270px"
               />
-              <label>PASSWORD</label>
+              <label style="padding-left: 55px;">Password</label>
             </div>
             <!-- <Password v-model="value" weakLabel="Min is 8 character" mediumLabel="Must have one uppercase and one number" promptLabel="example: Pass1234" placeholder="New Password"/> -->
             <Button
               label="Login"
               type="submit"
-              class="p-button-raised p-button-success p-button-text"
-              style="width: 270px; float : left; padding-left:30px"
+              class="p-button-raised p-button-info"
+              style="width: 270px;"
             />
             <br />
             <!-- <button type="submit">Login</button> -->
             <a
               @click="forgotPassword"
-              style="float: right;text-decoration: none; padding-right:50px"
+              style="float: right; padding-right:55px; color: blue"
               class="p-mt-2"
               >Forgot password?</a
             >
           </div>
         </form>
-        <div id="forgotPass" class="forgotForm">
-          <span class="login100-form-title">Forgot Password</span>
-          <div class="p-field">
-            <div class="p-float-label p-mb-5">
-              <InputText type="text" v-model="userName" style="width: 270px" />
-              <label>USER NAME</label>
+        <div id="forgotPass" class="p-col-5 forgotForm" style="padding-top:150px">
+          <span class="login100-form-title" style="font-weight: bold">Forgot Password</span>
+          <div class="wrap-input100">
+            <div class="p-field">
+              <div class="p-float-label p-mb-5">
+                <InputText
+                  type="text"
+                  v-model="userName"
+                  style="width: 270px"
+                />
+                <label style="padding-left:55px">USER NAME</label>
+              </div>
             </div>
-            <small class="p-invalid" v-if="userName == null"
-              >Full Name is required.</small
-            >
           </div>
           <Button
             label="Cancel"
             icon="pi pi-times"
-            class="p-button-text"
+            class="p-button-raised p-button-info p-mr-5"
             @click="cancelForgotPassword"
           />
           <Button
             label="Confirm"
             icon="pi pi-check"
-            class="p-button-text"
+            class="p-button-raised p-button-info"
             @click="confirmForgotPassword"
           />
         </div>
@@ -241,11 +242,11 @@ export default {
 
 <style>
 body {
-  font-family: Poppins-Bold;
+  font-family: "Poppins", Helvetica, Arial;
 }
 .limiter {
   width: 100%;
-  margin: 0 auto;
+  margin: auto;
 }
 .container-login100 {
   width: 100%;
@@ -254,23 +255,17 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  padding: 15px;
-  background: #f2f2f2;
+  /* padding: 15px; */
+  background: #b9cee4;
   /* background-image: url(../asset/background1.jpg); */
 }
 
 .wrap-login100 {
-  width: 800px;
-  height: 400px;
-  background: #fff;
+  width: 70%;
+  background: white;
   border-radius: 10px;
   overflow: hidden;
-  padding: 30px 0px 33px;
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
-  -o-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
-  -ms-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+ box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 * {
@@ -292,17 +287,18 @@ div {
 
 .login100-form-title {
   display: block;
-  font-family: Poppins-Bold;
-  font-size: 30px;
+  font-family: Poppins;
+  font-size: 23px;
   color: #333;
   line-height: 1.2;
   text-align: center;
   padding-bottom: 35px;
 }
 .wrap-input100 {
+  text-align: center;
   justify-content: center;
   align-items: center;
-  font-family: Poppins-Bold;
+  font-family:  Poppins;
   width: 100%;
 }
 .loginForm {
@@ -310,6 +306,10 @@ div {
   transition: all 0.3s;
 }
 .forgotForm {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: Poppins;
   display: none;
   transition: all 0.3s;
 }
@@ -317,4 +317,5 @@ div {
   display: none;
   transition: all 0.3s;
 }
+
 </style>

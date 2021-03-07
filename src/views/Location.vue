@@ -61,14 +61,6 @@
               placeholder="Search by name"
             />
           </template>
-          <!-- <template #filter>
-            <InputText
-              type="text"
-              v-model="filters['name']"
-              class="p-column-filter"
-              placeholder="Search"
-            />
-          </template> -->
         </Column>
         <Column field="description" header="Description">
           <template #body="slotProps">
@@ -84,26 +76,24 @@
           </template>
         </Column>
         <Column
-          field="created"
           header="Created"
-          filterMatchMode="custom"
-          :filterFunction="filterDate"
+          filterField="created"
+          dataType="date"
+          style="min-width:10rem"
         >
-          <template #body="slotProps">
-            <span>{{ callDate(slotProps.data.created) }}</span>
+          <template #body="{data}">
+            {{ callDate(data.created) }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <Calendar
-              appendTo="body"
-              v-model="filters['created']"
-              dateFormat="dd-mm-yy"
-              class="p-column-filter"
-              placeholder="Created Date"
+              v-model="filterModel.value"
+              dateFormat="mm/dd/yy"
+              placeholder="mm/dd/yyyy"
             />
           </template>
         </Column>
         <Column
-          header="Date"
+          header="Last Modified"
           filterField="lastModified"
           dataType="date"
           style="min-width:10rem"
@@ -537,11 +527,8 @@ export default {
       }
 
       .p-datatable-tbody > tr > td {
-        text-align: left;
         display: block;
         width: 100%;
-        float: left;
-        clear: left;
         border: 0 none;
 
         .p-column-title {

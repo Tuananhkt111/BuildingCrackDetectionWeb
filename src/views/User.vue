@@ -45,7 +45,7 @@
         <template #empty>
           No Users found.
         </template>
-        <Column field="userName" header="User Name" headerStyle="width: 200px">
+        <Column field="userName" header="User Name">
           <template #body="slotProps">
             {{ slotProps.data.userName }}
           </template>
@@ -58,7 +58,7 @@
             />
           </template>
         </Column>
-        <Column field="name" header="Full Name" headerStyle="width: 200px">
+        <Column field="name" header="Full Name">
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
@@ -71,7 +71,7 @@
             />
           </template>
         </Column>
-        <Column field="email" header="Email" headerStyle="width: 200px">
+        <Column field="email" header="Email" headerStyle="width: 400px">
           <template #body="slotProps">
             {{ slotProps.data.email }}
           </template>
@@ -87,7 +87,6 @@
         <Column
           field="phoneNumber"
           header="Phone Number"
-          headerStyle="width: 200px"
         >
           <template #body="slotProps">
             {{ slotProps.data.phoneNumber }}
@@ -105,7 +104,6 @@
           field="role"
           header="Role"
           filterMatchMode="equals"
-          headerStyle="width: 100px"
         >
           <template #body="slotProps">
             <span :class="'customer-badge status-' + slotProps.data.role">{{
@@ -129,7 +127,7 @@
             </Dropdown>
           </template>
         </Column>
-        <Column headerStyle="width: 150px">
+        <Column >
           <template #body="slotProps">
             <Button
               icon="pi pi-user-edit"
@@ -738,7 +736,7 @@ export default {
 <style scoped>
 .table-header {
   display: flex;
-  align-items: center;
+  align-items: left;
   justify-content: space-between;
 }
 
@@ -753,9 +751,39 @@ export default {
   display: block;
 }
 
-.confirmation-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+
+@media screen and (max-width: 40em) {
+  ::v-deep(.p-datatable) {
+    &.p-datatable-responsive-demo {
+      .p-datatable-thead > tr > th,
+      .p-datatable-tfoot > tr > td {
+        display: none !important;
+      }
+
+      .p-datatable-tbody > tr > td {
+        display: block;
+        width: 100%;
+        border: 0 none;
+
+        .p-column-title {
+          padding: 0.4rem;
+          min-width: 50%;
+          display: inline-block;
+          margin: -0.4em 1em -0.4em -0.4rem;
+          font-weight: bold;
+        }
+
+        &:last-child {
+          border-bottom: 1px solid var(--surface-d);
+          text-align: center;
+        }
+
+        .p-rating {
+          display: inline-block;
+        }
+      }
+    }
+  }
 }
 </style>

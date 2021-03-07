@@ -37,6 +37,7 @@ const locationStore = {
         const res = await locationApi.getAll();
         for (let index = 0; index < res.length; index++) {
           res[index].lastModified = new Date(res[index].lastModified); 
+          res[index].created = new Date(res[index].created);
         }
         if (res) {
           commit("setLocationList", res);
