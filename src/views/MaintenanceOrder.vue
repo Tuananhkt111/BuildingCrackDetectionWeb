@@ -10,7 +10,10 @@
         @row-collapse="onRowCollapse"
         :paginator="true"
         :rows="5"
-        :filters="filters"
+        v-model:filters="filters"
+        filterDisplay="menu"
+        :loading="loading"
+        :globalFilterFields="['maintenanceWorkerName', 'assessorName','locationName','status']"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Maintenance Orders"
@@ -29,8 +32,8 @@
               <span class="p-input-icon-left" style="margin:2px">
                 <i class="pi pi-search" />
                 <InputText
-                  v-model="filters['global']"
-                  placeholder="Search..."
+                  v-model="filters['global'].value"
+                  placeholder="Keyword Search"
                 />
               </span>
             </span>
@@ -43,15 +46,15 @@
         <Column
           field="maintenanceWorkerName"
           header="Worker Name"
-          sortable
-          headerStyle="width: 120px"
-          ><template #body="slotProps">
+          :showFilterMatchModes="false"
+        >
+          <template #body="slotProps">
             {{ slotProps.data.maintenanceWorkerName }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['maintenanceWorkerName']"
+              v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
             />
@@ -60,85 +63,81 @@
         <Column
           field="assessorName"
           header="Assessor Name"
-          sortable
-          headerStyle="width: 120px"
-          ><template #body="slotProps">
+          :showFilterMatchModes="false"
+        >
+          <template #body="slotProps">
             {{ slotProps.data.assessorName }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['assessorName']"
+              v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
-            /> </template
-        ></Column>
-        <Column
-          field="locationName"
-          header="Location Name"
-          sortable
-          headerStyle="width: 120px"
-          ><template #body="slotProps">
-            {{ slotProps.data.locationName }}
-          </template>
-          <template #filter>
-            <InputText
-              type="text"
-              v-model="filters['locationName']"
-              class="p-column-filter"
-              placeholder="Search"
-            /> </template
-        ></Column>
-        <Column
-          field="status"
-          header="Status"
-          filterMatchMode="equals"
-          headerStyle="width: 150px"
-        >
-          <template #body="slotProps">
-            <span :class="stockStatusOrder(slotProps.data)">
-              {{ slotProps.data.status }}
-            </span>
-          </template>
-
-          <template #filter>
-            <Dropdown
-              appendTo="body"
-              v-model="filters['status']"
-              :options="getStatusList"
-              placeholder="Status"
-              class="p-column-filter"
-              :showClear="true"
-            >
-              <template #option="slotProps">
-                <span :class="'customer-badge status-' + slotProps.option">{{
-                  slotProps.option
-                }}</span>
-              </template>
-            </Dropdown>
-          </template>
-        </Column>
-        <Column
-          field="maintenanceDate"
-          header="Maintenance Date"
-          filterMatchMode="custom"
-          :filterFunction="filterDate"
-          headerStyle="width: 150px"
-        >
-          <template #body="slotProps">
-            <span>{{ callDate(slotProps.data.maintenanceDate) }}</span>
-          </template>
-          <template #filter>
-            <Calendar
-              appendTo="body"
-              v-model="filters['RepairTime']"
-              dateFormat="dd-mm-yy"
-              class="p-column-filter"
-              placeholder="RepairTime"
             />
           </template>
         </Column>
-        <Column headerStyle="width: 10px">
+        <Column
+          field="locationName"
+          header="Location Name"
+          :showFilterMatchModes="false"
+        >
+          <template #body="slotProps">
+            {{ slotProps.data.locationName }}
+          </template>
+          <template #filter="{filterModel}">
+            <InputText
+              type="text"
+              v-model="filterModel.value"
+              class="p-column-filter"
+              placeholder="Search"
+            />
+          </template>
+        </Column>
+        <Column
+          header="Status"
+          filterField="status"
+          :showFilterMatchModes="false"
+          :filterMenuStyle="{ width: '14rem' }"
+          style="min-width:14rem"
+        >
+          <template #body="{data}">
+            <span :class="stockStatusOrder(data)">
+              {{ data.status }}
+            </span>
+          </template>
+          <template #filter="{filterModel}">
+            <div class="p-mb-3 p-text-bold">Status Picker</div>
+            <MultiSelect
+              v-model="filterModel.value"
+              :options="getStatusList"
+              placeholder="Any"
+              class="p-column-filter"
+            >
+              <template #option="slotProps">
+                <span>{{ slotProps.option }}</span>
+              </template>
+            </MultiSelect>
+          </template>
+        </Column>
+        <Column
+          header="maintenanceDate"
+          filterField="Maintenance Date"
+          dataType="date"
+          style="min-width:10rem"
+        >
+          <template #body="{data}">
+            {{ callDate(data.maintenanceDate) }}
+          </template>
+          <template #filter="{filterModel}">
+            <Calendar
+              v-model="filterModel.value"
+              dateFormat="mm/dd/yy"
+              placeholder="mm/dd/yyyy"
+            />
+          </template>
+        </Column>
+        <Column>
           <template #body="slotProps">
             <Button
               icon="pi pi-pencil"
@@ -153,7 +152,7 @@
               <Column header="Image" headerStyle="width: 150px" class="small">
                 <template #body="slotProps">
                   <img
-                    :src=slotProps.data.image
+                    :src="slotProps.data.image"
                     :alt="slotProps.data.image"
                     class="product-image"
                   />
@@ -331,10 +330,11 @@
 <script>
 import Button from "primevue/button";
 import Calendar from "primevue/calendar";
+import MultiSelect from "primevue/multiselect";
 import Toast from "primevue/toast";
-import Dropdown from "primevue/dropdown";
 // import Rating from "primevue/rating";
 import { mapGetters, mapActions } from "vuex";
+import { FilterMatchMode, FilterOperator } from "primevue/api";
 import moment from "moment";
 
 export default {
@@ -342,7 +342,7 @@ export default {
     Button,
     Toast,
     Calendar,
-    Dropdown,
+    MultiSelect,
     // Rating,
   },
 
@@ -354,7 +354,9 @@ export default {
   },
 
   async created() {
-    await this.setMaintenanceOrderList();
+    this.initFilters();
+    this.setMaintenanceOrderList();
+    this.loading = false;
   },
 
   data() {
@@ -371,6 +373,7 @@ export default {
       statuses: ["Waiting for maintenance", "Completed"],
       severitys: ["Low", "Medium", "High"],
       expandedRows: [],
+      loading: true,
     };
   },
   methods: {
@@ -399,6 +402,28 @@ export default {
     showAssessmentDialog(product) {
       this.product = { ...product };
       this.showAssessment = true;
+    },
+    initFilters() {
+      this.filters = {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        maintenanceWorkerName: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        assessorName: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        locationName: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        status: { value: null, matchMode: FilterMatchMode.IN },
+        maintenanceDate: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }],
+        },
+      };
     },
     findIndexById(id) {
       let index = -1;

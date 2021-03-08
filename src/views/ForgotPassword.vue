@@ -1,26 +1,38 @@
 <template>
   <div>
-    <div v-if="ChangePassworDialog">
-      <label>New Password</label>
-      <br />
-      <InputText type="password" id="newPassword" v-model="newPassword" />
-      <br />
-      <small class="p-invalid">{{ errors.newPassword }}</small>
-      <br />
-      <label>Confirm Password</label>
-      <br />
-      <InputText
-        type="password"
-        id="confirmPassword"
-        v-model="confirmPassword"
-      />
-      <br />
-      <small class="p-invalid">{{ errors.confirmPassword }}</small>
-      <br />
+    <div v-if="ChangePassworDialog" style="padding-top: 100px">
+      <span class="login100-form-title" style="font-weight: bold"
+        >Forgot Password</span
+      >
+      <div class="p-float-label p-mb-5">
+        <InputText
+          id="newPassword"
+          type="password"
+          v-model="newPassword"
+          style="width: 270px"
+        />
+        <label style="padding-left: 5px;" class="">New Password</label>
+        <br/>
+        <small class="p-invalid" >{{ errors.newPassword }}</small>
+      </div>
+      
+      <div class="p-float-label p-mb-5">
+        <InputText
+          id="confirmPassword"
+          type="password"
+          v-model="confirmPassword"
+          style="width: 270px"
+        />
+        <label style="padding-left: 5px;"  >Confirm Password</label>
+        <br/>
+        <small class="p-invalid" >{{ errors.confirmPassword }}</small>
+      </div>
+      
       <Button
         label="Change Password"
-        class="p-button-text"
+        class="p-button-raised p-button-info"
         @click="confirmChangePassword"
+        style="width: 270px;"
       />
     </div>
     <div>
@@ -46,7 +58,6 @@ import * as yup from "yup";
 import userApi from "../apis/user.js";
 import contentNoti from "../util/contentNoti.js";
 
-
 export default {
   setup() {
     const schema = yup.object({
@@ -57,7 +68,7 @@ export default {
         .required()
         .matches(
           /^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-          "Password must contain at least 8 characters, one uppercase, one number"
+          "8 characters, 1 uppercase, 1 number"
         ),
       confirmPassword: yup
         .string()
@@ -82,7 +93,7 @@ export default {
 
   components: {
     InputText,
-    Toast
+    Toast,
   },
   data() {
     return {
@@ -143,3 +154,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.login100-form-title {
+  display: block;
+  font-family: Poppins;
+  font-size: 23px;
+  color: #333;
+  line-height: 1.2;
+  text-align: center;
+  padding-bottom: 35px;
+}
+</style>

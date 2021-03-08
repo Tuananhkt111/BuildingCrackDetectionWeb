@@ -8,7 +8,10 @@
         dataKey="id"
         :paginator="true"
         :rows="5"
-        :filters="filters"
+        :globalFilterFields="['locationName', 'reporterName']"
+        v-model:filters="filters"
+        filterDisplay="menu"
+        :loading="loading"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Cracks"
@@ -28,8 +31,8 @@
               <span class="p-input-icon-left" style="margin: 2px">
                 <i class="pi pi-search" />
                 <InputText
-                  v-model="filters['global']"
-                  placeholder="Search..."
+                  v-model="filters['global'].value"
+                  placeholder="Keyword Search"
                 />
               </span>
             </span>
@@ -39,89 +42,98 @@
         <Column header="Image" headerStyle="width: 120px">
           <template #body="slotProps">
             <img
-              :src="slotProps.data.image"
-              :alt="slotProps.data.image"
+              :src="slotProps.data.imageThumbnails"
+              :alt="slotProps.data.imageThumbnails"
               class="product-image"
-              style="width: 80px; height: 80px"
-              @click="showImage(slotProps.data.image)"
+              style="width: 80px ; height: 80px"
+              @click="showImage(slotProps.data.imageThumbnails)"
             />
           </template>
         </Column>
         <Column
           field="locationName"
           header="Location Name"
-          filterMatchMode="contains"
+          :showFilterMatchModes="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.locationName }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['locationName']"
+              v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
-        <Column field="reporterName" header="Reporter Name">
+        <Column
+          field="reporterName"
+          header="Reporter Name"
+          :showFilterMatchModes="false"
+        >
           <template #body="slotProps">
             {{ slotProps.data.reporterName }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['reporterName']"
+              v-model="filterModel.value"
               class="p-column-filter"
-              placeholder="Search"
+              placeholder="Search "
             />
           </template>
         </Column>
-        <Column field="severity" header="Severity">
-          <template #body="slotProps">
-            <span :class="stockClass(slotProps.data)">
-              {{ slotProps.data.severity }}
+        <Column
+          header="Severity"
+          filterField="severity"
+          :showFilterMatchModes="false"
+          :filterMenuStyle="{ width: '14rem' }"
+          style="min-width:14rem"
+        >
+          <template #body="{data}">
+            <span :class="stockClass(data)">
+              {{ data.severity }}
             </span>
           </template>
-          <template #filter>
-            <Dropdown
-              appendTo="body"
-              v-model="filters['severity']"
+          <template #filter="{filterModel}">
+            <div class="p-mb-3 p-text-bold">Severity Picker</div>
+            <MultiSelect
+              v-model="filterModel.value"
               :options="getSeveritysList"
-              placeholder="Severity"
+              placeholder="Any"
               class="p-column-filter"
-              :showClear="true"
             >
               <template #option="slotProps">
-                <span :class="'customer-badge status-' + slotProps.option">{{
-                  slotProps.option
-                }}</span>
+                <span>{{ slotProps.option }}</span>
               </template>
-            </Dropdown>
+            </MultiSelect>
           </template>
         </Column>
-        <Column field="status" header="Status" headerStyle="width: 270px">
-          <template #body="slotProps">
-            <span :class="stockStatus(slotProps.data)">
-              {{ slotProps.data.status }}
+        <Column
+          header="Status"
+          filterField="status"
+          :showFilterMatchModes="false"
+          :filterMenuStyle="{ width: '14rem' }"
+          style="min-width:14rem"
+        >
+          <template #body="{data}">
+            <span :class="stockStatus(data)">
+              {{ data.status }}
             </span>
           </template>
-
-          <template #filter>
-            <Dropdown
-              appendTo="body"
-              v-model="filters['status']"
+          <template #filter="{filterModel}">
+            <div class="p-mb-3 p-text-bold">Status Picker</div>
+            <MultiSelect
+              v-model="filterModel.value"
               :options="getStatusList"
-              placeholder="Status"
+              placeholder="Any"
               class="p-column-filter"
-              :showClear="true"
             >
               <template #option="slotProps">
-                <span :class="'customer-badge status-' + slotProps.option">{{
-                  slotProps.option
-                }}</span>
+                <span>{{ slotProps.option }}</span>
               </template>
-            </Dropdown>
+            </MultiSelect>
           </template>
         </Column>
         <Column headerStyle="width: 160px">
@@ -275,18 +287,19 @@
 
 <script>
 import Button from "primevue/button";
-import Dropdown from "primevue/dropdown";
+import MultiSelect from "primevue/multiselect";
 import Rating from "primevue/rating";
 import Textarea from "primevue/textarea";
 import moment from "moment";
+import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
     Button,
-    Dropdown,
     Rating,
     Textarea,
+    MultiSelect,
   },
   computed: {
     ...mapGetters("crack", [
@@ -307,10 +320,13 @@ export default {
       filters: {},
       submitted: false,
       messages: [],
+      loading: true,
     };
   },
-  async created() {
-    await this.setCrackList();
+  created() {
+    this.initFilters();
+    this.setCrackList();
+    this.loading = false;
   },
   methods: {
     ...mapActions("crack", ["setCrackList"]),
@@ -375,6 +391,22 @@ export default {
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");
+    },
+
+    initFilters() {
+      this.filters = {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        locationName: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        reporterName: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        severity: { value: null, matchMode: FilterMatchMode.IN },
+        status: { value: null, matchMode: FilterMatchMode.IN },
+      };
     },
     filterDate(value, filter) {
       if (

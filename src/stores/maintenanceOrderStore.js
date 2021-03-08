@@ -50,6 +50,9 @@ const maintenanceOrderStore = {
   actions: {
     async setMaintenanceOrderList({ commit }) {
       const res = await maintenanceOrderApi.getAll();
+      for (let index = 0; index < res.length; index++) {
+        res[index].maintenanceDate = new Date(res[index].maintenanceDate);
+      }
       if (res) {
         commit("setMaintenanceOrderList", res);
       }

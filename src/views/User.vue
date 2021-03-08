@@ -5,10 +5,12 @@
         :scrollable="false"
         ref="dt"
         :value="getUserList"
-        dataKey="id"
+        dataKey="userId"
         :paginator="true"
         :rows="5"
-        :filters="filters"
+        :loading="loading"
+        v-model:filters="filters"
+        filterDisplay="menu"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users"
@@ -35,8 +37,8 @@
               <span class="p-input-icon-left" style="margin:2px">
                 <i class="pi pi-search" />
                 <InputText
-                  v-model="filters['global']"
-                  placeholder="Search..."
+                  v-model="filters['global'].value"
+                  placeholder="Keyword Search"
                 />
               </span>
             </span>
@@ -45,40 +47,49 @@
         <template #empty>
           No Users found.
         </template>
-        <Column field="userName" header="User Name">
+        <Column
+          field="userName"
+          header="User Name"
+          :showFilterMatchModes="false"
+        >
           <template #body="slotProps">
             {{ slotProps.data.userName }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['userName']"
+              v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
-        <Column field="name" header="Full Name">
+        <Column field="name" header="Full Name" :showFilterMatchModes="false">
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['name']"
+              v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
-        <Column field="email" header="Email" headerStyle="width: 400px">
+        <Column
+          field="email"
+          header="Email"
+          :showFilterMatchModes="false"
+          style="min-width:14rem"
+        >
           <template #body="slotProps">
             {{ slotProps.data.email }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['email']"
+              v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
             />
@@ -87,47 +98,41 @@
         <Column
           field="phoneNumber"
           header="Phone Number"
+          :showFilterMatchModes="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.phoneNumber }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['phoneNumber']"
+              v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
-        <Column
-          field="role"
-          header="Role"
-          filterMatchMode="equals"
-        >
-          <template #body="slotProps">
-            <span :class="'customer-badge status-' + slotProps.data.role">{{
-              slotProps.data.role
-            }}</span>
+        <Column header="Role" filterField="role" :showFilterMatchModes="false">
+          <template #body="{data}">
+            <span :class="stockClass(data)">
+              {{ data.role }}
+            </span>
           </template>
-          <template #filter>
-            <Dropdown
-              appendTo="body"
-              v-model="filters['role']"
+          <template #filter="{filterModel}">
+            <div class="p-mb-3 p-text-bold">Role Picker</div>
+            <MultiSelect
+              v-model="filterModel.value"
               :options="roles"
-              placeholder="Role"
+              placeholder="Any"
               class="p-column-filter"
-              :showClear="true"
             >
               <template #option="slotProps">
-                <span :class="'customer-badge status-' + slotProps.option">{{
-                  slotProps.option
-                }}</span>
+                <span>{{ slotProps.option }}</span>
               </template>
-            </Dropdown>
+            </MultiSelect>
           </template>
         </Column>
-        <Column >
+        <Column>
           <template #body="slotProps">
             <Button
               icon="pi pi-user-edit"
@@ -416,6 +421,7 @@ import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import { userApi } from "../apis/user";
 import { useForm, useField } from "vee-validate";
+import { FilterMatchMode, FilterOperator } from "primevue/api";
 import * as yup from "yup";
 
 export default {
@@ -493,12 +499,15 @@ export default {
       messages: [],
       roles: ["Manager", "Staff"],
       warnning: null,
+      loading: false,
     };
   },
 
   async created() {
+    this.initFilters();
     await this.setUserList();
     await this.setLocationList();
+    this.loading = false;
   },
   methods: {
     ...mapActions("user", ["setUserList"]),
@@ -701,6 +710,15 @@ export default {
       }
       return day + "-" + month + "-" + date.getFullYear();
     },
+
+    stockClass(data) {
+      return [
+        {
+          staff: data.role === "Staff",
+          manager: data.role === "Manager",
+        },
+      ];
+    },
     async editProduct(product) {
       this.handleReset();
       this.name = product.name;
@@ -729,6 +747,28 @@ export default {
       }
       this.UserUpdateDialog = true;
     },
+    initFilters() {
+      this.filters = {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        userName: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        name: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        email: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        phoneNumber: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        role: { value: null, matchMode: FilterMatchMode.IN },
+      };
+    },
   },
 };
 </script>
@@ -751,6 +791,21 @@ export default {
   display: block;
 }
 
+.staff {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #256029;
+}
+
+.manager {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: blue;
+}
 
 
 @media screen and (max-width: 40em) {

@@ -1,6 +1,6 @@
 <template>
-  <div class="vapp">
-    <div class="p-grid" id="app">
+  <div>
+    <div class="p-grid p-mr-0" id="app">
       <div
         class="p-col-12 main-app"
         :class="{ active: getIsActive, inactive: !getIsActive }"
@@ -14,7 +14,6 @@
           <div class="main-layout">
             <div class="main-layout-details">
               <router-view class="view"></router-view>
-              <!-- <Crack></Crack> -->
             </div>
           </div>
         </div>
@@ -102,6 +101,7 @@ export default {
   transition: transform 0.2s;
 }
 .main-layout-details {
+  border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
   padding: 10px;
   background-color: white;
 }

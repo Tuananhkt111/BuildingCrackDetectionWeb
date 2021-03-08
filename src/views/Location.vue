@@ -9,7 +9,7 @@
         :paginator="true"
         :rows="5"
         v-model:filters="filters"
-        :globalFilterFields="['name']"
+        :globalFilterFields="['name', 'description']"
         filterDisplay="menu"
         :loading="loading1"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -37,19 +37,18 @@
               <span class="p-input-icon-left" style="margin:2px">
                 <i class="pi pi-search" />
                 <InputText
-                v-model="filters['global'].value"
-                placeholder="Keyword Search"
-              />
+                  v-model="filters['global'].value"
+                  placeholder="Keyword Search"
+                />
               </span>
             </span>
-            
           </div>
         </template>
 
         <template #empty>
           No Locations found.
         </template>
-        <Column field="name" header="Location Name">
+        <Column field="name" header="Location Name" :showFilterMatchModes="false">
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
@@ -62,16 +61,16 @@
             />
           </template>
         </Column>
-        <Column field="description" header="Description">
+        <Column field="description" header="Description" :showFilterMatchModes="false">
           <template #body="slotProps">
             {{ slotProps.data.description }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['description']"
+              v-model="filterModel.value"
               class="p-column-filter"
-              placeholder="Search"
+              placeholder="Search by Description"
             />
           </template>
         </Column>
@@ -311,9 +310,9 @@ export default {
       loading1: true,
     };
   },
-  async created() {
+  created() {
     this.initFilters();
-    await this.setLocationList();
+    this.setLocationList();
     this.loading1 = false;
   },
   methods: {
@@ -477,6 +476,10 @@ export default {
       this.filters = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         name: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        description: {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
         },

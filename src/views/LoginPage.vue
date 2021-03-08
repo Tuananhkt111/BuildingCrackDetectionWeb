@@ -2,7 +2,7 @@
   <div class="limitter">
     <div class="container-login100">
       <div class="p-grid wrap-login100">
-        <div class="p-col-7" >
+        <div class="p-col-7">
           <img src="/assets/4.jpg" style="width: 550px; height:500px" />
           <!-- <h2>Building Crack Detection</h2> -->
         </div>
@@ -12,7 +12,9 @@
           style="margin:auto"
           class="p-col-5 loginForm"
         >
-          <span class="login100-form-title" style="font-weight: bold">Welcome to BCDSystem</span>
+          <span class="login100-form-title" style="font-weight: bold"
+            >Welcome to BCDSystem</span
+          >
           <div class="wrap-input100">
             <div class="p-float-label p-mb-5">
               <InputText type="text" v-model="userName" style="width: 270px" />
@@ -43,11 +45,17 @@
             >
           </div>
         </form>
-        <div id="forgotPass" class="p-col-5 forgotForm" style="padding-top:150px">
-          <span class="login100-form-title" style="font-weight: bold">Forgot Password</span>
+        <div
+          id="forgotPass"
+          class="p-col-5 forgotForm"
+          style="padding-top:150px"
+        >
+          <span class="login100-form-title" style="font-weight: bold"
+            >Forgot Password</span
+          >
           <div class="wrap-input100">
             <div class="p-field">
-              <div class="p-float-label p-mb-5">
+              <div class="p-float-label p-mb-4">
                 <InputText
                   type="text"
                   v-model="userName"
@@ -58,17 +66,17 @@
             </div>
           </div>
           <Button
-            label="Cancel"
-            icon="pi pi-times"
-            class="p-button-raised p-button-info p-mr-5"
-            @click="cancelForgotPassword"
-          />
-          <Button
             label="Confirm"
             icon="pi pi-check"
             class="p-button-raised p-button-info"
             @click="confirmForgotPassword"
           />
+
+          <span
+            style="padding-left:30px; color: blue; display: inline-block; vertical-align: middle; line-height: 40px;"
+            @click="cancelForgotPassword"
+            >Sign in <i class="pi pi-arrow-right" style=""></i
+          ></span>
         </div>
         <div id="resetPass" class="resetPassFrom">
           <ForgotPassword></ForgotPassword>
@@ -265,7 +273,7 @@ body {
   background: white;
   border-radius: 10px;
   overflow: hidden;
- box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 * {
@@ -298,7 +306,7 @@ div {
   text-align: center;
   justify-content: center;
   align-items: center;
-  font-family:  Poppins;
+  font-family: Poppins;
   width: 100%;
 }
 .loginForm {
@@ -317,5 +325,4 @@ div {
   display: none;
   transition: all 0.3s;
 }
-
 </style>
