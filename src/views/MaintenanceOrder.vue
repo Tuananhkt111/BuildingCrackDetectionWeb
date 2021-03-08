@@ -150,7 +150,7 @@
         <template #expansion="slotProps">
           <div class="orders-subtable">
             <DataTable :value="slotProps.data.cracks">
-              <Column header="Image" headerStyle="width: 150px">
+              <Column header="Image" headerStyle="width: 150px" class="small">
                 <template #body="slotProps">
                   <img
                     :src=slotProps.data.image
@@ -193,42 +193,60 @@
     </div>
     <Dialog
       v-model:visible="productDialog"
-      :style="{ width: '450px' }"
+      :style="{ width: '800px' }"
       header="Maintenance Order Details"
       :modal="true"
       class="p-fluid"
     >
-      <div class="p-formgrid p-grid">
-        <div class="p-field p-col-6">
-          <p>Maintenance Worker</p>
-          <span>{{ product.maintenanceWorkerName }}</span>
-        </div>
-        <div class="p-field p-col-6">
-          <p>Assessor Name</p>
-          <span>{{ product.assessorName }}</span>
-        </div>
-      </div>
-      <div class="p-field">
-        <p>Description</p>
-        <span>{{ product.description }}</span>
-      </div>
-      <div class="p-field">
-        <label for="assessmentResult">Assessment Result</label>
-        <Rating
-          :modelValue="product.assessmentResult"
-          :readonly="true"
-          :stars="5"
-          :cancel="false"
-        />
-      </div>
-      <div class="p-formgrid p-grid">
-        <div class="p-field p-col-6">
-          <p>Status</p>
-          <span>{{ product.status }}</span>
-        </div>
-        <div class="p-field p-col-6">
-          <p>Maintenance Date</p>
-          <span>{{ product.maintenanceDate }}</span>
+       <div class="p-grid nested-grid">
+          <div class="p-col-6">
+            <p>
+              <span style="font-weight: bold">Maintenance Worker: </span
+              >{{ product.maintenanceWorkerName }}
+            </p>
+          </div>
+          <div class="p-col-6">
+            <p>
+              <span style="font-weight: bold">Location Name: </span
+              >{{ product.locationName }}
+            </p>
+          </div>
+          <div class="p-col-6">
+            <p>
+              <span style="font-weight: bold">Status: </span
+              >{{ product.status }}
+            </p>
+          </div>
+          <div class="p-col-6">
+            <p>
+              <span style="font-weight: bold">Maintenance Date: </span
+              >{{ product.maintenanceDate }}
+            </p>
+          </div>
+          <div class="p-col-12">
+            <p>
+              <span style="font-weight: bold">Assessment Result: </span
+              >{{ product.assessmentResult }}
+            </p>
+            <!-- <label for="assessmentResult" style="font-weight: bold">Assessment Result:</label>
+            <Rating
+              :modelValue="product.assessmentResult"
+              :readonly="true"
+              :stars="5"
+              :cancel="false"
+            /> -->
+          </div>
+          <div class="p-col-12">
+            <p>
+              <span style="font-weight: bold">Description: </span
+              >{{ product.description }}
+            </p>
+          </div>
+          <div class="p-col-12">
+            <p>
+              <span style="font-weight: bold">Assessor Name: </span
+              >{{ product.assessorName }}
+            </p>
         </div>
       </div>
       <template #footer>
@@ -242,44 +260,59 @@
     </Dialog>
     <Dialog
       v-model:visible="crackInfoDialog"
-      :style="{ width: '450px' }"
+      :style="{ width: '1000px' }"
       header="Cracks Details"
       :modal="true"
       class="p-fluid"
     >
-      <img
-        :src=crack.image
-        :alt="crack.image"
-        class="product-image"
-        v-if="crack.image"
-      />
-
-      <div class="p-field">
-        <p>Position</p>
-        <label>{{ crack.position }}</label>
-      </div>
-      <div class="p-field">
-        <p>Description</p>
-        <label>{{ crack.description }}</label>
-      </div>
-      <div class="p-formgrid p-grid">
-        <div class="p-field p-col-4">
-          <p>Severity</p>
-          <label>{{ crack.severity }}</label>
+      <div class="p-grid nested-grid">
+        <div class="p-col-2">
+          <img
+            :src="crack.image"
+            :alt="crack.image"
+            class="product-image"
+            v-if="crack.image"
+          />
         </div>
-        <div class="p-field p-col-8">
-          <p>Status</p>
-          <label>{{ crack.status }}</label>
+        <div class="p-col-9">
+          <div class="p-grid">
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Position: </span
+                >{{ crack.position }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Severity: </span
+                >{{ crack.severity }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Status: </span
+                >{{ crack.status }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Created Date: </span
+                >{{ crack.created }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Last Modified: </span
+                >{{ crack.lastModified }}
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="p-formgrid p-grid">
-        <div class="p-field p-col-6">
-          <p>Created Date</p>
-          <label>{{ crack.created }}</label>
-        </div>
-        <div class="p-field p-col-6">
-          <p>Last Modified</p>
-          <label>{{ crack.lastModified }}</label>
+        <div class="p-col-12">
+          <p>
+            <span style="font-weight: bold">Description: </span
+            >{{ crack.description }}
+          </p>
         </div>
       </div>
       <template #footer>
@@ -291,7 +324,7 @@
         />
       </template>
     </Dialog>
-    <Toast />
+    <Toast position="bottom-right"/>
   </div>
 </template>
 
@@ -300,7 +333,7 @@ import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
-import Rating from "primevue/rating";
+// import Rating from "primevue/rating";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 
@@ -310,7 +343,7 @@ export default {
     Toast,
     Calendar,
     Dropdown,
-    Rating,
+    // Rating,
   },
 
   computed: {
@@ -446,6 +479,16 @@ export default {
 </script>
 
 <style scoped>
+.small {
+  background-color: #66bb6a;
+}
+.p-fluid .p-dialog-footer .p-button {
+  /* margin-bottom: -10px; */
+  margin-top: -20px;
+}
+.orders-subtable {
+  border-style: ridge;
+}
 .table-header {
   display: flex;
   align-items: center;

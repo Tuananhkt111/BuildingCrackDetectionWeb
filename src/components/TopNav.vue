@@ -7,7 +7,7 @@
           alt="logo"
           height="20"
           class="p-mr-2"
-          style="padding-left:10px"
+          style="padding-left:20px"
         />
         <span class="logo-text">BCD System</span>
       </div>

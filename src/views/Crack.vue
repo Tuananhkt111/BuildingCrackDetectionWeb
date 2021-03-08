@@ -23,9 +23,9 @@
                 icon="pi pi-upload"
                 class="p-button-help"
                 @click="exportCSV($event)"
-                style="margin:2px"
+                style="margin: 2px"
               />
-              <span class="p-input-icon-left" style="margin:2px">
+              <span class="p-input-icon-left" style="margin: 2px">
                 <i class="pi pi-search" />
                 <InputText
                   v-model="filters['global']"
@@ -35,16 +35,14 @@
             </span>
           </div>
         </template>
-        <template #empty>
-          No Cracks found.
-        </template>
+        <template #empty> No Cracks found. </template>
         <Column header="Image" headerStyle="width: 120px">
           <template #body="slotProps">
             <img
               :src="slotProps.data.image"
               :alt="slotProps.data.image"
               class="product-image"
-              style="width: 80px ; height: 80px"
+              style="width: 80px; height: 80px"
               @click="showImage(slotProps.data.image)"
             />
           </template>
@@ -188,58 +186,79 @@
     </Dialog>
     <Dialog
       v-model:visible="crackInfoDialog"
-      :style="{ width: '450px' }"
+      :style="{ width: '1000px' }"
       header="Cracks Details"
       :modal="true"
-      class="p-fluid"
+      class="dialog"
     >
-      <img
-        :src="product.image"
-        :alt="product.image"
-        class="product-image"
-        v-if="product.image"
-      />
-      <div class="p-formgrid p-grid">
-        <div class="p-field p-col-6">
-          <p>Location Name</p>
-          <span>{{ product.locationName }}</span>
+      <div class="p-grid nested-grid">
+        <div class="p-col-2">
+          <img
+            :src="product.image"
+            :alt="product.image"
+            class="product-image"
+            v-if="product.image"
+          />
         </div>
-        <div class="p-field p-col-6">
-          <p>Reporter Name</p>
-          <span>{{ product.reporterName }}</span>
+        <div class="p-col-9">
+          <div class="p-grid">
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Location Name: </span
+                >{{ product.locationName }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Position: </span
+                >{{ product.position }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Severity: </span
+                >{{ product.severity }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Status: </span
+                >{{ product.status }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Created Date: </span
+                >{{ product.created }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Last Modified: </span
+                >{{ product.lastModified }}
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="p-field">
-        <p>Position</p>
-        <span>{{ product.position }}</span>
-      </div>
-      <div class="p-field">
-        <label for="description"> Description</label>
-        <Textarea
-          id="description"
-          v-model="product.description"
-          required="true"
-          disabled="true"
-        />
-      </div>
-      <div class="p-formgrid p-grid">
-        <div class="p-field p-col-4">
-          <p>Severity</p>
-          <span>{{ product.severity }}</span>
+        <div class="p-col-12">
+          <p>
+            <span style="font-weight: bold">Description: </span
+            >{{ product.description }}
+          </p>
+          <!-- <label for="description"
+            ><span style="font-weight: bold">Description: </span>
+            <Textarea
+              id="description"
+              v-model="product.description"
+              required="true"
+              disabled="true"
+          /></label> -->
         </div>
-        <div class="p-field p-col-8">
-          <p>Status</p>
-          <span>{{ product.status }}</span>
-        </div>
-      </div>
-      <div class="p-formgrid p-grid">
-        <div class="p-field p-col-6">
-          <p>Created Date</p>
-          <span>{{ product.created }}</span>
-        </div>
-        <div class="p-field p-col-6">
-          <p>Last Modified</p>
-          <span>{{ product.lastModified }}</span>
+        <div class="p-col-12">
+          <p>
+            <span style="font-weight: bold">Reporter Name: </span
+            >{{ product.reporterName }}
+          </p>
         </div>
       </div>
       <template #footer>
@@ -495,17 +514,16 @@ textarea {
   color: #ff5252;
 }
 
-h5{
-  font-size : 1.25rem;
+h5 {
+  font-size: 1.25rem;
 }
 
-img:hover
-{
-    -webkit-transform: scale(1.5);
-    -moz-transform: scale(1.5);
-    -o-transform: scale(1.5);
-    -ms-transform: scale(1.5);
-    transform: scale(1.5);
+img:hover {
+  -webkit-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  -o-transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  transform: scale(1.5);
 }
 
 @media screen and (max-width: 40em) {

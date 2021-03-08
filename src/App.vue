@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="vapp">
     <div class="p-grid" id="app">
       <div
         class="p-col-12 main-app"
@@ -70,6 +70,9 @@ export default {
 };
 </script>
 <style scoped>
+.vapp{
+  overflow-x: hidden;
+}
 .main-app {
   padding: 0;
 }

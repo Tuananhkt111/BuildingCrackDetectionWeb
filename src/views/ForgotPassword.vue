@@ -34,7 +34,7 @@
         <p @click="closeToLogin">Will back to Login Page in {{ countDown }}</p>
       </Dialog>
     </div>
-    <Toast/>
+    <Toast position="bottom-right"/>
   </div>
 </template>
 

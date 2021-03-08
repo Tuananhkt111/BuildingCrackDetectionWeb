@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <DataTable
-        :scrollable="true"
+        :scrollable="false"
         ref="dt"
         :value="getUserList"
         dataKey="id"
@@ -400,7 +400,7 @@
         />
       </template>
     </Dialog>
-    <Toast />
+    <Toast position="bottom-right"/>
   </div>
 </template>
 

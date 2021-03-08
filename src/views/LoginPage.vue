@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    <Toast />
+    <Toast position="bottom-right"/>
     <Dialog
       v-model:visible="ChangePasswordDialog"
       :style="{ width: '350px' }"
