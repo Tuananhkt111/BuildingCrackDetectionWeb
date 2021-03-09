@@ -8,7 +8,6 @@
         dataKey="userId"
         :paginator="true"
         :rows="5"
-        :loading="loading"
         v-model:filters="filters"
         filterDisplay="menu"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -44,15 +43,14 @@
             </span>
           </div>
         </template>
-        <template #empty>
-          No Users found.
-        </template>
+        
         <Column
           field="userName"
           header="User Name"
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             {{ slotProps.data.userName }}
           </template>
           <template #filter="{filterModel}">
@@ -66,6 +64,7 @@
         </Column>
         <Column field="name" header="Full Name" :showFilterMatchModes="false">
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             {{ slotProps.data.name }}
           </template>
           <template #filter="{filterModel}">
@@ -81,9 +80,10 @@
           field="email"
           header="Email"
           :showFilterMatchModes="false"
-          style="min-width:14rem"
+          headerStyle="width: 14em"
         >
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             {{ slotProps.data.email }}
           </template>
           <template #filter="{filterModel}">
@@ -97,10 +97,11 @@
         </Column>
         <Column
           field="phoneNumber"
-          header="Phone Number"
+          header="Phone"
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             {{ slotProps.data.phoneNumber }}
           </template>
           <template #filter="{filterModel}">
@@ -114,6 +115,7 @@
         </Column>
         <Column header="Role" filterField="role" :showFilterMatchModes="false">
           <template #body="{data}">
+            <Skeleton v-if="loading"/>
             <span :class="stockClass(data)">
               {{ data.role }}
             </span>
@@ -134,6 +136,7 @@
         </Column>
         <Column>
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             <Button
               icon="pi pi-user-edit"
               class="p-button-rounded p-button-info p-button-text"
@@ -152,6 +155,9 @@
             />
           </template>
         </Column>
+        <template #empty>
+          No Users found.
+        </template>
       </DataTable>
     </div>
     <Dialog
@@ -202,22 +208,22 @@
       <div class="p-field">
         <label for="name">Full Name</label>
         <InputText name="name" v-model.trim="name" />
-        <small class="p-invalid">{{ errors.name }}</small>
+        <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="email">Email</label>
         <InputText type="email" name="email" v-model.trim="email" />
-        <small class="p-invalid">{{ errors.email }}</small>
+        <small class="invalid">{{ errors.email }}</small>
       </div>
       <div class="p-field">
         <label for="phoneNumber">Phone Number</label>
         <InputMask name="phone" mask="9999999999" v-model.trim="phone" />
-        <small class="p-invalid">{{ errors.phone }}</small>
+        <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
         <label for="address">Address</label>
         <Textarea name="address" v-model="address" rows="3" cols="20" />
-        <small class="p-invalid">{{ errors.address }}</small>
+        <small class="invalid">{{ errors.address }}</small>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
@@ -283,17 +289,17 @@
       <div class="p-field">
         <label for="name">Full Name</label>
         <InputText name="name" v-model.trim="name" />
-        <small>{{ errors.name }}</small>
+        <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="email">Email</label>
         <InputText type="email" name="email" v-model.trim="email" />
-        <small>{{ errors.email }}</small>
+        <small class="invalid">{{ errors.email }}</small>
       </div>
       <div class="p-field">
         <label for="phoneNumber">Phone Number</label>
         <InputMask name="phone" mask="9999999999" v-model.trim="phone" />
-        <small>{{ errors.phone }}</small>
+        <small class="invalid">{{ errors.phone }}</small>
       </div>
 
       <div class="p-formgrid p-grid">
@@ -331,7 +337,7 @@
       <div class="p-field">
         <label for="address">Address</label>
         <Textarea name="address" v-model="address" rows="3" cols="20" />
-        <small>{{ errors.address }}</small>
+        <small class="invalid">{{ errors.address }}</small>
       </div>
       <template #footer>
         <Button
@@ -416,6 +422,7 @@ import Dropdown from "primevue/dropdown";
 import InputMask from "primevue/inputmask";
 import Rating from "primevue/rating";
 import MultiSelect from "primevue/multiselect";
+import Skeleton from "primevue/skeleton";
 import contentNoti from "../util/contentNoti.js";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
@@ -473,6 +480,7 @@ export default {
     Rating,
     MultiSelect,
     InputMask,
+    Skeleton
   },
   computed: {
     ...mapGetters("user", ["getUserList"]),
@@ -499,7 +507,7 @@ export default {
       messages: [],
       roles: ["Manager", "Staff"],
       warnning: null,
-      loading: false,
+      loading: true,
     };
   },
 
@@ -805,6 +813,9 @@ export default {
   font-weight: 700;
   letter-spacing: 0.3px;
   color: blue;
+}
+.invalid{
+  color: red;
 }
 
 

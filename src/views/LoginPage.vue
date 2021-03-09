@@ -6,11 +6,17 @@
           <img src="/assets/4.jpg" style="width: 550px; height:500px" />
           <!-- <h2>Building Crack Detection</h2> -->
         </div>
+        <LoadingScreen
+          :isLoading="isLoading"
+          class="p-col-5"
+          style="paddint-right:20px"
+        />
         <form
           @submit.prevent="handleSubmit()"
           id="login"
           style="margin:auto"
           class="p-col-5 loginForm"
+          v-if="!isLoading"
         >
           <span class="login100-form-title" style="font-weight: bold"
             >Welcome to BCDSystem</span
@@ -39,7 +45,7 @@
             <!-- <button type="submit">Login</button> -->
             <a
               @click="forgotPassword"
-              style="float: right; padding-right:55px; color: blue"
+              style="float: right; padding-right:55px; color: blue; cursor:pointer"
               class="p-mt-2"
               >Forgot password?</a
             >
@@ -49,6 +55,7 @@
           id="forgotPass"
           class="p-col-5 forgotForm"
           style="padding-top:150px"
+          v-if="!isLoading"
         >
           <span class="login100-form-title" style="font-weight: bold"
             >Forgot Password</span
@@ -73,7 +80,7 @@
           />
 
           <span
-            style="padding-left:30px; color: blue; display: inline-block; vertical-align: middle; line-height: 40px;"
+            style="padding-left:30px; color: blue; display: inline-block; vertical-align: middle; line-height: 40px; cursor:pointer"
             @click="cancelForgotPassword"
             >Sign in <i class="pi pi-arrow-right" style=""></i
           ></span>
@@ -83,7 +90,7 @@
         </div>
       </div>
     </div>
-    <Toast position="bottom-right"/>
+    <Toast position="bottom-right" />
     <Dialog
       v-model:visible="ChangePasswordDialog"
       :style="{ width: '350px' }"
@@ -128,6 +135,7 @@ import Password from "primevue/password";
 import Button from "primevue/button";
 import { mapGetters, mapActions } from "vuex";
 import ForgotPassword from "../views/ForgotPassword.vue";
+import LoadingScreen from "../components/PreLoader.vue";
 
 export default {
   components: {
@@ -135,6 +143,7 @@ export default {
     Password,
     Button,
     ForgotPassword,
+    LoadingScreen,
   },
   computed: {
     ...mapGetters("application", ["getIsActive", "getIsLogin"]),
@@ -146,6 +155,7 @@ export default {
       newPassword: "",
       confirmPassword: "",
       ChangePasswordDialog: false,
+      isLoading: false,
     };
   },
   created() {},
@@ -153,7 +163,6 @@ export default {
     const checkForgotPass = /\/users\/[a-zA-Z]+\/forgotpass/.test(
       window.location.pathname
     );
-    console.log(checkForgotPass);
     if (checkForgotPass && localStorage.getItem("user") == null) {
       this.waithide("login", "resetPass");
     }
@@ -167,17 +176,21 @@ export default {
     ...mapActions("user", ["setUser"]),
 
     async handleSubmit() {
+      this.isLoading = true;
       if (this.userName && this.password) {
         const res = await userApi.login(this.userName, this.password);
         if (res != null) {
           if (res.isNewUser) {
             this.ChangePasswordDialog = true;
+            this.isLoading = false;
           } else {
             this.setIsLogin(!this.getIsLogin);
             this.setUser(JSON.parse(res));
+            this.isLoading = false;
             this.$router.push("/");
           }
         } else {
+          this.isLoading = false;
           this.$toast.add({
             severity: "warn",
             summary: "User or Password is wrong!! Try again ",
@@ -210,22 +223,27 @@ export default {
       this.ChangePasswordDialog = false;
     },
     async confirmForgotPassword() {
+      this.isLoading = true;
       await userApi
         .forgotPassword(this.userName)
-        .catch((err) =>
+        .catch(() => {
           this.$toast.add({
             severity: "error",
-            summary: err.data,
+            summary: "ERROR",
+            detail: "Your Account is'nt existed!",
             life: 3000,
-          })
-        )
-        .then((res) =>
+          });
+          this.isLoading = false;
+        })
+        .then((res) => {
           this.$toast.add({
             severity: "success",
             summary: res.data,
             life: 3000,
-          })
-        );
+          });
+          this.isLoading = false;
+        });
+      this.isLoading = false;
       this.waithide("forgotPass", "login");
     },
     cancelForgotPassword() {

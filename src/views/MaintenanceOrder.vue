@@ -12,8 +12,12 @@
         :rows="5"
         v-model:filters="filters"
         filterDisplay="menu"
-        :loading="loading"
-        :globalFilterFields="['maintenanceWorkerName', 'assessorName','locationName','status']"
+        :globalFilterFields="[
+          'maintenanceWorkerName',
+          'assessorName',
+          'locationName',
+          'status',
+        ]"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Maintenance Orders"
@@ -49,6 +53,7 @@
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
+            <Skeleton v-if="loading" />
             {{ slotProps.data.maintenanceWorkerName }}
           </template>
           <template #filter="{filterModel}">
@@ -66,6 +71,7 @@
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
+            <Skeleton v-if="loading" />
             {{ slotProps.data.assessorName }}
           </template>
           <template #filter="{filterModel}">
@@ -83,6 +89,7 @@
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
+            <Skeleton v-if="loading" />
             {{ slotProps.data.locationName }}
           </template>
           <template #filter="{filterModel}">
@@ -102,6 +109,7 @@
           style="min-width:14rem"
         >
           <template #body="{data}">
+            <Skeleton v-if="loading" />
             <span :class="stockStatusOrder(data)">
               {{ data.status }}
             </span>
@@ -121,12 +129,14 @@
           </template>
         </Column>
         <Column
-          header="maintenanceDate"
-          filterField="Maintenance Date"
+          header="Maintenance Date"
+          filterField="maintenanceDate"
           dataType="date"
-          style="min-width:10rem"
+          style="min-width:20px"
+          headerStyle="width: 13em"
         >
           <template #body="{data}">
+            <Skeleton v-if="loading" />
             {{ callDate(data.maintenanceDate) }}
           </template>
           <template #filter="{filterModel}">
@@ -137,8 +147,9 @@
             />
           </template>
         </Column>
-        <Column>
+        <Column headerStyle="width: 5em">
           <template #body="slotProps">
+            <Skeleton v-if="loading" />
             <Button
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info p-button-text"
@@ -151,15 +162,18 @@
             <DataTable :value="slotProps.data.cracks">
               <Column header="Image" headerStyle="width: 150px" class="small">
                 <template #body="slotProps">
+                  <Skeleton v-if="loading" />
                   <img
-                    :src="slotProps.data.image"
-                    :alt="slotProps.data.image"
+                    :src=slotProps.data.imageThumbnails
+                    :alt="slotProps.data.imageThumbnails"
                     class="product-image"
+                    @click="showImage(slotProps.data)"
                   />
                 </template>
               </Column>
               <Column field="severity" header="Severity" sortable>
                 <template #body="slotProps">
+                  <Skeleton v-if="loading" />
                   <span :class="stockClass(slotProps.data)">
                     {{ slotProps.data.severity }}
                   </span>
@@ -167,6 +181,7 @@
               </Column>
               <Column field="status" header="Status" sortable>
                 <template #body="slotProps">
+                  <Skeleton v-if="loading" />
                   <span :class="stockStatus(slotProps.data)">
                     {{ slotProps.data.status }}
                   </span>
@@ -174,11 +189,13 @@
               </Column>
               <Column field="created" header="Created Date" sortable>
                 <template #body="slotProps">
+                  <Skeleton v-if="loading" />
                   <span>{{ callDate(slotProps.data.created) }}</span>
                 </template>
               </Column>
               <Column headerStyle="width:4rem">
                 <template #body="slotProps">
+                  <Skeleton v-if="loading" />
                   <Button
                     icon="pi pi-search"
                     @click="showDetail(slotProps.data)"
@@ -192,60 +209,63 @@
     </div>
     <Dialog
       v-model:visible="productDialog"
-      :style="{ width: '800px' }"
+      :style="{ width: '700px' }"
       header="Maintenance Order Details"
       :modal="true"
       class="p-fluid"
     >
-       <div class="p-grid nested-grid">
-          <div class="p-col-6">
-            <p>
-              <span style="font-weight: bold">Maintenance Worker: </span
-              >{{ product.maintenanceWorkerName }}
-            </p>
-          </div>
-          <div class="p-col-6">
-            <p>
-              <span style="font-weight: bold">Location Name: </span
-              >{{ product.locationName }}
-            </p>
-          </div>
-          <div class="p-col-6">
-            <p>
-              <span style="font-weight: bold">Status: </span
-              >{{ product.status }}
-            </p>
-          </div>
-          <div class="p-col-6">
-            <p>
-              <span style="font-weight: bold">Maintenance Date: </span
-              >{{ product.maintenanceDate }}
-            </p>
-          </div>
-          <div class="p-col-12">
-            <p>
-              <span style="font-weight: bold">Assessment Result: </span
-              >{{ product.assessmentResult }}
-            </p>
-            <!-- <label for="assessmentResult" style="font-weight: bold">Assessment Result:</label>
+      <div class="p-grid nested-grid">
+        <div class="p-col-6">
+          <p>
+            <span style="font-weight: bold">Maintenance Worker: </span
+            >{{ product.maintenanceWorkerName }}
+          </p>
+        </div>
+        <div class="p-col-6">
+          <p>
+            <span style="font-weight: bold">Location Name: </span
+            >{{ product.locationName }}
+          </p>
+        </div>
+        <div class="p-col-6">
+          <p>
+            <span style="font-weight: bold">Status: </span>{{ product.status }}
+          </p>
+        </div>
+        <div class="p-col-6">
+          <p>
+            <span style="font-weight: bold">Maintenance Date: </span
+            >{{ product.maintenanceDate }}
+          </p>
+        </div>
+        <div class="p-col-6">
+          <p>
+            <span style="font-weight: bold">Assessment Result: </span
+            >{{ product.assessmentResult }}
+          </p>
+          <!-- <label for="assessmentResult" style="font-weight: bold">Assessment Result:</label>
             <Rating
               :modelValue="product.assessmentResult"
               :readonly="true"
               :stars="5"
               :cancel="false"
             /> -->
-          </div>
-          <div class="p-col-12">
-            <p>
-              <span style="font-weight: bold">Description: </span
-              >{{ product.description }}
-            </p>
-          </div>
-          <div class="p-col-12">
-            <p>
-              <span style="font-weight: bold">Assessor Name: </span
-              >{{ product.assessorName }}
-            </p>
+        </div>
+        <div class="p-col-6">
+          <p>
+            <span style="font-weight: bold">Assessor Name: </span
+            >{{ product.assessorName }}
+          </p>
+        </div>
+        <div class="p-col-12">
+          <p>
+            <span style="font-weight: bold" v-if="product.desciption != null"
+              >Description: {{ product.description }}</span
+            >
+            <span style="font-weight: bold" v-if="product.desciption == null || product.desciption.isEmpty()"
+              >Description: <span style="font-weight: normal">N/A</span></span
+            >
+          </p>
         </div>
       </div>
       <template #footer>
@@ -260,21 +280,32 @@
     <Dialog
       v-model:visible="crackInfoDialog"
       :style="{ width: '1000px' }"
-      header="Cracks Details"
       :modal="true"
-      class="p-fluid"
+      class="dialog"
     >
+      <template #header>
+        <h3>Cracks Details</h3>
+      </template>
       <div class="p-grid nested-grid">
-        <div class="p-col-2">
+        <div class="p-col-3">
           <img
-            :src="crack.image"
-            :alt="crack.image"
-            class="product-image"
+            :src="crack.imageThumbnails"
+            :alt="crack.imageThumbnails"
+            class="crack-image"
             v-if="crack.image"
+            @click="showImage(crack)"
+            style="width:200px; height:100%"
           />
         </div>
+
         <div class="p-col-9">
           <div class="p-grid">
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Location Name: </span
+                >{{ crack.locationName }}
+              </p>
+            </div>
             <div class="p-col-6">
               <p>
                 <span style="font-weight: bold">Position: </span
@@ -305,25 +336,41 @@
                 >{{ crack.lastModified }}
               </p>
             </div>
+            <div class="p-col-12">
+              <p>
+                <span
+                  style="font-weight: bold"
+                  v-if="crack.desciption != null"
+                  >Description: {{ crack.description }}</span
+                >
+                <span
+                  style="font-weight: bold"
+                  v-if="
+                    crack.desciption == null || crack.desciption.isEmpty()
+                  "
+                  >Description:
+                  <span style="font-weight: normal">N/A</span></span
+                >
+              </p>
+            </div>
+            <div class="p-col-12">
+              <p>
+                <span style="font-weight: bold">Reporter Name: </span
+                >{{ crack.reporterName }}
+              </p>
+            </div>
           </div>
         </div>
-        <div class="p-col-12">
-          <p>
-            <span style="font-weight: bold">Description: </span
-            >{{ crack.description }}
-          </p>
-        </div>
       </div>
-      <template #footer>
-        <Button
-          label="Cancel"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="hideDialog"
-        />
-      </template>
     </Dialog>
-    <Toast position="bottom-right"/>
+    
+    <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
+      <img
+        :src="crack.image"
+        style="width:60%; height: 75%; margin-left:270px; margin-top:100px"
+      />
+    </div>
+    <Toast position="bottom-right" />
   </div>
 </template>
 
@@ -332,6 +379,7 @@ import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import MultiSelect from "primevue/multiselect";
 import Toast from "primevue/toast";
+import Skeleton from "primevue/skeleton";
 // import Rating from "primevue/rating";
 import { mapGetters, mapActions } from "vuex";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
@@ -343,6 +391,7 @@ export default {
     Toast,
     Calendar,
     MultiSelect,
+    Skeleton,
     // Rating,
   },
 
@@ -374,6 +423,7 @@ export default {
       severitys: ["Low", "Medium", "High"],
       expandedRows: [],
       loading: true,
+      displayImage: false,
     };
   },
   methods: {
@@ -385,6 +435,15 @@ export default {
       this.showAssessment = false;
       this.submitted = false;
       this.crackInfoDialog = false;
+    },
+    showImage(crack) {
+      document.body.style.overflow = "hidden";
+      this.crack = { ...crack };
+      this.displayImage = true;
+    },
+    hiddenImage() {
+      document.body.style.overflow = "visible";
+      this.displayImage = false;
     },
     showDetail(crack) {
       this.crack = { ...crack };
@@ -607,5 +666,50 @@ export default {
   font-size: 15px;
   letter-spacing: 0.3px;
   color: #ff5252;
+}
+
+.imagePopup {
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  position: fixed;
+  top: 0;
+  background: rgba(0, 0, 0, 0.9);
+  left: 0;
+  align-content: center;
+}
+
+@media screen and (max-width: 40em) {
+  ::v-deep(.p-datatable) {
+    &.p-datatable-responsive-demo {
+      .p-datatable-thead > tr > th,
+      .p-datatable-tfoot > tr > td {
+        display: none !important;
+      }
+
+      .p-datatable-tbody > tr > td {
+        display: block;
+        width: 100%;
+        border: 0 none;
+
+        .p-column-title {
+          padding: 0.4rem;
+          min-width: 30%;
+          display: inline-block;
+          margin: -0.4em 1em -0.4em -0.4rem;
+          font-weight: bold;
+        }
+
+        &:last-child {
+          border-bottom: 1px solid var(--surface-d);
+          text-align: center;
+        }
+
+        .p-rating {
+          display: inline-block;
+        }
+      }
+    }
+  }
 }
 </style>

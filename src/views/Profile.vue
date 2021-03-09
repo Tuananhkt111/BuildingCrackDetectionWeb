@@ -1,14 +1,13 @@
 <template>
-  <div class="p-grid" style="height: 550px">
-    <div class="p-col-7 left"></div>
-    <div class="p-col-5 right">
+  <div class="p-grid">
+    <div class="top">
       <div id="profileImage">{{ text }}</div>
-      <p class="title">{{ getUser.name }}</p>
-      <p><span class="header">Full Name:</span>{{ getUser.userName }}</p>
-      <p><span class="header">Full Name:</span>{{ getUser.phoneNumber }}</p>
-      <p><span class="header">Full Name:</span>{{ getUser.address }}</p>
-      <p><span class="header">Full Name:</span>{{ getUser.role }}</p>
     </div>
+    <p class="name">{{ getUser.name }}</p>
+    <p><span class="header">Full Name:</span>{{ getUser.userName }}</p>
+    <p><span class="header">Full Name:</span>{{ getUser.phoneNumber }}</p>
+    <p><span class="header">Full Name:</span>{{ getUser.address }}</p>
+    <p><span class="header">Full Name:</span>{{ getUser.role }}</p>
   </div>
 </template>
 
@@ -38,20 +37,19 @@ export default {
 </script>
 
 <style scoped>
-.left {
-  border: 1px;
-  border-color: black;
-}
-.right {
-  border: 1px solid black;
-  border-radius: 5px;
+.top{
+  padding-top: 30px ;
+  width: 100%;
+  height: 100%;
 }
 .header {
   font-weight: bold;
 }
-.title {
+.name {
+  padding-top: 5px ;
+  width: 100%;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   text-align: center;
 }
 #profileImage {
@@ -63,6 +61,9 @@ export default {
   color: #fff;
   text-align: center;
   line-height: 100px;
-  margin: 20px 0;
+  margin: auto;
 }
+/* .content {
+  font-family: Poppins;
+} */
 </style>

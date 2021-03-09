@@ -47,6 +47,7 @@
         </template>
         <Column field="name" header="Name">
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             {{ slotProps.data.name }}
           </template>
           <template #filter>
@@ -60,6 +61,7 @@
         </Column>
         <Column field="phone" header="Phone">
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             {{ slotProps.data.phone }}
           </template>
           <template #filter>
@@ -73,6 +75,7 @@
         </Column>
         <Column filterField="email" filterMatchMode="contains" header="Email">
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             {{ slotProps.data.email }}
           </template>
           <template #filter>
@@ -90,6 +93,7 @@
           header="Address"
         >
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             {{ slotProps.data.address }}
           </template>
           <template #filter>
@@ -108,6 +112,7 @@
           :filterFunction="filterDate"
         >
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             <span>{{ callDate(slotProps.data.created) }}</span>
           </template>
           <template #filter>
@@ -148,22 +153,22 @@
       <div class="p-field">
         <label for="name">Name</label>
         <InputText name="name" v-model.trim="name" />
-        <small>{{ errors.name }}</small>
+        <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="phone">Phone</label>
         <InputMask name="phone" mask="9999999999" v-model.trim="phone" />
-        <small>{{ errors.phone }}</small>
+        <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
         <label for="address">Address</label>
         <InputText name="address" v-model="address" />
-        <small>{{ errors.address }}</small>
+        <small class="invalid">{{ errors.address }}</small>
       </div>
       <div class="p-field">
         <label for="email">Email</label>
         <InputText type="email" name="email" v-model.trim="email" />
-        <small>{{ errors.email }}</small>
+        <small class="invalid">{{ errors.email }}</small>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
@@ -200,7 +205,7 @@
       <div class="p-field">
         <label for="name">Name</label>
         <InputText id="name" v-model="name" />
-        <small class="p-invalid">{{ errors.name }}</small>
+        <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="phone">Phone</label>
@@ -210,17 +215,17 @@
           mask="9999999999"
           v-model="phone"
         />
-        <small class="p-invalid">{{ errors.phone }}</small>
+        <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
         <label for="address">Address</label>
         <InputText id="address" v-model="address" />
-        <small class="p-invalid">{{ errors.address }}</small>
+        <small class="invalid">{{ errors.address }}</small>
       </div>
       <div class="p-field">
         <label for="email">Email</label>
         <InputText name="email" v-model="email" required="true" />
-        <small class="p-invalid">{{ errors.email }}</small>
+        <small class="invalid">{{ errors.email }}</small>
       </div>
       <template #footer>
         <Button
@@ -275,6 +280,7 @@ import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import InputMask from "primevue/inputmask";
 import Toast from "primevue/toast";
+import Skeleton from "primevue/skeleton";
 import contentNoti from "../util/contentNoti.js";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
@@ -328,6 +334,7 @@ export default {
     Toast,
     Calendar,
     InputMask,
+    Skeleton
   },
   computed: {
     ...mapGetters("maintenanceWorker", ["getMaintenanceWorkerList"]),
@@ -537,5 +544,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.invalid{
+  color: red;
 }
 </style>

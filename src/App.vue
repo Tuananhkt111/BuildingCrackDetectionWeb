@@ -22,7 +22,7 @@
     <div v-if="getIsLogin">
       <Login @hook:mounted="doSomething"></Login>
     </div>
-    <AppFooter></AppFooter>
+    <!-- <AppFooter></AppFooter> -->
   </div>
 </template>
 
@@ -30,7 +30,7 @@
 import { mapGetters, mapActions } from "vuex";
 import TopNav from "../src/components/TopNav.vue";
 import SideBar from "../src/components/SideBar.vue";
-import AppFooter from "../src/components/AppFooter.vue";
+// import AppFooter from "../src/components/AppFooter.vue";
 import Login from "../src/views/LoginPage.vue";
 export default {
   name: "app",
@@ -38,7 +38,7 @@ export default {
     TopNav,
     SideBar,
     Login,
-    AppFooter
+    // AppFooter
   },
   computed: {
     ...mapGetters("application", ["getIsActive", "getIsLogin"]),
@@ -69,9 +69,6 @@ export default {
 };
 </script>
 <style scoped>
-.vapp{
-  overflow-x: hidden;
-}
 .main-app {
   padding: 0;
 }
@@ -87,6 +84,7 @@ export default {
 }
 .main-layout-container {
   margin: 0;
+  height: 100%;
 }
 .layout-menu {
   overflow: auto;
@@ -101,7 +99,7 @@ export default {
   transition: transform 0.2s;
 }
 .main-layout-details {
-  border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+  border-radius: 5px;
   padding: 10px;
   background-color: white;
 }
@@ -109,6 +107,7 @@ export default {
   background-color:  #f2f2f2;
   padding: 30px;
   width: 100%;
+  height: 100%;
 }
 .active .layout-menu {
   transform: translateX(0);

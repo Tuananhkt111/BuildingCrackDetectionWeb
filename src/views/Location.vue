@@ -11,14 +11,13 @@
         v-model:filters="filters"
         :globalFilterFields="['name', 'description']"
         filterDisplay="menu"
-        :loading="loading1"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} locations"
       >
         <template #header>
           <div class="table-header">
-            <h5 class="p-m-0" style="font-size:1.25rem">Manage Products</h5>
+            <h5 class="p-m-0" style="font-size:1.25rem">Manage Locations</h5>
             <span class="p-input-icon-left">
               <Button
                 icon="pi pi-plus"
@@ -50,6 +49,7 @@
         </template>
         <Column field="name" header="Location Name" :showFilterMatchModes="false">
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             {{ slotProps.data.name }}
           </template>
           <template #filter="{filterModel}">
@@ -63,6 +63,7 @@
         </Column>
         <Column field="description" header="Description" :showFilterMatchModes="false">
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             {{ slotProps.data.description }}
           </template>
           <template #filter="{filterModel}">
@@ -81,6 +82,7 @@
           style="min-width:10rem"
         >
           <template #body="{data}">
+            <Skeleton v-if="loading"/>
             {{ callDate(data.created) }}
           </template>
           <template #filter="{filterModel}">
@@ -98,6 +100,7 @@
           style="min-width:10rem"
         >
           <template #body="{data}">
+            <Skeleton v-if="loading"/>
             {{ callDate(data.lastModified) }}
           </template>
           <template #filter="{filterModel}">
@@ -110,6 +113,7 @@
         </Column>
         <Column>
           <template #body="slotProps">
+            <Skeleton v-if="loading"/>
             <Button
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info p-button-text p-mr-2"
@@ -142,7 +146,7 @@
           v-model.trim="locationName"
           maxlength="30"
         />
-        <small class="p-invalid">{{ errors.locationName }}</small>
+        <small class="invalid">{{ errors.locationName }}</small>
       </div>
       <div class="p-field">
         <label for="description">Description</label>
@@ -151,6 +155,7 @@
           v-model.trim="description"
           required="true"
         />
+        <small class="invalid">{{ errors.description }}</small>
       </div>
       <template #footer>
         <Button
@@ -182,11 +187,12 @@
           required="true"
           maxlength="30"
         />
-        <small class="p-invalid"> {{ errors.locationName }}</small>
+        <small class="invalid"> {{ errors.locationName }}</small>
       </div>
       <div class="p-field">
         <label for="description">Description</label>
         <InputText id="description" v-model.trim="description" />
+        <small class="invalid"> {{ errors.description }}</small>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
@@ -256,6 +262,7 @@ import contentNoti from "../util/contentNoti.js";
 import { mapGetters, mapActions } from "vuex";
 import { useForm, useField } from "vee-validate";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
+import Skeleton from "primevue/skeleton";
 import * as yup from "yup";
 
 export default {
@@ -281,6 +288,7 @@ export default {
       errors,
       meta,
       handleReset,
+      Skeleton
     };
   },
 
@@ -307,13 +315,13 @@ export default {
       messages: [],
       warnning: "",
       search: false,
-      loading1: true,
+      loading: true,
     };
   },
   created() {
     this.initFilters();
     this.setLocationList();
-    this.loading1 = false;
+    this.loading = false;
   },
   methods: {
     ...mapActions("location", ["setLocationList"]),
@@ -519,6 +527,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.invalid{
+  color: red;
 }
 
 @media screen and (max-width: 40em) {

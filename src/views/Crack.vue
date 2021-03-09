@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
+      <img
+        :src="product.image"
+        style="width:60%; height: 75%; margin-left:270px; margin-top:100px"
+      />
+    </div>
     <div class="card">
       <DataTable
         :scrollable="true"
@@ -8,10 +14,10 @@
         dataKey="id"
         :paginator="true"
         :rows="5"
+        :loading=loading
         :globalFilterFields="['locationName', 'reporterName']"
         v-model:filters="filters"
         filterDisplay="menu"
-        :loading="loading"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Cracks"
@@ -39,14 +45,18 @@
           </div>
         </template>
         <template #empty> No Cracks found. </template>
-        <Column header="Image" headerStyle="width: 120px">
+        <template #loading>
+          Loading Crack, please wait...
+        </template>
+        <Column header="Image">
           <template #body="slotProps">
+            <Skeleton v-if="loading" />
             <img
               :src="slotProps.data.imageThumbnails"
               :alt="slotProps.data.imageThumbnails"
               class="product-image"
               style="width: 80px ; height: 80px"
-              @click="showImage(slotProps.data.imageThumbnails)"
+              @click="showImage(slotProps.data)"
             />
           </template>
         </Column>
@@ -54,8 +64,10 @@
           field="locationName"
           header="Location Name"
           :showFilterMatchModes="false"
+          style="min-width:12rem"
         >
           <template #body="slotProps">
+            <Skeleton v-if="loading" />
             {{ slotProps.data.locationName }}
           </template>
           <template #filter="{filterModel}">
@@ -71,8 +83,10 @@
           field="reporterName"
           header="Reporter Name"
           :showFilterMatchModes="false"
+          style="min-width:12rem"
         >
           <template #body="slotProps">
+            <Skeleton v-if="loading" />
             {{ slotProps.data.reporterName }}
           </template>
           <template #filter="{filterModel}">
@@ -89,9 +103,10 @@
           filterField="severity"
           :showFilterMatchModes="false"
           :filterMenuStyle="{ width: '14rem' }"
-          style="min-width:14rem"
+          headerStyle="width: 2em"
         >
           <template #body="{data}">
+            <Skeleton v-if="loading" />
             <span :class="stockClass(data)">
               {{ data.severity }}
             </span>
@@ -114,10 +129,11 @@
           header="Status"
           filterField="status"
           :showFilterMatchModes="false"
-          :filterMenuStyle="{ width: '14rem' }"
-          style="min-width:14rem"
+          :filterMenuStyle="{ width: '12rem' }"
+          style="min-width:12rem"
         >
           <template #body="{data}">
+            <Skeleton v-if="loading" />
             <span :class="stockStatus(data)">
               {{ data.status }}
             </span>
@@ -136,8 +152,9 @@
             </MultiSelect>
           </template>
         </Column>
-        <Column headerStyle="width: 160px">
+        <Column :filterMenuStyle="{ width: '5rem' }">
           <template #body="slotProps">
+            <Skeleton v-if="loading" />
             <Button
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info p-button-text p-mr-2"
@@ -199,19 +216,24 @@
     <Dialog
       v-model:visible="crackInfoDialog"
       :style="{ width: '1000px' }"
-      header="Cracks Details"
       :modal="true"
       class="dialog"
     >
+      <template #header>
+        <h3>Cracks Details</h3>
+      </template>
       <div class="p-grid nested-grid">
-        <div class="p-col-2">
+        <div class="p-col-3">
           <img
-            :src="product.image"
-            :alt="product.image"
+            :src="product.imageThumbnails"
+            :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
+            @click="showImage(product)"
+            style="width:200px; height:100%"
           />
         </div>
+
         <div class="p-col-9">
           <div class="p-grid">
             <div class="p-col-6">
@@ -250,37 +272,32 @@
                 >{{ product.lastModified }}
               </p>
             </div>
+            <div class="p-col-12">
+              <p>
+                <span
+                  style="font-weight: bold"
+                  v-if="product.desciption != null"
+                  >Description: {{ product.description }}</span
+                >
+                <span
+                  style="font-weight: bold"
+                  v-if="
+                    product.desciption == null || product.desciption.isEmpty()
+                  "
+                  >Description:
+                  <span style="font-weight: normal">N/A</span></span
+                >
+              </p>
+            </div>
+            <div class="p-col-12">
+              <p>
+                <span style="font-weight: bold">Reporter Name: </span
+                >{{ product.reporterName }}
+              </p>
+            </div>
           </div>
         </div>
-        <div class="p-col-12">
-          <p>
-            <span style="font-weight: bold">Description: </span
-            >{{ product.description }}
-          </p>
-          <!-- <label for="description"
-            ><span style="font-weight: bold">Description: </span>
-            <Textarea
-              id="description"
-              v-model="product.description"
-              required="true"
-              disabled="true"
-          /></label> -->
-        </div>
-        <div class="p-col-12">
-          <p>
-            <span style="font-weight: bold">Reporter Name: </span
-            >{{ product.reporterName }}
-          </p>
-        </div>
       </div>
-      <template #footer>
-        <Button
-          label="Cancel"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="hideDialog"
-        />
-      </template>
     </Dialog>
   </div>
 </template>
@@ -293,6 +310,7 @@ import Textarea from "primevue/textarea";
 import moment from "moment";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
+import Skeleton from "primevue/skeleton";
 
 export default {
   components: {
@@ -300,6 +318,7 @@ export default {
     Rating,
     Textarea,
     MultiSelect,
+    Skeleton,
   },
   computed: {
     ...mapGetters("crack", [
@@ -314,6 +333,7 @@ export default {
   },
   data() {
     return {
+      image: null,
       crackInfoDialog: false,
       showAssessment: false,
       product: {},
@@ -321,6 +341,7 @@ export default {
       submitted: false,
       messages: [],
       loading: true,
+      displayImage: false,
     };
   },
   created() {
@@ -330,8 +351,14 @@ export default {
   },
   methods: {
     ...mapActions("crack", ["setCrackList"]),
-    showImage(image) {
-      console.log(image);
+    showImage(product) {
+      this.product = { ...product };
+      document.body.style.overflow = "hidden";
+      this.displayImage = true;
+    },
+    hiddenImage() {
+      document.body.style.overflow = "visible";
+      this.displayImage = false;
     },
     stockClass(data) {
       return [
@@ -548,6 +575,20 @@ textarea {
 
 h5 {
   font-size: 1.25rem;
+}
+.imagePopup {
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+  position: fixed;
+  top: 0;
+  background: rgba(0, 0, 0, 0.9);
+  left: 0;
+  align-content: center;
+}
+
+.p-dialog-titlebar {
+  background: black;
 }
 
 img:hover {
