@@ -9,6 +9,7 @@ import UserByManager from "./views/UserByManager.vue";
 import Login from "./views/LoginPage.vue";
 import Notification from "./views/Notification.vue";
 import ForgotPassword from "./views/ForgotPassword.vue";
+import Video from "./views/Video.vue";
 import urlConstants from "./util/urlConstants";
 import userApi from "./apis/user";
 
@@ -20,6 +21,7 @@ const router = new createRouter({
     { path: "/cracks", name: "crack", component: Crack },
     { path: "/locations", name: "location", component: Location },
     { path: "/profiles", name: "profiles", component: Project },
+    { path: "/video", name: "video", component: Video },
     {
       path: "/maintenanceOrders",
       name: "maintenanceOrder",

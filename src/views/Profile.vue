@@ -4,10 +4,20 @@
       <div id="profileImage">{{ text }}</div>
     </div>
     <p class="name">{{ getUser.name }}</p>
-    <p><span class="header">Full Name:</span>{{ getUser.userName }}</p>
-    <p><span class="header">Full Name:</span>{{ getUser.phoneNumber }}</p>
-    <p><span class="header">Full Name:</span>{{ getUser.address }}</p>
-    <p><span class="header">Full Name:</span>{{ getUser.role }}</p>
+    <div class="p-col-4"></div>
+    <div class="p-col-3">
+      <p class="header">Full Name</p>
+      <p class="header">Phone Number</p>
+      <p class="header">Address</p>
+      <p class="header">Role</p>
+    </div>
+    <div class="p-col-2">
+      <p class="content">{{ getUser.userName }}</p>
+      <p class="content">{{ getUser.phoneNumber }}</p>
+      <p class="content">{{ getUser.address }}</p>
+      <p class="content">{{ getUser.role }}</p>
+    </div>
+    <div class="p-col-3"></div>
   </div>
 </template>
 
@@ -37,16 +47,22 @@ export default {
 </script>
 
 <style scoped>
-.top{
-  padding-top: 30px ;
+.top {
+  padding-top: 30px;
   width: 100%;
   height: 100%;
 }
 .header {
+  color: black;
+  padding-bottom: 20px;
   font-weight: bold;
 }
+.content {
+  padding-bottom: 20px;
+  color: gray;
+}
 .name {
-  padding-top: 5px ;
+  padding-top: 5px;
   width: 100%;
   font-weight: bold;
   font-size: 1.4rem;
