@@ -1,6 +1,7 @@
 <template>
   <div class="card">
     <DataTable
+    :rowHover="true"
       ref="dt"
       :value="getNotificationList"
       v-model:selection="selectedProducts"

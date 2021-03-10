@@ -2,6 +2,7 @@
   <div>
     <div class="card">
       <DataTable
+      :rowHover="true"
         :scrollable="true"
         ref="dt"
         :value="getLocationList"

@@ -5,13 +5,10 @@ import MaintenanceOrder from "./views/MaintenanceOrder.vue";
 import MaintenanceWorker from "./views/MaintenanceWorker.vue";
 import Project from "./views/Profile.vue";
 import User from "./views/User.vue";
-import UserByManager from "./views/UserByManager.vue";
 import Login from "./views/LoginPage.vue";
 import Notification from "./views/Notification.vue";
 import ForgotPassword from "./views/ForgotPassword.vue";
 import Video from "./views/Video.vue";
-import urlConstants from "./util/urlConstants";
-import userApi from "./apis/user";
 
 const router = new createRouter({
   history: createWebHistory(),
@@ -33,7 +30,6 @@ const router = new createRouter({
       component: MaintenanceWorker,
     },
     { path: "/users", name: "user", component: User },
-    { path: "/userByManager", name: "userByManager", component: UserByManager },
     { path: "/notis", name: "notification", component: Notification },
     {
       path: "/users/:id/forgotpass",
@@ -56,11 +52,7 @@ router.beforeEach((to, from, next) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   if (user != null) {
-    if (user.role == urlConstants.STAFF_ROLE) {
-      userApi.logout();
-      alert("Staff can't login into web");
-      return next("/login");
-    } else if (checkForgotPass) {
+    if (checkForgotPass) {
       next("/");
     } else {
       next();

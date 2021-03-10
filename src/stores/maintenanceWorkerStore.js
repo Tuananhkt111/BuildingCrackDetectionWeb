@@ -21,6 +21,9 @@ const maintenanceWorkerStore = {
   actions: {
     async setMaintenanceWorkerList({ commit }) {
       const res = await maintenanceWorkerApi.getAll();
+      for (let index = 0; index < res.length; index++) {
+        res[index].created = new Date(res[index].created);
+      }
       if (res) {
         commit("setMaintenanceWorkerList", res);
       }

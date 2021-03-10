@@ -9,6 +9,7 @@
         :paginator="true"
         :rows="5"
         v-model:filters="filters"
+        :rowHover="true"
         filterDisplay="menu"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"

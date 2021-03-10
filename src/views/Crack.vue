@@ -8,13 +8,14 @@
     </div>
     <div class="card">
       <DataTable
+        :rowHover="true"
         :scrollable="true"
         ref="dt"
         :value="getCrackList"
         dataKey="id"
         :paginator="true"
         :rows="5"
-        :loading=loading
+        :loading="loading"
         :globalFilterFields="['locationName', 'reporterName']"
         v-model:filters="filters"
         filterDisplay="menu"
@@ -173,6 +174,12 @@
               class="p-button-rounded p-button-danger p-button-text"
               @click="showMaintenanceOrder(slotProps.data)"
               v-tooltip.bottom="'View Maintenance Order'"
+            />
+            <Button
+              icon="pi pi-video"
+              class="p-button-rounded p-button-danger p-button-text"
+              @click="$router.push('/video')"
+              v-tooltip.bottom="'Show Video'"
             />
           </template>
         </Column>
@@ -599,37 +606,14 @@ img:hover {
   transform: scale(1.5);
 }
 
-@media screen and (max-width: 40em) {
-  ::v-deep(.p-datatable) {
-    &.p-datatable-responsive-demo {
-      .p-datatable-thead > tr > th,
-      .p-datatable-tfoot > tr > td {
-        display: none !important;
-      }
-
-      .p-datatable-tbody > tr > td {
-        display: block;
-        width: 100%;
-        border: 0 none;
-
-        .p-column-title {
-          padding: 0.4rem;
-          min-width: 30%;
-          display: inline-block;
-          margin: -0.4em 1em -0.4em -0.4rem;
-          font-weight: bold;
-        }
-
-        &:last-child {
-          border-bottom: 1px solid var(--surface-d);
-          text-align: center;
-        }
-
-        .p-rating {
-          display: inline-block;
-        }
-      }
-    }
-  }
+.p-datatable .p-datatable-thead > tr > th {
+  text-align: left;
+  padding: 1rem 1rem;
+  border: 1px solid #dee2e6;
+  border-width: 1px 0 2px 0;
+  font-weight: 600;
+  color: #212529;
+  background: #ffffff;
+  transition: box-shadow 0.15s;
 }
 </style>

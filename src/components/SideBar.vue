@@ -24,11 +24,11 @@
               >
             </button>
           </li>
-          <!-- <li>
+          <li>
             <button class="p-link" @click="changePassword">
               <a><i class="pi pi-fw pi-key"></i><span>Change Password</span></a>
             </button>
-          </li> -->
+          </li>
           <li>
             <button class="p-link" @click="logOut">
               <a><i class="pi pi-fw pi-power-off"></i><span>Logout</span></a>
@@ -40,17 +40,12 @@
     <div>
       <div class="layout-profile">
         <ul>
-          <li v-if="role === 'Manager'">
-            <button class="p-link">
-              <a @click="$router.push('/userByManager')"
-                ><i class="pi pi-fw pi-users"></i><span>Staff</span></a
-              >
-            </button>
-          </li>
-          <li v-else>
+          <li>
             <button class="p-link">
               <a @click="$router.push('/users')"
-                ><i class="pi pi-fw pi-users"></i><span>Users</span></a
+                ><i class="pi pi-fw pi-users"></i
+                ><span v-if="role === 'Manager'">Staff</span
+                ><span v-else>Users</span></a
               >
             </button>
           </li>
@@ -128,7 +123,7 @@
 <script>
 import userApi from "../apis/user.js";
 import { useForm, useField } from "vee-validate";
-import { mapGetters , mapActions} from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import * as yup from "yup";
 export default {
   setup() {
@@ -188,12 +183,11 @@ export default {
   },
   created() {
     this.role = JSON.parse(localStorage.getItem("user")).role;
-    if(this.getUser == null) {
+    if (this.getUser == null) {
       this.setUser(JSON.parse(localStorage.getItem("user")));
     }
   },
   methods: {
-
     ...mapActions("user", ["setUser"]),
 
     changePassword() {

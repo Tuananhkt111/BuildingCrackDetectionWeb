@@ -10,6 +10,7 @@
         @row-collapse="onRowCollapse"
         :paginator="true"
         :rows="5"
+        :rowHover="true"
         v-model:filters="filters"
         filterDisplay="menu"
         :globalFilterFields="[

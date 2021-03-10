@@ -2,14 +2,16 @@
   <div>
     <div class="card">
       <DataTable
+      :rowHover="true"
         :scrollable="true"
         ref="dt"
         :value="getMaintenanceWorkerList"
-        v-model:selection="selectedProducts"
         dataKey="id"
         :paginator="true"
         :rows="5"
-        :filters="filters"
+        v-model:filters="filters"
+        :globalFilterFields="['name', 'phone', 'email', 'created']"
+        filterDisplay="menu"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Maintenance Workers"
@@ -35,8 +37,8 @@
               <span class="p-input-icon-left" style="margin:2px">
                 <i class="pi pi-search" />
                 <InputText
-                  v-model="filters['global']"
-                  placeholder="Search..."
+                  v-model="filters['global'].value"
+                  placeholder="Keyword Search"
                 />
               </span>
             </span>
@@ -45,83 +47,77 @@
         <template #empty>
           No Maintenance Worker found.
         </template>
-        <Column field="name" header="Name">
+        <Column field="name" header="Name" :showFilterMatchModes="false">
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ slotProps.data.name }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['name']"
+              v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
-        <Column field="phone" header="Phone">
+        <Column field="phone" header="Phone" :showFilterMatchModes="false">
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ slotProps.data.phone }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['phone']"
+              v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
-        <Column filterField="email" filterMatchMode="contains" header="Email">
+        <Column field="email" header="Email" :showFilterMatchModes="false">
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ slotProps.data.email }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['email']"
+              v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
-        <Column
-          filterField="address"
-          filterMatchMode="contains"
-          header="Address"
-        >
+        <Column field="address" header="Address" :showFilterMatchModes="false">
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ slotProps.data.address }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <InputText
               type="text"
-              v-model="filters['address']"
+              v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
             />
           </template>
         </Column>
         <Column
-          field="created"
-          header="Created Date"
-          filterMatchMode="custom"
-          :filterFunction="filterDate"
+          header="Created"
+          filterField="created"
+          dataType="date"
+          style="min-width:10rem"
         >
-          <template #body="slotProps">
-            <Skeleton v-if="loading"/>
-            <span>{{ callDate(slotProps.data.created) }}</span>
+          <template #body="{data}">
+            <Skeleton v-if="loading" />
+            {{ callDate(data.created) }}
           </template>
-          <template #filter>
+          <template #filter="{filterModel}">
             <Calendar
-              appendTo="body"
-              v-model="filters['created']"
-              dateFormat="dd-mm-yy"
-              class="p-column-filter"
-              placeholder="Created Date"
+              v-model="filterModel.value"
+              dateFormat="mm/dd/yy"
+              placeholder="mm/dd/yyyy"
             />
           </template>
         </Column>
@@ -271,7 +267,7 @@
         />
       </template>
     </Dialog>
-    <Toast position="bottom-right"/>
+    <Toast position="bottom-right" />
   </div>
 </template>
 
@@ -285,6 +281,7 @@ import contentNoti from "../util/contentNoti.js";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import maintenanceWorkerApi from "../apis/maintenanceWorker.js";
+import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 
@@ -334,7 +331,7 @@ export default {
     Toast,
     Calendar,
     InputMask,
-    Skeleton
+    Skeleton,
   },
   computed: {
     ...mapGetters("maintenanceWorker", ["getMaintenanceWorkerList"]),
@@ -354,10 +351,13 @@ export default {
       submitted: false,
       messages: [],
       statuses: ["Available", "Unavailable"],
+      loading: true,
     };
   },
   async created() {
+    this.initFilters();
     await this.setMaintenanceWorkerList();
+    this.loading = false;
   },
 
   methods: {
@@ -425,13 +425,36 @@ export default {
           });
       }
     },
+
+    initFilters() {
+      this.filters = {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        name: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        phone: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        email: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        created: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }],
+        },
+      };
+    },
+
     async deleteSelectedProducts() {
       await maintenanceWorkerApi
         .disable(this.product.maintenanceWorkerId)
         .then(() => {
           this.$toast.add({
             severity: "success",
-            summary: contentNoti.SUCCESS_SUMMARY, 
+            summary: contentNoti.SUCCESS_SUMMARY,
             detail: contentNoti.MAINTENANCEWORKER_DISABLE_SUCCESS,
             life: 3000,
           });
@@ -545,7 +568,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.invalid{
+.invalid {
   color: red;
 }
 </style>
