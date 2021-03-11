@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <DataTable
-      :rowHover="true"
+        :rowHover="true"
         :scrollable="true"
         ref="dt"
         :value="getLocationList"
@@ -26,6 +26,7 @@
                 @click="openNew"
                 style="margin:2px"
                 label="New"
+                v-if="admin"
               />
               <Button
                 label="Export"
@@ -48,9 +49,13 @@
         <template #empty>
           No Locations found.
         </template>
-        <Column field="name" header="Location Name" :showFilterMatchModes="false">
+        <Column
+          field="name"
+          header="Location Name"
+          :showFilterMatchModes="false"
+        >
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ slotProps.data.name }}
           </template>
           <template #filter="{filterModel}">
@@ -62,9 +67,13 @@
             />
           </template>
         </Column>
-        <Column field="description" header="Description" :showFilterMatchModes="false">
+        <Column
+          field="description"
+          header="Description"
+          :showFilterMatchModes="false"
+        >
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ slotProps.data.description }}
           </template>
           <template #filter="{filterModel}">
@@ -83,7 +92,7 @@
           style="min-width:10rem"
         >
           <template #body="{data}">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ callDate(data.created) }}
           </template>
           <template #filter="{filterModel}">
@@ -101,7 +110,7 @@
           style="min-width:10rem"
         >
           <template #body="{data}">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ callDate(data.lastModified) }}
           </template>
           <template #filter="{filterModel}">
@@ -114,13 +123,22 @@
         </Column>
         <Column>
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             <Button
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info p-button-text p-mr-2"
               @click="editProduct(slotProps.data)"
               v-tooltip.bottom="'View Location Detail'"
               style="margin: 2px"
+              v-if="admin"
+            />
+            <Button
+              icon="pi pi-eye"
+              class="p-button-rounded p-button-info p-button-text p-mr-2"
+              @click="editProduct(slotProps.data)"
+              v-tooltip.bottom="'View Location Detail'"
+              style="margin: 2px"
+              v-if="!admin"
             />
             <Button
               icon="pi pi-trash"
@@ -128,6 +146,7 @@
               @click="confirmDeleteProduct(slotProps.data)"
               style="margin: 2px"
               v-tooltip.bottom="'Disable Location'"
+              v-if="admin"
             />
           </template>
         </Column>
@@ -188,11 +207,28 @@
           required="true"
           maxlength="30"
         />
+        <InputText
+          id="locationName"
+          v-model.trim="locationName"
+          required="true"
+          maxlength="30"
+          disabled
+          v-if="!admin"
+        />
         <small class="invalid"> {{ errors.locationName }}</small>
       </div>
       <div class="p-field">
         <label for="description">Description</label>
-        <InputText id="description" v-model.trim="description" />
+        <InputText
+          id="description"
+          v-model.trim="description"
+        />
+        <InputText
+          id="description"
+          v-model.trim="description"
+          disabled
+          v-if="!admin"
+        />
         <small class="invalid"> {{ errors.description }}</small>
       </div>
       <div class="p-formgrid p-grid">
@@ -205,7 +241,7 @@
           <p>{{ product.lastModified }}</p>
         </div>
       </div>
-      <template #footer>
+      <template #footer v-if="admin">
         <Button
           label="Cancel"
           icon="pi pi-times"
@@ -249,7 +285,7 @@
         />
       </template>
     </Dialog>
-    <Toast position="bottom-right"/>
+    <Toast position="bottom-right" />
   </div>
 </template>
 
@@ -264,6 +300,7 @@ import { mapGetters, mapActions } from "vuex";
 import { useForm, useField } from "vee-validate";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import Skeleton from "primevue/skeleton";
+import webRole from "../util/webRole.js";
 import * as yup from "yup";
 
 export default {
@@ -289,7 +326,7 @@ export default {
       errors,
       meta,
       handleReset,
-      Skeleton
+      Skeleton,
     };
   },
 
@@ -317,12 +354,21 @@ export default {
       warnning: "",
       search: false,
       loading: true,
+      role: null,
+      admin: false,
     };
   },
   created() {
     this.initFilters();
     this.setLocationList();
     this.loading = false;
+  },
+
+  mounted() {
+    this.role = JSON.parse(localStorage.getItem("user")).role;
+    if (this.role === webRole.ADMIN_ROLE) {
+      this.admin = true;
+    }
   },
   methods: {
     ...mapActions("location", ["setLocationList"]),
@@ -529,7 +575,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.invalid{
+.invalid {
   color: red;
 }
 

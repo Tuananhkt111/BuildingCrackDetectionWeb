@@ -173,12 +173,12 @@ export default {
   z-index: 2;
 }
 .top-nav {
-  background-color: #0388e5;
+  background-color: white;
   border: 0;
   border-radius: 0 0 3px 3px;
 }
 .logo-text {
-  color: white;
+  color: #221ED9;
   font-size: 20px;
 }
 .logo-container {

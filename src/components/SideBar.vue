@@ -39,7 +39,7 @@
     </div>
     <div>
       <div class="layout-profile">
-        <ul>
+        <ul  v-if="!staff">
           <li>
             <button class="p-link">
               <a @click="$router.push('/users')"
@@ -77,6 +77,16 @@
               <a @click="$router.push('/maintenanceWorkers')"
                 ><i class="pi pi-fw pi-users"></i
                 ><span>Maintenance Workers</span></a
+              >
+            </button>
+          </li>
+        </ul>
+        <ul v-else>
+          <li>
+            <button class="p-link">
+              <a @click="$router.push('/upload')"
+                ><i class="pi pi-fw pi-upload"></i
+                ><span>Upload</span></a
               >
             </button>
           </li>
@@ -124,6 +134,7 @@
 import userApi from "../apis/user.js";
 import { useForm, useField } from "vee-validate";
 import { mapGetters, mapActions } from "vuex";
+import webRole from "../util/webRole.js";
 import * as yup from "yup";
 export default {
   setup() {
@@ -179,12 +190,18 @@ export default {
       expanded: false,
       role: null,
       ChangePassworDialog: false,
+      staff: false
     };
   },
   created() {
     this.role = JSON.parse(localStorage.getItem("user")).role;
     if (this.getUser == null) {
       this.setUser(JSON.parse(localStorage.getItem("user")));
+    }
+  },
+  mounted() {
+    if(this.role == webRole.STAFF_ROLE){
+      this.staff = true;
     }
   },
   methods: {

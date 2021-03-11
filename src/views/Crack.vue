@@ -170,6 +170,7 @@
               v-tooltip.bottom="'Show Assesment'"
             />
             <Button
+              v-if="slotProps.data.maintenanceOrderId != null"
               icon="pi pi-calendar-minus"
               class="p-button-rounded p-button-danger p-button-text"
               @click="showMaintenanceOrder(slotProps.data)"
@@ -397,9 +398,10 @@ export default {
       this.showAssessment = true;
     },
     showMaintenanceOrder(product) {
-      localStorage.setItem("orderId", product.maintenanceOrderId);
+      this.product = { ...product };
+      console.log(this.product.maintenanceOrderId);
       this.$router.push(
-        "/maintenanceOrders?orderId=" + product.maintenanceOrderId
+        "/maintenanceOrders?orderId=" + this.product.maintenanceOrderId
       );
     },
     showDetail(product) {
@@ -606,14 +608,4 @@ img:hover {
   transform: scale(1.5);
 }
 
-.p-datatable .p-datatable-thead > tr > th {
-  text-align: left;
-  padding: 1rem 1rem;
-  border: 1px solid #dee2e6;
-  border-width: 1px 0 2px 0;
-  font-weight: 600;
-  color: #212529;
-  background: #ffffff;
-  transition: box-shadow 0.15s;
-}
 </style>

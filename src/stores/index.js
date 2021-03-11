@@ -6,6 +6,7 @@ import maintenanceWorkerStore from './maintenanceWorkerStore';
 import userStore from './userStore';
 import maintenanceOrderStore from './maintenanceOrderStore';
 import notificationStore from './notificationStore';
+import flightStore from './flightStore';
 
 const store = createStore({
   modules: {
@@ -16,6 +17,7 @@ const store = createStore({
     user : userStore,
     maintenanceOrder : maintenanceOrderStore,
     noti : notificationStore,
+    flight : flightStore,
   }
 });
 

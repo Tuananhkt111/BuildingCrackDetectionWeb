@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="all">
     <div class="p-grid p-mr-0" id="app">
       <div
         class="p-col-12 main-app"
@@ -20,7 +20,7 @@
       </div>
     </div>
     <div v-if="getIsLogin">
-      <Login @hook:mounted="doSomething"></Login>
+      <Login></Login>
     </div>
     <!-- <AppFooter></AppFooter> -->
   </div>
@@ -99,13 +99,13 @@ export default {
   transition: transform 0.2s;
 }
 .main-layout-details {
-  border-radius: 5px;
-  padding: 10px;
+  border-radius: 15px;
+  padding: 20px;
   background-color: white;
 }
 .main-layout {
   background-color:  #f2f2f2;
-  padding: 30px;
+  padding: 50px;
   width: 100%;
   height: 100%;
 }

@@ -270,9 +270,13 @@ export default {
 body {
   font-family: "Poppins", Helvetica, Arial;
 }
-.limiter {
+.limitter {
+  position: fixed;
   width: 100%;
-  margin: auto;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 10;
 }
 .container-login100 {
   width: 100%;

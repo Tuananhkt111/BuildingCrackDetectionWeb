@@ -9,6 +9,7 @@ import Login from "./views/LoginPage.vue";
 import Notification from "./views/Notification.vue";
 import ForgotPassword from "./views/ForgotPassword.vue";
 import Video from "./views/Video.vue";
+import Upload from "./views/Upload.vue";
 
 const router = new createRouter({
   history: createWebHistory(),
@@ -31,6 +32,7 @@ const router = new createRouter({
     },
     { path: "/users", name: "user", component: User },
     { path: "/notis", name: "notification", component: Notification },
+    { path: "/upload", name: "upload", component: Upload },
     {
       path: "/users/:id/forgotpass",
       name: "fogotpass",

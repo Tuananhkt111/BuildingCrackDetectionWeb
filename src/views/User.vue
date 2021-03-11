@@ -18,7 +18,6 @@
         <template #header>
           <div class="table-header">
             <h3 class="p-m-2">Manage User</h3>
-
             <span class="p-input-icon-left">
               <Button
                 icon="pi pi-plus"
@@ -26,6 +25,7 @@
                 @click="openNew"
                 style="margin:2px"
                 label="New"
+                v-if="admin"
               />
               <Button
                 label="Export"
@@ -44,14 +44,14 @@
             </span>
           </div>
         </template>
-        
+
         <Column
           field="userName"
           header="User Name"
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ slotProps.data.userName }}
           </template>
           <template #filter="{filterModel}">
@@ -65,7 +65,7 @@
         </Column>
         <Column field="name" header="Full Name" :showFilterMatchModes="false">
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ slotProps.data.name }}
           </template>
           <template #filter="{filterModel}">
@@ -84,7 +84,7 @@
           headerStyle="width: 14em"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ slotProps.data.email }}
           </template>
           <template #filter="{filterModel}">
@@ -102,7 +102,7 @@
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             {{ slotProps.data.phoneNumber }}
           </template>
           <template #filter="{filterModel}">
@@ -116,7 +116,7 @@
         </Column>
         <Column header="Role" filterField="role" :showFilterMatchModes="false">
           <template #body="{data}">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             <span :class="stockClass(data)">
               {{ data.role }}
             </span>
@@ -137,19 +137,29 @@
         </Column>
         <Column>
           <template #body="slotProps">
-            <Skeleton v-if="loading"/>
+            <Skeleton v-if="loading" />
             <Button
               icon="pi pi-user-edit"
               class="p-button-rounded p-button-info p-button-text"
               @click="editProduct(slotProps.data)"
               v-tooltip.bottom="'Edit'"
+              v-if="admin"
             />
             <Button
+              icon="pi pi-eye"
+              class="p-button-rounded p-button-info p-button-text"
+              @click="seeProduct(slotProps.data)"
+              v-tooltip.bottom="'Edit'"
+              v-if="!admin"
+            />
+            <Button
+              v-if="admin"
               icon="pi pi-lock"
               class="p-button-rounded p-button-warning p-button-text"
               @click="ResetPassowrd(slotProps.data)"
             />
             <Button
+              v-if="admin"
               icon="pi pi-ban"
               class="p-button-rounded p-button-danger p-button-text"
               @click="Disable(slotProps.data)"
@@ -252,6 +262,47 @@
             placeholder="Select a Location"
             :filter="true"
           />
+        </div>
+      </div>
+    </Dialog>
+    <Dialog
+      v-model:visible="StaffDialog"
+      :style="{ width: '450px' }"
+      header="User Details"
+      :modal="true"
+      class="p-fluid"
+    >
+      <div class="p-field">
+        <label for="userName">User Name : {{ product.userName }}</label>
+      </div>
+      <div class="p-field">
+        <label for="name">Full Name</label>
+        <InputText name="name" v-model.trim="name" disabled="true"/>
+        <small class="invalid">{{ errors.name }}</small>
+      </div>
+      <div class="p-field">
+        <label for="email">Email</label>
+        <InputText type="email" name="email" v-model.trim="email" disabled="true"/>
+        <small class="invalid">{{ errors.email }}</small>
+      </div>
+      <div class="p-field">
+        <label for="phoneNumber">Phone Number</label>
+        <InputMask name="phone" mask="9999999999" v-model.trim="phone" disabled="true"/>
+        <small class="invalid">{{ errors.phone }}</small>
+      </div>
+      <div class="p-field">
+        <label for="address">Address</label>
+        <Textarea name="address" v-model="address" rows="3" cols="20" disabled="true"/>
+        <small class="invalid">{{ errors.address }}</small>
+      </div>
+      <div class="p-formgrid p-grid">
+        <div class="p-field p-col-6">
+          <label for="role">Role</label>
+          <p>{{ selectedRole }}</p>
+        </div>
+        <div class="p-field p-col-6" v-if="selectedRole != null">
+          <label for="Location">Location</label>
+          <p>{{ selectedLocation.name }}</p>
         </div>
       </div>
       <div class="p-formgrid p-grid">
@@ -412,7 +463,7 @@
         />
       </template>
     </Dialog>
-    <Toast position="bottom-right"/>
+    <Toast position="bottom-right" />
   </div>
 </template>
 
@@ -425,6 +476,7 @@ import Rating from "primevue/rating";
 import MultiSelect from "primevue/multiselect";
 import Skeleton from "primevue/skeleton";
 import contentNoti from "../util/contentNoti.js";
+import webRole from "../util/webRole.js";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import { userApi } from "../apis/user";
@@ -481,7 +533,7 @@ export default {
     Rating,
     MultiSelect,
     InputMask,
-    Skeleton
+    Skeleton,
   },
   computed: {
     ...mapGetters("user", ["getUserList"]),
@@ -494,6 +546,7 @@ export default {
   data() {
     return {
       createStaffLocation: null,
+      StaffDialog: false,
       changedRole: null,
       selectedLocation: null,
       selectedRole: null,
@@ -509,6 +562,8 @@ export default {
       roles: ["Manager", "Staff"],
       warnning: null,
       loading: true,
+      role: null,
+      admin: false,
     };
   },
 
@@ -517,6 +572,13 @@ export default {
     await this.setUserList();
     await this.setLocationList();
     this.loading = false;
+  },
+
+  mounted() {
+    this.role = JSON.parse(localStorage.getItem("user")).role;
+    if (this.role === webRole.ADMIN_ROLE) {
+      this.admin = true;
+    }
   },
   methods: {
     ...mapActions("user", ["setUserList"]),
@@ -669,7 +731,14 @@ export default {
     },
     findIndexById(id) {
       let index = -1;
-      if (this.selectedRole == "Staff") {
+      if (this.role == "Manager") {
+        for (let i = 0; i < this.getLocationList.length; i++) {
+          if (this.getLocationList[i].locationId === id) {
+            index = i;
+            break;
+          }
+        }
+      } else if (this.selectedRole == "Staff") {
         for (let i = 0; i < this.getAvailableLocationStaff.length; i++) {
           if (this.getAvailableLocationStaff[i].locationId === id) {
             index = i;
@@ -756,6 +825,27 @@ export default {
       }
       this.UserUpdateDialog = true;
     },
+    seeProduct(product) {
+      this.handleReset();
+      this.name = product.name;
+      this.email = product.email;
+      this.phone = product.phoneNumber;
+      this.address = product.address;
+      this.product = { ...product };
+      this.selectedLocation = null;
+      this.product.created = this.callDate(product.created);
+      this.product.lastModified = this.callDate(product.lastModified);
+      this.selectedRole = this.product.role;
+      const tmp = this.product.locationIds;
+      if (tmp.length == 1 && this.selectedRole == "Staff") {
+        this.selectedLocation = this.getLocationList[
+          this.findIndexById(this.product.locationIds[0])
+        ];
+      }
+      console.log(this.selectedLocation);
+      this.StaffDialog = true;
+    },
+
     initFilters() {
       this.filters = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -815,10 +905,9 @@ export default {
   letter-spacing: 0.3px;
   color: blue;
 }
-.invalid{
+.invalid {
   color: red;
 }
-
 
 @media screen and (max-width: 40em) {
   ::v-deep(.p-datatable) {

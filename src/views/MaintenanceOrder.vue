@@ -18,14 +18,15 @@
           'assessorName',
           'locationName',
           'status',
+          'maintenanceOrderId'
         ]"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rowsPerPageOptions="[5, 10, 25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Maintenance Orders"
       >
-        <template #header>
+        <template #header style="background:white">
           <div class="table-header">
-            <h3 class="p-m-2">Manage Maintenance Order</h3>
+            <!-- <h3 class="p-m-2">Manage Maintenance Order</h3> -->
             <span class="p-input-icon-left">
               <Button
                 label="Export"
@@ -165,7 +166,7 @@
                 <template #body="slotProps">
                   <Skeleton v-if="loading" />
                   <img
-                    :src=slotProps.data.imageThumbnails
+                    :src="slotProps.data.imageThumbnails"
                     :alt="slotProps.data.imageThumbnails"
                     class="product-image"
                     @click="showImage(slotProps.data)"
@@ -263,7 +264,9 @@
             <span style="font-weight: bold" v-if="product.desciption != null"
               >Description: {{ product.description }}</span
             >
-            <span style="font-weight: bold" v-if="product.desciption == null || product.desciption.isEmpty()"
+            <span
+              style="font-weight: bold"
+              v-if="product.desciption == null || product.desciption.isEmpty()"
               >Description: <span style="font-weight: normal">N/A</span></span
             >
           </p>
@@ -339,16 +342,12 @@
             </div>
             <div class="p-col-12">
               <p>
-                <span
-                  style="font-weight: bold"
-                  v-if="crack.desciption != null"
+                <span style="font-weight: bold" v-if="crack.desciption != null"
                   >Description: {{ crack.description }}</span
                 >
                 <span
                   style="font-weight: bold"
-                  v-if="
-                    crack.desciption == null || crack.desciption.isEmpty()
-                  "
+                  v-if="crack.desciption == null || crack.desciption.isEmpty()"
                   >Description:
                   <span style="font-weight: normal">N/A</span></span
                 >
@@ -364,7 +363,7 @@
         </div>
       </div>
     </Dialog>
-    
+
     <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
       <img
         :src="crack.image"
@@ -404,7 +403,7 @@ export default {
   },
 
   async created() {
-    this.initFilters();
+    this.initFilters(this.$route.query.orderId);
     this.setMaintenanceOrderList();
     this.loading = false;
   },
@@ -463,9 +462,13 @@ export default {
       this.product = { ...product };
       this.showAssessment = true;
     },
-    initFilters() {
+    initFilters(search) {
       this.filters = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        maintenanceOrderId: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: search, matchMode: FilterMatchMode.EQUALS }],
+        },
         maintenanceWorkerName: {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
