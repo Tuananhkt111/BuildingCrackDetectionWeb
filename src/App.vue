@@ -8,9 +8,7 @@
       >
         <TopNav></TopNav>
         <div class="main-layout-container p-d-flex">
-          <div class="layout-menu">
             <SideBar></SideBar>
-          </div>
           <div class="main-layout">
             <div class="main-layout-details">
               <router-view class="view"></router-view>
@@ -69,6 +67,9 @@ export default {
 };
 </script>
 <style scoped>
+.main-layout{
+  margin-left: 64.5px;
+}
 .main-app {
   padding: 0;
 }
