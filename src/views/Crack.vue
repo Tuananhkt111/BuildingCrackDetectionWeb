@@ -23,7 +23,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h5 class="p-m-2">Manage Cracks</h5>
+          <h5 class="p-m-2">Cracks</h5>
 
           <span class="p-input-icon-left">
             <Button
@@ -610,6 +610,19 @@ img:hover {
   -o-transform: scale(1.5);
   -ms-transform: scale(1.5);
   transform: scale(1.5);
+}
+
+.p-m-2::before {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 25px;
+  background: #007dfe;
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {

@@ -16,7 +16,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h5 class="p-m-0" style="font-size:1.25rem">Manage Locations</h5>
+          <h5 class="p-m-0" style="font-size:1.25rem">Locations</h5>
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
@@ -579,6 +579,19 @@ export default {
 }
 .invalid {
   color: red;
+}
+
+.p-m-0::before {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 25px;
+  background: #007dfe;
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {

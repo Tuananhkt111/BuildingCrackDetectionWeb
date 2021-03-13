@@ -15,7 +15,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h3 class="p-m-2">Manage User</h3>
+          <h3 class="p-m-2">Users</h3>
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
@@ -942,6 +942,19 @@ export default {
 }
 .invalid {
   color: red;
+}
+
+.p-m-2::before {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 25px;
+  background: #007dfe;
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {

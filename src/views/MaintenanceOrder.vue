@@ -23,8 +23,8 @@
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         currentPageReportTemplate=""
       >
-        <div class="table-header">
-          <!-- <h3 class="p-m-2">Manage Maintenance Order</h3> -->
+        <div class="table-header-main">
+          <h3 class="p-m-2">Maintenance Orders</h3>
           <span class="p-input-icon-left">
             <Button
               label="Export"
@@ -158,6 +158,9 @@
         </Column>
         <template #expansion="slotProps">
           <div class="orders-subtable">
+            <div class="table-header">
+              <h4 class="p-m-2">List of Cracks</h4>
+            </div>
             <DataTable :value="slotProps.data.cracks">
               <Column header="Image" headerStyle="width: 150px" class="small">
                 <template #body="slotProps">
@@ -572,20 +575,16 @@ export default {
   margin-top: -20px;
 }
 .orders-subtable {
-  border-style: ridge;
+  border-radius: 24px;
 }
 .table-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fcfcfc;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 1px 0;
+  background: white;
   color: #69707a;
   padding: 1rem;
   font-weight: 700;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
 }
 
 .product-image {
@@ -688,6 +687,19 @@ export default {
   align-content: center;
 }
 
+.p-m-2::before {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 25px;
+  background: #007dfe;
+}
+
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
   background: #fcfcfc;
   color: #69707a;
@@ -711,7 +723,7 @@ export default {
 ::v-deep(.p-datatable.p-datatable-hoverable-rows
     .p-datatable-tbody
     > tr:not(.p-highlight):hover) {
-  background: rgba(119, 123, 241, 0.1);
+  background: white;
 }
 
 ::v-deep(.p-column-filter-menu-button:hover) {
@@ -766,5 +778,39 @@ export default {
   border-radius: 6px;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
+}
+
+::v-deep(.p-datatable-wrapper
+    .p-datatable-table
+    .p-datatable-thead
+    .p-column-header-content
+    .p-column-title) {
+  display: block;
+}
+
+::v-deep(.p-dialog .p-dialog-header) {
+  background: #ffffff;
+  color: #69707a;
+  font-weight: 700;
+  border-bottom: 0 none;
+  padding: 1rem;
+}
+
+::v-deep(.p-dialog .p-dialog-content) {
+  color: #69707A;
+}
+
+.table-header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fcfcfc;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-width: 0 0 1px 0;
+  color: #69707a;
+  padding: 1rem;
+  font-weight: 700;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
 }
 </style>

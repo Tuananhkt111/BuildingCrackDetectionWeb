@@ -85,7 +85,7 @@ export default {
 }
 .main-layout-container {
   margin: 0;
-  height: calc(100% - 51px);
+  height: calc(100% - 56px);
 }
 .layout-menu {
   overflow: auto;

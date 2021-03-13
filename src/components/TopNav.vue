@@ -1,85 +1,11 @@
 <template>
   <div class="top-nav-layout">
     <div class="top-nav p-d-flex p-ai-center p-jc-between">
-      <div class="p-d-flex p-ai-center p-jc-between" style="padding-left: 120px" >
-      </div>
+      <div
+        class="p-d-flex p-ai-center p-jc-between"
+        style="padding-left: 120px"
+      ></div>
       <!-- Dropdown Menu -->
-      <div id="app">
-        <header class="header">
-          <nav class="header__nav">
-            <ul class="header__navbar">
-              <li class="header__item">
-                <a href="#" class="header__link">
-                  <transition name="slide-fade">
-                    <img
-                      class="header--button"
-                      v-if="show"
-                      key="on"
-                      @click="show = false"
-                      src="/assets/icons8-admin-settings-male-100.png"
-                    />
-                    <img
-                      class="header--button"
-                      v-else
-                      key="off"
-                      @click="show = true"
-                      src="/assets/icons8-admin-settings-male-100.png"
-                    />
-                  </transition>
-                </a>
-                <transition name="dropdown">
-                  <div
-                    class="dropdown__menu"
-                    v-bind:class="{ active: show }"
-                    v-if="show"
-                  >
-                    <ul class="dropdown__menu-nav">
-                      <li class="dropdown__menu-item">
-                        <a
-                          class="dropdown__menu-link"
-                          @click="$router.push('/profiles')"
-                        >
-                          <div class="dropdown__menu-icon">
-                            <i class="pi pi-fw pi-user"></i>
-                          </div>
-                          <div class="dropdown__menu-text">Account</div>
-                        </a>
-                      </li>
-                      <li class="dropdown__menu-item">
-                        <a
-                          class="dropdown__menu-link"
-                          @click="$router.push('/notis')"
-                        >
-                          <div class="dropdown__menu-icon">
-                            <i class="pi pi-fw pi-bell"></i>
-                          </div>
-                          <div class="dropdown__menu-text">Notifications</div>
-                        </a>
-                      </li>
-                      <li class="dropdown__menu-item">
-                        <a class="dropdown__menu-link" @click="changePassword">
-                          <div class="dropdown__menu-icon">
-                            <i class="pi pi-fw pi-key"></i>
-                          </div>
-                          <div class="dropdown__menu-text">Change Password</div>
-                        </a>
-                      </li>
-                      <li class="dropdown__menu-item">
-                        <a class="dropdown__menu-link" @click="logOut">
-                          <div class="dropdown__menu-icon">
-                            <i class="pi pi-fw pi-power-off"></i>
-                          </div>
-                          <div class="dropdown__menu-text">Logout</div>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </transition>
-              </li>
-            </ul>
-          </nav>
-        </header>
-      </div>
       <Dialog
         v-model:visible="ChangePassworDialog"
         :style="{ width: '450px' }"
@@ -116,16 +42,112 @@
         </template>
       </Dialog>
       <div class="top-nav-right p-d-flex p-ai-center p-jc-between">
+        <div>
+          <a href="#" class="header__link">
+            <img
+              class="header--button"
+              key="on"
+              @click="showAccMenu"
+              src="/assets/profile-3.png"
+            />
+            <!-- <i class="pi pi-user"></i> -->
+          </a>
+          <transition name="dropdown">
+            <div class="dropdown__menu" v-if="show">
+              <ul class="dropdown__menu-nav">
+                <li class="dropdown__menu-item">
+                  <a
+                    class="dropdown__menu-link"
+                    @click="$router.push('/profiles')"
+                  >
+                    <div class="dropdown__menu-icon">
+                      <i class="pi pi-fw pi-user"></i>
+                    </div>
+                    <div class="dropdown__menu-text">Account</div>
+                  </a>
+                </li>
+                <li class="dropdown__menu-item">
+                  <a
+                    class="dropdown__menu-link"
+                    @click="$router.push('/notis')"
+                  >
+                    <div class="dropdown__menu-icon">
+                      <i class="pi pi-fw pi-bell"></i>
+                    </div>
+                    <div class="dropdown__menu-text">Notifications</div>
+                  </a>
+                </li>
+                <li class="dropdown__menu-item">
+                  <a class="dropdown__menu-link" @click="changePassword">
+                    <div class="dropdown__menu-icon">
+                      <i class="pi pi-fw pi-key"></i>
+                    </div>
+                    <div class="dropdown__menu-text">Change Password</div>
+                  </a>
+                </li>
+                <li class="dropdown__menu-item">
+                  <a class="dropdown__menu-link" @click="logOut">
+                    <div class="dropdown__menu-icon">
+                      <i class="pi pi-fw pi-power-off"></i>
+                    </div>
+                    <div class="dropdown__menu-text">Logout</div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </transition>
+        </div>
         <div
           class="btn-nav"
-          @click="toggle"
+          @click="showNotiMenu"
           aria-haspopup="true"
           aria-controls="overlay_tmenu"
         >
-          <i class="pi pi-bell" style="fontsize: 1.1rem"
-            ><div class="count" v-if="getCount != 0">{{ getCount }}</div></i
-          >
+          <i class="pi pi-comment">
+            <div class="count" v-if="getCount != 0">{{ getCount }}</div>
+          </i>
         </div>
+        <transition name="dropdown">
+          <div class="card timeline" v-if="showNoti">
+            <div class="card-header">
+              <div class="card-title">
+                <h6>Unread</h6>
+                <p class="subtitle">Notifications</p>
+              </div>
+              <a
+                href="#"
+                style="text-decoration: none; margin-right: 20px;"
+                v-if="getCount != 0"
+                class="left"
+                @click="markAllAsRead()"
+              >
+                Mark all as read
+              </a>
+            </div>
+            <ul
+              v-if="
+                !getUnReadNotificationList || !getUnReadNotificationList.length
+              "
+            >
+              <span style="color: #a2a1a1">No unread notifications</span>
+            </ul>
+            <ul
+              v-for="item in getUnReadNotificationList"
+              v-bind:key="item"
+              @click="deleteNoti(item.pushNotificationId)"
+            >
+              <li class="blue">
+                <i class="pi pi-circle-on"></i>
+                <div class="event-content">
+                  <span class="event-title">{{ item.title }}</span>
+                  <span>{{ item.body }}</span>
+                  <span class="time">{{ callDate(item.created) }}</span>
+                </div>
+              </li>
+            </ul>
+            <a href="#" @click="$router.push('/notis')">See all</a>
+          </div>
+        </transition>
         <OverlayPanel
           ref="op"
           style="
@@ -241,7 +263,7 @@ export default {
       this.setUser(JSON.parse(localStorage.getItem("user")));
     }
   },
- 
+
   mounted() {
     this.prepareFcm();
     if (this.role == webRole.STAFF_ROLE) {
@@ -256,6 +278,7 @@ export default {
       role: null,
       ChangePassworDialog: false,
       staff: false,
+      showNoti: false,
     };
   },
   methods: {
@@ -270,6 +293,15 @@ export default {
     changePassword() {
       this.handleReset();
       this.ChangePassworDialog = true;
+    },
+
+    showAccMenu() {
+      this.show = !this.show;
+      this.showNoti = false;
+    },
+    showNotiMenu() {
+      this.showNoti = !this.showNoti;
+      this.show = false;
     },
     async confirmChangePassword() {
       if (this.meta.valid) {
@@ -360,12 +392,11 @@ export default {
     toggle(event) {
       this.$refs.op.toggle(event);
     },
-    
   },
 };
 </script>
 <style scoped>
-#app{
+#app {
   margin-right: -1100px;
 }
 *,
@@ -396,9 +427,6 @@ hr {
   height: 1.65rem;
 }
 .header--button {
-  top: 0;
-  right: 0;
-  position: absolute;
   margin: 0;
   padding: 0;
   cursor: pointer;
@@ -410,12 +438,23 @@ hr {
 .header--button:focus {
   outline: 0;
 }
+
+.header__link > i {
+  padding: 15px;
+  color: #2170e7;
+  font-size: 1.8rem;
+}
+
+.header__link > img {
+  padding: 12px 10px 10px;
+  border-radius: 20px;
+}
+
 .dropdown__menu {
-  top: 100%;
-  right: 0;
+  top: 78%;
+  right: 5px;
   position: absolute;
   z-index: 10;
-  height: 19rem;
   min-width: 227px;
   margin-top: 1rem;
   overflow-y: auto;
@@ -452,27 +491,9 @@ hr {
   margin-right: 1rem;
 }
 
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.6s;
-}
-
-.slide-fade-enter,
-.slide-fade-leave-active {
-  opacity: 0;
-}
-
-.slide-fade-enter {
-  transform: translateX(31px);
-}
-
-.slide-fade-leave-active {
-  transform: translateX(-31px);
-}
-
 .dropdown-enter-active,
 .dropdown-leave-active {
-  transition: all 1s;
+  transition: all 0.5s;
 }
 
 .dropdown-enter,
@@ -526,9 +547,15 @@ hr {
   color: white;
 }
 .btn-nav {
-  padding: 15px;
+  padding: 12px;
   padding-right: 40px;
+  color: #2170e7;
 }
+
+.btn-nav > i {
+  font-size: 1.8rem;
+}
+
 #menu-button {
   background-color: white;
   color: #3fb57c;
@@ -646,5 +673,89 @@ button.close {
   padding-bottom: 5px;
   float: right;
   color: blue;
+}
+
+.card {
+  background: #ffffff;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0px 10px 40px rgb(41 50 65 / 6%);
+  -moz-border-radius: 24px;
+  -webkit-border-radius: 24px;
+  border-radius: 24px;
+  margin-bottom: 2rem;
+  position: fixed;
+  right: 5px;
+  top: 66px;
+  color: rgba(41, 50, 65, 0.8);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  font-size: 14px;
+  font-weight: 400;
+  width: 20rem;
+}
+
+.card:last-child {
+  margin-bottom: 0;
+}
+
+.timeline {
+  padding-right: 4px;
+}
+
+.card .card-header {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+.timeline > ul > li {
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.timeline > ul {
+  padding: 0;
+  margin-bottom: 10px;
+  list-style: none;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.timeline > ul > li.blue > i {
+  color: #297fff;
+}
+
+.timeline > ul > li > i {
+  font-size: 8px;
+  margin-right: 10px;
+  margin-top: 4px;
+}
+
+.timeline > ul > li .event-content span.event-title {
+  color: #3e4754;
+}
+
+.timeline > ul > li .event-content span {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 12px;
+  color: rgba(41, 50, 65, 0.5);
+}
+
+.timeline > ul > li .event-content span.time {
+  font-size: 8px;
+  font-weight: 400;
+  color: rgba(41, 50, 65, 0.5);
+}
+
+.timeline > a {
+  text-decoration: none;
+  color: #4f8eec;
 }
 </style>

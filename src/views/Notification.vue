@@ -17,7 +17,7 @@
       currentPageReportTemplate=""
     >
       <div class="table-header">
-        <h3 class="p-m-0" style="width:30%">Notification</h3>
+        <h3 class="p-m-0" style="width:30%">Notifications</h3>
         <Button
           label="Mark as Read"
           icon="pi pi-check"
@@ -121,6 +121,19 @@ export default {
 <style>
 .row-accessories {
   background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.p-m-0::before {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 25px;
+  background: #007dfe;
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
