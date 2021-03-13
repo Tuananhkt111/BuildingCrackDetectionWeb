@@ -485,6 +485,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: #fcfcfc;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-width: 0 0 1px 0;
+  color: #69707a;
+  padding: 1rem;
+  font-weight: 700;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
 }
 
 .product-image {

@@ -293,7 +293,7 @@ body {
 .wrap-login100 {
   width: 70%;
   background: white;
-  border-radius: 10px;
+  border-radius: 24px;
   overflow: hidden;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }

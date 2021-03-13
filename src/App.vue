@@ -1,6 +1,6 @@
 <template>
   <div class="all">
-    <div class="p-grid p-mr-0" id="app">
+    <div class="p-grid p-mr-0" id="app-main">
       <div
         class="p-col-12 main-app"
         :class="{ active: getIsActive, inactive: !getIsActive }"
@@ -85,7 +85,7 @@ export default {
 }
 .main-layout-container {
   margin: 0;
-  height: 100%;
+  height: calc(100% - 51px);
 }
 .layout-menu {
   overflow: auto;
@@ -100,9 +100,10 @@ export default {
   transition: transform 0.2s;
 }
 .main-layout-details {
-  border-radius: 15px;
+  border-radius: 24px;
   padding: 20px;
   background-color: white;
+  box-shadow: 0px 10px 40px rgb(41 50 65 / 6%);
 }
 .main-layout {
   background-color:  #f2f2f2;
@@ -133,6 +134,10 @@ export default {
 .inactive .top-nav-layout {
   margin-left: 0;
   transition: all 0.2s;
+}
+
+.all, #app-main {
+  min-height:100vh;
 }
 
 @media screen and (max-width: 1025px) {

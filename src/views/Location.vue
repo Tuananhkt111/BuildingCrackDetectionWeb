@@ -557,8 +557,8 @@ export default {
   color: #69707a;
   padding: 1rem;
   font-weight: 700;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
 }
 
 .product-image {
