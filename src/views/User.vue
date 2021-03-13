@@ -264,6 +264,21 @@
           />
         </div>
       </div>
+      <template #footer>
+        <Button
+          label="Cancel"
+          icon="pi pi-times"
+          class="p-button-text"
+          @click="hideDialog"
+        />
+        <Button
+          label="Update"
+          icon="pi pi-user-edit"
+          class="p-button-text"
+          @click="UpdateUser"
+        />
+        <p style="color:red" v-if="submitted">{{ warnning }}</p>
+      </template>
     </Dialog>
     <Dialog
       v-model:visible="StaffDialog"

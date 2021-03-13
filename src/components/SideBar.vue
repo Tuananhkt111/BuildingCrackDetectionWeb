@@ -5,6 +5,7 @@
         <ul v-if="!staff">
           <div>
             <img src="../asset/bcd2.png" class="logo" />
+            <span class="appName">BCD System</span>
           </div>
           <li>
             <button class="p-link">
@@ -60,12 +61,19 @@
     </div>
   </div>
 </template>
+
 <style scoped>
 .logo {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45x;
   margin-top: 5px;
-  margin-left: 3.6px;
+  margin-left: 5px;
+}
+.appName {
+  margin-left: 7px;
+  margin-top:20px;
+  font-weight: bold;
+  color: #0062d1;
 }
 span {
   position: absolute;

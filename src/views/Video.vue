@@ -3,7 +3,7 @@
     <div class="p-grid p-mt-3">
       <div class="player-container p-col-4" >
         <video width="380" height="210" controls>
-          <source src="@/videos/nhac.mp4" type="video/mp4" />
+          <!-- <source src="@/videos/20210311_102948.mp4" type="video/mp4" /> -->
         </video>
       </div>
       <div class="p-col-1">
@@ -329,9 +329,13 @@ export default {
   },
   computed: {
     ...mapGetters("crack", [
-      "getCrackList",
       "getStatusList",
       "getSeveritysList",
+    ]),
+
+    ...mapGetters("flight", [
+      "getCrackList",
+      "getFlight",
     ]),
 
     data() {
@@ -353,11 +357,11 @@ export default {
   },
   created() {
     this.initFilters();
-    this.setCrackList();
+    this.setFlight(this.$route.query.flightId);
     this.loading = false;
   },
   methods: {
-    ...mapActions("crack", ["setCrackList"]),
+    ...mapActions("flight", ["setFlight"]),
     showImage(product) {
       this.product = { ...product };
       document.body.style.overflow = "hidden";

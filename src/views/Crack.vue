@@ -81,14 +81,14 @@
           </template>
         </Column>
         <Column
-          field="reporterName"
-          header="Reporter Name"
+          field="accuracy"
+          header="Accuracy"
           :showFilterMatchModes="false"
           style="min-width:12rem"
         >
           <template #body="slotProps">
             <Skeleton v-if="loading" />
-            {{ slotProps.data.reporterName }}
+            {{ slotProps.data.accuracy }}
           </template>
           <template #filter="{filterModel}">
             <InputText
@@ -399,7 +399,6 @@ export default {
     },
     showMaintenanceOrder(product) {
       this.product = { ...product };
-      console.log(this.product.maintenanceOrderId);
       this.$router.push(
         "/maintenanceOrders?orderId=" + this.product.maintenanceOrderId
       );
@@ -436,7 +435,7 @@ export default {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
         },
-        reporterName: {
+        accuracy: {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
         },

@@ -1,15 +1,7 @@
 <template>
   <div class="top-nav-layout">
     <div class="top-nav p-d-flex p-ai-center p-jc-between">
-      <div class="p-d-flex p-ai-center p-jc-between" >
-        <img
-          src="/assets/logoCrack.png"
-          alt="logo"
-          height="20"
-          class="p-mr-2"
-          style="padding-left: 80px"
-        />
-        <span class="logo-text">BCD System</span>
+      <div class="p-d-flex p-ai-center p-jc-between" style="padding-left: 120px" >
       </div>
       <!-- Dropdown Menu -->
       <div id="app">

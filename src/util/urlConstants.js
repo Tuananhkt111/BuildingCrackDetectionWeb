@@ -1,5 +1,6 @@
 //Base url
-export const BASE_URL = "https://bcdsys.azurewebsites.net/api/v1/";
+export const BASE_URL = "https://localhost:5001/api/v1/";
+export const PYTHON_URL = "http://127.0.0.1:8000/api/v1/";
 export const LOCATION_URL = "locations";
 export const CRACK_URL = "cracks";
 export const USER_URL = "users";
@@ -18,4 +19,5 @@ export default {
     ADMIN_ID,
     NOTIFICATION_URL,
     FLIGHT_URL,
+    PYTHON_URL
 };

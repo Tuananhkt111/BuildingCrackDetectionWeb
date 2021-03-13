@@ -8,6 +8,7 @@ import User from "./views/User.vue";
 import Login from "./views/LoginPage.vue";
 import Notification from "./views/Notification.vue";
 import ForgotPassword from "./views/ForgotPassword.vue";
+import Flight from "./views/Flight.vue";
 import Video from "./views/Video.vue";
 import Upload from "./views/Upload.vue";
 
@@ -20,6 +21,7 @@ const router = new createRouter({
     { path: "/locations", name: "location", component: Location },
     { path: "/profiles", name: "profiles", component: Project },
     { path: "/video", name: "video", component: Video },
+    { path: "/flight", name: "flight", component: Flight },
     {
       path: "/maintenanceOrders",
       name: "maintenanceOrder",

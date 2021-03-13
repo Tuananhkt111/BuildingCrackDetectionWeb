@@ -24,7 +24,7 @@
         :rowsPerPageOptions="[5, 10, 25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Maintenance Orders"
       >
-        <template #header style="background:white">
+        <template #header>
           <div class="table-header">
             <!-- <h3 class="p-m-2">Manage Maintenance Order</h3> -->
             <span class="p-input-icon-left">
