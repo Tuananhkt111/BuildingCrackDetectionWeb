@@ -510,6 +510,7 @@ hr {
   background-color: white;
   border: 0;
   border-radius: 0 0 3px 3px;
+  box-shadow: 0 10px 40px 0 rgb(41 50 65 / 6%);
 }
 .logo-text {
   color: #221ed9;

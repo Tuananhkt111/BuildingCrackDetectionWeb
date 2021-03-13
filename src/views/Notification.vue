@@ -146,10 +146,6 @@ export default {
 ::v-deep(.p-datatable.p-datatable-hoverable-rows
     .p-datatable-tbody
     > tr:not(.p-highlight):hover) {
-  text-align: left;
-  border: 1px solid #e9ecef;
-  border-width: 0 0 1px 0;
-  padding: 1rem 1rem;
   background: rgba(119, 123, 241, 0.1);
 }
 
