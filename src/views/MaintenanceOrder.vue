@@ -159,7 +159,7 @@
         <template #expansion="slotProps">
           <div class="orders-subtable">
             <div class="table-header">
-              <h4 class="p-m-2">List of Cracks</h4>
+              <h4 class="p-m-2" id="sub-table-title">List of Cracks</h4>
             </div>
             <DataTable :value="slotProps.data.cracks">
               <Column header="Image" headerStyle="width: 150px" class="small">
@@ -698,6 +698,10 @@ export default {
   left: -10px;
   top: 25px;
   background: #007dfe;
+}
+
+#sub-table-title {
+  font-size: 1.1rem;
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
