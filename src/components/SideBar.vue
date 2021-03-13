@@ -8,55 +8,63 @@
             <span class="appName">BCD System</span>
           </div>
           <li>
-            <button class="p-link nav-btn" @click="$router.push('/users')">
-              <a>
+            <router-link to="/users" tag="li" class="t-link nav-btn p-mt-4">
+              <a class="a-link">
                 <i class="pi pi-fw pi-users"></i>
                 <span v-if="role === 'Manager'">Staff</span>
                 <span v-else>Users</span>
               </a>
-            </button>
+            </router-link>
           </li>
           <li>
-            <button class="p-link nav-btn" @click="$router.push('/cracks')">
-              <a>
+            <router-link to="/cracks" tag="li" class="t-link nav-btn">
+              <a class="a-link">
                 <i class="pi pi-fw pi-exclamation-triangle"></i>
                 <span>Cracks</span>
               </a>
-            </button>
+            </router-link>
           </li>
           <li>
-            <button class="p-link nav-btn" @click="$router.push('/locations')">
-              <a>
+            <router-link to="/locations" tag="li" class="t-link nav-btn">
+              <a class="a-link">
                 <i class="pi pi-fw pi-map-marker"></i>
                 <span>Locations</span>
               </a>
-            </button>
+            </router-link>
           </li>
           <li>
-            <button class="p-link nav-btn" @click="$router.push('/maintenanceOrders')">
-              <a>
+            <router-link
+              to="/maintenanceOrders"
+              tag="li"
+              class="t-link nav-btn"
+            >
+              <a class="a-link">
                 <i class="pi pi-fw pi-shopping-cart"></i>
                 <span>Maintenance Orders</span>
               </a>
-            </button>
+            </router-link>
           </li>
           <li>
-            <button class="p-link nav-btn" @click="$router.push('/maintenanceWorkers')">
-              <a>
+            <router-link
+              to="/maintenanceWorkers"
+              tag="li"
+              class="t-link nav-btn"
+            >
+              <a class="a-link">
                 <i class="pi pi-fw pi-users"></i>
                 <span>Maintenance Workers</span>
               </a>
-            </button>
+            </router-link>
           </li>
         </ul>
         <ul v-else>
           <li>
-            <button class="p-link nav-btn" @click="$router.push('/upload')">
-              <a>
+            <router-link to="/upload" tag="li" class="t-link nav-btn">
+              <a class="a-link">
                 <i class="pi pi-fw pi-upload"></i>
                 <span>Upload</span>
               </a>
-            </button>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -73,14 +81,13 @@
 }
 .appName {
   margin-left: 7px;
-  margin-top:20px;
+  margin-top: 20px;
   font-weight: bold;
-  color: #0062d1;
+  color: #007dfe;
 }
 span {
   position: absolute;
-  margin-left: 25px;
-  margin-top: 27px;
+  padding-left: 14px;
 }
 main {
   display: flex;
@@ -108,20 +115,29 @@ main {
   width: 3.5em;
   left: 0;
 }
-.p-link {
+.t-link {
   display: inline-block;
   width: 100%;
   height: 4em;
-  color: #293241;
+  color: #414b5c;
   text-decoration: none;
+  outline: none;
+  text-align: left;
+  background-color: transparent;
+  font-weight: 450;
+  padding-left: 5%;
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
-.p-link:hover {
+.t-link:hover {
   text-decoration: none;
-  color: #0062d1;
+  color: #007dfe;
 }
-.p-link i {
-  padding-left: 7%;
-  padding-top: 25px;
+.t-link i {
   font-size: 24px;
 }
 .side-bar-layout:hover {
@@ -130,7 +146,22 @@ main {
   box-shadow: 1px 0 5px -2px #888;
 }
 
-.nav-btn:active {
-  border: none;
+.router-link-active {
+  color: #2170e7;
+}
+
+.router-link-active .a-link::before {
+  background-color: #007dfe;
+}
+
+.a-link::before {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 0px 3px 3px 0px;
+  padding-bottom: 10px;
+  position: absolute;
+  left: 0;
 }
 </style>
