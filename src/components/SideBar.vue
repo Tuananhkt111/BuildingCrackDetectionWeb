@@ -8,52 +8,54 @@
             <span class="appName">BCD System</span>
           </div>
           <li>
-            <button class="p-link">
-              <a @click="$router.push('/users')"
-                ><i class="pi pi-fw pi-users"></i
-                ><span v-if="role === 'Manager'">Staff</span
-                ><span v-else>Users</span></a
-              >
+            <button class="p-link nav-btn" @click="$router.push('/users')">
+              <a>
+                <i class="pi pi-fw pi-users"></i>
+                <span v-if="role === 'Manager'">Staff</span>
+                <span v-else>Users</span>
+              </a>
             </button>
           </li>
           <li>
-            <button class="p-link">
-              <a @click="$router.push('/cracks')"
-                ><i class="pi pi-fw pi-exclamation-triangle"></i
-                ><span>Cracks</span></a
-              >
+            <button class="p-link nav-btn" @click="$router.push('/cracks')">
+              <a>
+                <i class="pi pi-fw pi-exclamation-triangle"></i>
+                <span>Cracks</span>
+              </a>
             </button>
           </li>
           <li>
-            <button class="p-link">
-              <a @click="$router.push('/locations')"
-                ><i class="pi pi-fw pi-map-marker"></i><span>Locations</span></a
-              >
+            <button class="p-link nav-btn" @click="$router.push('/locations')">
+              <a>
+                <i class="pi pi-fw pi-map-marker"></i>
+                <span>Locations</span>
+              </a>
             </button>
           </li>
           <li>
-            <button class="p-link">
-              <a @click="$router.push('/maintenanceOrders')"
-                ><i class="pi pi-fw pi-shopping-cart"></i
-                ><span>Maintenance Orders</span></a
-              >
+            <button class="p-link nav-btn" @click="$router.push('/maintenanceOrders')">
+              <a>
+                <i class="pi pi-fw pi-shopping-cart"></i>
+                <span>Maintenance Orders</span>
+              </a>
             </button>
           </li>
           <li>
-            <button class="p-link">
-              <a @click="$router.push('/maintenanceWorkers')"
-                ><i class="pi pi-fw pi-users"></i
-                ><span>Maintenance Workers</span></a
-              >
+            <button class="p-link nav-btn" @click="$router.push('/maintenanceWorkers')">
+              <a>
+                <i class="pi pi-fw pi-users"></i>
+                <span>Maintenance Workers</span>
+              </a>
             </button>
           </li>
         </ul>
         <ul v-else>
           <li>
-            <button class="p-link">
-              <a @click="$router.push('/upload')"
-                ><i class="pi pi-fw pi-upload"></i><span>Upload</span></a
-              >
+            <button class="p-link nav-btn" @click="$router.push('/upload')">
+              <a>
+                <i class="pi pi-fw pi-upload"></i>
+                <span>Upload</span>
+              </a>
             </button>
           </li>
         </ul>
@@ -123,7 +125,12 @@ main {
   font-size: 24px;
 }
 .side-bar-layout:hover {
-  width: 14em;
+  width: 15em;
   opacity: 1;
+  box-shadow: 1px 0 5px -2px #888;
+}
+
+.nav-btn:active {
+  border: none;
 }
 </style>

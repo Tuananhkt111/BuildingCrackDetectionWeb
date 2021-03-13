@@ -3,7 +3,7 @@
     <div class="p-grid p-mt-3">
       <div class="player-container p-col-4" >
         <video width="380" height="210" controls>
-          <!-- <source src="@/videos/20210311_102948.mp4" type="video/mp4" /> -->
+          <!-- <source src="@/videos/nhac.mp4" type="video/mp4" /> -->
         </video>
       </div>
       <div class="p-col-1">
