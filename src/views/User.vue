@@ -12,38 +12,35 @@
         :rowHover="true"
         filterDisplay="menu"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        :rowsPerPageOptions="[5, 10, 25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users"
+        currentPageReportTemplate=""
       >
-        <template #header>
-          <div class="table-header">
-            <h3 class="p-m-2">Manage User</h3>
-            <span class="p-input-icon-left">
-              <Button
-                icon="pi pi-plus"
-                class="p-button-success p-mr-2"
-                @click="openNew"
-                style="margin:2px"
-                label="New"
-                v-if="admin"
+        <div class="table-header">
+          <h3 class="p-m-2">Manage User</h3>
+          <span class="p-input-icon-left">
+            <Button
+              icon="pi pi-plus"
+              class="p-button-success p-mr-2 "
+              @click="openNew"
+              style="margin:2px"
+              label="New"
+              v-if="admin"
+            />
+            <Button
+              label="Export"
+              icon="pi pi-upload"
+              class="p-button-info"
+              @click="exportCSV($event)"
+              style="margin:2px"
+            />
+            <span class="p-input-icon-left" style="margin:2px">
+              <i class="pi pi-search" />
+              <InputText
+                v-model="filters['global'].value"
+                placeholder="Keyword Search"
               />
-              <Button
-                label="Export"
-                icon="pi pi-upload"
-                class="p-button-help"
-                @click="exportCSV($event)"
-                style="margin:2px"
-              />
-              <span class="p-input-icon-left" style="margin:2px">
-                <i class="pi pi-search" />
-                <InputText
-                  v-model="filters['global'].value"
-                  placeholder="Keyword Search"
-                />
-              </span>
             </span>
-          </div>
-        </template>
+          </span>
+        </div>
 
         <Column
           field="userName"
@@ -292,22 +289,38 @@
       </div>
       <div class="p-field">
         <label for="name">Full Name</label>
-        <InputText name="name" v-model.trim="name" disabled="true"/>
+        <InputText name="name" v-model.trim="name" disabled="true" />
         <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="email">Email</label>
-        <InputText type="email" name="email" v-model.trim="email" disabled="true"/>
+        <InputText
+          type="email"
+          name="email"
+          v-model.trim="email"
+          disabled="true"
+        />
         <small class="invalid">{{ errors.email }}</small>
       </div>
       <div class="p-field">
         <label for="phoneNumber">Phone Number</label>
-        <InputMask name="phone" mask="9999999999" v-model.trim="phone" disabled="true"/>
+        <InputMask
+          name="phone"
+          mask="9999999999"
+          v-model.trim="phone"
+          disabled="true"
+        />
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
         <label for="address">Address</label>
-        <Textarea name="address" v-model="address" rows="3" cols="20" disabled="true"/>
+        <Textarea
+          name="address"
+          v-model="address"
+          rows="3"
+          cols="20"
+          disabled="true"
+        />
         <small class="invalid">{{ errors.address }}</small>
       </div>
       <div class="p-formgrid p-grid">
@@ -890,8 +903,15 @@ export default {
 <style scoped>
 .table-header {
   display: flex;
-  align-items: left;
   justify-content: space-between;
+  background: #fcfcfc;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-width: 0 0 1px 0;
+  color: #69707a;
+  padding: 1rem;
+  font-weight: 700;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .product-image {
@@ -924,37 +944,87 @@ export default {
   color: red;
 }
 
-@media screen and (max-width: 40em) {
-  ::v-deep(.p-datatable) {
-    &.p-datatable-responsive-demo {
-      .p-datatable-thead > tr > th,
-      .p-datatable-tfoot > tr > td {
-        display: none !important;
-      }
+::v-deep(.p-datatable .p-datatable-thead > tr > th) {
+  background: #fcfcfc;
+  color: #69707a;
+  padding: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-width: 0 0 1px 0;
+  text-align: left;
+  box-sizing: content-box;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  cursor: pointer;
+  font-weight: 700;
+}
+::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
+  text-align: left;
+  border: 1px solid #e9ecef;
+  border-width: 0 0 1px 0;
+  padding: 1rem 1rem;
+}
 
-      .p-datatable-tbody > tr > td {
-        display: block;
-        width: 100%;
-        border: 0 none;
+::v-deep(.p-datatable.p-datatable-hoverable-rows
+    .p-datatable-tbody
+    > tr:not(.p-highlight):hover) {
+  text-align: left;
+  border: 1px solid #e9ecef;
+  border-width: 0 0 1px 0;
+  padding: 1rem 1rem;
+  background: rgba(119, 123, 241, 0.1);
+}
 
-        .p-column-title {
-          padding: 0.4rem;
-          min-width: 50%;
-          display: inline-block;
-          margin: -0.4em 1em -0.4em -0.4rem;
-          font-weight: bold;
-        }
+::v-deep(.p-column-filter-menu-button:hover) {
+  color: #2170e7;
+}
 
-        &:last-child {
-          border-bottom: 1px solid var(--surface-d);
-          text-align: center;
-        }
+::v-deep(.p-datatable .p-datatable-tbody > tr) {
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}
 
-        .p-rating {
-          display: inline-block;
-        }
-      }
-    }
-  }
+::v-deep(.p-button) {
+  background: #464df2;
+  color: #ffffff;
+  border: 1px solid #464df2;
+  margin: 0;
+  outline: 0 none;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  cursor: pointer;
+}
+
+::v-deep(.p-button.p-button-success, .p-buttonset.p-button-success
+    > .p-button, .p-splitbutton.p-button-success > .p-button) {
+  color: #ffffff;
+  background: #55e757;
+  border: 1px solid #55e757;
+}
+
+::v-deep(.p-button.p-button-info, .p-buttonset.p-button-info
+    > .p-button, .p-splitbutton.p-button-info > .p-button) {
+  color: #ffffff;
+  background: #7fb4fa;
+  border: 1px solid #7fb4fa;
+}
+
+::v-deep(.p-paginator .p-paginator-pages .p-paginator-page.p-highlight) {
+  background: rgba(70, 77, 242, 0.9);
+  color: #ffffff;
+}
+
+::v-deep(.p-paginator .p-paginator-pages .p-paginator-page) {
+  padding: 0;
+  border: 1px solid transparent;
+  text-align: center;
+  line-height: 2.286em;
+  min-width: 2.286em;
+  height: 2.286em;
+  color: #83888f;
+  margin: 0 0.125em;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
 }
 </style>

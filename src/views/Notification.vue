@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <DataTable
-    :rowHover="true"
+      :rowHover="true"
       ref="dt"
       :value="getNotificationList"
       v-model:selection="selectedProducts"
@@ -14,20 +14,17 @@
       @row-select="onRowSelect"
       @row-unselect="onRowUnselect"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-      :rowsPerPageOptions="[5, 10, 25]"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} notis"
+      currentPageReportTemplate=""
     >
-      <template #header>
-        <div class="table-header">
-          <h3 class="p-m-0" style="width:30%">Notification</h3>
-          <Button
-            label="Mark as Read"
-            icon="pi pi-check"
-            class="p-button-success p-mr-2"
-            @click="markAsRead"
-          />
-        </div>
-      </template>
+      <div class="table-header">
+        <h3 class="p-m-0" style="width:30%">Notification</h3>
+        <Button
+          label="Mark as Read"
+          icon="pi pi-check"
+          class="p-button-success p-mr-2"
+          @click="markAsRead"
+        />
+      </div>
       <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
       <Column field="title" header="Title"></Column>
       <Column field="body" header="Body"></Column>
@@ -123,6 +120,104 @@ export default {
 
 <style>
 .row-accessories {
-    background-color: rgba(0,0,0,.15) !important;
+  background-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+::v-deep(.p-datatable .p-datatable-thead > tr > th) {
+  background: #fcfcfc;
+  color: #69707a;
+  padding: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-width: 0 0 1px 0;
+  text-align: left;
+  box-sizing: content-box;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  cursor: pointer;
+  font-weight: 700;
+}
+::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
+  text-align: left;
+  border: 1px solid #e9ecef;
+  border-width: 0 0 1px 0;
+  padding: 1rem 1rem;
+}
+
+::v-deep(.p-datatable.p-datatable-hoverable-rows
+    .p-datatable-tbody
+    > tr:not(.p-highlight):hover) {
+  text-align: left;
+  border: 1px solid #e9ecef;
+  border-width: 0 0 1px 0;
+  padding: 1rem 1rem;
+  background: rgba(119, 123, 241, 0.1);
+}
+
+::v-deep(.p-column-filter-menu-button:hover) {
+  color: #2170e7;
+}
+
+::v-deep(.p-datatable .p-datatable-tbody > tr) {
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+::v-deep(.p-button) {
+  background: #464df2;
+  color: #ffffff;
+  border: 1px solid #464df2;
+  margin: 0;
+  outline: 0 none;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  cursor: pointer;
+}
+
+::v-deep(.p-button.p-button-success, .p-buttonset.p-button-success
+    > .p-button, .p-splitbutton.p-button-success > .p-button) {
+  color: #ffffff;
+  background: #55e757;
+  border: 1px solid #55e757;
+}
+
+::v-deep(.p-button.p-button-info, .p-buttonset.p-button-info
+    > .p-button, .p-splitbutton.p-button-info > .p-button) {
+  color: #ffffff;
+  background: #7fb4fa;
+  border: 1px solid #7fb4fa;
+}
+
+::v-deep(.p-paginator .p-paginator-pages .p-paginator-page.p-highlight) {
+  background: rgba(70, 77, 242, 0.9);
+  color: #ffffff;
+}
+
+::v-deep(.p-paginator .p-paginator-pages .p-paginator-page) {
+  padding: 0;
+  border: 1px solid transparent;
+  text-align: center;
+  line-height: 2.286em;
+  min-width: 2.286em;
+  height: 2.286em;
+  color: #83888f;
+  margin: 0 0.125em;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fcfcfc;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-width: 0 0 1px 0;
+  color: #69707a;
+  padding: 1rem;
+  font-weight: 700;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 </style>

@@ -13,30 +13,27 @@
         :globalFilterFields="['locationName', 'dataCollectorName']"
         filterDisplay="menu"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        :rowsPerPageOptions="[5, 10, 25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} flight"
+        currentPageReportTemplate=""
       >
-        <template #header>
-          <div class="table-header">
-            <h5 class="p-m-0" style="font-size:1.25rem">Manage Flights</h5>
-            <span class="p-input-icon-left">
-              <Button
-                label="Export"
-                icon="pi pi-upload"
-                class="p-button-help"
-                @click="exportCSV($event)"
-                style="margin:2px"
+        <div class="table-header">
+          <h5 class="p-m-0" style="font-size:1.25rem">Manage Flights</h5>
+          <span class="p-input-icon-left">
+            <Button
+              label="Export"
+              icon="pi pi-upload"
+              class="p-button-help"
+              @click="exportCSV($event)"
+              style="margin:2px"
+            />
+            <span class="p-input-icon-left" style="margin:2px">
+              <i class="pi pi-search" />
+              <InputText
+                v-model="filters['global'].value"
+                placeholder="Keyword Search"
               />
-              <span class="p-input-icon-left" style="margin:2px">
-                <i class="pi pi-search" />
-                <InputText
-                  v-model="filters['global'].value"
-                  placeholder="Keyword Search"
-                />
-              </span>
             </span>
-          </div>
-        </template>
+          </span>
+        </div>
 
         <template #empty>
           No Flights found.
@@ -155,11 +152,8 @@ export default {
   methods: {
     ...mapActions("flight", ["setFlightList"]),
 
-
-    seeProduct(product){
-      this.$router.push(
-        "/video?flightId=" + product.flightId
-      );
+    seeProduct(product) {
+      this.$router.push("/video?flightId=" + product.flightId);
     },
     showImage(crack) {
       document.body.style.overflow = "hidden";
@@ -221,6 +215,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: #fcfcfc;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-width: 0 0 1px 0;
+  color: #69707a;
+  padding: 1rem;
+  font-weight: 700;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .product-image {
@@ -254,37 +256,87 @@ export default {
   align-content: center;
 }
 
-@media screen and (max-width: 40em) {
-  ::v-deep(.p-datatable) {
-    &.p-datatable-responsive-demo {
-      .p-datatable-thead > tr > th,
-      .p-datatable-tfoot > tr > td {
-        display: none !important;
-      }
+::v-deep(.p-datatable .p-datatable-thead > tr > th) {
+  background: #fcfcfc;
+  color: #69707a;
+  padding: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-width: 0 0 1px 0;
+  text-align: left;
+  box-sizing: content-box;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  cursor: pointer;
+  font-weight: 700;
+}
+::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
+  text-align: left;
+  border: 1px solid #e9ecef;
+  border-width: 0 0 1px 0;
+  padding: 1rem 1rem;
+}
 
-      .p-datatable-tbody > tr > td {
-        display: block;
-        width: 100%;
-        border: 0 none;
+::v-deep(.p-datatable.p-datatable-hoverable-rows
+    .p-datatable-tbody
+    > tr:not(.p-highlight):hover) {
+  text-align: left;
+  border: 1px solid #e9ecef;
+  border-width: 0 0 1px 0;
+  padding: 1rem 1rem;
+  background: rgba(119, 123, 241, 0.1);
+}
 
-        .p-column-title {
-          padding: 0.4rem;
-          min-width: 30%;
-          display: inline-block;
-          margin: -0.4em 1em -0.4em -0.4rem;
-          font-weight: bold;
-        }
+::v-deep(.p-column-filter-menu-button:hover) {
+  color: #2170e7;
+}
 
-        &:last-child {
-          border-bottom: 1px solid var(--surface-d);
-          text-align: center;
-        }
+::v-deep(.p-datatable .p-datatable-tbody > tr) {
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+}
 
-        .p-rating {
-          display: inline-block;
-        }
-      }
-    }
-  }
+::v-deep(.p-button) {
+  background: #464df2;
+  color: #ffffff;
+  border: 1px solid #464df2;
+  margin: 0;
+  outline: 0 none;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  cursor: pointer;
+}
+
+::v-deep(.p-button.p-button-success, .p-buttonset.p-button-success
+    > .p-button, .p-splitbutton.p-button-success > .p-button) {
+  color: #ffffff;
+  background: #55e757;
+  border: 1px solid #55e757;
+}
+
+::v-deep(.p-button.p-button-info, .p-buttonset.p-button-info
+    > .p-button, .p-splitbutton.p-button-info > .p-button) {
+  color: #ffffff;
+  background: #7fb4fa;
+  border: 1px solid #7fb4fa;
+}
+
+::v-deep(.p-paginator .p-paginator-pages .p-paginator-page.p-highlight) {
+  background: rgba(70, 77, 242, 0.9);
+  color: #ffffff;
+}
+
+::v-deep(.p-paginator .p-paginator-pages .p-paginator-page) {
+  padding: 0;
+  border: 1px solid transparent;
+  text-align: center;
+  line-height: 2.286em;
+  min-width: 2.286em;
+  height: 2.286em;
+  color: #83888f;
+  margin: 0 0.125em;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
 }
 </style>
