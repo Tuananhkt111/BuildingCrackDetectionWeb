@@ -3,192 +3,186 @@
     href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
     rel="stylesheet"
   />
-  <body>
-    <div class="main-content">
-      <!-- Header -->
-      <div
-        class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-        style="min-height: 300px"
-      >
-        <span class="mask background-color opacity-1"></span>
-        <div class="container-fluid d-flex align-items-center">
-          <div class="row">
-            <div class="col-lg-7 col-md-10">
-              <h1 class="display-2 text-white">Hello {{ getUser.name }}</h1>
-              <p class="text-white mt-0 mb-5">
-                This is your profile page, all of your basic information will be
-                shown there. Besides, if you want to update your password, this
-                page will help you do it.
-              </p>
-            </div>
+  <div class="main-content">
+    <!-- Header -->
+    <div
+      class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+      style="min-height: 300px"
+    >
+      <span class="mask background-color opacity-1"></span>
+      <div class="container-fluid d-flex align-items-center">
+        <div class="row">
+          <div class="col-lg-7 col-md-10">
+            <h1 class="display-2 text-white">Hello {{ getUser.name }}</h1>
+            <p class="text-white mt-0 mb-5">
+              This is your profile page, all of your basic information will be
+              shown there. Besides, if you want to update your password, this
+              page will help you do it.
+            </p>
           </div>
         </div>
       </div>
-      <div class="container-fluid mt--7">
-        <div class="row">
-          <!-- Cục phía trên bên phải -->
-          <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
-            <div class="card card-profile shadow">
-              <div class="row justify-content-center">
-                <div class="col-lg-3 order-lg-2">
-                  <div class="card-profile-image">
-                    <a href="#">
-                      <img src="..\asset\avt.jpg" class="rounded-circle" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4"
-              ></div>
-              <div class="card-body pt-0 pt-md-4">
-                <br /><br /><br /><br />
-                <div class="text-center">
-                  <h3>
-                    {{ getUser.userName
-                    }}<span class="font-weight-light"></span>
-                  </h3>
-                  <div class="h5 font-weight-300">
-                    <i class="ni location_pin mr-2"></i>{{ getUser.address }}
-                  </div>
-                  <div class="h5 mt-4">
-                    <i class="ni business_briefcase-24 mr-2"></i
-                    >{{ getUser.role }} - Building Cracks Detection
-                  </div>
+    </div>
+    <div class="container-fluid mt--7">
+      <div class="row">
+        <!-- Cục phía trên bên phải -->
+        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+          <div class="card card-profile shadow">
+            <div class="row justify-content-center">
+              <div class="col-lg-3 order-lg-2">
+                <div class="card-profile-image">
+                  <a href="#">
+                    <img src="..\asset\avt.jpg" class="rounded-circle" />
+                  </a>
                 </div>
               </div>
             </div>
-            <!-- Cục phía dưới bên phải -->
-            <br />
-            <div class="card card-profile shadow">
-              <div class="card-body pt-0 pt-md-4">
-                <div class="text-center">
-                  <h3>
-                    Change Password<span class="font-weight-light"></span>
-                  </h3>
-                  <input
-                    type="password"
-                    class="form-control form-control-alternative"
-                    placeholder="Old Password"
-                    id="oldPassword"
-                    v-model="oldPassword"
-                  />
-                  <br />
-                  <input
-                    type="password"
-                    class="form-control form-control-alternative"
-                    placeholder="New Password"
-                    id="newPassword"
-                    v-model="newPassword"
-                  />
-                  <br />
-                  <input
-                    type="password"
-                    class="form-control form-control-alternative"
-                    placeholder="Confirm New Password"
-                    id="confirmPassword"
-                    v-model="confirmPassword"
-                  /><br />
-                  <button
-                    class="btn btn-sm btn-default float-center"
-                    @click="confirmChangePassword"
-                  >
-                    Change
-                  </button>
+            <div
+              class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4"
+            ></div>
+            <div class="card-body pt-0 pt-md-4">
+              <br /><br /><br /><br />
+              <div class="text-center">
+                <h3>
+                  {{ getUser.userName }}<span class="font-weight-light"></span>
+                </h3>
+                <div class="h5 font-weight-300">
+                  <i class="ni location_pin mr-2"></i>{{ getUser.address }}
+                </div>
+                <div class="h5 mt-4">
+                  <i class="ni business_briefcase-24 mr-2"></i
+                  >{{ getUser.role }} - Building Cracks Detection
                 </div>
               </div>
             </div>
           </div>
-          <!-- Cục bên trái -->
-          <div class="col-xl-8 order-xl-1">
-            <div class="card bg-secondary shadow">
-              <div class="card-header bg-white border-0">
-                <div class="row align-items-center">
-                  <div class="col-8">
-                    <h3 class="mb-0">My account</h3>
-                  </div>
+          <!-- Cục phía dưới bên phải -->
+          <br />
+          <div class="card card-profile shadow">
+            <div class="card-body pt-0 pt-md-4">
+              <div class="text-center">
+                <h3>Change Password<span class="font-weight-light"></span></h3>
+                <input
+                  type="password"
+                  class="form-control form-control-alternative"
+                  placeholder="Old Password"
+                  id="oldPassword"
+                  v-model="oldPassword"
+                />
+                <br />
+                <input
+                  type="password"
+                  class="form-control form-control-alternative"
+                  placeholder="New Password"
+                  id="newPassword"
+                  v-model="newPassword"
+                />
+                <br />
+                <input
+                  type="password"
+                  class="form-control form-control-alternative"
+                  placeholder="Confirm New Password"
+                  id="confirmPassword"
+                  v-model="confirmPassword"
+                /><br />
+                <button
+                  class="btn btn-sm btn-default float-center"
+                  style="padding: 5px 10px; font-size: 0.8rem;"
+                  @click="confirmChangePassword"
+                >
+                  Change
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Cục bên trái -->
+        <div class="col-xl-8 order-xl-1">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">My account</h3>
                 </div>
               </div>
-              <div class="card-body">
-                <form>
-                  <h6 class="heading-small text-muted mb-4">
-                    User information
-                  </h6>
-                  <div class="pl-lg-4">
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group focused">
-                          <label class="form-control-label">Fullname</label>
-                          <input
-                            class="form-control form-control-alternative"
-                            v-model="getUser.name"
-                            readonly
-                          />
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label"
-                            >Email address</label
-                          >
-                          <input
-                            class="form-control form-control-alternative"
-                            v-model="getUser.email"
-                            readonly
-                          />
-                        </div>
+            </div>
+            <div class="card-body">
+              <form>
+                <h6 class="heading-small text-muted mb-4">
+                  User information
+                </h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group focused">
+                        <label class="form-control-label">Fullname</label>
+                        <input
+                          class="form-control form-control-alternative"
+                          v-model="getUser.name"
+                          readonly
+                        />
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group focused">
-                          <label class="form-control-label">Phone number</label>
-                          <input
-                            class="form-control form-control-alternative"
-                            v-model="getUser.phoneNumber"
-                            readonly
-                          />
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group focused">
-                          <label class="form-control-label">Role</label>
-                          <input
-                            class="form-control form-control-alternative"
-                            v-model="getUser.role"
-                            readonly
-                          />
-                        </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label">Email address</label>
+                        <input
+                          class="form-control form-control-alternative"
+                          v-model="getUser.email"
+                          readonly
+                        />
                       </div>
                     </div>
                   </div>
-                  <hr class="my-4" />
-                  <h6 class="heading-small text-muted mb-4">
-                    Contact information
-                  </h6>
-                  <div class="pl-lg-4">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group focused">
-                          <label class="form-control-label">Address</label>
-                          <input
-                            class="form-control form-control-alternative"
-                            v-model="getUser.address"
-                            readonly
-                          />
-                        </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group focused">
+                        <label class="form-control-label">Phone number</label>
+                        <input
+                          class="form-control form-control-alternative"
+                          v-model="getUser.phoneNumber"
+                          readonly
+                        />
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group focused">
+                        <label class="form-control-label">Role</label>
+                        <input
+                          class="form-control form-control-alternative"
+                          v-model="getUser.role"
+                          readonly
+                        />
                       </div>
                     </div>
                   </div>
-                  <hr class="my-4" />
-                </form>
-              </div>
+                </div>
+                <hr class="my-4" />
+                <h6 class="heading-small text-muted mb-4">
+                  Contact information
+                </h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group focused">
+                        <label class="form-control-label">Address</label>
+                        <input
+                          class="form-control form-control-alternative"
+                          v-model="getUser.address"
+                          readonly
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr class="my-4" />
+              </form>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </div>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
@@ -830,6 +824,7 @@ a.text-white:focus {
 }
 .main-content {
   position: relative;
+  margin-bottom: 20px;
 }
 @media (min-width: 768px) {
   .main-content .container-fluid {
@@ -878,6 +873,8 @@ a.text-white:focus {
   width: 100%;
   height: 100%;
   transition: all 0.15s ease;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
 }
 @media screen and (prefers-reduced-motion: reduce) {
   .mask {

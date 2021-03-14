@@ -1,10 +1,7 @@
 <template>
   <div>
     <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
-      <img
-        :src="product.image"
-        style="width:60%; height: 75%; margin-left:270px; margin-top:100px"
-      />
+      <img :src="product.image" style="width:90%; height: 80%;" />
     </div>
     <div class="card">
       <DataTable
@@ -24,22 +21,12 @@
       >
         <div class="table-header">
           <h5 class="p-m-2">Cracks</h5>
-
-          <span class="p-input-icon-left">
-            <Button
-              label="Export"
-              icon="pi pi-upload"
-              class="p-button-help"
-              @click="exportCSV($event)"
-              style="margin: 2px"
+          <span class="p-input-icon-left" style="margin: 2px">
+            <i class="pi pi-search" />
+            <InputText
+              v-model="filters['global'].value"
+              placeholder="Keyword Search"
             />
-            <span class="p-input-icon-left" style="margin: 2px">
-              <i class="pi pi-search" />
-              <InputText
-                v-model="filters['global'].value"
-                placeholder="Keyword Search"
-              />
-            </span>
           </span>
         </div>
         <template #empty> No Cracks found. </template>
@@ -154,11 +141,11 @@
           <template #body="slotProps">
             <Skeleton v-if="loading" />
             <Button
-              icon="pi pi-pencil"
+              icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text p-mr-2"
               @click="showDetail(slotProps.data)"
               style="margin: 2px"
-              v-tooltip.bottom="'View Crack Detail'"
+              v-tooltip.bottom="'View Crack Details'"
             />
             <Button
               v-if="slotProps.data.maintenanceOrderId != null"
@@ -187,17 +174,17 @@
         <h3 class="dialog-title">Crack Information</h3>
       </template>
       <div class="p-grid nested-grid">
-        <div class="p-col-3">
+        <div class="p-col-4">
           <img
             :src="product.imageThumbnails"
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
             @click="showImage(product)"
-            style="width:200px; height:100%"
+            style="width:250px; height:100%"
           />
         </div>
-        <div class="p-col-9">
+        <div class="p-col-8">
           <TabView>
             <TabPanel header="Overview">
               <div class="p-grid">
@@ -598,6 +585,9 @@ h5 {
   background: rgba(0, 0, 0, 0.9);
   left: 0;
   align-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .p-dialog-titlebar {
@@ -616,6 +606,10 @@ h5 {
   left: -10px;
   top: 25px;
   background: #007dfe;
+}
+
+.p-grid .nested-grid {
+  min-height: 320px;
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
@@ -710,7 +704,7 @@ h5 {
 ::v-deep(.p-dialog .p-dialog-content) {
   border-bottom-right-radius: 24px;
   border-bottom-left-radius: 24px;
-  min-height: 320px;
+  min-height: 345px;
 }
 
 ::v-deep(.p-tabview .p-tabview-panels) {
@@ -722,6 +716,10 @@ h5 {
 }
 
 ::v-deep(.p-tabview .p-tabview-panels .p-grid .p-col-6) {
+  margin: 10px 0;
+}
+
+::v-deep(.p-tabview .p-tabview-panels .p-grid .p-col-12) {
   margin: 10px 0;
 }
 </style>

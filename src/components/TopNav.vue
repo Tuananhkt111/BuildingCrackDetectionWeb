@@ -6,41 +6,6 @@
         style="padding-left: 120px"
       ></div>
       <!-- Dropdown Menu -->
-      <Dialog
-        v-model:visible="ChangePassworDialog"
-        :style="{ width: '450px' }"
-        header="Change Password"
-        :modal="true"
-        class="p-fluid"
-      >
-        <div class="p-field">
-          <label>Old Password</label>
-          <InputText id="oldPassword" v-model="oldPassword" type="password" />
-          <small class="p-invalid">{{ errors.oldPassword }}</small>
-        </div>
-        <div class="p-field">
-          <label>New Password</label>
-          <InputText id="newPassword" v-model="newPassword" type="password" />
-          <small class="p-invalid">{{ errors.newPassword }}</small>
-        </div>
-        <div class="p-field">
-          <label>confirm Password</label>
-          <InputText
-            id="confirmPassword"
-            v-model="confirmPassword"
-            type="password"
-          />
-          <small class="p-invalid">{{ errors.confirmPassword }}</small>
-        </div>
-        <template #footer>
-          <Button
-            label="Create"
-            icon="pi pi-check"
-            class="p-button-text"
-            @click="confirmChangePassword"
-          />
-        </template>
-      </Dialog>
       <div class="top-nav-right p-d-flex p-ai-center p-jc-between">
         <div>
           <a href="#" class="header__link">
@@ -78,14 +43,6 @@
                   </a>
                 </li>
                 <li class="dropdown__menu-item">
-                  <a class="dropdown__menu-link" @click="changePassword">
-                    <div class="dropdown__menu-icon">
-                      <i class="pi pi-fw pi-key"></i>
-                    </div>
-                    <div class="dropdown__menu-text">Change Password</div>
-                  </a>
-                </li>
-                <li class="dropdown__menu-item">
                   <a class="dropdown__menu-link" @click="logOut">
                     <div class="dropdown__menu-icon">
                       <i class="pi pi-fw pi-power-off"></i>
@@ -104,7 +61,7 @@
           aria-controls="overlay_tmenu"
         >
           <i class="pi pi-comment">
-            <div class="count" v-if="getCount != 0">{{ getCount }}</div>
+            <span class="count" v-if="getCount != 0">{{ getCount }}</span>
           </i>
         </div>
         <transition name="dropdown">
@@ -611,12 +568,10 @@ button.close {
   padding-bottom: 0;
 }
 .count {
-  right: 19px;
-  top: 18px;
-  position: absolute;
-  padding-top: 2.5px;
-  width: 15px;
-  height: 15px;
+  right: 10px;
+  bottom: 15px;
+  position: relative;
+  padding: 2.5px 5px;
   color: #fff;
   font-size: 12px;
   font-family: Arial;

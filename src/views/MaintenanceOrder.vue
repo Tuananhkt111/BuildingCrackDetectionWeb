@@ -26,13 +26,6 @@
         <div class="table-header-main">
           <h3 class="p-m-2">Maintenance Orders</h3>
           <span class="p-input-icon-left">
-            <Button
-              label="Export"
-              icon="pi pi-upload"
-              class="p-button-help"
-              @click="exportCSV($event)"
-              style="margin:2px"
-            />
             <span class="p-input-icon-left" style="margin:2px">
               <i class="pi pi-search" />
               <InputText
@@ -150,9 +143,10 @@
           <template #body="slotProps">
             <Skeleton v-if="loading" />
             <Button
-              icon="pi pi-pencil"
+              icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text"
               @click="editProduct(slotProps.data)"
+              v-tooltip.bottom="'View Maintenance Order Details'"
             />
           </template>
         </Column>
@@ -527,9 +521,6 @@ export default {
         },
       ];
     },
-    exportCSV() {
-      this.$refs.dt.exportCSV();
-    },
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");
@@ -784,7 +775,7 @@ export default {
     box-shadow 0.2s;
 }
 
-::v-deep(.p-datatable-wrapper
+::v-deep(.p-datatable-row-expansion .p-datatable-wrapper
     .p-datatable-table
     .p-datatable-thead
     .p-column-header-content

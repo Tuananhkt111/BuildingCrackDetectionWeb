@@ -20,18 +20,11 @@
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
-              class="p-button-success p-mr-2"
+              class="p-button-info p-mr-2"
               @click="openNew"
               style="margin:2px"
               label="New"
               v-if="admin"
-            />
-            <Button
-              label="Export"
-              icon="pi pi-upload"
-              class="p-button-help"
-              @click="exportCSV($event)"
-              style="margin:2px"
             />
             <span class="p-input-icon-left" style="margin:2px">
               <i class="pi pi-search" />
@@ -125,7 +118,7 @@
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info p-button-text p-mr-2"
               @click="editProduct(slotProps.data)"
-              v-tooltip.bottom="'View Location Detail'"
+              v-tooltip.bottom="'View Location Details'"
               style="margin: 2px"
               v-if="admin"
             />
@@ -192,7 +185,7 @@
     <Dialog
       v-model:visible="productDialog"
       :style="{ width: '450px' }"
-      header="Location Details"
+      header="Location Information"
       :modal="true"
       class="p-fluid"
     >
@@ -481,9 +474,6 @@ export default {
       }
       return index;
     },
-    exportCSV() {
-      this.$refs.dt.exportCSV();
-    },
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD/MM/YYYY hh:mm:ss");
@@ -594,6 +584,19 @@ export default {
   background: #007dfe;
 }
 
+::v-deep(.p-dialog .p-dialog-header .p-dialog-title::before) {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 25px;
+  background: #007dfe;
+}
+
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
   background: #fcfcfc;
   color: #69707a;
@@ -641,13 +644,6 @@ export default {
   cursor: pointer;
 }
 
-::v-deep(.p-button.p-button-success, .p-buttonset.p-button-success
-    > .p-button, .p-splitbutton.p-button-success > .p-button) {
-  color: #ffffff;
-  background: #55e757;
-  border: 1px solid #55e757;
-}
-
 ::v-deep(.p-button.p-button-info, .p-buttonset.p-button-info
     > .p-button, .p-splitbutton.p-button-info > .p-button) {
   color: #ffffff;
@@ -672,5 +668,36 @@ export default {
   border-radius: 6px;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
+}
+
+::v-deep(.p-dialog .p-dialog-header) {
+  border-top-right-radius: 24px;
+  border-top-left-radius: 24px;
+}
+
+::v-deep(.p-dialog) {
+  border-radius: 24px;
+}
+
+::v-deep(.p-dialog .p-dialog-header .p-dialog-title) {
+  color: #69707a;
+  margin-left: 12px;
+}
+
+::v-deep(.p-dialog .p-dialog-footer) {
+  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 24px;
+}
+
+::v-deep(.p-fluid .p-inputtext) {
+  border-radius: 8px;
+}
+
+::v-deep(.p-field > label) {
+  font-weight: 500;
+}
+
+::v-deep(.p-dialog .p-dialog-content) {
+  padding: 0 1.5rem 0rem 1.5rem;
 }
 </style>
