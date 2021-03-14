@@ -6,19 +6,15 @@
           <!-- <source src="@/videos/nhac.mp4" type="video/mp4" /> -->
         </video>
       </div>
-      <div class="p-col-1">
+      <div class="p-col-2 p-mt-5">
         <p class=" left">Location</p>
-        <p class=" left">Pilot</p>
-        <p class=" left">Datetime</p>
-        <p class=" left">Location</p>
-        <p class=" left">Location</p>
+        <p class=" left">Collector Name</p>
+        <p class=" left">Video</p>
       </div>
-      <div class="p-col-2 right">
-        <p class=" right">Sky 9</p>
-        <p class=" right">Sky 9</p>
-        <p class=" right">11-03-2021 00:00:00</p>
-        <p class=" right">Sky 9</p>
-        <p class=" right">Sky 9</p>
+      <div class="p-col-2 right p-mt-5">
+        <p class=" right">{{getFlight.locationName}}</p>
+        <p class=" right">{{getFlight.dataCollectorName}}</p>
+        <p class=" right">{{getFlight.video}}</p>
       </div>
     </div>
     <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
@@ -348,9 +344,10 @@ export default {
       displayImage: false,
     };
   },
-  created() {
+  async created() {
     this.initFilters();
-    this.setFlight(this.$route.query.flightId);
+    await this.setFlight(this.$route.query.flightId);
+    console.log("AA" + this.getFlight.locationName);
     this.loading = false;
   },
   methods: {

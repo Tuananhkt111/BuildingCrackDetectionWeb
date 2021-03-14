@@ -5,7 +5,7 @@ const flightStore = {
     state: {
         flightList: [],
         crackList:[],
-        flight: null,
+        flight: [],
     },
   
     getters: {
@@ -28,7 +28,7 @@ const flightStore = {
         state.crackList = crackList;
       },
       setFlight(state, flight) {
-        state.crackList = flight;
+        state.flight = flight;
       },
     },
   
@@ -42,9 +42,10 @@ const flightStore = {
       async setFlight({ commit }, id) {
         const res = await flightApi.getById(id);
         if (res) {
-          console.log("AA" + res);
+          console.log("res" + res);
           commit("setFlight", res);
           commit("setCrackList", res.cracks)
+          console.log("res" + res.cracks);
         }
       },
     }

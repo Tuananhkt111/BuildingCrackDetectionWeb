@@ -3,7 +3,8 @@ const applicationStore = {
   state: {
     isActive: false,
     isLogin: true,
-    isForgotPassword: false
+    isForgotPassword: false,
+    isDetect: false,
   },
 
   getters: {
@@ -15,6 +16,9 @@ const applicationStore = {
     },
     getIsForgotPassword(state) {
       return state.isForgotPassword;
+    },
+    getIsDetect(state) {
+      return state.isDetect;
     }
   },
 
@@ -27,7 +31,10 @@ const applicationStore = {
     },
     setIsForgotPassword(state, isForgotPassword) {
       state.isForgotPassword = isForgotPassword;
-    }
+    },
+    setIsDetect(state, isDetect) {
+      state.isDetect = isDetect;
+    },
   },
 
   actions: {
@@ -39,7 +46,10 @@ const applicationStore = {
     },
     setIsForgotPassword({commit}, value) {
       commit("setIsForgotPassword", value);
-    }
+    },
+    setIsDetect({commit}, value) {
+      commit("setIsDetect", value);
+    },
   }
 };
 

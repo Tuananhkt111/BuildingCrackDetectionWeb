@@ -1,5 +1,7 @@
 <template>
   <div>
+    <Detecting v-if="getIsDetect && staff"></Detecting>
+    <Upload v-if="!getIsDetect && staff"></Upload>
     <div class="card">
       <DataTable
         :rowHover="true"
@@ -114,14 +116,20 @@ import moment from "moment";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
 import webRole from "../util/webRole.js";
+import Upload from "../views/Upload.vue";
+import Detecting from "../components/Detecting.vue";
 
 export default {
   components: {
     Button,
     Toast,
+    Upload,
+    Detecting
+    
   },
   computed: {
     ...mapGetters("flight", ["getFlightList"]),
+    ...mapGetters("application", ["getIsDetect"]),
 
     data() {
       return this.getFlightList;
@@ -133,7 +141,8 @@ export default {
       filters: {},
       loading: true,
       role: null,
-      admin: false,
+      staff: false,
+      isDetect: false,
       displayImage: false,
     };
   },
@@ -141,16 +150,21 @@ export default {
     this.initFilters();
     this.setFlightList();
     this.loading = false;
+    const tmp = localStorage.getItem("detecting")
+    if(tmp) {
+      this.setIsDetect(true);
+    }
   },
 
   mounted() {
     this.role = JSON.parse(localStorage.getItem("user")).role;
-    if (this.role === webRole.ADMIN_ROLE) {
-      this.admin = true;
+    if (this.role === webRole.STAFF_ROLE) {
+      this.staff = true;
     }
   },
   methods: {
     ...mapActions("flight", ["setFlightList"]),
+    ...mapActions("application", ["setIsDetect"]),
 
     seeProduct(product) {
       this.$router.push("/video?flightId=" + product.flightId);

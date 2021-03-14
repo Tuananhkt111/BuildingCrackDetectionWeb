@@ -242,9 +242,10 @@ export default {
   },
   methods: {
     ...mapActions("application", ["setIsActive"]),
-    // ...mapActions("user", ["setIsActive"]),
     ...mapActions("noti", ["setNotificationList"]),
     ...mapActions("user", ["setUser"]),
+    ...mapActions("application", ["setIsDetect"]),
+
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");
@@ -307,6 +308,12 @@ export default {
                 detail: payload.notification.body,
                 life: 3000,
               });
+              if (
+                payload.notification.body != null &&
+                payload.notification.body.includes("Unconfirmed Cracks")
+              ) {
+                this.setIsDetect(false);
+              }
               this.setNotificationList();
               userApi.getUserById().then((res) => {
                 this.setUser(JSON.parse(res));

@@ -51,20 +51,24 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import urlConstants from "../util/urlConstants";
 import axios from "axios";
-
 export default {
   components: {},
-
   data() {
     return {
       file: null,
       size: null,
     };
   },
+  computed: {
+    ...mapGetters("application", ["getIsDetect"]),
+  },
 
   methods: {
+    ...mapActions("application", ["setIsDetect"]),
+
     chooseFile() {
       this.file = document.getElementById("choose_file").files[0];
       var totalBytes = this.file.size;
@@ -74,21 +78,20 @@ export default {
         this.size = Math.floor(totalBytes / 1000000) + "MB";
       }
     },
+
     detect() {
       const token = localStorage.getItem("jwtToken");
       let formData = new FormData();
       formData.append("video", this.file);
       formData.append("token", token);
       const url = urlConstants.PYTHON_URL + "detect";
-      axios.post(
-        url,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+      axios.post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-      );
+      });
+      localStorage.setItem("detecting", true);
+      this.setIsDetect(true);
     },
   },
 };
