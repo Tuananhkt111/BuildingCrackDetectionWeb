@@ -148,41 +148,6 @@
             <a href="#" @click="$router.push('/notis')">See all</a>
           </div>
         </transition>
-        <OverlayPanel
-          ref="op"
-          style="
-            width: 350px;
-            margin-top: -20px;
-            margin-right: 20px;
-            position: absolute;
-          "
-        >
-          <ScrollPanel
-            style="width: 100%; max-height: 250px"
-            v-if="showListNoti"
-          >
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <div
-                  class="alert alert-info"
-                  v-for="item in getUnReadNotificationList"
-                  v-bind:key="item"
-                  @click="deleteNoti(item.pushNotificationId)"
-                >
-                  <p class="title">
-                    <strong>{{ item.title }}</strong>
-                  </p>
-                  {{ item.body }}
-                  <p class="time">{{ callDate(item.created) }}</p>
-                </div>
-              </div>
-            </div>
-          </ScrollPanel>
-          <p v-if="getCount != 0" class="left" @click="markAllAsRead()">
-            Mark all as read
-          </p>
-          <a class="right" @click="$router.push('/notis')">Show more</a>
-        </OverlayPanel>
       </div>
     </div>
   </div>
@@ -190,8 +155,6 @@
 
 <script>
 import firebase from "../util/firebase.js";
-import ScrollPanel from "primevue/scrollpanel";
-import OverlayPanel from "primevue/overlaypanel";
 import { mapGetters, mapActions } from "vuex";
 import { useForm, useField } from "vee-validate";
 import userApi from "../apis/user.js";
@@ -239,10 +202,6 @@ export default {
       errors,
       meta,
     };
-  },
-  components: {
-    OverlayPanel,
-    ScrollPanel,
   },
   computed: {
     ...mapGetters("noti", [

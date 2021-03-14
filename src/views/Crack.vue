@@ -161,12 +161,6 @@
               v-tooltip.bottom="'View Crack Detail'"
             />
             <Button
-              icon="pi pi-star"
-              class="p-button-rounded p-button-warning p-button-text"
-              @click="showAssessmentDialog(slotProps.data)"
-              v-tooltip.bottom="'Show Assesment'"
-            />
-            <Button
               v-if="slotProps.data.maintenanceOrderId != null"
               icon="pi pi-calendar-minus"
               class="p-button-rounded p-button-danger p-button-text"
@@ -175,7 +169,7 @@
             />
             <Button
               icon="pi pi-video"
-              class="p-button-rounded p-button-danger p-button-text"
+              class="p-button-rounded p-button-help p-button-text"
               @click="$router.push('/video')"
               v-tooltip.bottom="'Show Video'"
             />
@@ -184,48 +178,13 @@
       </DataTable>
     </div>
     <Dialog
-      v-model:visible="showAssessment"
-      :style="{ width: '450px' }"
-      header="Assessment"
-      :modal="true"
-      class="p-fluid"
-    >
-      <div class="p-field">
-        <Rating
-          :modelValue="product.assessmentResult"
-          :readonly="true"
-          :stars="5"
-          :cancel="false"
-        />
-      </div>
-      <div class="p-field">
-        <label for="assessmentDescription">Assessment Description</label>
-        <Textarea
-          id="description"
-          v-model="product.assessmentDescription"
-          required="true"
-          rows="2"
-          cols="20"
-          disabled
-        />
-      </div>
-      <template #footer>
-        <Button
-          label="Close"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="hideDialog"
-        />
-      </template>
-    </Dialog>
-    <Dialog
       v-model:visible="crackInfoDialog"
       :style="{ width: '1000px' }"
       :modal="true"
       class="dialog"
     >
       <template #header>
-        <h3>Cracks Details</h3>
+        <h3 class="dialog-title">Crack Information</h3>
       </template>
       <div class="p-grid nested-grid">
         <div class="p-col-3">
@@ -238,69 +197,105 @@
             style="width:200px; height:100%"
           />
         </div>
-
         <div class="p-col-9">
-          <div class="p-grid">
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Location Name: </span
-                >{{ product.locationName }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Position: </span
-                >{{ product.position }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Severity: </span
-                >{{ product.severity }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Status: </span
-                >{{ product.status }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Created Date: </span
-                >{{ product.created }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Last Modified: </span
-                >{{ product.lastModified }}
-              </p>
-            </div>
-            <div class="p-col-12">
-              <p>
-                <span
-                  style="font-weight: bold"
-                  v-if="product.desciption != null"
-                  >Description: {{ product.description }}</span
-                >
-                <span
-                  style="font-weight: bold"
-                  v-if="
-                    product.desciption == null || product.desciption.isEmpty()
-                  "
-                  >Description:
-                  <span style="font-weight: normal">N/A</span></span
-                >
-              </p>
-            </div>
-            <div class="p-col-12">
-              <p>
-                <span style="font-weight: bold">Reporter Name: </span
-                >{{ product.reporterName }}
-              </p>
-            </div>
-          </div>
+          <TabView>
+            <TabPanel header="Overview">
+              <div class="p-grid">
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Location Name: </span
+                    >{{ product.locationName }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Position: </span
+                    >{{ product.position }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">
+                      Severity:
+                    </span>
+                    <span :class="stockClass(product)">
+                      {{ product.severity }}
+                    </span>
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Status: </span>
+                    <span :class="stockStatus(product)">
+                      {{ product.status }}
+                    </span>
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Created Date: </span
+                    >{{ product.created }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Last Modified: </span
+                    >{{ product.lastModified }}
+                  </p>
+                </div>
+                <div class="p-col-12">
+                  <p>
+                    <span style="font-weight: bold">Reporter Name: </span
+                    >{{ product.reporterName }}
+                  </p>
+                </div>
+              </div>
+            </TabPanel>
+            <TabPanel header="Assessment">
+              <div class="p-col-12">
+                <div class="p-field">
+                  <Rating
+                    :modelValue="product.assessmentResult"
+                    :readonly="true"
+                    :stars="5"
+                    :cancel="false"
+                  />
+                </div>
+                <div class="p-field">
+                  <label for="assessmentDescription"
+                    >Assessment Description</label
+                  >
+                  <Textarea
+                    id="description"
+                    v-model="product.assessmentDescription"
+                    required="true"
+                    rows="2"
+                    cols="20"
+                    disabled
+                  />
+                </div>
+              </div>
+            </TabPanel>
+            <TabPanel header="Description">
+              <div class="p-col-12">
+                <p>
+                  <span
+                    style="font-weight: bold"
+                    v-if="product.desciption != null"
+                    >{{ product.description }}</span
+                  >
+                  <span
+                    style="font-weight: bold"
+                    v-if="
+                      product.desciption == null || product.desciption.isEmpty()
+                    "
+                  >
+                    <span style="font-weight: normal">N/A</span></span
+                  >
+                </p>
+              </div>
+            </TabPanel>
+          </TabView>
         </div>
       </div>
     </Dialog>
@@ -316,6 +311,8 @@ import moment from "moment";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
 import Skeleton from "primevue/skeleton";
+import TabView from "primevue/tabview";
+import TabPanel from "primevue/tabpanel";
 
 export default {
   components: {
@@ -324,6 +321,8 @@ export default {
     Textarea,
     MultiSelect,
     Skeleton,
+    TabView,
+    TabPanel,
   },
   computed: {
     ...mapGetters("crack", [
@@ -389,10 +388,6 @@ export default {
       this.showAssessment = false;
       this.crackInfoDialog = false;
       this.submitted = false;
-    },
-    showAssessmentDialog(product) {
-      this.product = { ...product };
-      this.showAssessment = true;
     },
     showMaintenanceOrder(product) {
       this.product = { ...product };
@@ -518,7 +513,7 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: #256029;
+  color: #61ff6b;
 }
 
 .medium {
@@ -527,7 +522,7 @@ textarea {
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.3px;
-  color: #ffa726;
+  color: #ffbe49;
   text-transform: uppercase;
 }
 
@@ -538,7 +533,7 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: #ff5252;
+  color: #ff2323ba;
 }
 .detectedFailed {
   border-radius: 2px;
@@ -556,7 +551,7 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: red;
+  color: rgb(255, 65, 65);
 }
 .unscheduled {
   border-radius: 2px;
@@ -565,7 +560,7 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: blue;
+  color: #46e5ff;
 }
 .scheduledformaintenace {
   border-radius: 2px;
@@ -574,7 +569,7 @@ textarea {
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  color: red;
+  color: rgb(73, 73, 255);
 }
 .fix {
   border-radius: 2px;
@@ -583,11 +578,16 @@ textarea {
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  color: #ff5252;
+  color: #61ff52;
 }
 
 h5 {
   font-size: 1.25rem;
+}
+
+.dialog-title {
+  color: #69707a;
+  margin-left: 20px;
 }
 .imagePopup {
   width: 100%;
@@ -604,15 +604,8 @@ h5 {
   background: black;
 }
 
-img:hover {
-  -webkit-transform: scale(1.5);
-  -moz-transform: scale(1.5);
-  -o-transform: scale(1.5);
-  -ms-transform: scale(1.5);
-  transform: scale(1.5);
-}
-
-.p-m-2::before {
+.p-m-2::before,
+.dialog-title::before {
   content: "";
   width: 5px;
   height: 12px;
@@ -703,5 +696,32 @@ img:hover {
   border-radius: 6px;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
+}
+
+::v-deep(.p-dialog .p-dialog-header) {
+  border-top-right-radius: 24px;
+  border-top-left-radius: 24px;
+}
+
+::v-deep(.p-dialog) {
+  border-radius: 24px;
+}
+
+::v-deep(.p-dialog .p-dialog-content) {
+  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 24px;
+  min-height: 320px;
+}
+
+::v-deep(.p-tabview .p-tabview-panels) {
+  color: #69707a;
+}
+
+::v-deep(.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link) {
+  color: #2170e7;
+}
+
+::v-deep(.p-tabview .p-tabview-panels .p-grid .p-col-6) {
+  margin: 10px 0;
 }
 </style>
