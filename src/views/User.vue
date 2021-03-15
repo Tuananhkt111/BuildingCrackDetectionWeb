@@ -25,7 +25,7 @@
               label="New"
               v-if="admin"
             />
-           
+
             <span class="p-input-icon-left" style="margin: 2px">
               <i class="pi pi-search" />
               <InputText
@@ -201,26 +201,49 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="userName" class="form-control-label" >User Name: <span style="color: #8898aa;">{{ product.userName }}</span></label>
+        <label for="userName" class="form-control-label">User Name: </label>
+        <div class="form-control form-control-alternative" readonly>
+          {{ product.userName }}
+        </div>
       </div>
       <div class="p-field">
         <label for="name" class="form-control-label">Full Name</label>
-        <InputText name="name" v-model.trim="name" class="form-control form-control-alternative"/>
+        <InputText
+          name="name"
+          v-model.trim="name"
+          class="form-control form-control-alternative"
+        />
         <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="email" class="form-control-label">Email</label>
-        <InputText type="email" name="email" v-model.trim="email" class="form-control form-control-alternative"/>
+        <InputText
+          type="email"
+          name="email"
+          v-model.trim="email"
+          class="form-control form-control-alternative"
+        />
         <small class="invalid">{{ errors.email }}</small>
       </div>
       <div class="p-field">
         <label for="phoneNumber" class="form-control-label">Phone Number</label>
-        <InputMask name="phone" mask="9999999999" v-model.trim="phone" class="form-control form-control-alternative"/>
+        <InputMask
+          name="phone"
+          mask="9999999999"
+          v-model.trim="phone"
+          class="form-control form-control-alternative"
+        />
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
         <label for="address" class="form-control-label">Address</label>
-        <Textarea name="address" v-model="address" rows="3" cols="20" class="form-control form-control-alternative"/>
+        <Textarea
+          name="address"
+          v-model="address"
+          rows="3"
+          cols="20"
+          class="form-control form-control-alternative"
+        />
         <small class="invalid">{{ errors.address }}</small>
       </div>
       <div class="p-formgrid p-grid">
@@ -237,7 +260,7 @@
             optionLabel="name"
             placeholder="Select Location"
             :filter="true"
-            class="multiselect-custom"
+            class="multiselect-custom dropdown-list form-control-alternative"
             key="locationId"
           />
           <Dropdown
@@ -248,6 +271,7 @@
             optionLabel="name"
             placeholder="Select a Location"
             :filter="true"
+            class="dropdown-list form-control-alternative"
           />
         </div>
       </div>
@@ -358,23 +382,44 @@
     >
       <div class="p-field">
         <label for="name" class="form-control-label">Full Name</label>
-       <InputText name="name" v-model.trim="name" class="form-control form-control-alternative" placeholder="Fullname"/>
+        <InputText
+          name="name"
+          v-model.trim="name"
+          class="form-control form-control-alternative"
+          placeholder="Fullname"
+        />
         <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
         <label for="email" class="form-control-label">Email</label>
-        <InputText type="email" name="email" v-model.trim="email" class="form-control form-control-alternative" placeholder="Email"/>
+        <InputText
+          type="email"
+          name="email"
+          v-model.trim="email"
+          class="form-control form-control-alternative"
+          placeholder="Email"
+        />
         <small class="invalid">{{ errors.email }}</small>
       </div>
       <div class="p-field">
         <label for="phoneNumber" class="form-control-label">Phone Number</label>
-        <InputMask name="phone" mask="9999999999" v-model.trim="phone" class="form-control form-control-alternative" placeholder="Phone Number"/>
+        <InputMask
+          name="phone"
+          mask="9999999999"
+          v-model.trim="phone"
+          class="form-control form-control-alternative"
+          placeholder="Phone Number"
+        />
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="role" class="form-control-label">Role</label>
-          <Dropdown v-model="selectedRole" :options="roles" placeholder="Role">
+          <Dropdown
+            v-model="selectedRole"
+            :options="roles"
+            class="dropdown-list form-control-alternative"
+          >
             <template #option="slotProps">
               <span :class="'customer-badge status-' + slotProps.option">{{
                 slotProps.option
@@ -391,7 +436,7 @@
             optionLabel="name"
             placeholder="Select Location"
             :filter="true"
-            class="multiselect-custom"
+            class="multiselect-custom dropdown-list form-control-alternative"
           />
           <Dropdown
             v-if="selectedRole === 'Staff'"
@@ -400,12 +445,20 @@
             optionLabel="name"
             placeholder="Select a Location"
             :filter="true"
+            class="dropdown-list form-control-alternative"
           />
         </div>
       </div>
       <div class="p-field">
         <label for="address" class="form-control-label">Address</label>
-        <Textarea name="address" v-model="address" rows="3" cols="20" class="form-control form-control-alternative" placeholder="Location"/>
+        <Textarea
+          name="address"
+          v-model="address"
+          rows="3"
+          cols="20"
+          class="form-control form-control-alternative"
+          placeholder="Location"
+        />
         <small class="invalid">{{ errors.address }}</small>
       </div>
       <template #footer>
@@ -760,7 +813,7 @@ export default {
       }
       return index;
     },
-   
+
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");
@@ -876,20 +929,53 @@ export default {
 </script>
 
 <style scoped>
+::v-deep(.p-dialog .p-dialog-header) {
+  border-top-right-radius: 24px;
+  border-top-left-radius: 24px;
+}
+
+::v-deep(.p-dialog) {
+  border-radius: 24px;
+}
+::v-deep(.p-dialog .p-dialog-header .p-dialog-title) {
+  color: #69707a;
+  margin-left: 12px;
+}
+
+::v-deep(.p-dialog .p-dialog-footer) {
+  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 24px;
+}
+
+::v-deep(.p-fluid .p-inputtext) {
+  border-radius: 8px;
+}
+::v-deep(.p-fluid .p-inputtext) {
+  border-radius: 8px;
+}
+::v-deep(.p-dialog .p-dialog-header .p-dialog-title::before) {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 25px;
+  background: #007dfe;
+}
 label {
   display: inline-block;
   margin-bottom: 0.5rem;
 }
+
 .form-control-label {
   font-size: 0.875rem;
   font-weight: 600;
   color: #525f7f;
 }
 .form-control:-ms-input-placeholder {
-  opacity: 1;
-  color: #adb5bd;
-}
-.form-control::-ms-input-placeholder {
   opacity: 1;
   color: #adb5bd;
 }
@@ -900,14 +986,48 @@ label {
 .form-control:focus:-ms-input-placeholder {
   color: #adb5bd;
 }
-.form-control:focus::-ms-input-placeholder {
-  color: #adb5bd;
-}
 .form-control:focus::placeholder {
   color: #adb5bd;
 }
+.dropdown-list:-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.dropdown-list::placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.dropdown-list:focus:-ms-input-placeholder {
+  color: #adb5bd;
+}
+.dropdown-list:focus::placeholder {
+  color: #adb5bd;
+}
+
+.dropdown-list {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  /* display: block; */
+  width: 100%;
+  height: calc(2.75rem + 2px);
+  padding: 0.625rem 0.75rem;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  color: #8898aa;
+  border: 1px solid #cad1d7;
+  border-radius: 0.375rem;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: none;
+}
+.dropdown-list:focus {
+  color: #8898aa;
+  border-color: rgba(50, 151, 211, 0.25);
+  outline: 0;
+  background-color: #fff;
+  box-shadow: none, none;
+}
 .form-control {
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.5;
   display: block;
   width: 100%;
@@ -928,16 +1048,14 @@ label {
   background-color: #fff;
   box-shadow: none, none;
 }
-.form-control {
-  font-size: 0.875rem;
-}
+
 .focused .form-control {
   border-color: rgba(50, 151, 211, 0.25);
 }
 .form-control:disabled,
 .form-control[readonly] {
   opacity: 1;
-  background-color: #fff;
+  background-color: #ebf0f5;
 }
 .form-control-alternative {
   transition: box-shadow 0.15s ease;

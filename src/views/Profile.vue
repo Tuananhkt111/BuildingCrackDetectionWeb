@@ -459,7 +459,7 @@ hr {
 .form-control:disabled,
 .form-control[readonly] {
   opacity: 1;
-  background-color: #fff;
+  background-color: #ebf0f5;
 }
 .form-group {
   margin-bottom: 1.5rem;

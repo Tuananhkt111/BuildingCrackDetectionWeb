@@ -180,13 +180,13 @@
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <p class="form-control-label">Created Date</p>
-          <span class="form-control form-control-alternative">{{
+          <span class="form-control form-control-alternative" readonly>{{
             product.created
           }}</span>
         </div>
         <div class="p-field p-col-6">
           <p class="form-control-label">Last Modified</p>
-          <span class="form-control form-control-alternative">{{
+          <span class="form-control form-control-alternative" readonly>{{
             product.lastModified
           }}</span>
         </div>
@@ -676,7 +676,7 @@ label {
 .form-control:disabled,
 .form-control[readonly] {
   opacity: 1;
-  background-color: #fff;
+  background-color: #ebf0f5;
 }
 .form-control-alternative {
   transition: box-shadow 0.15s ease;

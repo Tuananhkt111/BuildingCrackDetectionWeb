@@ -226,11 +226,11 @@
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="created" class="form-control-label"> Created Date</label>
-          <p class="form-control form-control-alternative">{{ product.created }}</p>
+          <p class="form-control form-control-alternative" readonly>{{ product.created }}</p>
         </div>
         <div class="p-field p-col-6">
           <label for="lastModified" class="form-control-label"> Last Modified</label>
-          <p class="form-control form-control-alternative">{{ product.lastModified }}</p>
+          <p class="form-control form-control-alternative" readonly>{{ product.lastModified }}</p>
         </div>
       </div>
       <template #footer v-if="admin">
@@ -603,7 +603,7 @@ label {
 .form-control:disabled,
 .form-control[readonly] {
   opacity: 1;
-  background-color: #fff;
+  background-color: #ebf0f5;
 }
 .form-control-alternative {
   transition: box-shadow 0.15s ease;
