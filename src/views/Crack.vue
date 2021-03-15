@@ -67,12 +67,12 @@
         <Column
           field="accuracy"
           header="Accuracy"
-          :showFilterMatchModes="false"
           style="min-width:12rem"
+          dataType="numeric"
         >
           <template #body="slotProps">
             <Skeleton v-if="loading" />
-            {{ slotProps.data.accuracy }}
+            {{ slotProps.data.accuracy }}%
           </template>
           <template #filter="{filterModel}">
             <InputText
@@ -88,7 +88,7 @@
           filterField="severity"
           :showFilterMatchModes="false"
           :filterMenuStyle="{ width: '14rem' }"
-          headerStyle="width: 2em"
+          style="min-width:12rem"
         >
           <template #body="{data}">
             <Skeleton v-if="loading" />
@@ -157,7 +157,7 @@
             <Button
               icon="pi pi-video"
               class="p-button-rounded p-button-help p-button-text"
-              @click="$router.push('/video')"
+              @click="showVideo(slotProps.data)"
               v-tooltip.bottom="'Show Video'"
             />
           </template>
@@ -218,6 +218,18 @@
                     </span>
                   </p>
                 </div>
+                <div class="p-col-6" v-if="product.censorName != null">
+                  <p>
+                    <span style="font-weight: bold">Censor Name: </span
+                    >{{ product.censorName }}
+                  </p>
+                </div>
+                <div class="p-col-6" v-if="product.censorName != null">
+                  <p>
+                    <span style="font-weight: bold">Updated User: </span
+                    >{{ product.updateUserName }}
+                  </p>
+                </div>
                 <div class="p-col-6">
                   <p>
                     <span style="font-weight: bold">Created Date: </span
@@ -229,37 +241,6 @@
                     <span style="font-weight: bold">Last Modified: </span
                     >{{ product.lastModified }}
                   </p>
-                </div>
-                <div class="p-col-12">
-                  <p>
-                    <span style="font-weight: bold">Reporter Name: </span
-                    >{{ product.reporterName }}
-                  </p>
-                </div>
-              </div>
-            </TabPanel>
-            <TabPanel header="Assessment">
-              <div class="p-col-12">
-                <div class="p-field">
-                  <Rating
-                    :modelValue="product.assessmentResult"
-                    :readonly="true"
-                    :stars="5"
-                    :cancel="false"
-                  />
-                </div>
-                <div class="p-field">
-                  <label for="assessmentDescription"
-                    >Assessment Description</label
-                  >
-                  <Textarea
-                    id="description"
-                    v-model="product.assessmentDescription"
-                    required="true"
-                    rows="2"
-                    cols="20"
-                    disabled
-                  />
                 </div>
               </div>
             </TabPanel>
@@ -280,6 +261,32 @@
                     <span style="font-weight: normal">N/A</span></span
                   >
                 </p>
+              </div>
+            </TabPanel>
+            <TabPanel header="Assessment" :disabled="check">
+              <div class="p-col-12">
+                <span style="font-weight: bold">Assessment </span>
+                <Rating
+                  :modelValue="product.assessmentResult"
+                  :readonly="true"
+                  :stars="5"
+                  :cancel="false"
+                  class="p-col-9"
+                />
+              </div>
+              <div
+                class="p-col-12 p-mt-0"
+                v-if="product.assessmentDescription != null"
+              >
+                <p style="font-weight: bold">Assessment Descripton</p>
+                <Textarea
+                  id="description"
+                  v-model="product.assessmentDescription"
+                  required="true"
+                  rows="2"
+                  cols="20"
+                  disabled
+                />
               </div>
             </TabPanel>
           </TabView>
@@ -333,6 +340,7 @@ export default {
       messages: [],
       loading: true,
       displayImage: false,
+      check: true,
     };
   },
   created() {
@@ -360,6 +368,9 @@ export default {
         },
       ];
     },
+    showVideo(product) {
+      this.$router.push("/video?flightId=" + product.flightId);
+    },
     stockStatus(data) {
       return [
         {
@@ -384,6 +395,11 @@ export default {
     },
     showDetail(product) {
       this.product = { ...product };
+      if (this.product.assessmentResult != null && this.product.assessmentResult != "") {
+        this.check = false;
+      } else {
+        this.check = true;
+      }
       this.product.created = this.callDate(this.product.created);
       this.product.lastModified = this.callDate(this.product.lastModified);
       this.crackInfoDialog = true;
@@ -412,12 +428,14 @@ export default {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
         },
-        accuracy: {
-          operator: FilterOperator.AND,
-          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
-        },
         severity: { value: null, matchMode: FilterMatchMode.IN },
         status: { value: null, matchMode: FilterMatchMode.IN },
+        accuracy: {
+          operator: FilterOperator.AND,
+          constraints: [
+            { value: null, matchMode: FilterMatchMode.GREATER_THAN },
+          ],
+        },
       };
     },
     filterDate(value, filter) {

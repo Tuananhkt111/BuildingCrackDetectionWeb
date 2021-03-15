@@ -29,6 +29,9 @@ const crackStore = {
     actions: {
       async setCrackList({ commit }) {
         const res = await crackApi.getAll();
+        for (let index = 0; index < res.length; index++) {
+          res[index].accuracy = Math.round(res[index].accuracy * 100);
+        }
         if (res) {
           commit("setCrackList", res);
         }

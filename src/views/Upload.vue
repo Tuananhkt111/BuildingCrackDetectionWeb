@@ -16,7 +16,7 @@
                   <div class="file_name">
                     {{ file.name }}
                   </div>
-                  <div class="file_size_wrap">
+                  <div class="file_size_wrap" @click="closeFile">
                     <div class="file_size">{{ size }}</div>
                     <div class="file_close">X</div>
                   </div>
@@ -29,22 +29,24 @@
           </li>
         </ul>
       </div>
-      <div class="choose_file" style="width:50%">
-        <label for="choose_file">
-          <input
-            type="file"
-            id="choose_file"
-            name="choose_file"
-            @change="chooseFile"
-            accept="video/*"
-          />
-          <span>Choose Files</span>
-        </label>
-      </div>
-      <div class="detect" style="width:50%" @click="detect">
-        <label for="detect">
-          <span>Detect</span>
-        </label>
+      <div class="p-grid">
+        <div class="choose_file p-col-6">
+          <label for="choose_file">
+            <input
+              type="file"
+              id="choose_file"
+              name="choose_file"
+              @change="chooseFile"
+              accept="video/*"
+            />
+            <span>Choose Files</span>
+          </label>
+        </div>
+        <div class="detect p-col-6" @click="detect">
+          <label for="detect">
+            <span>Detect</span>
+          </label>
+        </div>
       </div>
     </div>
   </div>
@@ -69,6 +71,9 @@ export default {
   methods: {
     ...mapActions("application", ["setIsDetect"]),
 
+    closeFile() {
+      this.file = null;
+    },
     chooseFile() {
       this.file = document.getElementById("choose_file").files[0];
       var totalBytes = this.file.size;
@@ -80,18 +85,22 @@ export default {
     },
 
     detect() {
-      const token = localStorage.getItem("jwtToken");
-      let formData = new FormData();
-      formData.append("video", this.file);
-      formData.append("token", token);
-      const url = urlConstants.PYTHON_URL + "detect";
-      axios.post(url, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      localStorage.setItem("detecting", true);
-      this.setIsDetect(true);
+      if (this.file != null) {
+        const token = localStorage.getItem("jwtToken");
+        let formData = new FormData();
+        formData.append("video", this.file);
+        formData.append("token", token);
+        const url = urlConstants.PYTHON_URL + "detect";
+        axios.post(url, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        localStorage.setItem("detecting", true);
+        this.setIsDetect(true);
+      } else {
+        alert("PLS Choose File");
+      }
     },
   },
 };

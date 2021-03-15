@@ -13,7 +13,6 @@ async function getAll() {
 }
 async function getById(id) {
   const res = await ApiHelper.get(urlConstants.FLIGHT_URL + "/" + id);
-  console.log(res);
   return res.data;
 }
 

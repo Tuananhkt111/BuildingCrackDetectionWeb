@@ -15,10 +15,8 @@
         filterDisplay="menu"
         :globalFilterFields="[
           'maintenanceWorkerName',
-          'assessorName',
           'locationName',
           'status',
-          'maintenanceOrderId',
         ]"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         currentPageReportTemplate=""
@@ -45,24 +43,6 @@
           <template #body="slotProps">
             <Skeleton v-if="loading" />
             {{ slotProps.data.maintenanceWorkerName }}
-          </template>
-          <template #filter="{ filterModel }">
-            <InputText
-              type="text"
-              v-model="filterModel.value"
-              class="p-column-filter"
-              placeholder="Search"
-            />
-          </template>
-        </Column>
-        <Column
-          field="assessorName"
-          header="Assessor Name"
-          :showFilterMatchModes="false"
-        >
-          <template #body="slotProps">
-            <Skeleton v-if="loading" />
-            {{ slotProps.data.assessorName }}
           </template>
           <template #filter="{ filterModel }">
             <InputText
@@ -298,17 +278,17 @@
       class="dialog"
     >
       <template #header>
-        <h3>Cracks Details</h3>
+        <h3 class="dialog-title">Crack Information</h3>
       </template>
       <div class="p-grid nested-grid">
         <div class="p-col-4">
           <img
-            :src="crack.imageThumbnails"
-            :alt="crack.imageThumbnails"
-            class="crack-image"
-            v-if="crack.image"
-            @click="showImage(crack)"
-            style="width: 230px; height: 100%"
+            :src="product.imageThumbnails"
+            :alt="product.imageThumbnails"
+            class="product-image"
+            v-if="product.image"
+            @click="showImage(product)"
+            style="width:250px; height:100%"
           />
         </div>
         <div class="p-col-8">
@@ -318,50 +298,61 @@
                 <div class="p-col-6">
                   <p>
                     <span style="font-weight: bold">Location Name: </span
-                    >{{ crack.locationName }}
+                    >{{ product.locationName }}
                   </p>
                 </div>
                 <div class="p-col-6">
                   <p>
                     <span style="font-weight: bold">Position: </span
-                    >{{ crack.position }}
+                    >{{ product.position }}
                   </p>
                 </div>
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">Severity: </span
-                    >{{ crack.severity }}
+                    <span style="font-weight: bold">
+                      Severity:
+                    </span>
+                    <span :class="stockClass(product)">
+                      {{ product.severity }}
+                    </span>
                   </p>
                 </div>
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">Status: </span
-                    >{{ crack.status }}
+                    <span style="font-weight: bold">Status: </span>
+                    <span :class="stockStatus(product)">
+                      {{ product.status }}
+                    </span>
+                  </p>
+                </div>
+                <div class="p-col-6" v-if="product.censorName != null">
+                  <p>
+                    <span style="font-weight: bold">Censor Name: </span
+                    >{{ product.censorName }}
+                  </p>
+                </div>
+                <div class="p-col-6" v-if="product.censorName != null">
+                  <p>
+                    <span style="font-weight: bold">Updated User: </span
+                    >{{ product.updateUserName }}
                   </p>
                 </div>
                 <div class="p-col-6">
                   <p>
                     <span style="font-weight: bold">Created Date: </span
-                    >{{ crack.created }}
+                    >{{ product.created }}
                   </p>
                 </div>
                 <div class="p-col-6">
                   <p>
                     <span style="font-weight: bold">Last Modified: </span
-                    >{{ crack.lastModified }}
-                  </p>
-                </div>
-                
-                <div class="p-col-12">
-                  <p>
-                    <span style="font-weight: bold">Reporter Name: </span
-                    >{{ crack.reporterName }}
+                    >{{ product.lastModified }}
                   </p>
                 </div>
               </div>
             </TabPanel>
             <TabPanel header="Description">
-             <div class="p-col-12">
+              <div class="p-col-12">
                 <p>
                   <span
                     style="font-weight: bold"
@@ -377,6 +368,32 @@
                     <span style="font-weight: normal">N/A</span></span
                   >
                 </p>
+              </div>
+            </TabPanel>
+            <TabPanel header="Assessment" :disabled="check">
+              <div class="p-col-12">
+                <span style="font-weight: bold">Assessment </span>
+                <Rating
+                  :modelValue="product.assessmentResult"
+                  :readonly="true"
+                  :stars="5"
+                  :cancel="false"
+                  class="p-col-9"
+                />
+              </div>
+              <div
+                class="p-col-12 p-mt-0"
+                v-if="product.assessmentDescription != null"
+              >
+                <p style="font-weight: bold">Assessment Descripton</p>
+                <Textarea
+                  id="description"
+                  v-model="product.assessmentDescription"
+                  required="true"
+                  rows="2"
+                  cols="20"
+                  disabled
+                />
               </div>
             </TabPanel>
           </TabView>
@@ -406,6 +423,7 @@ import { FilterMatchMode, FilterOperator } from "primevue/api";
 import moment from "moment";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
+import crackApi from "../apis/cracks.js";
 
 export default {
   components: {
@@ -448,6 +466,7 @@ export default {
       expandedRows: [],
       loading: true,
       displayImage: false,
+      check: true,
     };
   },
   methods: {
@@ -469,13 +488,23 @@ export default {
       document.body.style.overflow = "visible";
       this.displayImage = false;
     },
-    showDetail(crack) {
-      this.crack = { ...crack };
-      this.crack.created = this.callDate(this.crack.created);
-      this.crack.lastModified = this.callDate(this.crack.lastModified);
+    async showDetail(product) {
+      this.product = await crackApi.getById(product.crackId);
+      if (
+        this.product.assessmentResult != null &&
+        this.product.assessmentResult != ""
+      ) {
+        this.check = false;
+      } else {
+        this.check = true;
+      }
+
+      this.product.created = this.callDate(this.product.created);
+      this.product.lastModified = this.callDate(this.product.lastModified);
       this.crackInfoDialog = true;
     },
     editProduct(product) {
+      
       this.product = { ...product };
       this.product.maintenanceDate = this.callDate(
         this.product.maintenanceDate
@@ -900,5 +929,9 @@ textarea {
   font-weight: 700;
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
+}
+
+.p-grid .nested-grid {
+  min-height: 320px;
 }
 </style>

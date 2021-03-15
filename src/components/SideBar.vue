@@ -2,13 +2,21 @@
   <div class="side-bar-layout">
     <div>
       <div class="layout-profile">
-        <ul v-if="!staff">
+        <ul>
           <div>
             <img src="../asset/bcd2.png" class="logo" />
             <span class="appName">BCD System</span>
           </div>
           <li>
-            <router-link to="/users" tag="li" class="t-link nav-btn p-mt-4">
+            <router-link to="/cracks" tag="li" class="t-link nav-btn p-mt-4">
+              <a class="a-link">
+                <i class="pi pi-fw pi-exclamation-triangle"></i>
+                <span>Cracks</span>
+              </a>
+            </router-link>
+          </li>
+          <li v-if="!staff">
+            <router-link to="/users" tag="li" class="t-link nav-btn">
               <a class="a-link">
                 <i class="pi pi-fw pi-users"></i>
                 <span v-if="role === 'Manager'">Staff</span>
@@ -16,15 +24,7 @@
               </a>
             </router-link>
           </li>
-          <li>
-            <router-link to="/cracks" tag="li" class="t-link nav-btn">
-              <a class="a-link">
-                <i class="pi pi-fw pi-exclamation-triangle"></i>
-                <span>Cracks</span>
-              </a>
-            </router-link>
-          </li>
-          <li>
+          <li v-if="!staff">
             <router-link to="/locations" tag="li" class="t-link nav-btn">
               <a class="a-link">
                 <i class="pi pi-fw pi-map-marker"></i>
@@ -56,13 +56,15 @@
               </a>
             </router-link>
           </li>
-        </ul>
-        <ul v-else>
           <li>
-            <router-link to="/upload" tag="li" class="t-link nav-btn">
+            <router-link
+              to="/flight"
+              tag="li"
+              class="t-link nav-btn"
+            >
               <a class="a-link">
                 <i class="pi pi-fw pi-upload"></i>
-                <span>Upload</span>
+                <span>Flight</span>
               </a>
             </router-link>
           </li>
@@ -71,7 +73,26 @@
     </div>
   </div>
 </template>
-
+<script>
+import webRole from "../util/webRole.js";
+export default {
+  components: {},
+  data() {
+    return {
+      role: null,
+      staff: false
+    };
+  },
+  created() {
+    this.role = JSON.parse(localStorage.getItem("user")).role;
+  },
+  mounted() {
+    if(this.role == webRole.STAFF_ROLE){
+      this.staff = true;
+    }
+  },
+};
+</script>
 <style scoped>
 .logo {
   width: 45px;

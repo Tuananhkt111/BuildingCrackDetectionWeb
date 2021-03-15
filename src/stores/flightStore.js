@@ -1,54 +1,62 @@
-import flightApi from '../apis/flights';
+import flightApi from "../apis/flights";
 
 const flightStore = {
-    namespaced: true,
-    state: {
-        flightList: [],
-        crackList:[],
-        flight: [],
+  namespaced: true,
+  state: {
+    flightList: [],
+    crackList: [],
+    flight: [],
+  },
+
+  getters: {
+    getFlightList(state) {
+      return state.flightList;
     },
-  
-    getters: {
-      getFlightList(state) {
-        return state.flightList;
-      },
-      getCrackList(state) {
-        return state.crackList;
-      },
-      getFlight(state) {
-        return state.flight;
-      },
+    getCrackList(state) {
+      return state.crackList;
     },
-  
-    mutations: {
-      setFlightList(state, flightList) {
-        state.flightList = flightList;
-      },
-      setCrackList(state, crackList) {
-        state.crackList = crackList;
-      },
-      setFlight(state, flight) {
-        state.flight = flight;
-      },
+    getFlight(state) {
+      return state.flight;
     },
-  
-    actions: {
-      async setFlightList({ commit }) {
-        const res = await flightApi.getAll();
-        if (res) {
-          commit("setFlightList", res);
+  },
+
+  mutations: {
+    setFlightList(state, flightList) {
+      state.flightList = flightList;
+    },
+    setCrackList(state, crackList) {
+      state.crackList = crackList;
+    },
+    setFlight(state, flight) {
+      state.flight = flight;
+    },
+  },
+
+  actions: {
+    async setFlightList({ commit }) {
+      const res = await flightApi.getAll();
+      for (let index = 0; index < res.length; index++) {
+        res[index].created = new Date(res[index].created);
+      }
+      console.log(res.created);
+      if (res) {
+        commit("setFlightList", res);
+      }
+    },
+    async setFlight({ commit }, id) {
+      const res = await flightApi.getById(id);
+      if (res) {
+        console.log("res" + res);
+        commit("setFlight", res);
+        if (res.cracks != null) {
+          for (let index = 0; index < res.cracks.length; index++) {
+            res.cracks[index].accuracy = Math.round(res.cracks[index].accuracy * 100);
+            commit("setCrackList", res.cracks);
+          }
         }
-      },
-      async setFlight({ commit }, id) {
-        const res = await flightApi.getById(id);
-        if (res) {
-          console.log("res" + res);
-          commit("setFlight", res);
-          commit("setCrackList", res.cracks)
-          console.log("res" + res.cracks);
-        }
-      },
-    }
-  };
-  
-  export default flightStore;
+      }
+    },
+  },
+};
+
+export default flightStore;

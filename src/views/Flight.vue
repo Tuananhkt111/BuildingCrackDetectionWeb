@@ -20,13 +20,6 @@
         <div class="table-header">
           <h5 class="p-m-0" style="font-size:1.25rem">Flights</h5>
           <span class="p-input-icon-left">
-            <Button
-              label="Export"
-              icon="pi pi-upload"
-              class="p-button-help"
-              @click="exportCSV($event)"
-              style="margin:2px"
-            />
             <span class="p-input-icon-left" style="margin:2px">
               <i class="pi pi-search" />
               <InputText
@@ -87,6 +80,23 @@
             />
           </template>
         </Column>
+        <Column
+          header="Created"
+          filterField="created"
+          dataType="date"
+          style="min-width:10rem"
+        >
+          <template #body="{data}">
+            {{ callDate(data.created) }}
+          </template>
+          <template #filter="{filterModel}">
+            <Calendar
+              v-model="filterModel.value"
+              dateFormat="mm/dd/yy"
+              placeholder="mm/dd/yyyy"
+            />
+          </template>
+        </Column>
         <Column>
           <template #body="slotProps">
             <Button
@@ -112,6 +122,7 @@
 <script>
 import Toast from "primevue/toast";
 import Button from "primevue/button";
+import Calendar from "primevue/calendar";
 import moment from "moment";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
@@ -124,8 +135,8 @@ export default {
     Button,
     Toast,
     Upload,
-    Detecting
-    
+    Detecting,
+    Calendar
   },
   computed: {
     ...mapGetters("flight", ["getFlightList"]),
@@ -178,20 +189,6 @@ export default {
       document.body.style.overflow = "visible";
       this.displayImage = false;
     },
-    editProduct(product) {
-      this.handleReset();
-      this.product = { ...product };
-      this.locationName = this.product.name;
-      this.description = this.product.description;
-      this.product.created = this.callDate(product.created);
-      this.product.lastModified = this.callDate(product.lastModified);
-      this.submitted = false;
-      this.productDialog = true;
-    },
-
-    exportCSV() {
-      this.$refs.dt.exportCSV();
-    },
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD/MM/YYYY hh:mm:ss");
@@ -217,6 +214,10 @@ export default {
         video: {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        created: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }],
         },
       };
     },

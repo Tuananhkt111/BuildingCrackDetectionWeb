@@ -318,7 +318,6 @@ export default {
       errors,
       meta,
       handleReset,
-      Skeleton,
     };
   },
 
@@ -326,6 +325,7 @@ export default {
     Button,
     Calendar,
     Toast,
+    Skeleton
   },
   computed: {
     ...mapGetters("location", ["getLocationList"]),

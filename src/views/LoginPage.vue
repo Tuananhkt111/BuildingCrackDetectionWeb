@@ -25,24 +25,23 @@
             <div class="p-float-label p-mb-5">
               <InputText type="text" v-model="userName" style="width: 270px" />
               <label style="padding-left: 55px">Username</label>
+              <p class="invalid">{{errors.userName}}</p>
             </div>
-            <div class="p-float-label p-mb-3">
+            <div class="p-float-label p-mb-5 p-mt-2">
               <InputText
                 type="password"
                 v-model="password"
                 style="width: 270px"
               />
               <label style="padding-left: 55px;">Password</label>
+              <p class="invalid">{{errors.password}}</p>
             </div>
-            <!-- <Password v-model="value" weakLabel="Min is 8 character" mediumLabel="Must have one uppercase and one number" promptLabel="example: Pass1234" placeholder="New Password"/> -->
             <Button
               label="Login"
               type="submit"
               class="p-button-raised p-button-info"
               style="width: 270px;"
             />
-            <br />
-            <!-- <button type="submit">Login</button> -->
             <a
               @click="forgotPassword"
               style="float: right; padding-right:55px; color: blue; cursor:pointer"
@@ -136,8 +135,37 @@ import Button from "primevue/button";
 import { mapGetters, mapActions } from "vuex";
 import ForgotPassword from "../views/ForgotPassword.vue";
 import LoadingScreen from "../components/PreLoader.vue";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
 
 export default {
+  setup() {
+    const schema = yup.object({
+      userName: yup
+        .string()
+        .max(10)
+        .required(),
+      password: yup
+        .string()
+        .max(30)
+        .required(),
+    });
+
+    const { errors, meta, handleReset } = useForm({
+      validationSchema: schema,
+    });
+
+    const { value: userName } = useField("userName");
+    const { value: password } = useField("password");
+
+    return {
+      userName,
+      password,
+      errors,
+      meta,
+      handleReset,
+    };
+  },
   components: {
     Toast,
     Password,
@@ -150,8 +178,6 @@ export default {
   },
   data() {
     return {
-      userName: "",
-      password: "",
       newPassword: "",
       confirmPassword: "",
       ChangePasswordDialog: false,
@@ -168,14 +194,12 @@ export default {
     }
   },
   methods: {
-    doSomething() {
-      console.log("AA");
-    },
     ...mapActions("application", ["setIsActive", "setIsLogin"]),
 
     ...mapActions("user", ["setUser"]),
 
     async handleSubmit() {
+      localStorage.clear();
       this.isLoading = true;
       if (this.userName && this.password) {
         const res = await userApi.login(this.userName, this.password);
@@ -216,10 +240,11 @@ export default {
       }
     },
     forgotPassword() {
-      this.userName = "";
+      this.handleReset();
       this.waithide("login", "forgotPass");
     },
     cancelChangePassword() {
+      this.handleReset();
       this.ChangePasswordDialog = false;
     },
     async confirmForgotPassword() {
@@ -247,7 +272,7 @@ export default {
       this.waithide("forgotPass", "login");
     },
     cancelForgotPassword() {
-      this.userName = "";
+
       this.waithide("forgotPass", "login");
     },
     waithide(div1, div2) {
@@ -346,5 +371,11 @@ div {
 .resetPassFrom {
   display: none;
   transition: all 0.3s;
+}
+.invalid{
+  color: red;
+  font-size: 0.8rem;
+  position: absolute;
+  left:60px;
 }
 </style>

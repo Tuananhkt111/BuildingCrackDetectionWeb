@@ -574,9 +574,11 @@ export default {
 
   async created() {
     this.initFilters();
-    await this.setUserList();
+    await this.setUserList().then(() => {
+      this.loading = false;
+    });
     await this.setLocationList();
-    this.loading = false;
+    
   },
 
   mounted() {
