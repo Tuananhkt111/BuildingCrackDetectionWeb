@@ -88,12 +88,13 @@
             >
               <span style="color: #a2a1a1">No unread notifications</span>
             </ul>
-            <ul
-              v-for="item in getUnReadNotificationList"
-              v-bind:key="item"
-              @click="deleteNoti(item.pushNotificationId)"
-            >
-              <li class="blue">
+            <ul>
+              <li
+                class="blue"
+                v-for="item in getUnReadNotificationList"
+                v-bind:key="item"
+                @click="deleteNoti(item.pushNotificationId)"
+              >
                 <i class="pi pi-circle-on"></i>
                 <div class="event-content">
                   <span class="event-title">{{ item.title }}</span>
@@ -643,7 +644,7 @@ button.close {
   padding: 0;
   margin-bottom: 10px;
   list-style: none;
-  max-height: 300px;
+  max-height: 200px;
   overflow: auto;
 }
 

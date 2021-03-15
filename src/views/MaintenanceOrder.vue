@@ -953,6 +953,10 @@ textarea {
   min-height: 286px;
 }
 
+::v-deep(.p-tabview.p-component) {
+  width: 100%;
+}
+
 .table-header-main {
   display: flex;
   align-items: center;
