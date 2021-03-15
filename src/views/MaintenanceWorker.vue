@@ -22,17 +22,11 @@
               icon="pi pi-plus"
               class="p-button-success p-mr-2"
               @click="openNew"
-              style="margin:2px"
+              style="margin: 2px"
               label="New"
             />
-            <Button
-              label="Export"
-              icon="pi pi-upload"
-              class="p-button-help"
-              @click="exportCSV($event)"
-              style="margin:2px"
-            />
-            <span class="p-input-icon-left" style="margin:2px">
+
+            <span class="p-input-icon-left" style="margin: 2px">
               <i class="pi pi-search" />
               <InputText
                 v-model="filters['global'].value"
@@ -41,15 +35,13 @@
             </span>
           </span>
         </div>
-        <template #empty>
-          No Maintenance Worker found.
-        </template>
+        <template #empty> No Maintenance Worker found. </template>
         <Column field="name" header="Name" :showFilterMatchModes="false">
           <template #body="slotProps">
             <Skeleton v-if="loading" />
             {{ slotProps.data.name }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -63,7 +55,7 @@
             <Skeleton v-if="loading" />
             {{ slotProps.data.phone }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -77,7 +69,7 @@
             <Skeleton v-if="loading" />
             {{ slotProps.data.email }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -91,7 +83,7 @@
             <Skeleton v-if="loading" />
             {{ slotProps.data.address }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -104,13 +96,13 @@
           header="Created"
           filterField="created"
           dataType="date"
-          style="min-width:10rem"
+          style="min-width: 10rem"
         >
-          <template #body="{data}">
+          <template #body="{ data }">
             <Skeleton v-if="loading" />
             {{ callDate(data.created) }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <Calendar
               v-model="filterModel.value"
               dateFormat="mm/dd/yy"
@@ -144,33 +136,59 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="name">Name</label>
-        <InputText name="name" v-model.trim="name" />
+        <label for="name" class="form-control-label">Name</label>
+        <InputText
+          name="name"
+          v-model.trim="name"
+          class="form-control form-control-alternative"
+          placeholder="Name"
+        />
         <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
-        <label for="phone">Phone</label>
-        <InputMask name="phone" mask="9999999999" v-model.trim="phone" />
+        <label for="phone" class="form-control-label">Phone</label>
+        <InputMask
+          name="phone"
+          mask="9999999999"
+          v-model.trim="phone"
+          class="form-control form-control-alternative"
+          placeholder="Phone"
+        />
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
-        <label for="address">Address</label>
-        <InputText name="address" v-model="address" />
+        <label for="address" class="form-control-label">Address</label>
+        <InputText
+          name="address"
+          v-model="address"
+          class="form-control form-control-alternative"
+          placeholder="Address"
+        />
         <small class="invalid">{{ errors.address }}</small>
       </div>
       <div class="p-field">
-        <label for="email">Email</label>
-        <InputText type="email" name="email" v-model.trim="email" />
+        <label for="email" class="form-control-label">Email</label>
+        <InputText
+          type="email"
+          name="email"
+          v-model.trim="email"
+          class="form-control form-control-alternative"
+          placeholder="Email"
+        />
         <small class="invalid">{{ errors.email }}</small>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <p>Created Date</p>
-          <span>{{ product.created }}</span>
+          <p class="form-control-label">Created Date</p>
+          <span class="form-control form-control-alternative">{{
+            product.created
+          }}</span>
         </div>
         <div class="p-field p-col-6">
-          <p>Last Modified</p>
-          <span>{{ product.lastModified }}</span>
+          <p class="form-control-label">Last Modified</p>
+          <span class="form-control form-control-alternative">{{
+            product.lastModified
+          }}</span>
         </div>
       </div>
       <template #footer>
@@ -196,28 +214,46 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="name">Name</label>
-        <InputText id="name" v-model="name" />
+        <label for="name" class="form-control-label">Name</label>
+        <InputText
+          id="name"
+          v-model="name"
+          class="form-control form-control-alternative"
+          placeholder="Name"
+        />
         <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
-        <label for="phone">Phone</label>
+        <label for="phone" class="form-control-label">Phone</label>
         <InputMask
           id="phone"
           minlenght="10"
           mask="9999999999"
           v-model="phone"
+          class="form-control form-control-alternative"
+          placeholder="Phone"
         />
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
-        <label for="address">Address</label>
-        <InputText id="address" v-model="address" />
+        <label for="address" class="form-control-label">Address</label>
+        <InputText
+          id="address"
+          v-model="address"
+          class="form-control form-control-alternative"
+          placeholder="Address"
+        />
         <small class="invalid">{{ errors.address }}</small>
       </div>
       <div class="p-field">
-        <label for="email">Email</label>
-        <InputText name="email" v-model="email" required="true" />
+        <label for="email" class="form-control-label">Email</label>
+        <InputText
+          name="email"
+          v-model="email"
+          required="true"
+          class="form-control form-control-alternative"
+          placeholder="Email"
+        />
         <small class="invalid">{{ errors.email }}</small>
       </div>
       <template #footer>
@@ -245,7 +281,7 @@
         <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
         <span v-if="product"
           >Are you sure to disable this worker
-          <span style="color:red; font-weight: bold;">{{ product.name }}</span
+          <span style="color: red; font-weight: bold">{{ product.name }}</span
           >?</span
         >
       </div>
@@ -285,23 +321,14 @@ import * as yup from "yup";
 export default {
   setup() {
     const schema = yup.object({
-      email: yup
-        .string()
-        .required()
-        .email(),
-      address: yup
-        .string()
-        .max(30)
-        .label("Address"),
+      email: yup.string().required().email(),
+      address: yup.string().max(30).label("Address"),
       name: yup
         .string()
         .required("Worker Name can't be blank")
         .max(20)
         .label("Name"),
-      phone: yup
-        .string()
-        .required()
-        .label("Phone"),
+      phone: yup.string().required().label("Phone"),
     });
     const { errors, meta, handleReset } = useForm({
       validationSchema: schema,
@@ -503,9 +530,7 @@ export default {
       }
       return index;
     },
-    exportCSV() {
-      this.$refs.dt.exportCSV();
-    },
+
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");
@@ -543,6 +568,113 @@ export default {
 </script>
 
 <style scoped>
+::v-deep(.p-dialog .p-dialog-header) {
+  border-top-right-radius: 24px;
+  border-top-left-radius: 24px;
+}
+
+::v-deep(.p-dialog) {
+  border-radius: 24px;
+}
+::v-deep(.p-dialog .p-dialog-header .p-dialog-title) {
+  color: #69707a;
+  margin-left: 12px;
+}
+
+::v-deep(.p-dialog .p-dialog-footer) {
+  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 24px;
+}
+
+::v-deep(.p-fluid .p-inputtext) {
+  border-radius: 8px;
+}
+::v-deep(.p-fluid .p-inputtext) {
+  border-radius: 8px;
+}
+::v-deep(.p-dialog .p-dialog-header .p-dialog-title::before) {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 25px;
+  background: #007dfe;
+}
+label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+.form-control-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #525f7f;
+}
+.form-control:-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control::-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control::placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control:focus:-ms-input-placeholder {
+  color: #adb5bd;
+}
+.form-control:focus::-ms-input-placeholder {
+  color: #adb5bd;
+}
+.form-control:focus::placeholder {
+  color: #adb5bd;
+}
+.form-control {
+  font-size: 1rem;
+  line-height: 1.5;
+  display: block;
+  width: 100%;
+  height: calc(2.75rem + 2px);
+  padding: 0.625rem 0.75rem;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  color: #8898aa;
+  border: 1px solid #cad1d7;
+  border-radius: 0.375rem;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: none;
+}
+.form-control:focus {
+  color: #8898aa;
+  border-color: rgba(50, 151, 211, 0.25);
+  outline: 0;
+  background-color: #fff;
+  box-shadow: none, none;
+}
+.form-control {
+  font-size: 0.875rem;
+}
+.focused .form-control {
+  border-color: rgba(50, 151, 211, 0.25);
+}
+.form-control:disabled,
+.form-control[readonly] {
+  opacity: 1;
+  background-color: #fff;
+}
+.form-control-alternative {
+  transition: box-shadow 0.15s ease;
+  border: 0;
+  box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
+}
+.form-control-alternative:focus {
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
 .table-header {
   display: flex;
   align-items: center;

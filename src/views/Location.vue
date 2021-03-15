@@ -150,20 +150,22 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="name"> Location Name</label>
+        <label for="name" class="form-control-label"> Location Name</label>
         <InputText
           id="locationName"
           v-model.trim="locationName"
           maxlength="30"
+          class="form-control form-control-alternative" placeholder="Location Name"
         />
         <small class="invalid">{{ errors.locationName }}</small>
       </div>
       <div class="p-field">
-        <label for="description">Description</label>
+        <label for="description" class="form-control-label">Description</label>
         <InputText
           id="description"
           v-model.trim="description"
           required="true"
+          class="form-control form-control-alternative" placeholder="Description"
         />
         <small class="invalid">{{ errors.description }}</small>
       </div>
@@ -190,12 +192,13 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="name"> Location Name</label>
+        <label for="name" class="form-control-label"> Location Name</label>
         <InputText
           id="locationName"
           v-model.trim="locationName"
           required="true"
           maxlength="30"
+          class="form-control form-control-alternative" placeholder="Description"
         />
         <InputText
           id="locationName"
@@ -204,28 +207,30 @@
           maxlength="30"
           disabled
           v-if="!admin"
+          class="form-control form-control-alternative" placeholder="Description"
         />
         <small class="invalid"> {{ errors.locationName }}</small>
       </div>
       <div class="p-field">
-        <label for="description">Description</label>
-        <InputText id="description" v-model.trim="description" />
+        <label for="description" class="form-control-label">Description</label>
+        <InputText id="description" v-model.trim="description" class="form-control form-control-alternative" placeholder="Description"/>
         <InputText
           id="description"
           v-model.trim="description"
           disabled
           v-if="!admin"
+          class="form-control form-control-alternative" placeholder="Description"
         />
         <small class="invalid"> {{ errors.description }}</small>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <label for="created"> Created Date</label>
-          <p>{{ product.created }}</p>
+          <label for="created" class="form-control-label"> Created Date</label>
+          <p class="form-control form-control-alternative">{{ product.created }}</p>
         </div>
         <div class="p-field p-col-6">
-          <label for="lastModified"> Last Modified</label>
-          <p>{{ product.lastModified }}</p>
+          <label for="lastModified" class="form-control-label"> Last Modified</label>
+          <p class="form-control form-control-alternative">{{ product.lastModified }}</p>
         </div>
       </div>
       <template #footer v-if="admin">
@@ -537,6 +542,77 @@ export default {
 </script>
 
 <style scoped>
+label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+.form-control-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #525f7f;
+}
+.form-control:-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control::-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control::placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control:focus:-ms-input-placeholder {
+  color: #adb5bd;
+}
+.form-control:focus::-ms-input-placeholder {
+  color: #adb5bd;
+}
+.form-control:focus::placeholder {
+  color: #adb5bd;
+}
+.form-control {
+  font-size: 1rem;
+  line-height: 1.5;
+  display: block;
+  width: 100%;
+  height: calc(2.75rem + 2px);
+  padding: 0.625rem 0.75rem;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  color: #8898aa;
+  border: 1px solid #cad1d7;
+  border-radius: 0.375rem;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: none;
+}
+.form-control:focus {
+  color: #8898aa;
+  border-color: rgba(50, 151, 211, 0.25);
+  outline: 0;
+  background-color: #fff;
+  box-shadow: none, none;
+}
+.form-control {
+  font-size: 0.875rem;
+}
+.focused .form-control {
+  border-color: rgba(50, 151, 211, 0.25);
+}
+.form-control:disabled,
+.form-control[readonly] {
+  opacity: 1;
+  background-color: #fff;
+}
+.form-control-alternative {
+  transition: box-shadow 0.15s ease;
+  border: 0;
+  box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
+}
+.form-control-alternative:focus {
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
 .table-header {
   display: flex;
   align-items: center;

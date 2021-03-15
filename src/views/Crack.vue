@@ -399,9 +399,7 @@ export default {
       return index;
     },
     redirectMainteanceOrder() {},
-    exportCSV() {
-      this.$refs.dt.exportCSV();
-    },
+    
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");

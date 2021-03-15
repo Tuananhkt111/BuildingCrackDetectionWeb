@@ -863,9 +863,7 @@ a.text-white:focus {
 .header {
   position: relative;
 }
-.focused .form-control {
-  border-color: rgba(50, 151, 211, 0.25);
-}
+
 .mask {
   position: absolute;
   top: 0;

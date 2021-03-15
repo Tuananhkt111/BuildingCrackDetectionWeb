@@ -26,7 +26,7 @@
         <div class="table-header-main">
           <h3 class="p-m-2">Maintenance Orders</h3>
           <span class="p-input-icon-left">
-            <span class="p-input-icon-left" style="margin:2px">
+            <span class="p-input-icon-left" style="margin: 2px">
               <i class="pi pi-search" />
               <InputText
                 v-model="filters['global'].value"
@@ -35,9 +35,7 @@
             </span>
           </span>
         </div>
-        <template #empty>
-          No Maintenance Order found.
-        </template>
+        <template #empty> No Maintenance Order found. </template>
         <Column :expander="true" headerStyle="width: 30px" />
         <Column
           field="maintenanceWorkerName"
@@ -48,7 +46,7 @@
             <Skeleton v-if="loading" />
             {{ slotProps.data.maintenanceWorkerName }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -66,7 +64,7 @@
             <Skeleton v-if="loading" />
             {{ slotProps.data.assessorName }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -84,7 +82,7 @@
             <Skeleton v-if="loading" />
             {{ slotProps.data.locationName }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -98,15 +96,15 @@
           filterField="status"
           :showFilterMatchModes="false"
           :filterMenuStyle="{ width: '14rem' }"
-          style="min-width:14rem"
+          style="min-width: 14rem"
         >
-          <template #body="{data}">
+          <template #body="{ data }">
             <Skeleton v-if="loading" />
             <span :class="stockStatusOrder(data)">
               {{ data.status }}
             </span>
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <div class="p-mb-3 p-text-bold">Status Picker</div>
             <MultiSelect
               v-model="filterModel.value"
@@ -124,14 +122,14 @@
           header="Maintenance Date"
           filterField="maintenanceDate"
           dataType="date"
-          style="min-width:20px"
+          style="min-width: 20px"
           headerStyle="width: 13em"
         >
-          <template #body="{data}">
+          <template #body="{ data }">
             <Skeleton v-if="loading" />
             {{ callDate(data.maintenanceDate) }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <Calendar
               v-model="filterModel.value"
               dateFormat="mm/dd/yy"
@@ -206,74 +204,92 @@
     <Dialog
       v-model:visible="productDialog"
       :style="{ width: '700px' }"
-      header="Maintenance Order Details"
       :modal="true"
-      class="p-fluid"
+      class="dialog"
     >
-      <div class="p-grid nested-grid">
-        <div class="p-col-6">
-          <p>
-            <span style="font-weight: bold">Maintenance Worker: </span
-            >{{ product.maintenanceWorkerName }}
-          </p>
-        </div>
-        <div class="p-col-6">
-          <p>
-            <span style="font-weight: bold">Location Name: </span
-            >{{ product.locationName }}
-          </p>
-        </div>
-        <div class="p-col-6">
-          <p>
-            <span style="font-weight: bold">Status: </span>{{ product.status }}
-          </p>
-        </div>
-        <div class="p-col-6">
-          <p>
-            <span style="font-weight: bold">Maintenance Date: </span
-            >{{ product.maintenanceDate }}
-          </p>
-        </div>
-        <div class="p-col-6">
-          <p>
-            <span style="font-weight: bold">Assessment Result: </span
-            >{{ product.assessmentResult }}
-          </p>
-          <!-- <label for="assessmentResult" style="font-weight: bold">Assessment Result:</label>
-            <Rating
-              :modelValue="product.assessmentResult"
-              :readonly="true"
-              :stars="5"
-              :cancel="false"
-            /> -->
-        </div>
-        <div class="p-col-6">
-          <p>
-            <span style="font-weight: bold">Assessor Name: </span
-            >{{ product.assessorName }}
-          </p>
-        </div>
-        <div class="p-col-12">
-          <p>
-            <span style="font-weight: bold" v-if="product.desciption != null"
-              >Description: {{ product.description }}</span
-            >
-            <span
-              style="font-weight: bold"
-              v-if="product.desciption == null || product.desciption.isEmpty()"
-              >Description: <span style="font-weight: normal">N/A</span></span
-            >
-          </p>
-        </div>
-      </div>
-      <template #footer>
-        <Button
-          label="Cancel"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="hideDialog"
-        />
+      <template #header>
+        <h3 class="dialog-title">Maintenance Order Details</h3>
       </template>
+      <div class="p-grid nested-grid">
+      <TabView>
+        <TabPanel header="Overview">
+          <div class="p-grid">
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Maintenance Worker: </span
+                >{{ product.maintenanceWorkerName }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Location Name: </span
+                >{{ product.locationName }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Status: </span
+                >{{ product.status }}
+              </p>
+            </div>
+            <div class="p-col-6">
+              <p>
+                <span style="font-weight: bold">Maintenance Date: </span
+                >{{ product.maintenanceDate }}
+              </p>
+            </div>
+            <div class="p-col-12">
+              <p>
+                <span style="font-weight: bold">Assessor Name: </span
+                >{{ product.assessorName }}
+              </p>
+            </div>
+          </div>
+        </TabPanel>
+        <TabPanel header="Assessment">
+          <div class="p-col-12">
+            <div class="p-field">
+              <Rating
+                :modelValue="product.assessmentResult"
+                :readonly="true"
+                :stars="5"
+                :cancel="false"
+              />
+            </div>
+            <div class="p-field">
+              <label for="assessmentDescription">Assessment Description</label>
+              <Textarea
+                id="description"
+                v-model="product.assessmentDescription"
+                required="true"
+                rows="2"
+                cols="20"
+                disabled
+              />
+            </div>
+          </div>
+        </TabPanel>
+        <TabPanel header="Description">
+          <div class="p-col-12">
+            <p>
+              <span
+                style="font-weight: bold"
+                v-if="product.desciption != null"
+                >{{ product.description }}</span
+              >
+              <span
+                style="font-weight: bold"
+                v-if="
+                  product.desciption == null || product.desciption.isEmpty()
+                "
+              >
+                <span style="font-weight: normal">N/A</span></span
+              >
+            </p>
+          </div>
+        </TabPanel>
+      </TabView>
+      </div>
     </Dialog>
     <Dialog
       v-model:visible="crackInfoDialog"
@@ -285,75 +301,85 @@
         <h3>Cracks Details</h3>
       </template>
       <div class="p-grid nested-grid">
-        <div class="p-col-3">
+        <div class="p-col-4">
           <img
             :src="crack.imageThumbnails"
             :alt="crack.imageThumbnails"
             class="crack-image"
             v-if="crack.image"
             @click="showImage(crack)"
-            style="width:200px; height:100%"
+            style="width: 230px; height: 100%"
           />
         </div>
-
-        <div class="p-col-9">
-          <div class="p-grid">
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Location Name: </span
-                >{{ crack.locationName }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Position: </span
-                >{{ crack.position }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Severity: </span
-                >{{ crack.severity }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Status: </span
-                >{{ crack.status }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Created Date: </span
-                >{{ crack.created }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Last Modified: </span
-                >{{ crack.lastModified }}
-              </p>
-            </div>
-            <div class="p-col-12">
-              <p>
-                <span style="font-weight: bold" v-if="crack.desciption != null"
-                  >Description: {{ crack.description }}</span
-                >
-                <span
-                  style="font-weight: bold"
-                  v-if="crack.desciption == null || crack.desciption.isEmpty()"
-                  >Description:
-                  <span style="font-weight: normal">N/A</span></span
-                >
-              </p>
-            </div>
-            <div class="p-col-12">
-              <p>
-                <span style="font-weight: bold">Reporter Name: </span
-                >{{ crack.reporterName }}
-              </p>
-            </div>
-          </div>
+        <div class="p-col-8">
+          <TabView>
+            <TabPanel header="Overview">
+              <div class="p-grid">
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Location Name: </span
+                    >{{ crack.locationName }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Position: </span
+                    >{{ crack.position }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Severity: </span
+                    >{{ crack.severity }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Status: </span
+                    >{{ crack.status }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Created Date: </span
+                    >{{ crack.created }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Last Modified: </span
+                    >{{ crack.lastModified }}
+                  </p>
+                </div>
+                
+                <div class="p-col-12">
+                  <p>
+                    <span style="font-weight: bold">Reporter Name: </span
+                    >{{ crack.reporterName }}
+                  </p>
+                </div>
+              </div>
+            </TabPanel>
+            <TabPanel header="Description">
+             <div class="p-col-12">
+                <p>
+                  <span
+                    style="font-weight: bold"
+                    v-if="product.desciption != null"
+                    >{{ product.description }}</span
+                  >
+                  <span
+                    style="font-weight: bold"
+                    v-if="
+                      product.desciption == null || product.desciption.isEmpty()
+                    "
+                  >
+                    <span style="font-weight: normal">N/A</span></span
+                  >
+                </p>
+              </div>
+            </TabPanel>
+          </TabView>
         </div>
       </div>
     </Dialog>
@@ -361,7 +387,7 @@
     <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
       <img
         :src="crack.image"
-        style="width:60%; height: 75%; margin-left:270px; margin-top:100px"
+        style="width: 60%; height: 75%; margin-left: 270px; margin-top: 100px"
       />
     </div>
     <Toast position="bottom-right" />
@@ -374,10 +400,12 @@ import Calendar from "primevue/calendar";
 import MultiSelect from "primevue/multiselect";
 import Toast from "primevue/toast";
 import Skeleton from "primevue/skeleton";
-// import Rating from "primevue/rating";
+import Rating from "primevue/rating";
 import { mapGetters, mapActions } from "vuex";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import moment from "moment";
+import TabView from "primevue/tabview";
+import TabPanel from "primevue/tabpanel";
 
 export default {
   components: {
@@ -386,7 +414,9 @@ export default {
     Calendar,
     MultiSelect,
     Skeleton,
-    // Rating,
+    Rating,
+    TabView,
+    TabPanel,
   },
 
   computed: {
@@ -558,6 +588,68 @@ export default {
 </script>
 
 <style scoped>
+textarea {
+  border: none;
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  resize: none; /*remove the resize handle on the bottom right*/
+}
+.dialog-title {
+  color: #69707a;
+  margin-left: 20px;
+}
+.p-dialog-titlebar {
+  background: black;
+}
+::v-deep(.p-dialog .p-dialog-header) {
+  border-top-right-radius: 24px;
+  border-top-left-radius: 24px;
+}
+
+::v-deep(.p-dialog) {
+  border-radius: 24px;
+}
+
+::v-deep(.p-dialog .p-dialog-content) {
+  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 24px;
+  min-height: 270px;
+}
+::v-deep(.p-tabview .p-tabview-panels) {
+  color: #69707a;
+}
+
+::v-deep(.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link) {
+  color: #2170e7;
+}
+
+::v-deep(.p-tabview .p-tabview-panels .p-grid .p-col-6) {
+  margin: 10px 0;
+}
+
+::v-deep(.p-tabview .p-tabview-panels .p-grid .p-col-12) {
+  margin: 10px 0;
+}
+.dialog-title::before {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 25px;
+  background: #007dfe;
+}
+.p-dialog .product-image {
+  width: 150px;
+  margin: 0 auto 2rem auto;
+  display: block;
+}
 .small {
   background-color: #66bb6a;
 }
@@ -775,7 +867,8 @@ export default {
     box-shadow 0.2s;
 }
 
-::v-deep(.p-datatable-row-expansion .p-datatable-wrapper
+::v-deep(.p-datatable-row-expansion
+    .p-datatable-wrapper
     .p-datatable-table
     .p-datatable-thead
     .p-column-header-content
@@ -792,7 +885,7 @@ export default {
 }
 
 ::v-deep(.p-dialog .p-dialog-content) {
-  color: #69707A;
+  color: #69707a;
 }
 
 .table-header-main {

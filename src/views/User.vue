@@ -19,20 +19,14 @@
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
-              class="p-button-success p-mr-2 "
+              class="p-button-success p-mr-2"
               @click="openNew"
-              style="margin:2px"
+              style="margin: 2px"
               label="New"
               v-if="admin"
             />
-            <Button
-              label="Export"
-              icon="pi pi-upload"
-              class="p-button-info"
-              @click="exportCSV($event)"
-              style="margin:2px"
-            />
-            <span class="p-input-icon-left" style="margin:2px">
+           
+            <span class="p-input-icon-left" style="margin: 2px">
               <i class="pi pi-search" />
               <InputText
                 v-model="filters['global'].value"
@@ -51,7 +45,7 @@
             <Skeleton v-if="loading" />
             {{ slotProps.data.userName }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -65,7 +59,7 @@
             <Skeleton v-if="loading" />
             {{ slotProps.data.name }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -84,7 +78,7 @@
             <Skeleton v-if="loading" />
             {{ slotProps.data.email }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -102,7 +96,7 @@
             <Skeleton v-if="loading" />
             {{ slotProps.data.phoneNumber }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -112,13 +106,13 @@
           </template>
         </Column>
         <Column header="Role" filterField="role" :showFilterMatchModes="false">
-          <template #body="{data}">
+          <template #body="{ data }">
             <Skeleton v-if="loading" />
             <span :class="stockClass(data)">
               {{ data.role }}
             </span>
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <div class="p-mb-3 p-text-bold">Role Picker</div>
             <MultiSelect
               v-model="filterModel.value"
@@ -163,9 +157,7 @@
             />
           </template>
         </Column>
-        <template #empty>
-          No Users found.
-        </template>
+        <template #empty> No Users found. </template>
       </DataTable>
     </div>
     <Dialog
@@ -211,35 +203,35 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="userName">User Name : {{ product.userName }}</label>
+        <label for="userName" class="form-control-label" >User Name: <span style="color: #8898aa;">{{ product.userName }}</span></label>
       </div>
       <div class="p-field">
-        <label for="name">Full Name</label>
-        <InputText name="name" v-model.trim="name" />
+        <label for="name" class="form-control-label">Full Name</label>
+        <InputText name="name" v-model.trim="name" class="form-control form-control-alternative"/>
         <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
-        <label for="email">Email</label>
-        <InputText type="email" name="email" v-model.trim="email" />
+        <label for="email" class="form-control-label">Email</label>
+        <InputText type="email" name="email" v-model.trim="email" class="form-control form-control-alternative"/>
         <small class="invalid">{{ errors.email }}</small>
       </div>
       <div class="p-field">
-        <label for="phoneNumber">Phone Number</label>
-        <InputMask name="phone" mask="9999999999" v-model.trim="phone" />
+        <label for="phoneNumber" class="form-control-label">Phone Number</label>
+        <InputMask name="phone" mask="9999999999" v-model.trim="phone" class="form-control form-control-alternative"/>
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
-        <label for="address">Address</label>
-        <Textarea name="address" v-model="address" rows="3" cols="20" />
+        <label for="address" class="form-control-label">Address</label>
+        <Textarea name="address" v-model="address" rows="3" cols="20" class="form-control form-control-alternative"/>
         <small class="invalid">{{ errors.address }}</small>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <label for="role">Role</label>
+          <label for="role" class="form-control-label">Role</label>
           <p>{{ selectedRole }}</p>
         </div>
         <div class="p-field p-col-6" v-if="selectedRole != null">
-          <label for="Location">Location</label>
+          <label for="Location" class="form-control-label">Location</label>
           <MultiSelect
             v-if="selectedRole === 'Manager'"
             v-model="selectedLocation"
@@ -274,7 +266,7 @@
           class="p-button-text"
           @click="UpdateUser"
         />
-        <p style="color:red" v-if="submitted">{{ warnning }}</p>
+        <p style="color: red" v-if="submitted">{{ warnning }}</p>
       </template>
     </Dialog>
     <Dialog
@@ -356,7 +348,7 @@
           class="p-button-text"
           @click="UpdateUser"
         />
-        <p style="color:red" v-if="submitted">{{ warnning }}</p>
+        <p style="color: red" v-if="submitted">{{ warnning }}</p>
       </template>
     </Dialog>
     <Dialog
@@ -367,24 +359,23 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="name">Full Name</label>
-        <InputText name="name" v-model.trim="name" />
+        <label for="name" class="form-control-label">Full Name</label>
+       <InputText name="name" v-model.trim="name" class="form-control form-control-alternative" placeholder="Fullname"/>
         <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
-        <label for="email">Email</label>
-        <InputText type="email" name="email" v-model.trim="email" />
+        <label for="email" class="form-control-label">Email</label>
+        <InputText type="email" name="email" v-model.trim="email" class="form-control form-control-alternative" placeholder="Email"/>
         <small class="invalid">{{ errors.email }}</small>
       </div>
       <div class="p-field">
-        <label for="phoneNumber">Phone Number</label>
-        <InputMask name="phone" mask="9999999999" v-model.trim="phone" />
+        <label for="phoneNumber" class="form-control-label">Phone Number</label>
+        <InputMask name="phone" mask="9999999999" v-model.trim="phone" class="form-control form-control-alternative" placeholder="Phone Number"/>
         <small class="invalid">{{ errors.phone }}</small>
       </div>
-
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <label for="role">Role</label>
+          <label for="role" class="form-control-label">Role</label>
           <Dropdown v-model="selectedRole" :options="roles" placeholder="Role">
             <template #option="slotProps">
               <span :class="'customer-badge status-' + slotProps.option">{{
@@ -394,7 +385,7 @@
           </Dropdown>
         </div>
         <div class="p-field p-col-6" v-if="selectedRole != null">
-          <label for="Location">Location</label>
+          <label for="Location" class="form-control-label">Location</label>
           <MultiSelect
             v-if="selectedRole === 'Manager'"
             v-model="selectedLocation"
@@ -415,8 +406,8 @@
         </div>
       </div>
       <div class="p-field">
-        <label for="address">Address</label>
-        <Textarea name="address" v-model="address" rows="3" cols="20" />
+        <label for="address" class="form-control-label">Address</label>
+        <Textarea name="address" v-model="address" rows="3" cols="20" class="form-control form-control-alternative" placeholder="Location"/>
         <small class="invalid">{{ errors.address }}</small>
       </div>
       <template #footer>
@@ -432,7 +423,7 @@
           class="p-button-text"
           @click="CreateUser"
         />
-        <p style="color:red" v-if="submitted">{{ warnning }}</p>
+        <p style="color: red" v-if="submitted">{{ warnning }}</p>
       </template>
     </Dialog>
     <Dialog
@@ -515,24 +506,10 @@ import * as yup from "yup";
 export default {
   setup() {
     const schema = yup.object({
-      name: yup
-        .string()
-        .max(20)
-        .label("Name")
-        .required(),
-      email: yup
-        .string()
-        .required()
-        .email(),
-      address: yup
-        .string()
-        .max(30)
-        .label("Address")
-        .required(),
-      phone: yup
-        .string()
-        .required()
-        .label("Phone"),
+      name: yup.string().max(20).label("Name").required(),
+      email: yup.string().required().email(),
+      address: yup.string().max(30).label("Address").required(),
+      phone: yup.string().required().label("Phone"),
     });
     const { errors, meta, handleReset } = useForm({
       validationSchema: schema,
@@ -783,9 +760,7 @@ export default {
       }
       return index;
     },
-    exportCSV() {
-      this.$refs.dt.exportCSV();
-    },
+   
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");
@@ -901,6 +876,77 @@ export default {
 </script>
 
 <style scoped>
+label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+.form-control-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #525f7f;
+}
+.form-control:-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control::-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control::placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control:focus:-ms-input-placeholder {
+  color: #adb5bd;
+}
+.form-control:focus::-ms-input-placeholder {
+  color: #adb5bd;
+}
+.form-control:focus::placeholder {
+  color: #adb5bd;
+}
+.form-control {
+  font-size: 1rem;
+  line-height: 1.5;
+  display: block;
+  width: 100%;
+  height: calc(2.75rem + 2px);
+  padding: 0.625rem 0.75rem;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  color: #8898aa;
+  border: 1px solid #cad1d7;
+  border-radius: 0.375rem;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: none;
+}
+.form-control:focus {
+  color: #8898aa;
+  border-color: rgba(50, 151, 211, 0.25);
+  outline: 0;
+  background-color: #fff;
+  box-shadow: none, none;
+}
+.form-control {
+  font-size: 0.875rem;
+}
+.focused .form-control {
+  border-color: rgba(50, 151, 211, 0.25);
+}
+.form-control:disabled,
+.form-control[readonly] {
+  opacity: 1;
+  background-color: #fff;
+}
+.form-control-alternative {
+  transition: box-shadow 0.15s ease;
+  border: 0;
+  box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
+}
+.form-control-alternative:focus {
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
 .table-header {
   display: flex;
   justify-content: space-between;
