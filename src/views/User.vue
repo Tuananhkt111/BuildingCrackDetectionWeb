@@ -403,9 +403,9 @@
       </div>
       <div class="p-field">
         <label for="phoneNumber" class="form-control-label">Phone Number</label>
-        <InputMask
+        <InputText
+          type="phone"
           name="phone"
-          mask="9999999999"
           v-model.trim="phone"
           class="form-control form-control-alternative"
           placeholder="Phone Number"
@@ -553,14 +553,31 @@ import { userApi } from "../apis/user";
 import { useForm, useField } from "vee-validate";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import * as yup from "yup";
+import "yup-phone";
 
 export default {
   setup() {
     const schema = yup.object({
-      name: yup.string().max(20).label("Name").required(),
-      email: yup.string().required().email(),
-      address: yup.string().max(30).label("Address").required(),
-      phone: yup.string().required().label("Phone"),
+      name: yup
+        .string()
+        .max(20)
+        .label("Name")
+        .required(),
+      email: yup
+        .string()
+        .required()
+        .email(),
+      address: yup
+        .string()
+        .max(30)
+        .label("Address")
+        .required(),
+      phone: yup
+        .string()
+        .required()
+        .label("Phone")
+        .phone("VN")
+        .required(),
     });
     const { errors, meta, handleReset } = useForm({
       validationSchema: schema,
@@ -629,7 +646,6 @@ export default {
       this.loading = false;
     });
     await this.setLocationList();
-    
   },
 
   mounted() {

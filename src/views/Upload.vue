@@ -37,14 +37,14 @@
               id="choose_file"
               name="choose_file"
               @change="chooseFile"
-              accept="video/*"
+              accept="video/mp4"
             />
             <span>Choose Files</span>
           </label>
         </div>
-        <div class="detect p-col-6" @click="detect">
-          <label for="detect">
-            <span>Detect</span>
+        <div class="detect p-col-6" @click="detect" >
+          <label for="detect" id="divDetect">
+            <span id="spanDetect">Detect</span>
           </label>
         </div>
       </div>
@@ -62,6 +62,7 @@ export default {
     return {
       file: null,
       size: null,
+      check: false,
     };
   },
   computed: {
@@ -73,6 +74,10 @@ export default {
 
     closeFile() {
       this.file = null;
+      document.getElementById("divDetect").style.border = "2px dashed grey";
+      document.getElementById("divDetect").style.cursor = "not-allowed";
+      document.getElementById("spanDetect").style.cursor = "not-allowed";
+      document.getElementById("spanDetect").style.color = "grey";
     },
     chooseFile() {
       this.file = document.getElementById("choose_file").files[0];
@@ -82,6 +87,10 @@ export default {
       } else {
         this.size = Math.floor(totalBytes / 1000000) + "MB";
       }
+      document.getElementById("divDetect").style.border = "2px dashed #8178d3";
+      document.getElementById("divDetect").style.cursor = "pointer";
+      document.getElementById("spanDetect").style.cursor = "pointer";
+      document.getElementById("spanDetect").style.color = "#8178d3";
     },
 
     detect() {
@@ -98,8 +107,6 @@ export default {
         });
         localStorage.setItem("detecting", true);
         this.setIsDetect(true);
-      } else {
-        alert("PLS Choose File");
       }
     },
   },
@@ -221,19 +228,16 @@ body {
   color: #8178d3;
 }
 
-.choose_file label:hover span {
-  text-decoration: underline;
-}
-
 .detect label {
   display: block;
-  border: 2px dashed #8178d3;
+  border: 2px dashed grey;
   padding: 15px;
   width: calc(100% - 20px);
   margin: 10px;
   text-align: center;
-  cursor: pointer;
+  cursor: not-allowed;
 }
+
 .detect #detect {
   outline: none;
   opacity: 0;
@@ -241,10 +245,8 @@ body {
 }
 .detect span {
   font-size: 14px;
-  color: #8178d3;
+  color: grey;
+  cursor: not-allowed;
 }
 
-.detect label:hover span {
-  text-decoration: underline;
-}
 </style>

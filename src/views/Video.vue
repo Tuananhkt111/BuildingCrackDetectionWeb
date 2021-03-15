@@ -137,7 +137,7 @@
               v-tooltip.bottom="'View Crack Details'"
             />
             <Button
-              v-if="slotProps.data.maintenanceOrderId != null"
+              v-if="slotProps.data.maintenanceOrderId != null && slotProps.data.maintenanceOrderId != 0"
               icon="pi pi-calendar-minus"
               class="p-button-rounded p-button-danger p-button-text"
               @click="showMaintenanceOrder(slotProps.data)"
