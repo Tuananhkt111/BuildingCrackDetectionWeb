@@ -189,6 +189,17 @@ export default {
       document.body.style.overflow = "visible";
       this.displayImage = false;
     },
+    editProduct(product) {
+      this.handleReset();
+      this.product = { ...product };
+      this.locationName = this.product.name;
+      this.description = this.product.description;
+      this.product.created = this.callDate(product.created);
+      this.product.lastModified = this.callDate(product.lastModified);
+      this.submitted = false;
+      this.productDialog = true;
+    },
+
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD/MM/YYYY hh:mm:ss");
@@ -254,8 +265,8 @@ export default {
 .confirmation-content {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
+
 .invalid {
   color: red;
 }
@@ -280,7 +291,7 @@ export default {
   padding-bottom: 10px;
   position: relative;
   left: -10px;
-  top: 25px;
+  top: 0;
   background: #007dfe;
 }
 

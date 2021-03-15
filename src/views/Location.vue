@@ -641,10 +641,15 @@ label {
 .confirmation-content {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 .invalid {
   color: red;
+}
+
+.p-m-0 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .p-m-0::before {
@@ -656,7 +661,7 @@ label {
   padding-bottom: 10px;
   position: relative;
   left: -10px;
-  top: 25px;
+  top: 0;
   background: #007dfe;
 }
 
@@ -669,7 +674,7 @@ label {
   padding-bottom: 10px;
   position: relative;
   left: -10px;
-  top: 25px;
+  top: 0;
   background: #007dfe;
 }
 
@@ -758,6 +763,9 @@ label {
 ::v-deep(.p-dialog .p-dialog-header .p-dialog-title) {
   color: #69707a;
   margin-left: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 ::v-deep(.p-dialog .p-dialog-footer) {

@@ -132,8 +132,13 @@ export default {
   padding-bottom: 10px;
   position: relative;
   left: -10px;
-  top: 25px;
+  top: 0;
   background: #007dfe;
+}
+
+.p-m-0 {
+  display: flex;
+  align-items: center;
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
@@ -229,4 +234,6 @@ export default {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
+
+
 </style>

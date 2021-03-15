@@ -20,7 +20,7 @@
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
-              class="p-button-success p-mr-2"
+              class="p-button-info p-mr-2"
               @click="openNew"
               style="margin: 2px"
               label="New"
@@ -321,14 +321,23 @@ import * as yup from "yup";
 export default {
   setup() {
     const schema = yup.object({
-      email: yup.string().required().email(),
-      address: yup.string().max(30).label("Address"),
+      email: yup
+        .string()
+        .required()
+        .email(),
+      address: yup
+        .string()
+        .max(30)
+        .label("Address"),
       name: yup
         .string()
         .required("Worker Name can't be blank")
         .max(20)
         .label("Name"),
-      phone: yup.string().required().label("Phone"),
+      phone: yup
+        .string()
+        .required()
+        .label("Phone"),
     });
     const { errors, meta, handleReset } = useForm({
       validationSchema: schema,
@@ -579,6 +588,8 @@ export default {
 ::v-deep(.p-dialog .p-dialog-header .p-dialog-title) {
   color: #69707a;
   margin-left: 12px;
+  display: flex;
+  align-items: center;
 }
 
 ::v-deep(.p-dialog .p-dialog-footer) {
@@ -601,7 +612,7 @@ export default {
   padding-bottom: 10px;
   position: relative;
   left: -10px;
-  top: 25px;
+  top: 0;
   background: #007dfe;
 }
 label {
@@ -703,7 +714,6 @@ label {
 .confirmation-content {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 .invalid {
   color: red;
@@ -718,8 +728,17 @@ label {
   padding-bottom: 10px;
   position: relative;
   left: -10px;
-  top: 25px;
+  top: 0;
   background: #007dfe;
+}
+
+.p-m-2 {
+  display: flex;
+  align-items: center;
+}
+
+::v-deep(.p-dialog .p-dialog-content) {
+  padding: 0 1.5rem 0rem 1.5rem;
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
@@ -767,13 +786,6 @@ label {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
   cursor: pointer;
-}
-
-::v-deep(.p-button.p-button-success, .p-buttonset.p-button-success
-    > .p-button, .p-splitbutton.p-button-success > .p-button) {
-  color: #ffffff;
-  background: #55e757;
-  border: 1px solid #55e757;
 }
 
 ::v-deep(.p-button.p-button-info, .p-buttonset.p-button-info

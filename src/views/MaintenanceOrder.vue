@@ -141,6 +141,7 @@
                     :src="slotProps.data.imageThumbnails"
                     :alt="slotProps.data.imageThumbnails"
                     class="product-image"
+                    style="width:80px; height: 80px;"
                     @click="showImage(slotProps.data)"
                   />
                 </template>
@@ -188,87 +189,93 @@
       class="dialog"
     >
       <template #header>
-        <h3 class="dialog-title">Maintenance Order Details</h3>
+        <h3 class="dialog-title-order">Maintenance Order Details</h3>
       </template>
-      <div class="p-grid nested-grid">
-      <TabView>
-        <TabPanel header="Overview">
-          <div class="p-grid">
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Maintenance Worker: </span
-                >{{ product.maintenanceWorkerName }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Location Name: </span
-                >{{ product.locationName }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Status: </span
-                >{{ product.status }}
-              </p>
-            </div>
-            <div class="p-col-6">
-              <p>
-                <span style="font-weight: bold">Maintenance Date: </span
-                >{{ product.maintenanceDate }}
-              </p>
-            </div>
-            <div class="p-col-12">
-              <p>
-                <span style="font-weight: bold">Assessor Name: </span
-                >{{ product.assessorName }}
-              </p>
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel header="Assessment">
-          <div class="p-col-12">
-            <div class="p-field">
-              <Rating
-                :modelValue="product.assessmentResult"
-                :readonly="true"
-                :stars="5"
-                :cancel="false"
-              />
-            </div>
-            <div class="p-field">
-              <label for="assessmentDescription">Assessment Description</label>
-              <Textarea
-                id="description"
-                v-model="product.assessmentDescription"
-                required="true"
-                rows="2"
-                cols="20"
-                disabled
-              />
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel header="Description">
-          <div class="p-col-12">
-            <p>
-              <span
-                style="font-weight: bold"
-                v-if="product.desciption != null"
-                >{{ product.description }}</span
-              >
-              <span
-                style="font-weight: bold"
-                v-if="
-                  product.desciption == null || product.desciption.isEmpty()
-                "
-              >
-                <span style="font-weight: normal">N/A</span></span
-              >
-            </p>
-          </div>
-        </TabPanel>
-      </TabView>
+      <div class="p-col-12 order-detail">
+        <div class="p-grid nested-grid">
+          <TabView>
+            <TabPanel header="Overview">
+              <div class="p-grid">
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Maintenance Worker: </span
+                    >{{ product.maintenanceWorkerName }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Location Name: </span
+                    >{{ product.locationName }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Status: </span>
+                    <span :class="stockStatusOrder(product)">
+                      {{ product.status }}
+                    </span>
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Maintenance Date: </span
+                    >{{ product.maintenanceDate }}
+                  </p>
+                </div>
+                <div class="p-col-12">
+                  <p>
+                    <span style="font-weight: bold">Assessor Name: </span
+                    >{{ product.assessorName }}
+                  </p>
+                </div>
+              </div>
+            </TabPanel>
+            <TabPanel header="Description">
+              <div class="p-col-12">
+                <p>
+                  <span
+                    style="font-weight: bold"
+                    v-if="product.desciption != null"
+                    >{{ product.description }}</span
+                  >
+                  <span
+                    style="font-weight: bold"
+                    v-if="
+                      product.desciption == null || product.desciption.isEmpty()
+                    "
+                  >
+                    <span style="font-weight: normal">N/A</span></span
+                  >
+                </p>
+              </div>
+            </TabPanel>
+            <TabPanel header="Assessment">
+              <div class="p-col-12">
+                <div class="p-field">
+                  <Rating
+                    :modelValue="product.assessmentResult"
+                    :readonly="true"
+                    :stars="5"
+                    :cancel="false"
+                  />
+                </div>
+                <div class="p-field">
+                  <label for="assessmentDescription"
+                    >Assessment Description</label
+                  >
+                  <Textarea
+                    id="description"
+                    v-model="product.assessmentDescription"
+                    required="true"
+                    rows="2"
+                    cols="20"
+                    disabled
+                  />
+                </div>
+              </div>
+            </TabPanel>
+          </TabView>
+        </div>
       </div>
     </Dialog>
     <Dialog
@@ -402,10 +409,7 @@
     </Dialog>
 
     <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
-      <img
-        :src="crack.image"
-        style="width: 60%; height: 75%; margin-left: 270px; margin-top: 100px"
-      />
+      <img :src="crack.image" style="width:90%; height: 80%;" />
     </div>
     <Toast position="bottom-right" />
   </div>
@@ -504,7 +508,6 @@ export default {
       this.crackInfoDialog = true;
     },
     editProduct(product) {
-      
       this.product = { ...product };
       this.product.maintenanceDate = this.callDate(
         this.product.maintenanceDate
@@ -628,8 +631,18 @@ textarea {
 }
 .dialog-title {
   color: #69707a;
-  margin-left: 20px;
+  margin-left: 44px;
+  display: flex;
+  align-items: center;
 }
+
+.dialog-title-order {
+  color: #69707a;
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+}
+
 .p-dialog-titlebar {
   background: black;
 }
@@ -662,7 +675,8 @@ textarea {
 ::v-deep(.p-tabview .p-tabview-panels .p-grid .p-col-12) {
   margin: 10px 0;
 }
-.dialog-title::before {
+.dialog-title::before,
+.dialog-title-order::before {
   content: "";
   width: 5px;
   height: 12px;
@@ -671,14 +685,20 @@ textarea {
   padding-bottom: 10px;
   position: relative;
   left: -10px;
-  top: 25px;
+  top: 0;
   background: #007dfe;
 }
-.p-dialog .product-image {
+.p-dialog .crack-image {
   width: 150px;
   margin: 0 auto 2rem auto;
   display: block;
 }
+
+.crack-image {
+  width: 100px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
 .small {
   background-color: #66bb6a;
 }
@@ -713,7 +733,6 @@ textarea {
 .confirmation-content {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 .underline {
   border: 0;
@@ -785,7 +804,15 @@ textarea {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.3px;
-  color: #ff5252;
+  color: #61ff52;
+}
+
+.p-col-12 .nested-grid {
+  min-height: 345px;
+}
+
+.p-col-12 .order-detail .nested-grid {
+  min-height: 200px;
 }
 
 .imagePopup {
@@ -797,6 +824,9 @@ textarea {
   background: rgba(0, 0, 0, 0.9);
   left: 0;
   align-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .p-m-2::before {
@@ -808,8 +838,13 @@ textarea {
   padding-bottom: 10px;
   position: relative;
   left: -10px;
-  top: 25px;
+  top: 0;
   background: #007dfe;
+}
+
+.p-m-2 {
+  display: flex;
+  align-items: center;
 }
 
 #sub-table-title {
@@ -915,6 +950,7 @@ textarea {
 
 ::v-deep(.p-dialog .p-dialog-content) {
   color: #69707a;
+  min-height: 286px;
 }
 
 .table-header-main {

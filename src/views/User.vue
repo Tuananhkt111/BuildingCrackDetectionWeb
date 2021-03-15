@@ -19,7 +19,7 @@
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
-              class="p-button-success p-mr-2"
+              class="p-button-info p-mr-2"
               @click="openNew"
               style="margin: 2px"
               label="New"
@@ -108,9 +108,7 @@
         <Column header="Role" filterField="role" :showFilterMatchModes="false">
           <template #body="{ data }">
             <Skeleton v-if="loading" />
-            <span :class="stockClass(data)">
-              {{ data.role }}
-            </span>
+            <span :class="stockRole(data.role)">{{ data.role }}</span>
           </template>
           <template #filter="{ filterModel }">
             <div class="p-mb-3 p-text-bold">Role Picker</div>
@@ -228,7 +226,7 @@
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="role" class="form-control-label">Role</label>
-          <p>{{ selectedRole }}</p>
+          <p :class="stockRole(selectedRole)">{{ selectedRole }}</p>
         </div>
         <div class="p-field p-col-6" v-if="selectedRole != null">
           <label for="Location" class="form-control-label">Location</label>
@@ -318,7 +316,7 @@
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="role">Role</label>
-          <p>{{ selectedRole }}</p>
+          <p :class="stockRole(selectedRole)">{{ selectedRole }}</p>
         </div>
         <div class="p-field p-col-6" v-if="selectedRole != null">
           <label for="Location">Location</label>
@@ -794,11 +792,11 @@ export default {
       return day + "-" + month + "-" + date.getFullYear();
     },
 
-    stockClass(data) {
+    stockRole(role) {
       return [
         {
-          staff: data.role === "Staff",
-          manager: data.role === "Manager",
+          staff: role === "Staff",
+          manager: role === "Manager",
         },
       ];
     },
@@ -962,6 +960,38 @@ label {
   border-top-right-radius: 24px;
 }
 
+.p-m-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::v-deep(.p-dialog .p-dialog-header) {
+  border-top-right-radius: 24px;
+  border-top-left-radius: 24px;
+}
+
+::v-deep(.p-dialog .p-dialog-header .p-dialog-title) {
+  color: #69707a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+}
+
+::v-deep(.p-dialog .p-dialog-header .p-dialog-title::before) {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 0;
+  background: #007dfe;
+}
+
 .product-image {
   width: 100px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -978,7 +1008,7 @@ label {
   padding: 0.25em 0.5rem;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: #256029;
+  color: #61ff6b;
 }
 
 .manager {
@@ -986,7 +1016,7 @@ label {
   padding: 0.25em 0.5rem;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: blue;
+  color: rgb(73, 73, 255);
 }
 .invalid {
   color: red;
@@ -1001,8 +1031,13 @@ label {
   padding-bottom: 10px;
   position: relative;
   left: -10px;
-  top: 25px;
+  top: 0;
   background: #007dfe;
+}
+
+.confirmation-content {
+  display: flex;
+  align-items: center;
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
@@ -1056,13 +1091,6 @@ label {
   cursor: pointer;
 }
 
-::v-deep(.p-button.p-button-success, .p-buttonset.p-button-success
-    > .p-button, .p-splitbutton.p-button-success > .p-button) {
-  color: #ffffff;
-  background: #55e757;
-  border: 1px solid #55e757;
-}
-
 ::v-deep(.p-button.p-button-info, .p-buttonset.p-button-info
     > .p-button, .p-splitbutton.p-button-info > .p-button) {
   color: #ffffff;
@@ -1087,5 +1115,18 @@ label {
   border-radius: 6px;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
+}
+
+::v-deep(.p-dialog .p-dialog-content) {
+  padding: 0 1.5rem 0rem 1.5rem;
+}
+
+::v-deep(.p-dialog .p-dialog-footer) {
+  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 24px;
+}
+
+::v-deep(.p-dialog) {
+  border-radius: 24px;
 }
 </style>

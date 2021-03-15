@@ -500,7 +500,6 @@ export default {
 .confirmation-content {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 textarea {
   border: none;

@@ -415,7 +415,7 @@ export default {
       return index;
     },
     redirectMainteanceOrder() {},
-    
+
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");
@@ -498,7 +498,6 @@ export default {
 .confirmation-content {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 textarea {
   border: none;
@@ -590,8 +589,12 @@ h5 {
 
 .dialog-title {
   color: #69707a;
-  margin-left: 20px;
+  margin-left: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .imagePopup {
   width: 100%;
   height: 100%;
@@ -620,8 +623,14 @@ h5 {
   padding-bottom: 10px;
   position: relative;
   left: -10px;
-  top: 25px;
+  top: 0;
   background: #007dfe;
+}
+
+.p-m-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .p-grid .nested-grid {
