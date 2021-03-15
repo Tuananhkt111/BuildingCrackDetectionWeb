@@ -160,7 +160,7 @@
         <small class="invalid">{{ errors.locationName }}</small>
       </div>
       <div class="p-field">
-        <label for="description" class="form-control-label">Description</label>
+        <label for="description" class="form-control-label">Description (optional)</label>
         <InputText
           id="description"
           v-model.trim="description"
@@ -212,7 +212,7 @@
         <small class="invalid"> {{ errors.locationName }}</small>
       </div>
       <div class="p-field">
-        <label for="description" class="form-control-label">Description</label>
+        <label for="description" class="form-control-label">Description (optional)</label>
         <InputText id="description" v-model.trim="description" class="form-control form-control-alternative" placeholder="Description"/>
         <InputText
           id="description"
@@ -226,11 +226,19 @@
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="created" class="form-control-label"> Created Date</label>
-          <p class="form-control form-control-alternative" readonly>{{ product.created }}</p>
+          <InputText
+          v-model.trim="product.created"
+          readonly
+          class="form-control form-control-alternative" 
+        />
         </div>
         <div class="p-field p-col-6">
           <label for="lastModified" class="form-control-label"> Last Modified</label>
-          <p class="form-control form-control-alternative" readonly>{{ product.lastModified }}</p>
+           <InputText
+          v-model.trim="product.lastModified"
+          readonly
+          class="form-control form-control-alternative" 
+        />
         </div>
       </div>
       <template #footer v-if="admin">
@@ -644,6 +652,7 @@ label {
 }
 .invalid {
   color: red;
+  margin-left:-35px
 }
 
 .p-m-0 {

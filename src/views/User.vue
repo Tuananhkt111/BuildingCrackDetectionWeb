@@ -236,7 +236,7 @@
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
-        <label for="address" class="form-control-label">Address</label>
+        <label for="address" class="form-control-label">Address (optional)</label>
         <Textarea
           name="address"
           v-model="address"
@@ -450,14 +450,14 @@
         </div>
       </div>
       <div class="p-field">
-        <label for="address" class="form-control-label">Address</label>
+        <label for="address" class="form-control-label">Address (optional)</label>
         <Textarea
           name="address"
           v-model="address"
           rows="3"
           cols="20"
           class="form-control form-control-alternative"
-          placeholder="Location"
+          placeholder="Address"
         />
         <small class="invalid">{{ errors.address }}</small>
       </div>
@@ -1138,6 +1138,7 @@ label {
 }
 .invalid {
   color: red;
+  margin-left:-35px
 }
 
 .p-m-2::before {

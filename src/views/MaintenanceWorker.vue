@@ -157,7 +157,7 @@
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
-        <label for="address" class="form-control-label">Address</label>
+        <label for="address" class="form-control-label">Address (optional)</label>
         <InputText
           name="address"
           v-model="address"
@@ -179,16 +179,20 @@
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <p class="form-control-label">Created Date</p>
-          <span class="form-control form-control-alternative" readonly>{{
-            product.created
-          }}</span>
+          <label class="form-control-label">Created Date</label>
+          <InputText
+            v-model.trim="product.created"
+            class="form-control form-control-alternative"
+            readonly
+          />
         </div>
         <div class="p-field p-col-6">
-          <p class="form-control-label">Last Modified</p>
-          <span class="form-control form-control-alternative" readonly>{{
-            product.lastModified
-          }}</span>
+          <label class="form-control-label">Last Modified</label>
+          <InputText
+            v-model.trim="product.lastModified"
+            class="form-control form-control-alternative"
+            readonly
+          />
         </div>
       </div>
       <template #footer>
@@ -236,7 +240,7 @@
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
-        <label for="address" class="form-control-label">Address</label>
+        <label for="address" class="form-control-label">Address (optional)</label>
         <InputText
           id="address"
           v-model="address"
@@ -321,23 +325,14 @@ import * as yup from "yup";
 export default {
   setup() {
     const schema = yup.object({
-      email: yup
-        .string()
-        .required()
-        .email(),
-      address: yup
-        .string()
-        .max(30)
-        .label("Address"),
+      email: yup.string().required().email(),
+      address: yup.string().max(30).label("Address"),
       name: yup
         .string()
         .required("Worker Name can't be blank")
         .max(20)
         .label("Name"),
-      phone: yup
-        .string()
-        .required()
-        .label("Phone"),
+      phone: yup.string().required().label("Phone"),
     });
     const { errors, meta, handleReset } = useForm({
       validationSchema: schema,
@@ -717,6 +712,7 @@ label {
 }
 .invalid {
   color: red;
+  margin-left:-35px
 }
 
 .p-m-2::before {
