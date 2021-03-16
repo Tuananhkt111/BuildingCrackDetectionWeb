@@ -115,7 +115,7 @@
           filterField="status"
           :showFilterMatchModes="false"
           :filterMenuStyle="{ width: '12rem' }"
-          style="min-width:300px"
+          style="min-width:12rem"
         >
           <template #body="{data}">
             <Skeleton v-if="loading" />
