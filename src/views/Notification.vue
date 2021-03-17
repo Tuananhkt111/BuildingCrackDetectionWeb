@@ -25,14 +25,14 @@
           @click="markAsRead"
         />
       </div>
-      <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-      <Column field="title" header="Title"></Column>
-      <Column field="body" header="Body"></Column>
+      <Column field="title" header="Title" sortable="true"></Column>
+      <Column field="body" header="Body" sortable="true"></Column>
       <Column
         field="created"
         header="Created"
         filterMatchMode="custom"
         :filterFunction="filterDate"
+        sortable="true"
       >
         <template #body="slotProps">
           <span>{{ callDate(slotProps.data.created) }}</span>
@@ -61,12 +61,9 @@ export default {
   data() {
     return {
       productDialog: false,
-      deleteProductDialog: false,
-      deleteProductsDialog: false,
       product: {},
       selectedProducts: null,
       filters: {},
-      submitted: false,
     };
   },
 
@@ -75,11 +72,38 @@ export default {
   },
   methods: {
     ...mapActions("noti", ["setNotificationList"]),
-    onRowSelect() {
-      notificationApi.deleteNoti(this.selectedProducts.pushNotificationId);
+    async onRowSelect() {
+      if (this.selectedProducts.isRead == false) {
+        await notificationApi.deleteNoti(
+          this.selectedProducts.pushNotificationId
+        );
+        this.setNotificationList();
+      }
     },
     onRowUnselect() {},
-    markAsRead() {},
+    async markAsRead() {
+      const id = [];
+      var count = 0;
+      for (let index = 0; index < this.getNotificationList.length; index++) {
+        if (!this.getNotificationList[index].isRead) {
+          id[count] = this.getNotificationList[index].pushNotificationId;
+          count = count + 1;
+        }
+      }
+      console.log(id);
+      await notificationApi
+        .deleteAllNoti(id)
+        .catch((err) => console.log(err))
+        .then(() => {
+          this.$toast.add({
+            severity: "success",
+            summary: "Successful",
+            detail: "Clear all Notifications!!",
+            life: 3000,
+          });
+        });
+      await this.setNotificationList();
+    },
 
     rowClass(data) {
       return !data.isRead ? "row-accessories" : null;

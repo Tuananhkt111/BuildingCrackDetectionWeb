@@ -569,7 +569,7 @@ export default {
         .email(),
       address: yup
         .string()
-        .max(30)
+        .max(300)
         .label("Address")
         .required(),
       phone: yup

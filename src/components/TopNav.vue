@@ -108,6 +108,7 @@
         </transition>
       </div>
     </div>
+    <Toast position="bottom-right" />
   </div>
 </template>
 
@@ -120,7 +121,11 @@ import moment from "moment";
 import { notificationApi } from "../apis/notification";
 import webRole from "../util/webRole.js";
 import * as yup from "yup";
+import Toast from "primevue/toast";
 export default {
+  components: {
+    Toast,
+  },
   setup() {
     const schema = yup.object({
       oldPassword: yup
