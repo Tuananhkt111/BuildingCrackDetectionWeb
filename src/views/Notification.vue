@@ -21,7 +21,7 @@
         <Button
           label="Mark as Read"
           icon="pi pi-check"
-          class="p-button-success p-mr-2"
+          class="p-button-info p-mr-2"
           @click="markAsRead"
         />
       </div>
@@ -144,7 +144,7 @@ export default {
 
 <style>
 .row-accessories {
-  background-color: rgba(0, 0, 0, 0.15) !important;
+  background-color: #d0e7fa !important;
 }
 
 .p-m-0::before {
