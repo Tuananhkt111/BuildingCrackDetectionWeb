@@ -236,7 +236,9 @@
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
-        <label for="address" class="form-control-label">Address (optional)</label>
+        <label for="address" class="form-control-label"
+          >Address (optional)</label
+        >
         <Textarea
           name="address"
           v-model="address"
@@ -450,7 +452,9 @@
         </div>
       </div>
       <div class="p-field">
-        <label for="address" class="form-control-label">Address (optional)</label>
+        <label for="address" class="form-control-label"
+          >Address (optional)</label
+        >
         <Textarea
           name="address"
           v-model="address"
@@ -558,26 +562,10 @@ import "yup-phone";
 export default {
   setup() {
     const schema = yup.object({
-      name: yup
-        .string()
-        .max(20)
-        .label("Name")
-        .required(),
-      email: yup
-        .string()
-        .required()
-        .email(),
-      address: yup
-        .string()
-        .max(300)
-        .label("Address")
-        .required(),
-      phone: yup
-        .string()
-        .required()
-        .label("Phone")
-        .phone("VN")
-        .required(),
+      name: yup.string().max(20).label("Name").required(),
+      email: yup.string().label("Email").required().email(),
+      address: yup.string().max(300).label("Address").required(),
+      phone: yup.string().required().label("Phone").phone("VN").required(),
     });
     const { errors, meta, handleReset } = useForm({
       validationSchema: schema,
@@ -1154,7 +1142,8 @@ label {
 }
 .invalid {
   color: red;
-  margin-left:-35px
+  position: sticky;
+  left: 5px !important;
 }
 
 .p-m-2::before {

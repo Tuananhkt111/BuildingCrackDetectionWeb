@@ -306,9 +306,9 @@ import * as yup from "yup";
 export default {
   setup() {
     const schema = yup.object({
-      description: yup.string().max(100),
+      description: yup.string().label("Description").max(100),
       locationName: yup
-        .string()
+        .string().label("Location Name")
         .required("Location Name can't be blank")
         .max(20),
     });
@@ -652,7 +652,8 @@ label {
 }
 .invalid {
   color: red;
-  margin-left:-35px
+  position: sticky;
+  left: 5px !important;
 }
 
 .p-m-0 {

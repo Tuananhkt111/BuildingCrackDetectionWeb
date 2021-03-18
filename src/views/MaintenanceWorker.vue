@@ -325,7 +325,7 @@ import * as yup from "yup";
 export default {
   setup() {
     const schema = yup.object({
-      email: yup.string().required().email(),
+      email: yup.string().label("Email").required().email(),
       address: yup.string().max(30).label("Address"),
       name: yup
         .string()
@@ -712,7 +712,8 @@ label {
 }
 .invalid {
   color: red;
-  margin-left:-35px
+  position: sticky;
+  left: 5px !important;
 }
 
 .p-m-2::before {

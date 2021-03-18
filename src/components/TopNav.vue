@@ -11,7 +11,6 @@
           <a href="#" class="header__link">
             <img
               class="header--button"
-              key="on"
               @click="showAccMenu"
               src="/assets/profile-3.png"
             />
@@ -20,7 +19,7 @@
           <transition name="dropdown">
             <div class="dropdown__menu" v-if="show">
               <ul class="dropdown__menu-nav">
-                <li class="dropdown__menu-item">
+                <li class="dropdown__menu-item" @click="show=false">
                   <a
                     class="dropdown__menu-link"
                     @click="$router.push('/profiles')"
@@ -31,7 +30,7 @@
                     <div class="dropdown__menu-text">Account</div>
                   </a>
                 </li>
-                <li class="dropdown__menu-item">
+                <li class="dropdown__menu-item" @click="show=false">
                   <a
                     class="dropdown__menu-link"
                     @click="$router.push('/notis')"
@@ -42,7 +41,7 @@
                     <div class="dropdown__menu-text">Notifications</div>
                   </a>
                 </li>
-                <li class="dropdown__menu-item">
+                <li class="dropdown__menu-item" @click="show=false">
                   <a class="dropdown__menu-link" @click="logOut">
                     <div class="dropdown__menu-icon">
                       <i class="pi pi-fw pi-power-off"></i>
@@ -103,12 +102,11 @@
                 </div>
               </li>
             </ul>
-            <a href="#" @click="$router.push('/notis')">See all</a>
+            <a href="#" @click="$router.push('/notis'); showNoti=false">See all</a>
           </div>
         </transition>
       </div>
     </div>
-    <Toast position="bottom-right" />
   </div>
 </template>
 
@@ -121,11 +119,7 @@ import moment from "moment";
 import { notificationApi } from "../apis/notification";
 import webRole from "../util/webRole.js";
 import * as yup from "yup";
-import Toast from "primevue/toast";
 export default {
-  components: {
-    Toast,
-  },
   setup() {
     const schema = yup.object({
       oldPassword: yup
