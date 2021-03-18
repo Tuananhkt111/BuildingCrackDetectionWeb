@@ -118,7 +118,7 @@
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info p-button-text p-mr-2"
               @click="editProduct(slotProps.data)"
-              v-tooltip.bottom="'View Location Details'"
+              v-tooltip.bottom="'Edit'"
               style="margin: 2px"
               v-if="admin"
             />
@@ -126,7 +126,7 @@
               icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text p-mr-2"
               @click="editProduct(slotProps.data)"
-              v-tooltip.bottom="'View Location Detail'"
+              v-tooltip.bottom="'View Location Details'"
               style="margin: 2px"
               v-if="!admin"
             />
