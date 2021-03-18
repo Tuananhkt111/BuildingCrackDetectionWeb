@@ -227,11 +227,12 @@
       </div>
       <div class="p-field">
         <label for="phoneNumber" class="form-control-label">Phone Number</label>
-        <InputMask
+        <InputText
+          type="phone"
           name="phone"
-          mask="9999999999"
           v-model.trim="phone"
           class="form-control form-control-alternative"
+          placeholder="Phone Number"
         />
         <small class="invalid">{{ errors.phone }}</small>
       </div>
@@ -319,12 +320,13 @@
         <small class="invalid">{{ errors.email }}</small>
       </div>
       <div class="p-field">
-        <label for="phoneNumber">Phone Number</label>
-        <InputMask
+        <label for="phoneNumber" class="form-control-label">Phone Number</label>
+        <InputText
+          type="phone"
           name="phone"
-          mask="9999999999"
           v-model.trim="phone"
-          disabled="true"
+          class="form-control form-control-alternative"
+          placeholder="Phone Number"
         />
         <small class="invalid">{{ errors.phone }}</small>
       </div>
@@ -545,7 +547,6 @@
 import Button from "primevue/button";
 import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
-import InputMask from "primevue/inputmask";
 import Rating from "primevue/rating";
 import MultiSelect from "primevue/multiselect";
 import Skeleton from "primevue/skeleton";
@@ -593,7 +594,6 @@ export default {
     Dropdown,
     Rating,
     MultiSelect,
-    InputMask,
     Skeleton,
   },
   computed: {

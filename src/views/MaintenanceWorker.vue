@@ -146,18 +146,20 @@
         <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
-        <label for="phone" class="form-control-label">Phone</label>
-        <InputMask
+        <label for="phoneNumber" class="form-control-label">Phone Number</label>
+        <InputText
+          type="phone"
           name="phone"
-          mask="9999999999"
           v-model.trim="phone"
           class="form-control form-control-alternative"
-          placeholder="Phone"
+          placeholder="Phone Number"
         />
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
-        <label for="address" class="form-control-label">Address (optional)</label>
+        <label for="address" class="form-control-label"
+          >Address (optional)</label
+        >
         <InputText
           name="address"
           v-model="address"
@@ -228,19 +230,20 @@
         <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
-        <label for="phone" class="form-control-label">Phone</label>
-        <InputMask
-          id="phone"
-          minlenght="10"
-          mask="9999999999"
-          v-model="phone"
+        <label for="phoneNumber" class="form-control-label">Phone Number</label>
+        <InputText
+          type="phone"
+          name="phone"
+          v-model.trim="phone"
           class="form-control form-control-alternative"
-          placeholder="Phone"
+          placeholder="Phone Number"
         />
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
-        <label for="address" class="form-control-label">Address (optional)</label>
+        <label for="address" class="form-control-label"
+          >Address (optional)</label
+        >
         <InputText
           id="address"
           v-model="address"
@@ -311,7 +314,6 @@
 <script>
 import Button from "primevue/button";
 import Calendar from "primevue/calendar";
-import InputMask from "primevue/inputmask";
 import Toast from "primevue/toast";
 import Skeleton from "primevue/skeleton";
 import contentNoti from "../util/contentNoti.js";
@@ -321,6 +323,7 @@ import maintenanceWorkerApi from "../apis/maintenanceWorker.js";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
+import "yup-phone";
 
 export default {
   setup() {
@@ -332,7 +335,12 @@ export default {
         .required("Worker Name can't be blank")
         .max(20)
         .label("Name"),
-      phone: yup.string().required().label("Phone"),
+      phone: yup
+        .string()
+        .required()
+        .label("Phone")
+        .phone("VN")
+        .required(),
     });
     const { errors, meta, handleReset } = useForm({
       validationSchema: schema,
@@ -358,7 +366,6 @@ export default {
     Button,
     Toast,
     Calendar,
-    InputMask,
     Skeleton,
   },
   computed: {

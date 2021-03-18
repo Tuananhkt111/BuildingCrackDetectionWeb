@@ -2,9 +2,9 @@
   <div>
     <div class="p-grid p-mt-3">
       <div class="player-container p-col-6" style="padding-left: 150px">
-        <video width="380" height="210" controls>
-          <source src="videos/14-03-2021 14_49.MP4" type="video/mp4" />
-          <source src="videos/14-03-2021 14_49.MP4" type="video/ogg" />
+        <video :key="url" width="380" height="210" controls>
+          <source :src="url" type="video/mp4" />
+          <source :src="url" type="video/ogg" />
           <!-- Your browser does not support the element. -->
         </video>
       </div>
@@ -321,13 +321,17 @@ export default {
       loading: true,
       displayImage: false,
       check: true,
+      url : "",
     };
   },
-  async created() {
+  created() {
     this.initFilters();
-    await this.setFlight(this.$route.query.flightId);
-    console.log("AA" + this.getFlight.locationName);
     this.loading = false;
+  },
+
+  async mounted() {
+    await this.setFlight(this.$route.query.flightId);
+    this.url = "assets/CapstoneDetect/videos/" + this.getFlight.video + ".mp4";
   },
   methods: {
     ...mapActions("flight", ["setFlight"]),
