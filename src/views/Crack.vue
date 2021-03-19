@@ -35,13 +35,12 @@
         </template>
         <Column header="Image">
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             <img
               :src="slotProps.data.imageThumbnails"
               :alt="slotProps.data.imageThumbnails"
               class="product-image"
               style="width: 80px ; height: 80px"
-              @click="showImage(slotProps.data)"
+              @click="imageClick(slotProps.index)"
             />
           </template>
         </Column>
@@ -52,7 +51,6 @@
           style="min-width:12rem"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.locationName }}
           </template>
           <template #filter="{filterModel}">
@@ -71,7 +69,6 @@
           dataType="numeric"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.accuracy }}%
           </template>
           <template #filter="{filterModel}">
@@ -91,7 +88,6 @@
           style="min-width:12rem"
         >
           <template #body="{data}">
-            <Skeleton v-if="loading" />
             <span :class="stockClass(data)">
               {{ data.severity }}
             </span>
@@ -118,7 +114,6 @@
           style="min-width:12rem"
         >
           <template #body="{data}">
-            <Skeleton v-if="loading" />
             <span :class="stockStatus(data)">
               {{ data.status }}
             </span>
@@ -139,7 +134,6 @@
         </Column>
         <Column :filterMenuStyle="{ width: '5rem' }">
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             <Button
               icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text p-mr-2"
@@ -293,6 +287,31 @@
         </div>
       </div>
     </Dialog>
+    <Galleria
+      :value="getCrackList"
+      :responsiveOptions="responsiveOptions"
+      :numVisible="7"
+      containerStyle="max-width: 850px"
+      :circular="true"
+      :fullScreen="true"
+      :showItemNavigators="true"
+      :showThumbnails="false"
+      v-model:visible="displayCustom"
+      v-model:activeIndex="activeIndex"
+    >
+      <template #item="slotProps">
+        <img
+          :src="slotProps.item.image"
+          style="width: 100%; display: block;"
+        />
+      </template>
+      <template #thumbnail="slotProps">
+        <img
+          :src="slotProps.item.imageThumbnails"
+          style="display: block;"
+        />
+      </template>
+    </Galleria>
   </div>
 </template>
 
@@ -304,9 +323,9 @@ import Textarea from "primevue/textarea";
 import moment from "moment";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
-import Skeleton from "primevue/skeleton";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
+import Galleria from "primevue/galleria";
 
 export default {
   components: {
@@ -314,9 +333,9 @@ export default {
     Rating,
     Textarea,
     MultiSelect,
-    Skeleton,
     TabView,
     TabPanel,
+    Galleria
   },
   computed: {
     ...mapGetters("crack", [
@@ -341,6 +360,22 @@ export default {
       loading: true,
       displayImage: false,
       check: true,
+      displayCustom: false,
+      activeIndex: 0,
+      responsiveOptions: [
+        {
+          breakpoint: "1024px",
+          numVisible: 5,
+        },
+        {
+          breakpoint: "768px",
+          numVisible: 3,
+        },
+        {
+          breakpoint: "560px",
+          numVisible: 1,
+        },
+      ],
     };
   },
   created() {
@@ -350,6 +385,11 @@ export default {
   },
   methods: {
     ...mapActions("crack", ["setCrackList"]),
+
+    imageClick(index) {
+      this.activeIndex = index;
+      this.displayCustom = true;
+    },
     showImage(product) {
       this.product = { ...product };
       document.body.style.overflow = "hidden";

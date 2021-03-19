@@ -38,7 +38,6 @@
         <template #empty> No Maintenance Worker found. </template>
         <Column field="name" header="Name" :showFilterMatchModes="false">
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.name }}
           </template>
           <template #filter="{ filterModel }">
@@ -52,7 +51,6 @@
         </Column>
         <Column field="phone" header="Phone" :showFilterMatchModes="false">
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.phone }}
           </template>
           <template #filter="{ filterModel }">
@@ -66,7 +64,6 @@
         </Column>
         <Column field="email" header="Email" :showFilterMatchModes="false">
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.email }}
           </template>
           <template #filter="{ filterModel }">
@@ -80,7 +77,6 @@
         </Column>
         <Column field="address" header="Address" :showFilterMatchModes="false">
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.address }}
           </template>
           <template #filter="{ filterModel }">
@@ -89,24 +85,6 @@
               v-model="filterModel.value"
               class="p-column-filter"
               placeholder="Search"
-            />
-          </template>
-        </Column>
-        <Column
-          header="Created"
-          filterField="created"
-          dataType="date"
-          style="min-width: 10rem"
-        >
-          <template #body="{ data }">
-            <Skeleton v-if="loading" />
-            {{ callDate(data.created) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <Calendar
-              v-model="filterModel.value"
-              dateFormat="mm/dd/yy"
-              placeholder="mm/dd/yyyy"
             />
           </template>
         </Column>
@@ -313,9 +291,7 @@
 
 <script>
 import Button from "primevue/button";
-import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
-import Skeleton from "primevue/skeleton";
 import contentNoti from "../util/contentNoti.js";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
@@ -365,8 +341,6 @@ export default {
   components: {
     Button,
     Toast,
-    Calendar,
-    Skeleton,
   },
   computed: {
     ...mapGetters("maintenanceWorker", ["getMaintenanceWorkerList"]),

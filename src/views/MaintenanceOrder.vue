@@ -41,7 +41,6 @@
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.locationName }}
           </template>
           <template #filter="{ filterModel }">
@@ -59,7 +58,6 @@
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.maintenanceWorkerName }}
           </template>
           <template #filter="{ filterModel }">
@@ -79,7 +77,6 @@
           style="min-width: 14rem"
         >
           <template #body="{ data }">
-            <Skeleton v-if="loading" />
             <span :class="stockStatusOrder(data)">
               {{ data.status }}
             </span>
@@ -106,7 +103,6 @@
           headerStyle="width: 13em"
         >
           <template #body="{ data }">
-            <Skeleton v-if="loading" />
             {{ callDate(data.maintenanceDate) }}
           </template>
           <template #filter="{ filterModel }">
@@ -119,7 +115,6 @@
         </Column>
         <Column headerStyle="width: 5em">
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             <Button
               icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text"
@@ -136,7 +131,6 @@
             <DataTable :value="slotProps.data.cracks">
               <Column header="Image" headerStyle="width: 150px" class="small">
                 <template #body="slotProps">
-                  <Skeleton v-if="loading" />
                   <img
                     :src="slotProps.data.imageThumbnails"
                     :alt="slotProps.data.imageThumbnails"
@@ -148,7 +142,6 @@
               </Column>
               <Column field="severity" header="Severity" sortable>
                 <template #body="slotProps">
-                  <Skeleton v-if="loading" />
                   <span :class="stockClass(slotProps.data)">
                     {{ slotProps.data.severity }}
                   </span>
@@ -156,7 +149,6 @@
               </Column>
               <Column field="status" header="Status" sortable>
                 <template #body="slotProps">
-                  <Skeleton v-if="loading" />
                   <span :class="stockStatus(slotProps.data)">
                     {{ slotProps.data.status }}
                   </span>
@@ -164,13 +156,11 @@
               </Column>
               <Column field="created" header="Created Date" sortable>
                 <template #body="slotProps">
-                  <Skeleton v-if="loading" />
                   <span>{{ callDate(slotProps.data.created) }}</span>
                 </template>
               </Column>
               <Column headerStyle="width:4rem">
                 <template #body="slotProps">
-                  <Skeleton v-if="loading" />
                   <Button
                     icon="pi pi-search"
                     @click="showDetail(slotProps.data)"
@@ -417,7 +407,6 @@ import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import MultiSelect from "primevue/multiselect";
 import Toast from "primevue/toast";
-import Skeleton from "primevue/skeleton";
 import Rating from "primevue/rating";
 import { mapGetters, mapActions } from "vuex";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
@@ -432,7 +421,6 @@ export default {
     Toast,
     Calendar,
     MultiSelect,
-    Skeleton,
     Rating,
     TabView,
     TabPanel,

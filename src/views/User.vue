@@ -42,7 +42,6 @@
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.userName }}
           </template>
           <template #filter="{ filterModel }">
@@ -56,7 +55,6 @@
         </Column>
         <Column field="name" header="Full Name" :showFilterMatchModes="false">
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.name }}
           </template>
           <template #filter="{ filterModel }">
@@ -75,7 +73,6 @@
           headerStyle="width: 14em"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.email }}
           </template>
           <template #filter="{ filterModel }">
@@ -93,7 +90,6 @@
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.phoneNumber }}
           </template>
           <template #filter="{ filterModel }">
@@ -107,7 +103,6 @@
         </Column>
         <Column header="Role" filterField="role" :showFilterMatchModes="false">
           <template #body="{ data }">
-            <Skeleton v-if="loading" />
             <span :class="stockRole(data.role)">{{ data.role }}</span>
           </template>
           <template #filter="{ filterModel }">
@@ -126,7 +121,6 @@
         </Column>
         <Column>
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             <Button
               icon="pi pi-user-edit"
               class="p-button-rounded p-button-info p-button-text"
@@ -163,6 +157,7 @@
       :style="{ width: '450px' }"
       header="Assessment"
       :modal="true"
+      :dismissableMask="true"
       class="p-fluid"
     >
       <div class="p-field">
@@ -549,7 +544,6 @@ import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
 import Rating from "primevue/rating";
 import MultiSelect from "primevue/multiselect";
-import Skeleton from "primevue/skeleton";
 import contentNoti from "../util/contentNoti.js";
 import webRole from "../util/webRole.js";
 import { mapGetters, mapActions } from "vuex";
@@ -563,10 +557,27 @@ import "yup-phone";
 export default {
   setup() {
     const schema = yup.object({
-      name: yup.string().max(20).label("Name").required(),
-      email: yup.string().label("Email").required().email(),
-      address: yup.string().max(300).label("Address").required(),
-      phone: yup.string().required().label("Phone").phone("VN").required(),
+      name: yup
+        .string()
+        .max(20)
+        .label("Name")
+        .required(),
+      email: yup
+        .string()
+        .label("Email")
+        .required()
+        .email(),
+      address: yup
+        .string()
+        .max(300)
+        .label("Address")
+        .required(),
+      phone: yup
+        .string()
+        .required()
+        .label("Phone")
+        .phone("VN")
+        .required(),
     });
     const { errors, meta, handleReset } = useForm({
       validationSchema: schema,
@@ -594,7 +605,6 @@ export default {
     Dropdown,
     Rating,
     MultiSelect,
-    Skeleton,
   },
   computed: {
     ...mapGetters("user", ["getUserList"]),
@@ -878,9 +888,12 @@ export default {
         this.selectedLocation = [];
         await this.setAvailableLocationManager(product.userId);
         for (let i = 0; i < tmp.length; i++) {
-          this.selectedLocation.push(
-            this.getAvailableLocationManager[this.findIndexById(tmp[i])]
-          );
+          const location = this.getAvailableLocationManager[
+            this.findIndexById(tmp[i])
+          ];
+          if (location != null) {
+            this.selectedLocation.push(location);
+          }
         }
       }
       this.UserUpdateDialog = true;

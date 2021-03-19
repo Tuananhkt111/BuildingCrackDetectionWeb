@@ -45,7 +45,6 @@
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.name }}
           </template>
           <template #filter="{filterModel}">
@@ -63,7 +62,6 @@
           :showFilterMatchModes="false"
         >
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             {{ slotProps.data.description }}
           </template>
           <template #filter="{filterModel}">
@@ -82,7 +80,6 @@
           style="min-width:10rem"
         >
           <template #body="{data}">
-            <Skeleton v-if="loading" />
             {{ callDate(data.created) }}
           </template>
           <template #filter="{filterModel}">
@@ -100,7 +97,6 @@
           style="min-width:10rem"
         >
           <template #body="{data}">
-            <Skeleton v-if="loading" />
             {{ callDate(data.lastModified) }}
           </template>
           <template #filter="{filterModel}">
@@ -113,7 +109,6 @@
         </Column>
         <Column>
           <template #body="slotProps">
-            <Skeleton v-if="loading" />
             <Button
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info p-button-text p-mr-2"
@@ -299,7 +294,6 @@ import contentNoti from "../util/contentNoti.js";
 import { mapGetters, mapActions } from "vuex";
 import { useForm, useField } from "vee-validate";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
-import Skeleton from "primevue/skeleton";
 import webRole from "../util/webRole.js";
 import * as yup from "yup";
 
@@ -333,7 +327,6 @@ export default {
     Button,
     Calendar,
     Toast,
-    Skeleton
   },
   computed: {
     ...mapGetters("location", ["getLocationList"]),

@@ -36,9 +36,8 @@ const flightStore = {
     async setFlightList({ commit }) {
       const res = await flightApi.getAll();
       for (let index = 0; index < res.length; index++) {
-        res[index].created = new Date(res[index].created);
+        res[index].created = new Date(res[index].created + "Z");
       }
-      console.log(res.created);
       if (res) {
         commit("setFlightList", res);
       }

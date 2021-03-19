@@ -51,7 +51,7 @@ const maintenanceOrderStore = {
     async setMaintenanceOrderList({ commit }) {
       const res = await maintenanceOrderApi.getAll();
       for (let index = 0; index < res.length; index++) {
-        res[index].maintenanceDate = new Date(res[index].maintenanceDate);
+        res[index].maintenanceDate = new Date(res[index].maintenanceDate + "Z");
       }
       if (res) {
         commit("setMaintenanceOrderList", res);
@@ -61,7 +61,7 @@ const maintenanceOrderStore = {
     async setMaintenanceOrder({ commit }, id) {
       const res = await maintenanceOrderApi.getById(id);
       for (let index = 0; index < res.length; index++) {
-        res[index].maintenanceDate = new Date(res[index].maintenanceDate);
+        res[index].maintenanceDate = new Date(res[index].maintenanceDate + "Z");
       }
       if (res) {
         commit("setMaintenanceOrderList", res);
