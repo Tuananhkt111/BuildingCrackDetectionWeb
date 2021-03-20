@@ -247,7 +247,7 @@
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="role" class="form-control-label">Role</label>
-          <p :class="stockRole(selectedRole)">{{ selectedRole }}</p>
+          <p class="dropdown-list form-control-alternative">{{ selectedRole }}</p>
         </div>
         <div class="p-field p-col-6" v-if="selectedRole != null">
           <label for="Location" class="form-control-label">Location</label>
@@ -946,6 +946,12 @@ export default {
 </script>
 
 <style scoped>
+::v-deep(.p-multiselect-label-container){
+      margin-top: -7px;
+}
+::v-deep(.p-dropdown .p-dropdown-label){
+  margin-top: -5px !important;
+}
 ::v-deep(.p-dialog .p-dialog-header) {
   border-top-right-radius: 24px;
   border-top-left-radius: 24px;
