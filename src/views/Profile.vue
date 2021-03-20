@@ -62,10 +62,8 @@
             <br />
             <div class="card card-profile shadow">
               <div class="card-body pt-0 pt-md-4">
-                <div class="text-center">
-                  <h3>
-                    Change Password<span class="font-weight-light"></span>
-                  </h3>
+                <div>
+                  <h3 class="text-center">Change Password</h3>
                   <input
                     type="password"
                     class="form-control form-control-alternative"
@@ -73,7 +71,7 @@
                     id="oldPassword"
                     v-model="oldPassword"
                   />
-                  <small>{{ errors.oldPassword }}</small>
+                  <small class="invalid">{{ errors.oldPassword }}</small>
                   <br />
                   <input
                     type="password"
@@ -82,7 +80,7 @@
                     id="newPassword"
                     v-model="newPassword"
                   />
-                  <small>{{ errors.newPassword }}</small>
+                  <small class="invalid">{{ errors.newPassword }}</small>
                   <br />
                   <input
                     type="password"
@@ -91,15 +89,17 @@
                     id="confirmPassword"
                     v-model="confirmPassword"
                   />
-                  <small>{{ errors.confirmPassword }}</small>
+                  <small class="invalid">{{ errors.confirmPassword }}</small>
                   <br />
-                  <button
-                    class="btn btn-sm btn-default float-center"
-                    style="padding: 5px 10px; font-size: 0.8rem;"
-                    @click="confirmChangePassword"
-                  >
-                    Change
-                  </button>
+                  <div class="text-center">
+                    <button
+                      class="btn btn-sm btn-default float-center"
+                      style="padding: 5px 10px; font-size: 0.8rem"
+                      @click="confirmChangePassword"
+                    >
+                      Change
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -203,11 +203,7 @@ import * as yup from "yup";
 export default {
   setup() {
     const schema = yup.object({
-      oldPassword: yup
-        .string()
-        .max(30)
-        .label("Old Password")
-        .required(),
+      oldPassword: yup.string().max(30).label("Old Password").required(),
       newPassword: yup
         .string()
         .max(30)
@@ -293,6 +289,13 @@ export default {
 };
 </script>
 <style scoped>
+.invalid {
+  color: red;
+  position: sticky;
+  left: 30px !important;
+}
+
+
 header,
 main {
   overflow: hidden;
