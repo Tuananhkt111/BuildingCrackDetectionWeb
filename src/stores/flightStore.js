@@ -37,6 +37,7 @@ const flightStore = {
       const res = await flightApi.getAll();
       for (let index = 0; index < res.length; index++) {
         res[index].created = new Date(res[index].created + "Z");
+        res[index].index = index +1;
       }
       if (res) {
         commit("setFlightList", res);
@@ -49,6 +50,7 @@ const flightStore = {
         commit("setFlight", res);
         if (res.cracks != null) {
           for (let index = 0; index < res.cracks.length; index++) {
+            res.cracks[index].index = index +1;
             res.cracks[index].accuracy = Math.round(res.cracks[index].accuracy * 100);
             commit("setCrackList", res.cracks);
           }

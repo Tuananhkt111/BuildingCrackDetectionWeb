@@ -277,7 +277,7 @@
       :value="getCrackList"
       :responsiveOptions="responsiveOptions"
       :numVisible="7"
-      containerStyle="max-width: 850px"
+      containerStyle="width: 1000px"
       :circular="true"
       :fullScreen="true"
       :showItemNavigators="true"
@@ -288,7 +288,7 @@
       <template #item="slotProps">
         <img
           :src="slotProps.item.image"
-          style="width: 100%; display: block;"
+          style="width: 1100px ; display: block;"
         />
       </template>
       <template #thumbnail="slotProps">

@@ -35,11 +35,12 @@ const locationStore = {
   actions: {
     async setLocationList({ commit }) {
       const res = await locationApi.getAll();
-      for (let index = 0; index < res.length; index++) {
-        res[index].lastModified = new Date(res[index].lastModified + "Z");
-        res[index].created = new Date(res[index].created + "Z");
-      }
       if (res) {
+        for (let index = 0; index < res.length; index++) {
+          res[index].lastModified = new Date(res[index].lastModified + "Z");
+          res[index].created = new Date(res[index].created + "Z");
+          res[index].index = index + 1;
+        }
         commit("setLocationList", res);
       }
     },

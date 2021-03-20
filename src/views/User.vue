@@ -35,7 +35,11 @@
             </span>
           </span>
         </div>
-
+        <Column header="No">
+          <template #body="slotProps">
+            {{ slotProps.data.index }}
+          </template>
+        </Column>
         <Column
           field="userName"
           header="User Name"

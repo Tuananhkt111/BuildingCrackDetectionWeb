@@ -36,6 +36,11 @@
           </span>
         </div>
         <template #empty> No Maintenance Worker found. </template>
+        <Column header="No">
+          <template #body="slotProps">
+            {{slotProps.data.index}}
+          </template>
+        </Column>
         <Column field="name" header="Name" :showFilterMatchModes="false">
           <template #body="slotProps">
             {{ slotProps.data.name }}

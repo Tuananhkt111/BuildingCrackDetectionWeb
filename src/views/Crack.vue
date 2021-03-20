@@ -33,6 +33,11 @@
         <template #loading>
           Loading Crack, please wait...
         </template>
+        <Column header="No">
+          <template #body="slotProps">
+            {{slotProps.data.index}}
+          </template>
+        </Column>
         <Column header="Image">
           <template #body="slotProps">
             <img
@@ -302,14 +307,11 @@
       <template #item="slotProps">
         <img
           :src="slotProps.item.image"
-          style="width: 100%; display: block;"
+          style="width: 1100px; display: block;"
         />
       </template>
       <template #thumbnail="slotProps">
-        <img
-          :src="slotProps.item.imageThumbnails"
-          style="display: block;"
-        />
+        <img :src="slotProps.item.imageThumbnails" style="display: block;" />
       </template>
     </Galleria>
   </div>
@@ -335,7 +337,7 @@ export default {
     MultiSelect,
     TabView,
     TabPanel,
-    Galleria
+    Galleria,
   },
   computed: {
     ...mapGetters("crack", [
@@ -435,7 +437,10 @@ export default {
     },
     showDetail(product) {
       this.product = { ...product };
-      if (this.product.assessmentResult != null && this.product.assessmentResult != "") {
+      if (
+        this.product.assessmentResult != null &&
+        this.product.assessmentResult != ""
+      ) {
         this.check = false;
       } else {
         this.check = true;

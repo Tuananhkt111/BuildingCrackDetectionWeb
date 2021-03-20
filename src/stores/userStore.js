@@ -29,6 +29,10 @@ const userStore = {
     async setUserList({ commit }) {
       const res = await userApi.getAll();
       if (res) {
+        for (let index = 0; index < res.length; index++) {
+          res[index].created = new Date(res[index].created +"Z");
+          res[index].index = index + 1;
+        }
         commit("setUserList", res);
       }
     },

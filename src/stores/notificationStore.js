@@ -29,6 +29,10 @@ const notificationStore = {
     async setNotificationList({ commit }) {
       const res = await notificationApi.getAll();
       if (res) {
+        for (let index = 0; index < res.length; index++) {
+          res[index].created = new Date(res[index].created +"Z");
+          res[index].index = index + 1;
+        }
         commit("setNotificationList", res);
       }
     },

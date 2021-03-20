@@ -39,6 +39,11 @@
         <template #empty>
           No Locations found.
         </template>
+        <Column header="No">
+          <template #body="slotProps">
+            {{slotProps.data.index}}
+          </template>
+        </Column>
         <Column
           field="name"
           header="Location Name"

@@ -10,17 +10,7 @@ const maintenanceOrderStore = {
 
   getters: {
     getMaintenanceOrderList(state) {
-      if (localStorage.getItem("orderId") != null) {
-        console.log("CC Order");
-        const orderId = localStorage.getItem("orderId");
-        localStorage.removeItem("orderId");
-        return state.maintenanceOrderList.filter(
-          (oder) => oder.maintenanceOrderId == orderId
-        );
-      } else {
-        console.log("run BTH");
-        return state.maintenanceOrderList;
-      }
+      return state.maintenanceOrderList;
     },
     getStatusList(state) {
       return state.status;
@@ -50,10 +40,18 @@ const maintenanceOrderStore = {
   actions: {
     async setMaintenanceOrderList({ commit }) {
       const res = await maintenanceOrderApi.getAll();
-      for (let index = 0; index < res.length; index++) {
-        res[index].maintenanceDate = new Date(res[index].maintenanceDate + "Z");
-      }
       if (res) {
+        for (let index = 0; index < res.length; index++) {
+          res[index].maintenanceDate = new Date(
+            res[index].maintenanceDate + "Z"
+          );
+          res[index].index = index + 1;
+          var crack = res[index].cracks;
+          for (let index2 = 0; index2 < crack.length; index2++) {
+            res[index].cracks[index2].index = index2 + 1;            
+          }
+        }
+        console.log(res);
         commit("setMaintenanceOrderList", res);
       }
     },

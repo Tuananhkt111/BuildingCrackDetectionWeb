@@ -33,6 +33,11 @@
         <template #empty>
           No Flights found.
         </template>
+        <Column header="No">
+          <template #body="slotProps">
+            {{slotProps.data.index}}
+          </template>
+        </Column>
         <Column
           field="locationName"
           header="Location Name"

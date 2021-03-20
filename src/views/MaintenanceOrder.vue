@@ -35,6 +35,11 @@
         </div>
         <template #empty> No Maintenance Order found. </template>
         <Column :expander="true" headerStyle="width: 30px" />
+        <Column header="No">
+          <template #body="slotProps">
+            {{ slotProps.data.index }}
+          </template>
+        </Column>
         <Column
           field="locationName"
           header="Location Name"
@@ -129,6 +134,11 @@
               <h4 class="p-m-2" id="sub-table-title">List of Cracks</h4>
             </div>
             <DataTable :value="slotProps.data.cracks">
+              <Column header="No">
+                <template #body="slotProps">
+                  {{ slotProps.data.index }}
+                </template>
+              </Column>
               <Column header="Image" headerStyle="width: 150px" class="small">
                 <template #body="slotProps">
                   <img
