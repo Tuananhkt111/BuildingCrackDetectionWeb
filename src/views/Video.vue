@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="p-grid p-mt-3">
+    <div class="p-grid p-mt-3" v-if="checkNull">
       <div class="player-container p-col-6" style="padding-left: 150px">
         <video :key="url" width="380" height="210" controls>
           <source :src="url" type="video/mp4" />
@@ -347,6 +347,7 @@ export default {
       check: true,
       url: "",
       displayCustom: false,
+      checkNull: true,
       activeIndex: 0,
       responsiveOptions: [
         {
@@ -372,6 +373,10 @@ export default {
   async mounted() {
     await this.setFlight(this.$route.query.flightId);
     this.url = "assets/CapstoneDetect/videos/" + this.getFlight.video + ".mp4";
+    if(this.getFlight == null && this.getFlight == ""){
+      this.checkNull = false;
+    }
+    
   },
   methods: {
     ...mapActions("flight", ["setFlight"]),

@@ -872,6 +872,10 @@ export default {
       ];
     },
     async editProduct(product) {
+      var tmpLocation = {
+        locationId: 0,
+        name: "<<No Location>>"
+      };
       this.handleReset();
       this.name = product.name;
       this.email = product.email;
@@ -882,18 +886,21 @@ export default {
       this.product.created = this.callDate(product.created);
       this.product.lastModified = this.callDate(product.lastModified);
       this.selectedRole = this.product.role;
-      const tmp = this.product.locationIds;
+      const tmp = this.product.locations;
+      console.log(tmp);
       if (tmp.length == 1 && this.selectedRole == "Staff") {
         await this.setAvailableLocationStaff(product.userId);
         this.selectedLocation = this.getAvailableLocationStaff[
-          this.findIndexById(this.product.locationIds[0])
+          this.findIndexById(this.product.locations[0].locationId)
         ];
+        this.getAvailableLocationStaff.push(tmpLocation);
+        console.log(this.getAvailableLocationStaff);
       } else {
         this.selectedLocation = [];
         await this.setAvailableLocationManager(product.userId);
         for (let i = 0; i < tmp.length; i++) {
           const location = this.getAvailableLocationManager[
-            this.findIndexById(tmp[i])
+            this.findIndexById(tmp[i].locationId)
           ];
           if (location != null) {
             this.selectedLocation.push(location);
@@ -902,7 +909,12 @@ export default {
       }
       this.UserUpdateDialog = true;
     },
-    seeProduct(product) {
+    async seeProduct(product) {
+      var tmpLocation = {
+        locationId: 0,
+        name: "<<No Location>>"
+      };
+      console.log(product);
       this.handleReset();
       this.name = product.name;
       this.email = product.email;
@@ -913,13 +925,14 @@ export default {
       this.product.created = this.callDate(product.created);
       this.product.lastModified = this.callDate(product.lastModified);
       this.selectedRole = this.product.role;
-      const tmp = this.product.locationIds;
+      const tmp = this.product.locations;
       if (tmp.length == 1 && this.selectedRole == "Staff") {
-        this.selectedLocation = this.getLocationList[
-          this.findIndexById(this.product.locationIds[0])
+        await this.setAvailableLocationStaff(product.userId);
+        this.selectedLocation = this.getAvailableLocationStaff[
+          this.findIndexById(this.product.locations[0].locationId)
         ];
+        this.getAvailableLocationStaff.push(tmpLocation);
       }
-      console.log(this.selectedLocation);
       this.StaffDialog = true;
     },
 

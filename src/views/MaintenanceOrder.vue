@@ -222,10 +222,16 @@
                     >{{ product.maintenanceDate }}
                   </p>
                 </div>
-                <div class="p-col-12">
+                <div class="p-col-6">
                   <p>
                     <span style="font-weight: bold">Assessor Name: </span
                     >{{ product.assessorName }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Expense: </span
+                    >{{ product.maintenanceExpense }}
                   </p>
                 </div>
               </div>

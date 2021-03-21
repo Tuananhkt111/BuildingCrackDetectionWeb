@@ -35,7 +35,6 @@ async function login(userName, password) {
       urlConstants.USER_URL + "/" + res.data.userId
     );
     localStorage.setItem("user", JSON.stringify(user.data));
-    console.log(user.data);
     return JSON.stringify(user.data);
   } else {
     return null;
@@ -50,6 +49,8 @@ async function createUser(role, name, email, phoneNumber, address, location) {
     for (let i = 0; i != location.length; i++) {
       locations[i] = location[i].locationId;
     }
+  } else {
+    locations = [];
   }
   const data = {
     role: role,
@@ -74,14 +75,16 @@ async function getUserById() {
 
 async function updateUser(id, name, email, phoneNumber, address, location) {
   var locations = [];
-  if (location.locationId != null) {
+  if (location.locationId != null && location.locationId != 0) {
     locations[0] = location.locationId;
+  } else if(location.locationId == 0) {
+    locations = [];
   } else {
     locations = [];
     for (let i = 0; i != location.length; i++) {
       locations[i] = location[i].locationId;
     }
-  }
+  } 
   const data = {
     phoneNumber: phoneNumber,
     name: name,
@@ -95,7 +98,6 @@ async function updateUser(id, name, email, phoneNumber, address, location) {
   ).catch((err) => {
     console.log(err);
   });
-  console.log("ÂCSCASC" + res);
   return res;
 }
 async function changePassword(id, oldPass, newPass) {
@@ -130,7 +132,7 @@ async function resetPassword(id) {
 }
 async function forgotPassword(userName) {
   const res = await ApiHelper.post(
-    urlConstants.USER_URL + "/forgotpass-confirm?userName=" + userName
+    urlConstants.USER_URL + "/forgotpass-confirm-w?userName=" + userName
   );
   return res;
 }

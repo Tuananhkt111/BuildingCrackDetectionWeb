@@ -8,7 +8,7 @@
         :rowHover="true"
         :scrollable="true"
         ref="dt"
-        :value="getCrackList"
+        :value="getCrackListConfirm"
         dataKey="id"
         :paginator="true"
         :rows="5"
@@ -167,6 +167,7 @@
       v-model:visible="crackInfoDialog"
       :style="{ width: '1000px' }"
       :modal="true"
+      :baseZIndex=10000
       class="dialog"
     >
       <template #header>
@@ -293,7 +294,7 @@
       </div>
     </Dialog>
     <Galleria
-      :value="getCrackList"
+      :value="getCrackListConfirm"
       :responsiveOptions="responsiveOptions"
       :numVisible="7"
       containerStyle="max-width: 850px"
@@ -309,6 +310,7 @@
           :src="slotProps.item.image"
           style="width: 1100px; display: block;"
         />
+        <div class="buttonView" @click="showDetail(slotProps.item)"><i class="pi pi-fw pi-eye" style="fontSize: 25px"></i></div>
       </template>
       <template #thumbnail="slotProps">
         <img :src="slotProps.item.imageThumbnails" style="display: block;" />
@@ -341,14 +343,11 @@ export default {
   },
   computed: {
     ...mapGetters("crack", [
-      "getCrackList",
+      "getCrackListConfirm",
       "getStatusList",
       "getSeveritysList",
     ]),
 
-    data() {
-      return this.getCrackList;
-    },
   },
   data() {
     return {
@@ -571,6 +570,14 @@ textarea {
   letter-spacing: 0.3px;
   color: #ffbe49;
   text-transform: uppercase;
+}
+
+.buttonView{
+  position: fixed;
+  z-index: 10000;
+  top: 40px;
+  right:140px;
+  color: red;
 }
 
 .high {
