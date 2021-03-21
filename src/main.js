@@ -18,6 +18,7 @@ import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import ToastService from "primevue/toastservice";
+import ConfirmationService from 'primevue/confirmationservice';
 
 import "primeflex/primeflex.css";
 import Tooltip from "primevue/tooltip";
@@ -29,6 +30,7 @@ const emitter = mitt();
 
 const app = createApp(App);
 
+app.use(ConfirmationService);
 app.use(store);
 app.use(router);
 app.use(PrimeVue);

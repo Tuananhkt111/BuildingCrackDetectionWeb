@@ -8,16 +8,16 @@ export const flightApi = {
 
 async function getAll() {
   const res = await ApiHelper.get(urlConstants.FLIGHT_URL);
-  console.log(res);
   return res.data;
 }
 async function getById(id) {
   const res = await ApiHelper.get(urlConstants.FLIGHT_URL + "/" + id);
-  return res.data;
+  if (res != null) {
+    return res.data;
+  } else return null;
 }
-
 
 export default {
   getAll,
-  getById
+  getById,
 };

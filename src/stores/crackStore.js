@@ -19,7 +19,7 @@ const crackStore = {
       return state.crackList;
     },
     getCrackListConfirm(state) {
-      var tmp = state.crackList.filter((crack) => crack.status !== "Unconfirmed")
+      var tmp = state.crackList.filter((crack) => crack.status !== "Unconfirmed");
       for (let index = 0; index < tmp.length; index++) {
         tmp[index].index = index + 1;
       }

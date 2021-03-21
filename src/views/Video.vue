@@ -1,5 +1,8 @@
 <template>
   <div>
+    <h5 class="p-m-0" style="font-size:1.25rem; padding-left:25px">
+      Manage Flight Details
+    </h5>
     <div class="p-grid p-mt-3" v-if="checkNull">
       <div class="player-container p-col-6" style="padding-left: 150px">
         <video :key="url" width="380" height="210" controls>
@@ -22,130 +25,214 @@
     <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
       <img :src="product.image" style="width:90%; height: 80%;" />
     </div>
-    <div class="card">
-      <DataTable
-        :rowHover="true"
-        :scrollable="true"
-        ref="dt"
-        :value="getCrackList"
-        dataKey="id"
-        :paginator="true"
-        :rows="5"
-        :loading="loading"
-        :globalFilterFields="['locationName', 'reporterName']"
-        v-model:filters="filters"
-        filterDisplay="menu"
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        currentPageReportTemplate=""
-      >
-        <template #empty> No Cracks found. </template>
-        <template #loading>
-          Loading Crack, please wait...
-        </template>
-        <Column header="Image">
-          <template #body="slotProps">
-            <img
-              :src="slotProps.data.imageThumbnails"
-              :alt="slotProps.data.imageThumbnails"
-              class="product-image"
-              style="width: 80px ; height: 80px"
-              @click="imageClick(slotProps.index)"
-            />
-          </template>
-        </Column>
-        <Column
-          field="accuracy"
-          header="Accuracy"
-          style="min-width:12rem"
-          dataType="numeric"
-        >
-          <template #body="slotProps">
-            {{ slotProps.data.accuracy }}%
-          </template>
-          <template #filter="{filterModel}">
-            <InputText
-              type="text"
-              v-model="filterModel.value"
-              class="p-column-filter"
-              placeholder="Search "
-            />
-          </template>
-        </Column>
-        <Column
-          header="Severity"
-          filterField="severity"
-          :showFilterMatchModes="false"
-          :filterMenuStyle="{ width: '14rem' }"
-          headerStyle="width: 2em"
-        >
-          <template #body="{data}">
-            <span :class="stockClass(data)">
-              {{ data.severity }}
-            </span>
-          </template>
-          <template #filter="{filterModel}">
-            <div class="p-mb-3 p-text-bold">Severity Picker</div>
-            <MultiSelect
-              v-model="filterModel.value"
-              :options="getSeveritysList"
-              placeholder="Any"
-              class="p-column-filter"
-            >
-              <template #option="slotProps">
-                <span>{{ slotProps.option }}</span>
+    <TabView class="p-mt-3">
+      <TabPanel header="Not verificated Cracks">
+        <div class="card">
+          <DataTable
+            :rowHover="true"
+            :scrollable="true"
+            ref="dt"
+            :value="getUnConfirmCrackList"
+            dataKey="id"
+            :paginator="true"
+            :rows="5"
+            :loading="loading"
+            :globalFilterFields="['locationName', 'reporterName']"
+            v-model:filters="filters"
+            filterDisplay="menu"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate=""
+          >
+            <template #empty> No Cracks found. </template>
+            <template #loading>
+              Loading Crack, please wait...
+            </template>
+            <Column header="No">
+              <template #body="slotProps">
+                {{ slotProps.data.index }}
               </template>
-            </MultiSelect>
-          </template>
-        </Column>
-        <Column
-          header="Status"
-          filterField="status"
-          :showFilterMatchModes="false"
-          :filterMenuStyle="{ width: '12rem' }"
-          style="min-width:12rem"
-        >
-          <template #body="{data}">
-            <span :class="stockStatus(data)">
-              {{ data.status }}
-            </span>
-          </template>
-          <template #filter="{filterModel}">
-            <div class="p-mb-3 p-text-bold">Status Picker</div>
-            <MultiSelect
-              v-model="filterModel.value"
-              :options="getStatusList"
-              placeholder="Any"
-              class="p-column-filter"
-            >
-              <template #option="slotProps">
-                <span>{{ slotProps.option }}</span>
+            </Column>
+            <Column header="Image">
+              <template #body="slotProps">
+                <img
+                  :src="slotProps.data.imageThumbnails"
+                  :alt="slotProps.data.imageThumbnails"
+                  class="product-image"
+                  style="width: 80px ; height: 80px"
+                  @click="imageClick(slotProps.index, getUnConfirmCrackList)"
+                />
               </template>
-            </MultiSelect>
-          </template>
-        </Column>
-        <Column :filterMenuStyle="{ width: '5rem' }">
-          <template #body="slotProps">
-            <Button
-              icon="pi pi-eye"
-              class="p-button-rounded p-button-info p-button-text p-mr-2"
-              @click="showDetail(slotProps.data)"
-              style="margin: 2px"
-              v-tooltip.bottom="'View Crack Details'"
-            />
-            <Button
-              v-if="
-                slotProps.data.maintenanceOrderId != null &&
-                  slotProps.data.maintenanceOrderId != 0
-              "
-              icon="pi pi-calendar-minus"
-              class="p-button-rounded p-button-danger p-button-text"
-              @click="showMaintenanceOrder(slotProps.data)"
-              v-tooltip.bottom="'View Maintenance Order'"
-            />
-          </template>
-        </Column>
-      </DataTable>
-    </div>
+            </Column>
+            <Column
+              field="accuracy"
+              header="Accuracy"
+              style="min-width:12rem"
+              dataType="numeric"
+            >
+              <template #body="slotProps">
+                {{ slotProps.data.accuracy }}%
+              </template>
+              <template #filter="{filterModel}">
+                <InputText
+                  type="text"
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search "
+                />
+              </template>
+            </Column>
+            <Column :filterMenuStyle="{ width: '5rem' }">
+              <template #body="slotProps">
+                <Button
+                  label="Reject"
+                  @click="confirm1($event, slotProps.data)"
+                  icon="pi pi-times"
+                  class="p-button-rounded p-button-danger p-mr-3"
+                />
+                <Button
+                  label="Confirm"
+                  @click="showConfirm(slotProps.data)"
+                  icon="pi pi-check"
+                  class="p-button-rounded p-button-warning"
+                />
+              </template>
+            </Column>
+          </DataTable>
+        </div>
+      </TabPanel>
+      <TabPanel header="Verificated Crack">
+        <div class="card">
+          <DataTable
+            :rowHover="true"
+            :scrollable="true"
+            ref="dt"
+            :value="getConfirmCrackList"
+            dataKey="id"
+            :paginator="true"
+            :rows="5"
+            :loading="loading"
+            :globalFilterFields="['locationName', 'reporterName']"
+            v-model:filters="filters"
+            filterDisplay="menu"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            currentPageReportTemplate=""
+          >
+            <template #empty> No Cracks found. </template>
+            <template #loading>
+              Loading Crack, please wait...
+            </template>
+            <Column header="No">
+              <template #body="slotProps">
+                {{ slotProps.data.index }}
+              </template>
+            </Column>
+            <Column header="Image">
+              <template #body="slotProps">
+                <img
+                  :src="slotProps.data.imageThumbnails"
+                  :alt="slotProps.data.imageThumbnails"
+                  class="product-image"
+                  style="width: 80px ; height: 80px"
+                  @click="imageClick(slotProps.index, getConfirmCrackList)"
+                />
+              </template>
+            </Column>
+            <Column
+              field="accuracy"
+              header="Accuracy"
+              style="min-width:12rem"
+              dataType="numeric"
+            >
+              <template #body="slotProps">
+                {{ slotProps.data.accuracy }}%
+              </template>
+              <template #filter="{filterModel}">
+                <InputText
+                  type="text"
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search "
+                />
+              </template>
+            </Column>
+            <Column
+              header="Severity"
+              filterField="severity"
+              :showFilterMatchModes="false"
+              :filterMenuStyle="{ width: '14rem' }"
+              headerStyle="width: 2em"
+            >
+              <template #body="{data}">
+                <span :class="stockClass(data)">
+                  {{ data.severity }}
+                </span>
+              </template>
+              <template #filter="{filterModel}">
+                <div class="p-mb-3 p-text-bold">Severity Picker</div>
+                <MultiSelect
+                  v-model="filterModel.value"
+                  :options="getSeveritysList"
+                  placeholder="Any"
+                  class="p-column-filter"
+                >
+                  <template #option="slotProps">
+                    <span>{{ slotProps.option }}</span>
+                  </template>
+                </MultiSelect>
+              </template>
+            </Column>
+            <Column
+              header="Status"
+              filterField="status"
+              :showFilterMatchModes="false"
+              :filterMenuStyle="{ width: '12rem' }"
+              style="min-width:12rem"
+            >
+              <template #body="{data}">
+                <span :class="stockStatus(data)">
+                  {{ data.status }}
+                </span>
+              </template>
+              <template #filter="{filterModel}">
+                <div class="p-mb-3 p-text-bold">Status Picker</div>
+                <MultiSelect
+                  v-model="filterModel.value"
+                  :options="getStatusList"
+                  placeholder="Any"
+                  class="p-column-filter"
+                >
+                  <template #option="slotProps">
+                    <span>{{ slotProps.option }}</span>
+                  </template>
+                </MultiSelect>
+              </template>
+            </Column>
+            <Column :filterMenuStyle="{ width: '5rem' }">
+              <template #body="slotProps">
+                <Button
+                  icon="pi pi-eye"
+                  class="p-button-rounded p-button-info p-button-text p-mr-2"
+                  @click="showDetail(slotProps.data)"
+                  style="margin: 2px"
+                  v-tooltip.bottom="'View Crack Details'"
+                />
+                <Button
+                  v-if="
+                    slotProps.data.maintenanceOrderId != null &&
+                      slotProps.data.maintenanceOrderId != 0
+                  "
+                  icon="pi pi-calendar-minus"
+                  class="p-button-rounded p-button-danger p-button-text"
+                  @click="showMaintenanceOrder(slotProps.data)"
+                  v-tooltip.bottom="'View Maintenance Order'"
+                />
+              </template>
+            </Column>
+          </DataTable>
+        </div>
+      </TabPanel>
+    </TabView>
+
     <Dialog
       v-model:visible="crackInfoDialog"
       :style="{ width: '1000px' }"
@@ -273,8 +360,81 @@
         </div>
       </div>
     </Dialog>
+    <Dialog
+      v-model:visible="confirmCrackDialog"
+      :style="{ width: '600px' }"
+      :modal="true"
+      class="dialog"
+    >
+      <template #header>
+        <h3 class="dialog-title">Verify Crack</h3>
+      </template>
+      <div class="p-grid nested-grid">
+        <div class="p-col-6">
+          <img
+            :src="product.imageThumbnails"
+            :alt="product.imageThumbnails"
+            class="product-image"
+            v-if="product.image"
+            @click="showImage(product)"
+            style="width:250px; height:100%"
+          />
+        </div>
+        <div class="p-col-6">
+          <div class="p-col-12">
+            <label class="form-control-label">Position</label>
+            <InputText
+              v-model.trim="position"
+              class="form-control form-control-alternative"
+              style="width:100%"
+            />
+            <small class="invalid">{{ errors.position }}</small>
+          </div>
+          <div class="p-col-12">
+            <label class="form-control-label">Description</label>
+            <InputText
+              v-model.trim="description"
+              class="form-control form-control-alternative"
+              style="width:100%"
+            />
+            <small class="invalid">{{ errors.description }}</small>
+          </div>
+          <div class="p-col-12">
+            <label class="form-control-label">Severity</label>
+            <div
+              v-for="category of getSeveritysList"
+              :key="category.key"
+              class="p-field-radiobutton"
+            >
+              <RadioButton
+                :id="category.key"
+                name="category"
+                :value="category"
+                v-model="selectedSeverity"
+              />
+              <label :for="category.key">{{ category }}</label>
+            </div>
+            <small class="invalid">{{ errors.selectedSeverity }}</small>
+          </div>
+          <div>
+            <Button
+              label="Cancel"
+              @click="confirmCrackDialog = False"
+              icon="pi pi-times"
+              class="p-button-rounded p-button-danger p-mr-3"
+            />
+            <Button
+              label="Confirm"
+              @click="confirmCrack"
+              icon="pi pi-check"
+              class="p-button-rounded p-button-warning"
+            />
+          </div>
+        </div>
+      </div>
+    </Dialog>
     <Galleria
-      :value="getCrackList"
+      :value="imageList"
       :responsiveOptions="responsiveOptions"
       :numVisible="7"
       containerStyle="width: 1000px"
@@ -292,12 +452,11 @@
         />
       </template>
       <template #thumbnail="slotProps">
-        <img
-          :src="slotProps.item.imageThumbnails"
-          style="display: block;"
-        />
+        <img :src="slotProps.item.imageThumbnails" style="display: block;" />
       </template>
     </Galleria>
+    <ConfirmPopup></ConfirmPopup>
+    <Toast position="bottom-right" />
   </div>
 </template>
 
@@ -309,12 +468,54 @@ import Textarea from "primevue/textarea";
 import moment from "moment";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
-import TabView from "primevue/tabview";
-import TabPanel from "primevue/tabpanel";
 import crackApi from "../apis/cracks.js";
 import Galleria from "primevue/galleria";
+import TabView from "primevue/tabview";
+import TabPanel from "primevue/tabpanel";
+import ConfirmPopup from "primevue/confirmpopup";
+import Toast from "primevue/toast";
+import RadioButton from "primevue/radiobutton";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
 
 export default {
+  setup() {
+    const schema = yup.object({
+      position: yup
+        .string()
+        .max(20)
+        .label("Position")
+        .required(),
+      description: yup
+        .string()
+        .max(300)
+        .label("Desciption")
+        .required(),
+      selectedSeverity: yup
+        .string()
+        .label("Severity")
+        .required(),
+    });
+    const { errors, meta, handleReset, isSubmitting, validate } = useForm({
+      validationSchema: schema,
+    });
+
+    const { value: position } = useField("position");
+    const { value: description } = useField("description");
+    const { value: selectedSeverity } = useField("selectedSeverity");
+
+    return {
+      handleReset,
+      position,
+      description,
+      selectedSeverity,
+      errors,
+      meta,
+      isSubmitting,
+      validate,
+    };
+  },
+
   components: {
     Button,
     Rating,
@@ -323,15 +524,18 @@ export default {
     TabView,
     TabPanel,
     Galleria,
+    ConfirmPopup,
+    Toast,
+    RadioButton,
   },
   computed: {
     ...mapGetters("crack", ["getStatusList", "getSeveritysList"]),
 
-    ...mapGetters("flight", ["getCrackList", "getFlight"]),
-
-    data() {
-      return this.getCrackList;
-    },
+    ...mapGetters("flight", [
+      "getConfirmCrackList",
+      "getUnConfirmCrackList",
+      "getFlight",
+    ]),
   },
   data() {
     return {
@@ -341,7 +545,7 @@ export default {
       product: {},
       filters: {},
       submitted: false,
-      messages: [],
+      confirmCrackDialog: false,
       loading: true,
       displayImage: false,
       check: true,
@@ -349,6 +553,7 @@ export default {
       displayCustom: false,
       checkNull: true,
       activeIndex: 0,
+      imageList: [],
       responsiveOptions: [
         {
           breakpoint: "1024px",
@@ -373,15 +578,15 @@ export default {
   async mounted() {
     await this.setFlight(this.$route.query.flightId);
     this.url = "assets/CapstoneDetect/videos/" + this.getFlight.video + ".mp4";
-    if(this.getFlight == null && this.getFlight == ""){
+    if (this.getFlight.length == 0) {
       this.checkNull = false;
     }
-    
   },
   methods: {
     ...mapActions("flight", ["setFlight"]),
 
-    imageClick(index) {
+    imageClick(index, list) {
+      this.imageList = list;
       this.activeIndex = index;
       this.displayCustom = true;
     },
@@ -393,6 +598,62 @@ export default {
     hiddenImage() {
       document.body.style.overflow = "visible";
       this.displayImage = false;
+    },
+    confirm1(event, product) {
+      this.$confirm.require({
+        target: event.currentTarget,
+        message: "Do you want to reject this cracks?",
+        icon: "pi pi-info-circle",
+        acceptClass: "p-button-danger",
+        accept: async () => {
+          await crackApi.rejectCrack(product.crackId);
+          this.$toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "Crack rejected",
+            life: 3000,
+          });
+          this.setFlight(this.$route.query.flightId);
+        },
+        reject: () => {},
+      });
+    },
+
+    showConfirm(product) {
+      this.handleReset();
+      this.product = product;
+      this.confirmCrackDialog = true;
+    },
+    async confirmCrack() {
+      if (this.meta.valid) {
+        await crackApi
+          .verifyCrack(
+            this.product.crackId,
+            this.position,
+            this.description,
+            this.selectedSeverity
+          )
+          .then(() => {
+            this.$toast.add({
+              severity: "info",
+              summary: "Confirmed",
+              detail: "Crack is confirmed!",
+              life: 3000,
+            });
+            this.setFlight(this.$route.query.flightId);
+            this.confirmCrackDialog = false;
+          })
+          .catch(() => {
+            this.$toast.add({
+              severity: "error",
+              summary: "Falied",
+              detail: "Confirm Failed",
+              life: 3000,
+            });
+          });
+      } else {
+        this.validate();
+      }
     },
     stockClass(data) {
       return [
@@ -429,6 +690,7 @@ export default {
       );
     },
     async showDetail(product) {
+      console.log(product + "AA");
       this.product = await crackApi.getById(product.crackId);
       if (
         this.product.assessmentResult != null &&
@@ -792,5 +1054,11 @@ h5 {
 
 ::v-deep(.p-tabview .p-tabview-panels .p-grid .p-col-12) {
   margin: 10px 0;
+}
+
+.invalid {
+  color: red;
+  position: sticky;
+  left: 5px !important;
 }
 </style>
