@@ -67,6 +67,9 @@ export default {
 };
 </script>
 <style scoped>
+.all{
+  overflow: hidden;
+}
 .main-layout{
   margin-left: 64.5px;
 }

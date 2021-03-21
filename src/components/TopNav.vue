@@ -7,19 +7,18 @@
       ></div>
       <!-- Dropdown Menu -->
       <div class="top-nav-right p-d-flex p-ai-center p-jc-between">
-        <div>
-          <a href="#" class="header__link">
-            <img
-              class="header--button"
-              @click="showAccMenu"
-              src="/assets/profile-3.png"
-            />
-            <!-- <i class="pi pi-user"></i> -->
-          </a>
-          <transition name="dropdown">
-            <div class="dropdown__menu" v-if="show">
-              <ul class="dropdown__menu-nav">
-                <li class="dropdown__menu-item" @click="show=false">
+        <nav>
+          <ul>
+            <li>
+              <a href="#" class="header__link">
+                <img
+                  class="header--button"
+                  @click="showAccMenu"
+                  src="/assets/profile-3.png"
+                />
+              </a>
+              <ul class="drop-menu menu-2">
+                <li>
                   <a
                     class="dropdown__menu-link"
                     @click="$router.push('/profiles')"
@@ -30,7 +29,7 @@
                     <div class="dropdown__menu-text">Account</div>
                   </a>
                 </li>
-                <li class="dropdown__menu-item" @click="show=false">
+                <li>
                   <a
                     class="dropdown__menu-link"
                     @click="$router.push('/notis')"
@@ -41,7 +40,7 @@
                     <div class="dropdown__menu-text">Notifications</div>
                   </a>
                 </li>
-                <li class="dropdown__menu-item" @click="show=false">
+                <li>
                   <a class="dropdown__menu-link" @click="logOut">
                     <div class="dropdown__menu-icon">
                       <i class="pi pi-fw pi-power-off"></i>
@@ -50,61 +49,74 @@
                   </a>
                 </li>
               </ul>
-            </div>
-          </transition>
-        </div>
-        <div
-          class="btn-nav"
-          @click="showNotiMenu"
-          aria-haspopup="true"
-          aria-controls="overlay_tmenu"
-        >
-          <i class="pi pi-comment">
-            <span class="count" v-if="getCount != 0">{{ getCount }}</span>
-          </i>
-        </div>
-        <transition name="dropdown">
-          <div class="card timeline" v-if="showNoti">
-            <div class="card-header">
-              <div class="card-title">
-                <h6>Unread</h6>
-                <p class="subtitle">Notifications</p>
+            </li>
+          </ul>
+        </nav>
+        <nav>
+          <ul>
+            <li>
+              <div class="btn-nav">
+                <i class="pi pi-comment">
+                  <span class="count" v-if="getCount != 0">{{ getCount }}</span>
+                </i>
               </div>
-              <a
-                href="#"
-                style="text-decoration: none; margin-right: 20px;"
-                v-if="getCount != 0"
-                class="left"
-                @click="markAllAsRead()"
-              >
-                Mark all as read
-              </a>
-            </div>
-            <ul
-              v-if="
-                !getUnReadNotificationList || !getUnReadNotificationList.length
-              "
-            >
-              <span style="color: #a2a1a1">No unread notifications</span>
-            </ul>
-            <ul>
-              <li
-                class="blue"
-                v-for="item in getUnReadNotificationList"
-                v-bind:key="item"
-                @click="deleteNoti(item.pushNotificationId)"
-              >
-                <i class="pi pi-circle-on"></i>
-                <div class="event-content">
-                  <span class="event-title">{{ item.title }}</span>
-                  <span>{{ item.body }}</span>
-                  <span class="time">{{ callDate(item.created) }}</span>
-                </div>
-              </li>
-            </ul>
-            <a href="#" @click="$router.push('/notis'); showNoti=false">See all</a>
-          </div>
-        </transition>
+              <ul class="drop-menu">
+                <li>
+                  <div class="card timeline">
+                    <div class="card-header">
+                      <div class="card-title">
+                        <h6>Unread</h6>
+                        <p class="subtitle">Notifications</p>
+                      </div>
+                      <a
+                        href="#"
+                        style="text-decoration: none; margin-right: 20px"
+                        v-if="getCount != 0"
+                        class="left"
+                        @click="markAllAsRead()"
+                      >
+                        Mark all as read
+                      </a>
+                    </div>
+                    <ul
+                      v-if="
+                        !getUnReadNotificationList ||
+                        !getUnReadNotificationList.length
+                      "
+                    >
+                      <span style="color: #a2a1a1"
+                        >No unread notifications</span
+                      >
+                    </ul>
+                    <ul>
+                      <li
+                        class="blue"
+                        v-for="item in getUnReadNotificationList"
+                        v-bind:key="item"
+                        @click="deleteNoti(item.pushNotificationId)"
+                      >
+                        <i class="pi pi-circle-on"></i>
+                        <div class="event-content">
+                          <span class="event-title">{{ item.title }}</span>
+                          <span>{{ item.body }}</span>
+                          <span class="time">{{ callDate(item.created) }}</span>
+                        </div>
+                      </li>
+                    </ul>
+                    <a
+                      href="#"
+                      @click="
+                        $router.push('/notis');
+                        showNoti = false;
+                      "
+                      >See all</a
+                    >
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
@@ -319,6 +331,126 @@ export default {
 };
 </script>
 <style scoped>
+nav > ul > li {
+  float: center;
+  width: 150px;
+  height: 57px;
+  line-height: 30px;
+  position: relative;
+  font-size: 1rem;
+  cursor: pointer;
+  left: 50px;
+}
+nav > ul > li > i {
+  transition: transform 0.1s ease;
+  transform-origin: center center;
+}
+
+nav > ul > li:hover > i {
+  transform: rotate(90deg);
+}
+nav > ul > li:hover > ul.drop-menu li {
+  display: block;
+}
+nav > ul > li:last-child {
+  border-right: none;
+}
+ul.drop-menu {
+  position: absolute;
+  top: 100%;
+  left: 23%;
+  width: 100%;
+  padding: 0;
+}
+ul.drop-menu li {
+  background: white;
+  display: none;
+  box-shadow: 0 2px 8px 0 rgb(25 26 28 / 12%);
+}
+
+ul.drop-menu li:first-child {
+  border-radius: 10px 10px 0px 0px;
+  border-bottom: none;
+  box-shadow: 0 2px 8px 0 rgb(25 26 28 / 12%);
+}
+ul.drop-menu li:last-child {
+  border-radius: 0px 0px 10px 10px;
+  border-bottom: none;
+  box-shadow: 0 2px 8px 0 rgb(25 26 28 / 12%);
+}
+li:hover > ul.drop-menu.menu-2 {
+  perspective: 1000px;
+}
+li:hover > ul.drop-menu.menu-2 li {
+  opacity: 0;
+}
+li:hover > ul.drop-menu.menu-2 li:nth-child(1) {
+  -webkit-animation-name: menu-2;
+  animation-name: menu-2;
+  -webkit-animation-duration: 300ms;
+  animation-duration: 300ms;
+  -webkit-animation-delay: 0ms;
+  animation-delay: 0ms;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  z-index: 0;
+}
+li:hover > ul.drop-menu.menu-2 li:nth-child(2) {
+  -webkit-animation-name: menu-2;
+  animation-name: menu-2;
+  -webkit-animation-duration: 300ms;
+  animation-duration: 300ms;
+  -webkit-animation-delay: 120ms;
+  animation-delay: 120ms;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  z-index: 1;
+}
+li:hover > ul.drop-menu.menu-2 li:nth-child(3) {
+  -webkit-animation-name: menu-2;
+  animation-name: menu-2;
+  -webkit-animation-duration: 300ms;
+  animation-duration: 300ms;
+  -webkit-animation-delay: 240ms;
+  animation-delay: 240ms;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  z-index: 2;
+}
+@-webkit-keyframes menu-2 {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes menu-2 {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 #app {
   margin-right: -1100px;
 }
@@ -371,22 +503,9 @@ hr {
 .header__link > img {
   padding: 12px 10px 10px;
   border-radius: 20px;
+  margin-left: 80px;
 }
 
-.dropdown__menu {
-  top: 78%;
-  right: 5px;
-  position: absolute;
-  z-index: 10;
-  min-width: 227px;
-  margin-top: 1rem;
-  overflow-y: auto;
-  padding: 2rem 1rem 2rem 0rem;
-  border-radius: 15px;
-  background-color: white;
-  background-clip: padding-box;
-  box-shadow: 0 2px 8px 0 rgb(25 26 28 / 12%);
-}
 .dropdown__menu-link {
   display: flex;
   align-items: center;
@@ -400,29 +519,18 @@ hr {
 }
 .dropdown__menu-link:hover {
   color: #0062d1;
-  background-color: rgba(79, 192, 141, 0.1);
   cursor: pointer;
 }
 .dropdown__menu-icon {
   width: 1.5rem;
   height: 1.5rem;
-  margin-left: -15px;
+  margin-left: -20px;
 }
 .dropdown__menu-text {
   font-weight: 300;
   margin-left: 0.5rem;
   margin-right: 1rem;
-}
-
-.dropdown-enter-active,
-.dropdown-leave-active {
-  transition: all 0.5s;
-}
-
-.dropdown-enter,
-.dropdown-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
+  margin-top: 0.3rem;
 }
 
 .main {
@@ -471,12 +579,14 @@ hr {
 }
 .btn-nav {
   padding: 12px;
-  padding-right: 40px;
+  padding-right: -50px;
   color: #2170e7;
+  
 }
 
 .btn-nav > i {
   font-size: 1.8rem;
+  margin-top: 3px;
 }
 
 #menu-button {
