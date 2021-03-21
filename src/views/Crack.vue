@@ -310,7 +310,7 @@
           :src="slotProps.item.image"
           style="width: 1100px; display: block;"
         />
-        <div class="buttonView" @click="showDetail(slotProps.item)"><i class="pi pi-fw pi-eye" style="fontSize: 25px"></i></div>
+        <div class="buttonView" v-tooltip.bottom="'View Crack Details'" @click="showDetail(slotProps.item)"><i class="pi pi-fw pi-eye" style="fontSize: 25px;"></i></div>
       </template>
       <template #thumbnail="slotProps">
         <img :src="slotProps.item.imageThumbnails" style="display: block;" />
@@ -576,8 +576,8 @@ textarea {
   position: fixed;
   z-index: 10000;
   top: 40px;
-  right:140px;
-  color: red;
+  left:140px;
+  color: white;
 }
 
 .high {
