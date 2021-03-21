@@ -17,7 +17,7 @@
                   src="/assets/profile-3.png"
                 />
               </a>
-              <ul class="drop-menu menu-2">
+              <ul class="drop-menu ">
                 <li>
                   <a
                     class="dropdown__menu-link"
@@ -333,13 +333,13 @@ export default {
 <style scoped>
 nav > ul > li {
   float: center;
-  width: 150px;
+  width: 227px;
   height: 57px;
   line-height: 30px;
   position: relative;
   font-size: 1rem;
   cursor: pointer;
-  left: 50px;
+  right: -130px;
 }
 nav > ul > li > i {
   transition: transform 0.1s ease;
@@ -358,7 +358,7 @@ nav > ul > li:last-child {
 ul.drop-menu {
   position: absolute;
   top: 100%;
-  left: 23%;
+  left: 35%;
   width: 100%;
   padding: 0;
 }
@@ -366,20 +366,20 @@ ul.drop-menu li {
   background: white;
   display: none;
   box-shadow: 0 2px 8px 0 rgb(25 26 28 / 12%);
+  margin-bottom: -2px;
+  
 }
 
 ul.drop-menu li:first-child {
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 24px 24px 0px 0px;
   border-bottom: none;
   box-shadow: 0 2px 8px 0 rgb(25 26 28 / 12%);
+  margin-bottom: -3px;
 }
 ul.drop-menu li:last-child {
-  border-radius: 0px 0px 10px 10px;
+  border-radius: 0px 0px 24px 24px;
   border-bottom: none;
   box-shadow: 0 2px 8px 0 rgb(25 26 28 / 12%);
-}
-li:hover > ul.drop-menu.menu-2 {
-  perspective: 1000px;
 }
 li:hover > ul.drop-menu.menu-2 li {
   opacity: 0;
@@ -475,7 +475,7 @@ hr {
   justify-content: flex-end;
 }
 .header__item {
-  padding: 1rem;
+  padding: rem;
 }
 .header--icon {
   width: 1.65rem;
@@ -495,7 +495,6 @@ hr {
 }
 
 .header__link > i {
-  padding: 15px;
   color: #2170e7;
   font-size: 1.8rem;
 }
@@ -503,7 +502,7 @@ hr {
 .header__link > img {
   padding: 12px 10px 10px;
   border-radius: 20px;
-  margin-left: 80px;
+  margin-left: 164px;
 }
 
 .dropdown__menu-link {
@@ -524,7 +523,7 @@ hr {
 .dropdown__menu-icon {
   width: 1.5rem;
   height: 1.5rem;
-  margin-left: -20px;
+  margin-left: -15px;
 }
 .dropdown__menu-text {
   font-weight: 300;
@@ -579,9 +578,8 @@ hr {
 }
 .btn-nav {
   padding: 12px;
-  padding-right: -50px;
+  padding-right: -80px;
   color: #2170e7;
-  
 }
 
 .btn-nav > i {

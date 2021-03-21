@@ -172,8 +172,9 @@
               <Column headerStyle="width:4rem">
                 <template #body="slotProps">
                   <Button
-                    icon="pi pi-search"
+                    icon="pi pi-eye"
                     @click="showDetail(slotProps.data)"
+                    class="p-button-rounded p-button-info p-button-text"
                   />
                 </template>
               </Column>
