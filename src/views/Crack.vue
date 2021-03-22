@@ -617,7 +617,7 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: #46e5ff;
+  color: #ffa726;
 }
 .scheduledformaintenace {
   border-radius: 2px;
