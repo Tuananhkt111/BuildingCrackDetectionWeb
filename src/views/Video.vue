@@ -919,7 +919,7 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: #61ff6b;
+  color:#66bb6a;
 }
 
 .medium {
@@ -966,7 +966,7 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: #46e5ff;
+  color:#ffa726;
 }
 .scheduledformaintenace {
   border-radius: 2px;
