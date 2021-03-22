@@ -362,7 +362,7 @@
     </Dialog>
     <Dialog
       v-model:visible="confirmCrackDialog"
-      :style="{ width: '600px' }"
+      :style="{ width: '700px' }"
       :modal="true"
       class="dialog"
     >
@@ -370,17 +370,17 @@
         <h3 class="dialog-title">Verify Crack</h3>
       </template>
       <div class="p-grid nested-grid">
-        <div class="p-col-6">
+        <div class="p-col-5">
           <img
             :src="product.imageThumbnails"
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
             @click="showImage(product)"
-            style="width:250px; height:100%"
+            style="width:250px; height:97%"
           />
         </div>
-        <div class="p-col-6">
+        <div class="p-col-7">
           <div class="p-col-12">
             <label class="form-control-label">Position</label>
             <InputText
@@ -402,7 +402,7 @@
             <small class="invalid">{{ errors.description }}</small>
           </div>
           <div class="p-col-12">
-            <label class="form-control-label">Severity</label>
+            <label class="form-control-label serverity">Severity</label><br/>
             <div
               v-for="category of getSeveritysList"
               :key="category.key"
@@ -779,6 +779,17 @@ export default {
 </script>
 
 <style scoped>
+.serverity{
+  margin-bottom: 10rem;
+  text-align: center;
+}
+.p-field-radiobutton{
+  display: inline-block;
+  margin-right: 3.4rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #525f7f;
+}
 .form-control-label {
   font-size: 0.875rem;
   font-weight: 600;
