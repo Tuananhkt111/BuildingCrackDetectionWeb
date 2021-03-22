@@ -35,7 +35,7 @@
         </div>
         <template #empty> No Maintenance Order found. </template>
         <Column :expander="true" headerStyle="width: 30px" />
-        <Column header="No">
+        <Column header="No"  style="width:2rem">
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
@@ -44,6 +44,7 @@
           field="locationName"
           header="Location Name"
           :showFilterMatchModes="false"
+          :showAddButton="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.locationName }}
@@ -61,6 +62,7 @@
           field="maintenanceWorkerName"
           header="Worker Name"
           :showFilterMatchModes="false"
+          :showAddButton="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.maintenanceWorkerName }}
@@ -106,6 +108,7 @@
           dataType="date"
           style="min-width: 20px"
           headerStyle="width: 13em"
+          :showAddButton="false"
         >
           <template #body="{ data }">
             {{ callDate(data.maintenanceDate) }}

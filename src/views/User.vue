@@ -35,7 +35,7 @@
             </span>
           </span>
         </div>
-        <Column header="No">
+        <Column header="No" style="width:2rem">
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
@@ -44,6 +44,8 @@
           field="userName"
           header="User Name"
           :showFilterMatchModes="false"
+          :showAddButton="false"
+          style="min-width:12rem"
         >
           <template #body="slotProps">
             {{ slotProps.data.userName }}
@@ -57,7 +59,7 @@
             />
           </template>
         </Column>
-        <Column field="name" header="Full Name" :showFilterMatchModes="false">
+        <Column field="name" header="Full Name" :showFilterMatchModes="false" :showAddButton="false">
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
@@ -75,6 +77,7 @@
           header="Email"
           :showFilterMatchModes="false"
           headerStyle="width: 14em"
+          :showAddButton="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.email }}
@@ -92,6 +95,7 @@
           field="phoneNumber"
           header="Phone"
           :showFilterMatchModes="false"
+          :showAddButton="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.phoneNumber }}

@@ -33,7 +33,7 @@
         <template #empty>
           No Flights found.
         </template>
-        <Column header="No">
+        <Column header="No" style="margin-right:-10rem">
           <template #body="slotProps">
             {{slotProps.data.index}}
           </template>
@@ -42,6 +42,7 @@
           field="locationName"
           header="Location Name"
           :showFilterMatchModes="false"
+          :showAddButton="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.locationName }}
@@ -59,6 +60,7 @@
           field="dataCollectorName"
           header="Collector Name"
           :showFilterMatchModes="false"
+          :showAddButton="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.dataCollectorName }}
@@ -72,7 +74,7 @@
             />
           </template>
         </Column>
-        <Column field="video" header="Video" :showFilterMatchModes="false">
+        <Column field="video" header="Video" :showFilterMatchModes="false" :showAddButton="false">
           <template #body="slotProps">
             {{ slotProps.data.video }}
           </template>
@@ -90,6 +92,7 @@
           filterField="created"
           dataType="date"
           style="min-width:10rem"
+          :showAddButton="false"
         >
           <template #body="{data}">
             {{ callDate(data.created) }}

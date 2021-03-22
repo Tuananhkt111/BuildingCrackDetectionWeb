@@ -36,12 +36,12 @@
           </span>
         </div>
         <template #empty> No Maintenance Worker found. </template>
-        <Column header="No">
+        <Column header="No" style="margin-right:-10rem">
           <template #body="slotProps">
             {{slotProps.data.index}}
           </template>
         </Column>
-        <Column field="name" header="Name" :showFilterMatchModes="false">
+        <Column field="name" header="Name" :showFilterMatchModes="false" :showAddButton="false">
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
@@ -54,7 +54,7 @@
             />
           </template>
         </Column>
-        <Column field="phone" header="Phone" :showFilterMatchModes="false">
+        <Column field="phone" header="Phone" :showFilterMatchModes="false" :showAddButton="false">
           <template #body="slotProps">
             {{ slotProps.data.phone }}
           </template>
@@ -67,7 +67,7 @@
             />
           </template>
         </Column>
-        <Column field="email" header="Email" :showFilterMatchModes="false">
+        <Column field="email" header="Email" :showFilterMatchModes="false" :showAddButton="false">
           <template #body="slotProps">
             {{ slotProps.data.email }}
           </template>
@@ -80,7 +80,7 @@
             />
           </template>
         </Column>
-        <Column field="address" header="Address" :showFilterMatchModes="false">
+        <Column field="address" header="Address" :showFilterMatchModes="false" :showAddButton="false">
           <template #body="slotProps">
             {{ slotProps.data.address }}
           </template>

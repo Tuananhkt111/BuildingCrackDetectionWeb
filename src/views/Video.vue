@@ -47,7 +47,7 @@
             <template #loading>
               Loading Crack, please wait...
             </template>
-            <Column header="No">
+            <Column header="No" style="margin-right:-10rem">
               <template #body="slotProps">
                 {{ slotProps.data.index }}
               </template>
@@ -58,7 +58,7 @@
                   :src="slotProps.data.imageThumbnails"
                   :alt="slotProps.data.imageThumbnails"
                   class="product-image"
-                  style="width: 80px ; height: 80px"
+                  style="width: 80px ; height: 80px; margin-left:-1rem"
                   @click="imageClick(slotProps.index, getUnConfirmCrackList)"
                 />
               </template>
@@ -387,6 +387,7 @@
               v-model.trim="position"
               class="form-control form-control-alternative"
               style="width:100%"
+              placeholder="Position"
             />
             <small class="invalid">{{ errors.position }}</small>
           </div>
@@ -396,6 +397,7 @@
               v-model.trim="description"
               class="form-control form-control-alternative"
               style="width:100%"
+              placeholder="Description"
             />
             <small class="invalid">{{ errors.description }}</small>
           </div>
@@ -421,7 +423,7 @@
               label="Cancel"
               @click="confirmCrackDialog = False"
               icon="pi pi-times"
-              class="p-button-rounded p-button-danger p-mr-3"
+              class="p-button-rounded p-button-danger p-mr-3 button"
             />
             <Button
               label="Confirm"
@@ -777,6 +779,64 @@ export default {
 </script>
 
 <style scoped>
+.form-control-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #525f7f;
+}
+.form-control:-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control::placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control:focus:-ms-input-placeholder {
+  color: #adb5bd;
+}
+.form-control:focus::placeholder {
+  color: #adb5bd;
+}
+.form-control {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  display: block;
+  width: 100%;
+  height: calc(2.75rem + 2px);
+  padding: 0.625rem 0.75rem;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  color: #8898aa;
+  border: 1px solid #cad1d7;
+  border-radius: 0.375rem;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: none;
+}
+.form-control:focus {
+  color: #8898aa;
+  border-color: rgba(50, 151, 211, 0.25);
+  outline: 0;
+  background-color: #fff;
+  box-shadow: none, none;
+}
+
+.focused .form-control {
+  border-color: rgba(50, 151, 211, 0.25);
+}
+.form-control:disabled,
+.form-control[readonly] {
+  opacity: 1;
+  background-color: #ebf0f5;
+}
+.form-control-alternative {
+  transition: box-shadow 0.15s ease;
+  border: 0;
+  box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
+}
+.form-control-alternative:focus {
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
 .left {
   color: black;
   padding-bottom: 20px;

@@ -33,7 +33,7 @@
         <template #loading>
           Loading Crack, please wait...
         </template>
-        <Column header="No">
+        <Column header="No"  style="margin-right:-5rem">
           <template #body="slotProps">
             {{slotProps.data.index}}
           </template>
@@ -44,7 +44,7 @@
               :src="slotProps.data.imageThumbnails"
               :alt="slotProps.data.imageThumbnails"
               class="product-image"
-              style="width: 80px ; height: 80px"
+              style="width: 80px ; height: 80px; margin-left:-3rem"
               @click="imageClick(slotProps.index)"
             />
           </template>
@@ -54,6 +54,7 @@
           header="Location Name"
           :showFilterMatchModes="false"
           style="min-width:12rem"
+          :showAddButton="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.locationName }}
@@ -72,6 +73,7 @@
           header="Accuracy"
           style="min-width:12rem"
           dataType="numeric"
+          :showAddButton="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.accuracy }}%

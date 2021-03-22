@@ -39,7 +39,7 @@
         <template #empty>
           No Locations found.
         </template>
-        <Column header="No">
+        <Column header="No" style="margin-right: -10rem">
           <template #body="slotProps">
             {{slotProps.data.index}}
           </template>
@@ -48,6 +48,7 @@
           field="name"
           header="Location Name"
           :showFilterMatchModes="false"
+          :showAddButton="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.name }}
@@ -65,6 +66,7 @@
           field="description"
           header="Description"
           :showFilterMatchModes="false"
+          :showAddButton="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.description }}
@@ -82,7 +84,7 @@
           header="Created"
           filterField="created"
           dataType="date"
-          style="min-width:10rem"
+          :showAddButton="false"
         >
           <template #body="{data}">
             {{ callDate(data.created) }}
@@ -99,7 +101,7 @@
           header="Last Modified"
           filterField="lastModified"
           dataType="date"
-          style="min-width:10rem"
+          :showAddButton="false"
         >
           <template #body="{data}">
             {{ callDate(data.lastModified) }}
@@ -692,15 +694,14 @@ label {
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 1px 0;
-  text-align: left;
+  text-align: center;
   box-sizing: content-box;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
-    box-shadow 0.2s;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
   cursor: pointer;
   font-weight: 700;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
-  text-align: left;
+  text-align: center;
   border: 1px solid #e9ecef;
   border-width: 0 0 1px 0;
   padding: 1rem 1rem;
