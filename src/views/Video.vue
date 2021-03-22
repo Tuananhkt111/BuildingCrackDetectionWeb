@@ -12,7 +12,7 @@
         </video>
       </div>
       <div class="p-col-2 p-mt-5 p-ml-4">
-        <p class=" left">Location</p>
+        <p class=" left">Area</p>
         <p class=" left">Collector Name</p>
         <p class=" left">Video</p>
       </div>
@@ -259,7 +259,7 @@
               <div class="p-grid">
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">Location Name: </span
+                    <span style="font-weight: bold">Area Name: </span
                     >{{ product.locationName }}
                   </p>
                 </div>

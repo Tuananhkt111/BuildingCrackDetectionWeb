@@ -148,6 +148,12 @@
               style="margin: 2px"
               v-tooltip.bottom="'View Crack Details'"
             />
+             <Button
+              icon="pi pi-video"
+              class="p-button-rounded p-button-help p-button-text"
+              @click="showVideo(slotProps.data)"
+              v-tooltip.bottom="'Show Video'"
+            />
             <Button
               v-if="slotProps.data.maintenanceOrderId != null"
               icon="pi pi-calendar-minus"
@@ -155,12 +161,7 @@
               @click="showMaintenanceOrder(slotProps.data)"
               v-tooltip.bottom="'View Maintenance Order'"
             />
-            <Button
-              icon="pi pi-video"
-              class="p-button-rounded p-button-help p-button-text"
-              @click="showVideo(slotProps.data)"
-              v-tooltip.bottom="'Show Video'"
-            />
+           
           </template>
         </Column>
       </DataTable>

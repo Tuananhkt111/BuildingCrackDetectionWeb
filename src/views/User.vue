@@ -258,13 +258,13 @@
           <p class="dropdown-list form-control-alternative">{{ selectedRole }}</p>
         </div>
         <div class="p-field p-col-6" v-if="selectedRole != null">
-          <label for="Location" class="form-control-label">Location</label>
+          <label for="Location" class="form-control-label">Area</label>
           <MultiSelect
             v-if="selectedRole === 'Manager'"
             v-model="selectedLocation"
             :options="getAvailableLocationManager"
             optionLabel="name"
-            placeholder="Select Location"
+            placeholder="Select Areas"
             :filter="true"
             class="multiselect-custom dropdown-list form-control-alternative"
             key="locationId"
@@ -275,7 +275,7 @@
             inputId="locationId"
             :options="getAvailableLocationStaff"
             optionLabel="name"
-            placeholder="Select a Location"
+            placeholder="Select a Area"
             :filter="true"
             class="dropdown-list form-control-alternative"
           />
@@ -350,7 +350,7 @@
           <p :class="stockRole(selectedRole)">{{ selectedRole }}</p>
         </div>
         <div class="p-field p-col-6" v-if="selectedRole != null">
-          <label for="Location">Location</label>
+          <label for="Location">Area</label>
           <p>{{ selectedLocation.name }}</p>
         </div>
       </div>
@@ -435,13 +435,13 @@
           </Dropdown>
         </div>
         <div class="p-field p-col-6" v-if="selectedRole != null">
-          <label for="Location" class="form-control-label">Location</label>
+          <label for="Location" class="form-control-label">Area</label>
           <MultiSelect
             v-if="selectedRole === 'Manager'"
             v-model="selectedLocation"
             :options="getAvailableLocationManager"
             optionLabel="name"
-            placeholder="Select Location"
+            placeholder="Select Areas"
             :filter="true"
             class="multiselect-custom dropdown-list form-control-alternative"
           />
@@ -450,7 +450,7 @@
             v-model="selectedLocation"
             :options="getAvailableLocationStaff"
             optionLabel="name"
-            placeholder="Select a Location"
+            placeholder="Select a Area"
             :filter="true"
             class="dropdown-list form-control-alternative"
           />

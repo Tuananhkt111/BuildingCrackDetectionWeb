@@ -152,7 +152,7 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="name" class="form-control-label"> Area Name</label>
+        <label for="name" class="form-control-label">Area Name</label>
         <InputText
           id="locationName"
           v-model.trim="locationName"
@@ -194,7 +194,7 @@
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="name" class="form-control-label"> Area Name</label>
+        <label for="name" class="form-control-label">Area Name</label>
         <InputText
           id="locationName"
           v-model.trim="locationName"
