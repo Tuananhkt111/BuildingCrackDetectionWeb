@@ -25,7 +25,7 @@
             <div class="p-float-label p-mb-5">
               <InputText type="text" v-model="userName" style="width: 270px" />
               <label style="padding-left: 55px">Username</label>
-              <p class="invalid">{{errors.userName}}</p>
+              <p class="invalid">{{ errors.userName }}</p>
             </div>
             <div class="p-float-label p-mb-5 p-mt-2">
               <InputText
@@ -34,7 +34,7 @@
                 style="width: 270px"
               />
               <label style="padding-left: 55px;">Password</label>
-              <p class="invalid">{{errors.password}}</p>
+              <p class="invalid">{{ errors.password }}</p>
             </div>
             <Button
               label="Login"
@@ -151,7 +151,7 @@ export default {
         .required(),
     });
 
-    const { errors, meta, handleReset } = useForm({
+    const { errors, meta, handleReset, validate } = useForm({
       validationSchema: schema,
     });
 
@@ -164,6 +164,7 @@ export default {
       errors,
       meta,
       handleReset,
+      validate,
     };
   },
   components: {
@@ -199,28 +200,32 @@ export default {
     ...mapActions("user", ["setUser"]),
 
     async handleSubmit() {
-      localStorage.clear();
-      this.isLoading = true;
-      if (this.userName && this.password) {
-        const res = await userApi.login(this.userName, this.password);
-        if (res != null) {
-          if (res.isNewUser) {
-            this.ChangePasswordDialog = true;
-            this.isLoading = false;
+      if (this.meta.valid) {
+        localStorage.clear();
+        this.isLoading = true;
+        if (this.userName && this.password) {
+          const res = await userApi.login(this.userName, this.password);
+          if (res != null) {
+            if (res.isNewUser) {
+              this.ChangePasswordDialog = true;
+              this.isLoading = false;
+            } else {
+              this.setIsLogin(!this.getIsLogin);
+              this.setUser(JSON.parse(res));
+              this.isLoading = false;
+              this.$router.push("/");
+            }
           } else {
-            this.setIsLogin(!this.getIsLogin);
-            this.setUser(JSON.parse(res));
             this.isLoading = false;
-            this.$router.push("/");
+            this.$toast.add({
+              severity: "warn",
+              summary: "User or Password is wrong!! Try again ",
+              life: 3000,
+            });
           }
-        } else {
-          this.isLoading = false;
-          this.$toast.add({
-            severity: "warn",
-            summary: "User or Password is wrong!! Try again ",
-            life: 3000,
-          });
         }
+      } else {
+        this.validate();
       }
     },
     async changePassword() {
@@ -272,7 +277,6 @@ export default {
       this.waithide("forgotPass", "login");
     },
     cancelForgotPassword() {
-
       this.waithide("forgotPass", "login");
     },
     waithide(div1, div2) {
@@ -372,10 +376,10 @@ div {
   display: none;
   transition: all 0.3s;
 }
-.invalid{
+.invalid {
   color: red;
   font-size: 0.8rem;
   position: absolute;
-  left:60px;
+  left: 60px;
 }
 </style>

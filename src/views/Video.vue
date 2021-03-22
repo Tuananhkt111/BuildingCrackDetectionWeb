@@ -22,9 +22,6 @@
         <p class=" right">{{ getFlight.video }}</p>
       </div>
     </div>
-    <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
-      <img :src="product.image" style="width:90%; height: 80%;" />
-    </div>
     <TabView class="p-mt-3">
       <TabPanel header="Not verificated Cracks">
         <div class="card">
@@ -59,7 +56,7 @@
                   :alt="slotProps.data.imageThumbnails"
                   class="product-image"
                   style="width: 80px ; height: 80px; margin-left:-1rem"
-                  @click="imageClick(slotProps.index, getUnConfirmCrackList)"
+                  @click="imageClick(slotProps.index, slotProps.data)"
                 />
               </template>
             </Column>
@@ -133,7 +130,7 @@
                   :alt="slotProps.data.imageThumbnails"
                   class="product-image"
                   style="width: 80px ; height: 80px"
-                  @click="imageClick(slotProps.index, getConfirmCrackList)"
+                  @click="imageClick(slotProps.index, slotProps.data)"
                 />
               </template>
             </Column>
@@ -249,7 +246,7 @@
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
-            @click="showImage(product)"
+            @click="imageClick(product.index, product)"
             style="width:250px; height:100%"
           />
         </div>
@@ -376,7 +373,7 @@
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
-            @click="showImage(product)"
+            @click="imageClick(product.index - 1, product)"
             style="width:250px; height:97%"
           />
         </div>
@@ -452,6 +449,13 @@
           :src="slotProps.item.image"
           style="width: 1100px ; display: block;"
         />
+        <div
+          class="buttonView"
+          v-tooltip.bottom="'View Crack Details'"
+          @click="showDetail(slotProps.item)"
+        >
+          <i class="pi pi-fw pi-eye" style="fontSize: 25px;"></i>
+        </div>
       </template>
       <template #thumbnail="slotProps">
         <img :src="slotProps.item.imageThumbnails" style="display: block;" />
@@ -479,6 +483,7 @@ import Toast from "primevue/toast";
 import RadioButton from "primevue/radiobutton";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
+import * as fs from "fs-web";
 
 export default {
   setup() {
@@ -549,7 +554,6 @@ export default {
       submitted: false,
       confirmCrackDialog: false,
       loading: true,
-      displayImage: false,
       check: true,
       url: "",
       displayCustom: false,
@@ -580,6 +584,19 @@ export default {
   async mounted() {
     await this.setFlight(this.$route.query.flightId);
     this.url = "assets/CapstoneDetect/videos/" + this.getFlight.video + ".mp4";
+    const tmp = fs.readFile(this.getFlight.video + ".mp4");
+    console.log(tmp);
+    // const fs = require("fs");
+
+    // try {
+    //   if (fs.existsSync(this.url)) {
+    //     console.log("The file exists.");
+    //   } else {
+    //     console.log("The file does not exist.");
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    // }
     if (this.getFlight.length == 0) {
       this.checkNull = false;
     }
@@ -587,19 +604,20 @@ export default {
   methods: {
     ...mapActions("flight", ["setFlight"]),
 
-    imageClick(index, list) {
-      this.imageList = list;
+    imageClick(index, product) {
+      this.hiddenDialog();
+      if (product.status == "Unconfirmed") {
+        this.imageList = this.getUnConfirmCrackList;
+      } else {
+        this.imageList = this.getConfirmCrackList;
+      }
       this.activeIndex = index;
       this.displayCustom = true;
     },
-    showImage(product) {
-      this.product = { ...product };
-      document.body.style.overflow = "hidden";
-      this.displayImage = true;
-    },
-    hiddenImage() {
-      document.body.style.overflow = "visible";
-      this.displayImage = false;
+    hiddenDialog() {
+      this.displayCustom = false;
+      this.confirmCrackDialog = false;
+      this.crackInfoDialog = false;
     },
     confirm1(event, product) {
       this.$confirm.require({
@@ -622,8 +640,10 @@ export default {
     },
 
     showConfirm(product) {
+      this.hiddenDialog();
       this.handleReset();
       this.product = product;
+      this.position = product.position;
       this.confirmCrackDialog = true;
     },
     async confirmCrack() {
@@ -677,11 +697,6 @@ export default {
         },
       ];
     },
-    hideDialog() {
-      this.showAssessment = false;
-      this.crackInfoDialog = false;
-      this.submitted = false;
-    },
     showAssessmentDialog(product) {
       this.product = { ...product };
       this.showAssessment = true;
@@ -692,7 +707,7 @@ export default {
       );
     },
     async showDetail(product) {
-      console.log(product + "AA");
+      this.hiddenDialog();
       this.product = await crackApi.getById(product.crackId);
       if (
         this.product.assessmentResult != null &&
@@ -1131,5 +1146,12 @@ h5 {
   color: red;
   position: sticky;
   left: 5px !important;
+}
+.buttonView {
+  position: fixed;
+  z-index: 10000;
+  top: 40px;
+  left: 140px;
+  color: white;
 }
 </style>

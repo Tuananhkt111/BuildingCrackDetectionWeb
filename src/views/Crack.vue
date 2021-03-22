@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
-      <img :src="product.image" style="width:90%; height: 80%;" />
-    </div>
     <div class="card">
       <DataTable
         :rowHover="true"
@@ -33,7 +30,7 @@
         <template #loading>
           Loading Crack, please wait...
         </template>
-        <Column header="No"  style="margin-right:-5rem">
+        <Column style="margin-right:-5rem">
           <template #body="slotProps">
             {{slotProps.data.index}}
           </template>
@@ -183,7 +180,7 @@
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
-            @click="showImage(product)"
+            @click="imageClick(product.index -1)"
             style="width:250px; height:100%"
           />
         </div>
@@ -298,7 +295,6 @@
     </Dialog>
     <Galleria
       :value="getCrackListConfirm"
-      :responsiveOptions="responsiveOptions"
       :numVisible="7"
       containerStyle="max-width: 850px"
       :circular="true"
@@ -362,24 +358,9 @@ export default {
       submitted: false,
       messages: [],
       loading: true,
-      displayImage: false,
       check: true,
       displayCustom: false,
       activeIndex: 0,
-      responsiveOptions: [
-        {
-          breakpoint: "1024px",
-          numVisible: 5,
-        },
-        {
-          breakpoint: "768px",
-          numVisible: 3,
-        },
-        {
-          breakpoint: "560px",
-          numVisible: 1,
-        },
-      ],
     };
   },
   created() {
@@ -391,17 +372,9 @@ export default {
     ...mapActions("crack", ["setCrackList"]),
 
     imageClick(index) {
+      this.crackInfoDialog = false;
       this.activeIndex = index;
       this.displayCustom = true;
-    },
-    showImage(product) {
-      this.product = { ...product };
-      document.body.style.overflow = "hidden";
-      this.displayImage = true;
-    },
-    hiddenImage() {
-      document.body.style.overflow = "visible";
-      this.displayImage = false;
     },
     stockClass(data) {
       return [
@@ -438,6 +411,7 @@ export default {
       );
     },
     showDetail(product) {
+      this.displayCustom = false;
       this.product = { ...product };
       if (
         this.product.assessmentResult != null &&
@@ -461,8 +435,6 @@ export default {
       }
       return index;
     },
-    redirectMainteanceOrder() {},
-
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY hh:mm:ss");
@@ -645,20 +617,6 @@ h5 {
 .dialog-title {
   color: #69707a;
   margin-left: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.imagePopup {
-  width: 100%;
-  height: 100%;
-  z-index: 999999;
-  position: fixed;
-  top: 0;
-  background: rgba(0, 0, 0, 0.9);
-  left: 0;
-  align-content: center;
   display: flex;
   align-items: center;
   justify-content: center;

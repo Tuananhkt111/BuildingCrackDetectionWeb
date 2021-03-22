@@ -415,9 +415,28 @@
         </div>
       </div>
     </Dialog>
-    <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
-      <img :src="crack.image" style="width:90%; height: 80%;" />
-    </div>
+    <Galleria
+      :value="cracks"
+      :numVisible="7"
+      containerStyle="max-width: 850px"
+      :circular="true"
+      :fullScreen="true"
+      :showItemNavigators="true"
+      :showThumbnails="false"
+      v-model:visible="displayImage"
+      v-model:activeIndex="activeIndex"
+    >
+      <template #item="slotProps">
+        <img
+          :src="slotProps.item.image"
+          style="width: 1100px; display: block;"
+        />
+        <div class="buttonView" v-tooltip.bottom="'View Crack Details'" @click="showDetail(slotProps.item)"><i class="pi pi-fw pi-eye" style="fontSize: 25px;"></i></div>
+      </template>
+      <template #thumbnail="slotProps">
+        <img :src="slotProps.item.imageThumbnails" style="display: block;" />
+      </template>
+    </Galleria>
     <Toast position="bottom-right" />
   </div>
 </template>
@@ -434,6 +453,7 @@ import moment from "moment";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import crackApi from "../apis/cracks.js";
+import Galleria from "primevue/galleria";
 
 export default {
   components: {
@@ -444,6 +464,7 @@ export default {
     Rating,
     TabView,
     TabPanel,
+    Galleria
   },
 
   computed: {
@@ -466,6 +487,7 @@ export default {
       showAssessment: false,
       product: {},
       crack: {},
+      cracks: [],
       selectedProducts: null,
       filters: {},
       submitted: false,
@@ -476,13 +498,21 @@ export default {
       loading: true,
       displayImage: false,
       check: true,
+      activeIndex: 0,
     };
   },
 
   methods: {
     ...mapActions("maintenanceOrder", ["setMaintenanceOrderList"]),
-    onRowExpand() {},
-    onRowCollapse() {},
+    onRowExpand(event) {
+      this.expandedRows = this.getMaintenanceOrderList.filter(p => p.maintenanceOrderId == event.data.maintenanceOrderId);
+      console.log(event);
+      this.cracks = [];
+      this.cracks = event.data.cracks;
+    },
+    onRowCollapse() {
+      this.cracks = [];
+    },
     hideDialog() {
       this.productDialog = false;
       this.showAssessment = false;
@@ -490,15 +520,16 @@ export default {
       this.crackInfoDialog = false;
     },
     showImage(crack) {
-      document.body.style.overflow = "hidden";
-      this.crack = { ...crack };
+      this.crackInfoDialog = false;
+      this.activeIndex = crack.index -1;
+      console.log(this.activeIndex);
       this.displayImage = true;
     },
     hiddenImage() {
-      document.body.style.overflow = "visible";
       this.displayImage = false;
     },
     async showDetail(product) {
+      this.displayImage = false;
       this.product = await crackApi.getById(product.crackId);
       if (
         this.product.assessmentResult != null &&
@@ -508,9 +539,9 @@ export default {
       } else {
         this.check = true;
       }
-
       this.product.created = this.callDate(this.product.created);
       this.product.lastModified = this.callDate(this.product.lastModified);
+      this.product.index = product.index;
       this.crackInfoDialog = true;
     },
     editProduct(product) {
@@ -825,20 +856,6 @@ textarea {
   min-height: 200px;
 }
 
-.imagePopup {
-  width: 100%;
-  height: 100%;
-  z-index: 999999;
-  position: fixed;
-  top: 0;
-  background: rgba(0, 0, 0, 0.9);
-  left: 0;
-  align-content: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .p-m-2::before {
   content: "";
   width: 5px;
@@ -983,5 +1000,13 @@ textarea {
 
 .p-grid .nested-grid {
   min-height: 320px;
+}
+
+.buttonView{
+  position: fixed;
+  z-index: 10000;
+  top: 40px;
+  left:140px;
+  color: white;
 }
 </style>

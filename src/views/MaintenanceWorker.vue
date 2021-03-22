@@ -323,7 +323,7 @@ export default {
         .phone("VN")
         .required(),
     });
-    const { errors, meta, handleReset } = useForm({
+    const { errors, meta, handleReset, validate } = useForm({
       validationSchema: schema,
     });
 
@@ -340,6 +340,7 @@ export default {
       phone,
       errors,
       meta,
+      validate
     };
   },
 
@@ -406,6 +407,8 @@ export default {
             });
             this.hideDialog();
           });
+      } else {
+        this.validate();
       }
     },
     async editMaintenanceWorker() {
@@ -437,6 +440,8 @@ export default {
             });
             this.productDialog = false;
           });
+      } else {
+        this.validate();
       }
     },
 

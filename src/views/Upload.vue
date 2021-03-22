@@ -95,10 +95,12 @@ export default {
 
     detect() {
       if (this.file != null) {
+        const location = JSON.parse(localStorage.getItem("user")).locations[0].name;
         const token = localStorage.getItem("jwtToken");
         let formData = new FormData();
         formData.append("video", this.file);
         formData.append("token", token);
+        formData.append("locationName", location);
         const url = urlConstants.PYTHON_URL + "detect";
         axios.post(url, formData, {
           headers: {
@@ -106,7 +108,7 @@ export default {
           },
         });
         localStorage.setItem("detecting", true);
-        this.setIsDetect(true);
+        this.setIsDetect(true); 
       }
     },
   },

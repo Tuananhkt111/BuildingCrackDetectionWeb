@@ -218,7 +218,7 @@ export default {
         .required("Please confirm your password")
         .oneOf([yup.ref("newPassword"), null], "Passwords don't match."),
     });
-    const { errors, meta, handleReset } = useForm({
+    const { errors, meta, handleReset, validate } = useForm({
       validationSchema: schema,
     });
 
@@ -233,6 +233,7 @@ export default {
       confirmPassword,
       errors,
       meta,
+      validate
     };
   },
 
@@ -283,6 +284,8 @@ export default {
             });
             this.ChangePassworDialog = false;
           });
+      } else {
+        this.validate();
       }
     },
   },

@@ -587,7 +587,7 @@ export default {
         .phone("VN")
         .required(),
     });
-    const { errors, meta, handleReset } = useForm({
+    const { errors, meta, handleReset, validate } = useForm({
       validationSchema: schema,
     });
 
@@ -604,6 +604,7 @@ export default {
       phone,
       errors,
       meta,
+      validate
     };
   },
 
@@ -737,6 +738,8 @@ export default {
             });
             this.UserDialog = false;
           });
+      } else {
+        this.validate();
       }
     },
     async UpdateUser() {
@@ -770,6 +773,8 @@ export default {
             this.setUserList();
             this.UserUpdateDialog = false;
           });
+      } else {
+        this.validate();
       }
     },
     Disable(product) {

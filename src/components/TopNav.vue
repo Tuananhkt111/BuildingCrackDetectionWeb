@@ -125,53 +125,11 @@
 <script>
 import firebase from "../util/firebase.js";
 import { mapGetters, mapActions } from "vuex";
-import { useForm, useField } from "vee-validate";
 import userApi from "../apis/user.js";
 import moment from "moment";
 import { notificationApi } from "../apis/notification";
 import webRole from "../util/webRole.js";
-import * as yup from "yup";
 export default {
-  setup() {
-    const schema = yup.object({
-      oldPassword: yup
-        .string()
-        .max(30)
-        .label("Old Password")
-        .required()
-        .matches(
-          /^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-          "Password must contain at least 8 characters, one uppercase, one number"
-        ),
-      newPassword: yup
-        .string()
-        .max(30)
-        .label("Old Password")
-        .required()
-        .matches(
-          /^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-          "Password must contain at least 8 characters, one uppercase, one number"
-        ),
-      confirmPassword: yup
-        .string()
-        .required("Please confirm your password")
-        .oneOf([yup.ref("newPassword"), null], "Passwords don't match."),
-    });
-    const { errors, meta, handleReset } = useForm({
-      validationSchema: schema,
-    });
-    const { value: oldPassword } = useField("oldPassword");
-    const { value: newPassword } = useField("newPassword");
-    const { value: confirmPassword } = useField("confirmPassword");
-    return {
-      handleReset,
-      oldPassword,
-      newPassword,
-      confirmPassword,
-      errors,
-      meta,
-    };
-  },
   computed: {
     ...mapGetters("noti", [
       "getNotificationList",
@@ -231,34 +189,6 @@ export default {
     showNotiMenu() {
       this.showNoti = !this.showNoti;
       this.show = false;
-    },
-    async confirmChangePassword() {
-      if (this.meta.valid) {
-        await userApi
-          .changePassword(
-            JSON.parse(localStorage.getItem("user")).userId,
-            this.oldPassword,
-            this.newPassword
-          )
-          .then((res) => {
-            this.$toast.add({
-              severity: "success",
-              summary: "Successful",
-              detail: res.data,
-              life: 3000,
-            });
-            this.ChangePassworDialog = false;
-          })
-          .catch((err) => {
-            this.$toast.add({
-              severity: "error",
-              summary: "Failed!",
-              detail: err.data,
-              life: 3000,
-            });
-            this.ChangePassworDialog = false;
-          });
-      }
     },
     logOut() {
       userApi.logout();

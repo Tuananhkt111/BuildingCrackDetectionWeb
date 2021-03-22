@@ -314,7 +314,7 @@ export default {
         .max(20),
     });
 
-    const { errors, meta, handleReset } = useForm({
+    const { errors, meta, handleReset, validate } = useForm({
       validationSchema: schema,
     });
 
@@ -327,6 +327,7 @@ export default {
       errors,
       meta,
       handleReset,
+      validate
     };
   },
 
@@ -475,6 +476,8 @@ export default {
             });
             this.ChangePassworDialog = false;
           });
+      } else {
+        this.validate();
       }
     },
     findIndexById(id) {
