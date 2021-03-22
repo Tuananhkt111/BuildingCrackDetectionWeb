@@ -1170,7 +1170,7 @@ label {
   padding: 0.25em 0.5rem;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: #61ff6b;
+  color: #66bb6a;
 }
 
 .manager {

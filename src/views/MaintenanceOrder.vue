@@ -22,7 +22,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header-main">
-          <h3 class="p-m-2">Maintenance Orders</h3>
+          <h3 class="p-m-2">Repair Records</h3>
           <span class="p-input-icon-left">
             <span class="p-input-icon-left" style="margin: 2px">
               <i class="pi pi-search" />
@@ -33,7 +33,7 @@
             </span>
           </span>
         </div>
-        <template #empty> No Maintenance Order found. </template>
+        <template #empty> No Repair Record found. </template>
         <Column :expander="true" headerStyle="width: 30px" />
         <Column header="No"  style="width:2rem">
           <template #body="slotProps">
@@ -42,7 +42,7 @@
         </Column>
         <Column
           field="locationName"
-          header="Location Name"
+          header="Area Name"
           :showFilterMatchModes="false"
           :showAddButton="false"
         >
@@ -60,7 +60,7 @@
         </Column>
         <Column
           field="maintenanceWorkerName"
-          header="Worker Name"
+          header="Repairer"
           :showFilterMatchModes="false"
           :showAddButton="false"
         >
@@ -103,7 +103,7 @@
           </template>
         </Column>
         <Column
-          header="Maintenance Date"
+          header="Repair Date"
           filterField="maintenanceDate"
           dataType="date"
           style="min-width: 20px"
@@ -127,7 +127,7 @@
               icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text"
               @click="editProduct(slotProps.data)"
-              v-tooltip.bottom="'View Maintenance Order Details'"
+              v-tooltip.bottom="'View Repair Record Details'"
             />
           </template>
         </Column>
@@ -137,7 +137,7 @@
               <h4 class="p-m-2" id="sub-table-title">List of Cracks</h4>
             </div>
             <DataTable :value="slotProps.data.cracks">
-              <Column header="No">
+              <Column header="No" style="width:3rem">
                 <template #body="slotProps">
                   {{ slotProps.data.index }}
                 </template>
@@ -193,7 +193,7 @@
       class="dialog"
     >
       <template #header>
-        <h3 class="dialog-title-order">Maintenance Order Details</h3>
+        <h3 class="dialog-title-order">Repair Record Details</h3>
       </template>
       <div class="p-col-12 order-detail">
         <div class="p-grid nested-grid">
@@ -202,13 +202,13 @@
               <div class="p-grid">
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">Maintenance Worker: </span
+                    <span style="font-weight: bold">Repairer: </span
                     >{{ product.maintenanceWorkerName }}
                   </p>
                 </div>
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">Location Name: </span
+                    <span style="font-weight: bold">Area Name: </span
                     >{{ product.locationName }}
                   </p>
                 </div>
@@ -222,7 +222,7 @@
                 </div>
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">Maintenance Date: </span
+                    <span style="font-weight: bold">Repair Date: </span
                     >{{ product.maintenanceDate }}
                   </p>
                 </div>
@@ -290,7 +290,7 @@
     </Dialog>
     <Dialog
       v-model:visible="crackInfoDialog"
-      :style="{ width: '1000px' }"
+      :style="{ width: '1000px'}"
       :modal="true"
       class="dialog"
     >
@@ -305,7 +305,7 @@
             class="product-image"
             v-if="product.image"
             @click="showImage(product)"
-            style="width:250px; height:100%"
+            style="width:250px; height:80%"
           />
         </div>
         <div class="p-col-8">
@@ -314,7 +314,7 @@
               <div class="p-grid">
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">Location Name: </span
+                    <span style="font-weight: bold">Area Name: </span
                     >{{ product.locationName }}
                   </p>
                 </div>
@@ -660,6 +660,7 @@ textarea {
 .p-dialog-titlebar {
   background: black;
 }
+
 ::v-deep(.p-dialog .p-dialog-header) {
   border-top-right-radius: 24px;
   border-top-left-radius: 24px;
@@ -813,7 +814,7 @@ textarea {
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.3px;
-  color: #61ff52;
+  color: #66bb6a;
 }
 
 .p-col-12 .nested-grid {

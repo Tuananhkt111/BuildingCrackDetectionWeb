@@ -16,7 +16,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h3 class="p-m-2">Maintenance Workers</h3>
+          <h3 class="p-m-2">Repairers</h3>
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
@@ -35,7 +35,7 @@
             </span>
           </span>
         </div>
-        <template #empty> No Maintenance Worker found. </template>
+        <template #empty> No Repairer found. </template>
         <Column header="No" style="margin-right:-10rem">
           <template #body="slotProps">
             {{slotProps.data.index}}
@@ -114,7 +114,7 @@
     <Dialog
       v-model:visible="productDialog"
       :style="{ width: '450px' }"
-      header="Maintenance Worker Details"
+      header="Repairer Details"
       :modal="true"
       class="p-fluid"
     >
@@ -198,7 +198,7 @@
     <Dialog
       v-model:visible="CreateProductDialog"
       :style="{ width: '450px' }"
-      header="Create Maintenance Worker"
+      header="Create Repairer"
       :modal="true"
       class="p-fluid"
     >

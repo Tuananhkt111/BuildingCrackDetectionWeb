@@ -40,7 +40,7 @@
         </Column>
         <Column
           field="locationName"
-          header="Location Name"
+          header="Area Name"
           :showFilterMatchModes="false"
           :showAddButton="false"
         >

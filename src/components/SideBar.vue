@@ -28,7 +28,7 @@
             <router-link to="/locations" tag="li" class="t-link nav-btn">
               <a class="a-link">
                 <i class="pi pi-fw pi-map-marker"></i>
-                <span>Locations</span>
+                <span>Areas</span>
               </a>
             </router-link>
           </li>
@@ -40,7 +40,7 @@
             >
               <a class="a-link">
                 <i class="pi pi-fw pi-shopping-cart"></i>
-                <span>Maintenance Orders</span>
+                <span>Repair Records</span>
               </a>
             </router-link>
           </li>
@@ -52,7 +52,7 @@
             >
               <a class="a-link">
                 <i class="pi pi-fw pi-users"></i>
-                <span>Maintenance Workers</span>
+                <span>Repairers</span>
               </a>
             </router-link>
           </li>

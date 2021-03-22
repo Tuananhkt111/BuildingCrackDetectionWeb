@@ -16,7 +16,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h5 class="p-m-0" style="font-size:1.25rem">Locations</h5>
+          <h5 class="p-m-0" style="font-size:1.25rem">Areas</h5>
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
@@ -37,7 +37,7 @@
         </div>
 
         <template #empty>
-          No Locations found.
+          No Areas found.
         </template>
         <Column header="No" style="margin-right: -10rem">
           <template #body="slotProps">
@@ -46,7 +46,7 @@
         </Column>
         <Column
           field="name"
-          header="Location Name"
+          header="Area Name"
           :showFilterMatchModes="false"
           :showAddButton="false"
         >
@@ -128,7 +128,7 @@
               icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text p-mr-2"
               @click="editProduct(slotProps.data)"
-              v-tooltip.bottom="'View Location Details'"
+              v-tooltip.bottom="'View Area Details'"
               style="margin: 2px"
               v-if="!admin"
             />
@@ -137,7 +137,7 @@
               class="p-button-rounded p-button-danger p-button-text"
               @click="confirmDeleteProduct(slotProps.data)"
               style="margin: 2px"
-              v-tooltip.bottom="'Disable Location'"
+              v-tooltip.bottom="'Disable Area'"
               v-if="admin"
             />
           </template>
@@ -147,17 +147,17 @@
     <Dialog
       v-model:visible="createLocationDiaglog"
       :style="{ width: '450px' }"
-      header="Location Information"
+      header="Area Information"
       :modal="true"
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="name" class="form-control-label"> Location Name</label>
+        <label for="name" class="form-control-label"> Area Name</label>
         <InputText
           id="locationName"
           v-model.trim="locationName"
           maxlength="30"
-          class="form-control form-control-alternative" placeholder="Location Name"
+          class="form-control form-control-alternative" placeholder="Area Name"
         />
         <small class="invalid">{{ errors.locationName }}</small>
       </div>
@@ -189,12 +189,12 @@
     <Dialog
       v-model:visible="productDialog"
       :style="{ width: '450px' }"
-      header="Location Information"
+      header="Area Information"
       :modal="true"
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="name" class="form-control-label"> Location Name</label>
+        <label for="name" class="form-control-label"> Area Name</label>
         <InputText
           id="locationName"
           v-model.trim="locationName"
@@ -267,7 +267,7 @@
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
         <span v-if="product"
-          >Are you sure to delete the location
+          >Are you sure to delete the area
           <span style="color:red; font-weight: bold;">{{ product.name }}</span
           >?</span
         >
@@ -309,8 +309,8 @@ export default {
     const schema = yup.object({
       description: yup.string().label("Description").max(100),
       locationName: yup
-        .string().label("Location Name")
-        .required("Location Name can't be blank")
+        .string().label("Area Name")
+        .required("Area Name can't be blank")
         .max(20),
     });
 

@@ -51,7 +51,7 @@
         </Column>
         <Column
           field="locationName"
-          header="Location Name"
+          header="Area Name"
           :showFilterMatchModes="false"
           style="min-width:12rem"
           :showAddButton="false"
@@ -167,7 +167,7 @@
     </div>
     <Dialog
       v-model:visible="crackInfoDialog"
-      :style="{ width: '1000px' }"
+      :style="{ width: '1050px' }"
       :modal="true"
       :baseZIndex=10000
       class="dialog"
@@ -192,7 +192,7 @@
               <div class="p-grid">
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">Location Name: </span
+                    <span style="font-weight: bold">Area Name: </span
                     >{{ product.locationName }}
                   </p>
                 </div>
@@ -561,7 +561,7 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: #61ff6b;
+  color: #66bb6a;
 }
 
 .medium {
@@ -570,7 +570,7 @@ textarea {
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.3px;
-  color: #ffbe49;
+  color: #ffa726;
   text-transform: uppercase;
 }
 
@@ -634,7 +634,7 @@ textarea {
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  color: #61ff52;
+  color: #66bb6a;
 }
 
 h5 {
