@@ -109,7 +109,7 @@ export default {
   box-shadow: 0px 10px 40px rgb(41 50 65 / 6%);
 }
 .main-layout {
-  background-color:  #f2f2f2;
+  background-color:  #f5f6ff;
   padding: 50px;
   width: 100%;
   height: 100%;

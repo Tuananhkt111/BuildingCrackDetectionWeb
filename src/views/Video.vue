@@ -83,14 +83,15 @@
                 <Button
                   label="Reject"
                   @click="confirm1($event, slotProps.data)"
+                      style="background-color: #508FF4;border: none;  margin-right: 1rem;"
                   icon="pi pi-times"
-                  class="p-button-rounded p-button-danger p-mr-3"
                 />
                 <Button
                   label="Confirm"
                   @click="showConfirm(slotProps.data)"
                   icon="pi pi-check"
-                  class="p-button-rounded p-button-warning"
+                  style="background-color: #4BE69D;border: none; "
+
                 />
               </template>
             </Column>

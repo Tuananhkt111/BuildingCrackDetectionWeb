@@ -16,8 +16,8 @@
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         currentPageReportTemplate=""
       >
-        <div class="table-header">
-          <h5 class="p-m-2">Cracks</h5>
+        <div class="table-header" style="background-color: #ffffff">
+          <h5 class="p-m-2" style="color: #143178;font-weight: 400;font-size:25px">Cracks</h5>
           <span class="p-input-icon-left" style="margin: 2px">
             <i class="pi pi-search" />
             <InputText
@@ -27,21 +27,19 @@
           </span>
         </div>
         <template #empty> No Cracks found. </template>
-        <template #loading>
-          Loading Crack, please wait...
-        </template>
-        <Column style="margin-right:-5rem">
+        <template #loading> Loading Crack, please wait... </template>
+        <Column style="max-width: 4rem; " headerStyle="max-width: 2rem;">
           <template #body="slotProps">
-            {{slotProps.data.index}}
+            {{ slotProps.data.index }}
           </template>
         </Column>
-        <Column header="Image">
+        <Column header="Image"  headerStyle="max-width: 140px;" style="max-width: 170px;" >
           <template #body="slotProps">
             <img
               :src="slotProps.data.imageThumbnails"
               :alt="slotProps.data.imageThumbnails"
               class="product-image"
-              style="width: 80px ; height: 80px; margin-left:-3rem"
+              style="width: 80px; height: 80px"
               @click="imageClick(slotProps.index)"
             />
           </template>
@@ -50,13 +48,15 @@
           field="locationName"
           header="Area Name"
           :showFilterMatchModes="false"
-          style="min-width:12rem"
+     
           :showAddButton="false"
+                headerStyle="max-width: 170px;"
+          style="max-width: 205px;"
         >
           <template #body="slotProps">
             {{ slotProps.data.locationName }}
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -65,15 +65,34 @@
             />
           </template>
         </Column>
-        <Column
-          field="accuracy"
-          header="Accuracy"
-          style="min-width:12rem"
+        <Column header="Accuracy" field="accuracy"
           dataType="numeric"
           :showAddButton="false"
-        >
+      
+          >
           <template #body="slotProps">
-            {{ slotProps.data.accuracy }}%
+            <div class="single-chart">
+              <svg viewBox="0 0 36 36" class="circular-chart green">
+                <path
+                  class="circle-bg"
+                  d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path
+                  class="circle"
+     
+                       :stroke-dasharray="slotProps.data.accuracy + ', 100'"
+                  d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <text x="18" y="20.35" class="percentage">
+                  {{ slotProps.data.accuracy }}%
+                </text>
+              </svg>
+            </div>
+            
           </template>
           <template #filter="{filterModel}">
             <InputText
@@ -89,14 +108,17 @@
           filterField="severity"
           :showFilterMatchModes="false"
           :filterMenuStyle="{ width: '14rem' }"
-          style="min-width:12rem"
+          bodyStyle="text-align: left"
+         headerStyle="max-width: 140px;"
+          style="max-width: 170px"
         >
-          <template #body="{data}">
+          <template #body="{ data }" 
+          >
             <span :class="stockClass(data)">
               {{ data.severity }}
             </span>
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <div class="p-mb-3 p-text-bold">Severity Picker</div>
             <MultiSelect
               v-model="filterModel.value"
@@ -115,14 +137,14 @@
           filterField="status"
           :showFilterMatchModes="false"
           :filterMenuStyle="{ width: '12rem' }"
-          style="min-width:12rem"
+          style="min-width: 12rem"
         >
-          <template #body="{data}">
+          <template #body="{ data }">
             <span :class="stockStatus(data)">
               {{ data.status }}
             </span>
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <div class="p-mb-3 p-text-bold">Status Picker</div>
             <MultiSelect
               v-model="filterModel.value"
@@ -145,7 +167,7 @@
               style="margin: 2px"
               v-tooltip.bottom="'View Crack Details'"
             />
-             <Button
+            <Button
               icon="pi pi-video"
               class="p-button-rounded p-button-help p-button-text"
               @click="showVideo(slotProps.data)"
@@ -158,7 +180,6 @@
               @click="showMaintenanceOrder(slotProps.data)"
               v-tooltip.bottom="'View Maintenance Order'"
             />
-           
           </template>
         </Column>
       </DataTable>
@@ -167,7 +188,7 @@
       v-model:visible="crackInfoDialog"
       :style="{ width: '1050px' }"
       :modal="true"
-      :baseZIndex=10000
+      :baseZIndex="10000"
       class="dialog"
     >
       <template #header>
@@ -180,8 +201,8 @@
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
-            @click="imageClick(product.index -1)"
-            style="width:250px; height:100%"
+            @click="imageClick(product.index - 1)"
+            style="width: 250px; height: 100%"
           />
         </div>
         <div class="p-col-8">
@@ -202,9 +223,7 @@
                 </div>
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">
-                      Severity:
-                    </span>
+                    <span style="font-weight: bold"> Severity: </span>
                     <span :class="stockClass(product)">
                       {{ product.severity }}
                     </span>
@@ -307,12 +326,18 @@
       <template #item="slotProps">
         <img
           :src="slotProps.item.image"
-          style="width: 1100px; display: block;"
+          style="width: 1100px; display: block"
         />
-        <div class="buttonView" v-tooltip.bottom="'View Crack Details'" @click="showDetail(slotProps.item)"><i class="pi pi-fw pi-eye" style="fontSize: 25px;"></i></div>
+        <div
+          class="buttonView"
+          v-tooltip.bottom="'View Crack Details'"
+          @click="showDetail(slotProps.item)"
+        >
+          <i class="pi pi-fw pi-eye" style="fontsize: 25px"></i>
+        </div>
       </template>
       <template #thumbnail="slotProps">
-        <img :src="slotProps.item.imageThumbnails" style="display: block;" />
+        <img :src="slotProps.item.imageThumbnails" style="display: block" />
       </template>
     </Galleria>
   </div>
@@ -346,7 +371,6 @@ export default {
       "getStatusList",
       "getSeveritysList",
     ]),
-
   },
   data() {
     return {
@@ -495,7 +519,7 @@ export default {
   justify-content: space-between;
   background: #fcfcfc;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0.5px 0;
   color: #69707a;
   padding: 1rem;
   font-weight: 700;
@@ -530,39 +554,49 @@ textarea {
 .low {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: #66bb6a;
+  color: #25c997;
+  /* background-color:#e2fff6;
+
+    text-align: center;
+  width: 80px; */
 }
 
 .medium {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 13px;
   letter-spacing: 0.3px;
-  color: #ffa726;
+  color: #ffad44;
+  /* background-color:#fff4de;
+    text-align: center;
+  width: 80px; */
   text-transform: uppercase;
 }
 
-.buttonView{
+.buttonView {
   position: fixed;
   z-index: 10000;
   top: 40px;
-  left:140px;
+  left: 140px;
   color: white;
 }
 
 .high {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: #ff2323ba;
+  color: #ff0019;
+  /* text-align: center;
+  width: 80px;
+    background-color:#ffe2e5; */
 }
 .detectedFailed {
   border-radius: 2px;
@@ -585,29 +619,38 @@ textarea {
 .unscheduled {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: #ffa726;
+  color: #fd517d;
+  /* text-align: center;
+  width: 110px;
+    background-color:#b9eee9; */
 }
 .scheduledformaintenace {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  color: rgb(73, 73, 255);
+  color: #3699ff;
+  /* text-align: center;
+  width: 110px;
+    background-color:#e1f0ff; */
 }
 .fix {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  color: #66bb6a;
+  color: #316879;
+  /* text-align: center;
+  width: 110px;
+    background-color:#c7d7db; */
 }
 
 h5 {
@@ -651,22 +694,22 @@ h5 {
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
-  background: #fcfcfc;
-  color: #69707a;
+  background: #ffffff;
+  color: #8890b5;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0.5px 0;
   text-align: left;
   box-sizing: content-box;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 500;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
   border: 1px solid #e9ecef;
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0 0;
   padding: 1rem 1rem;
 }
 
@@ -759,5 +802,59 @@ h5 {
 
 ::v-deep(.p-tabview .p-tabview-panels .p-grid .p-col-12) {
   margin: 10px 0;
+}
+.flex-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.single-chart {
+  width: 33%;
+  justify-content: space-around;
+}
+
+.circular-chart {
+  display: block;
+  margin: 10px auto;
+  max-width: 80%;
+  max-height: 250px;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+.circular-chart.orange .circle {
+  stroke: #ff9f00;
+}
+
+.circular-chart.green .circle {
+  stroke: #06b5dd;
+}
+
+.circular-chart.blue .circle {
+  stroke: #3c9ee5;
+}
+
+.percentage {
+  fill: #666;
+  font-family: sans-serif;
+  font-size: 0.5em;
+  text-anchor: middle;
 }
 </style>

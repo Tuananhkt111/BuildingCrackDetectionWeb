@@ -18,6 +18,7 @@
                 />
               </a>
               <ul class="drop-menu ">
+           
                 <li>
                   <a
                     class="dropdown__menu-link"
@@ -295,21 +296,19 @@ ul.drop-menu {
 ul.drop-menu li {
   background: white;
   display: none;
-  box-shadow: 0 2px 8px 0 rgb(25 26 28 / 12%);
   margin-bottom: -2px;
   
 }
 
 ul.drop-menu li:first-child {
-  border-radius: 24px 24px 0px 0px;
+  border-radius: 12px 12px 0px 0px;
   border-bottom: none;
-  box-shadow: 0 2px 8px 0 rgb(25 26 28 / 12%);
+
   margin-bottom: -3px;
 }
 ul.drop-menu li:last-child {
-  border-radius: 0px 0px 24px 24px;
+  border-radius: 0px 0px 12px 12px;
   border-bottom: none;
-  box-shadow: 0 2px 8px 0 rgb(25 26 28 / 12%);
 }
 li:hover > ul.drop-menu.menu-2 li {
   opacity: 0;
