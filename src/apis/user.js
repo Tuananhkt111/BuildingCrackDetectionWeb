@@ -7,13 +7,13 @@ export const userApi = {
   getAll,
   getUserById,
   deleteUser,
-  getUsersCount,
   createUser,
   updateUser,
   resetPassword,
   forgotPassword,
   changePassword,
   changeForgotPassword,
+  updateLocationStaff,
 };
 
 async function login(userName, password) {
@@ -66,25 +66,22 @@ async function createUser(role, name, email, phoneNumber, address, location) {
 
 async function getUserById() {
   const id = JSON.parse(localStorage.getItem("user")).userId;
-  const user = await ApiHelper.get(
-    urlConstants.USER_URL + "/" + id
-  );
+  const user = await ApiHelper.get(urlConstants.USER_URL + "/" + id);
   localStorage.setItem("user", JSON.stringify(user.data));
   return JSON.stringify(user.data);
 }
 
 async function updateUser(id, name, email, phoneNumber, address, location) {
   var locations = [];
-  if (location.locationId != null && location.locationId != 0) {
+  if (location.length == 1) {
     locations[0] = location.locationId;
-  } else if(location.locationId == 0) {
+  } else if (location[0].locationId == 0) {
     locations = [];
   } else {
-    locations = [];
     for (let i = 0; i != location.length; i++) {
       locations[i] = location[i].locationId;
     }
-  } 
+  }
   const data = {
     phoneNumber: phoneNumber,
     name: name,
@@ -147,18 +144,20 @@ async function getAll() {
   return res.data;
 }
 
-function getUsersCount(dataSearch) {
-  const data = {
-    role: dataSearch.roleSearch,
-    state: dataSearch.status,
-    language: dataSearch.language,
-    search: dataSearch.languageName,
-  };
-  return ApiHelper.get(urlConstants.USER_URL + "/count", { params: data });
-}
-
 function deleteUser(id) {
   return ApiHelper.delete(urlConstants.USER_URL + "/" + id);
+}
+
+async function updateLocationStaff(id, location) {
+  var payload = [];
+  if (location != 0) {
+    payload = [location];
+  }
+  const res = await ApiHelper.post(
+    urlConstants.USER_URL + "/" + id + "/locations",
+    { data: payload }
+  );
+  return res;
 }
 
 export default {
@@ -166,7 +165,6 @@ export default {
   logout,
   getAll,
   deleteUser,
-  getUsersCount,
   getUserById,
   createUser,
   updateUser,
@@ -174,4 +172,5 @@ export default {
   forgotPassword,
   changePassword,
   changeForgotPassword,
+  updateLocationStaff,
 };

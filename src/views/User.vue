@@ -59,7 +59,12 @@
             />
           </template>
         </Column>
-        <Column field="name" header="Full Name" :showFilterMatchModes="false" :showAddButton="false">
+        <Column
+          field="name"
+          header="Full Name"
+          :showFilterMatchModes="false"
+          :showAddButton="false"
+        >
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
@@ -140,7 +145,7 @@
               icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text"
               @click="seeProduct(slotProps.data)"
-              v-tooltip.bottom="'Edit'"
+              v-tooltip.bottom="'View Crack Detail'"
               v-if="!admin"
             />
             <Button
@@ -255,7 +260,9 @@
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="role" class="form-control-label">Role</label>
-          <p class="dropdown-list form-control-alternative">{{ selectedRole }}</p>
+          <p class="dropdown-list form-control-alternative">
+            {{ selectedRole }}
+          </p>
         </div>
         <div class="p-field p-col-6" v-if="selectedRole != null">
           <label for="Location" class="form-control-label">Area</label>
@@ -300,25 +307,34 @@
     <Dialog
       v-model:visible="StaffDialog"
       :style="{ width: '450px' }"
-      header="User Details"
+      header="Staff Details"
       :modal="true"
       class="p-fluid"
     >
       <div class="p-field">
-        <label for="userName">User Name : {{ product.userName }}</label>
+        <label for="userName" class="form-control-label">User Name: </label>
+        <div class="form-control form-control-alternative" readonly>
+          {{ product.userName }}
+        </div>
       </div>
       <div class="p-field">
-        <label for="name">Full Name</label>
-        <InputText name="name" v-model.trim="name" disabled="true" />
+        <label for="name" class="form-control-label">Full Name</label>
+        <InputText
+          name="name"
+          v-model.trim="name"
+          class="form-control form-control-alternative"
+          readonly
+        />
         <small class="invalid">{{ errors.name }}</small>
       </div>
       <div class="p-field">
-        <label for="email">Email</label>
+        <label for="email" class="form-control-label">Email</label>
         <InputText
           type="email"
           name="email"
           v-model.trim="email"
-          disabled="true"
+          class="form-control form-control-alternative"
+          readonly
         />
         <small class="invalid">{{ errors.email }}</small>
       </div>
@@ -330,38 +346,43 @@
           v-model.trim="phone"
           class="form-control form-control-alternative"
           placeholder="Phone Number"
+          readonly
         />
         <small class="invalid">{{ errors.phone }}</small>
       </div>
       <div class="p-field">
-        <label for="address">Address</label>
+        <label for="address" class="form-control-label"
+          >Address (optional)</label
+        >
         <Textarea
           name="address"
           v-model="address"
           rows="3"
           cols="20"
-          disabled="true"
+          class="form-control form-control-alternative"
+          readonly
         />
         <small class="invalid">{{ errors.address }}</small>
       </div>
       <div class="p-formgrid p-grid">
         <div class="p-field p-col-6">
-          <label for="role">Role</label>
-          <p :class="stockRole(selectedRole)">{{ selectedRole }}</p>
+          <label for="role" class="form-control-label">Role</label>
+          <p class="dropdown-list form-control-alternative">
+            {{ selectedRole }}
+          </p>
         </div>
         <div class="p-field p-col-6" v-if="selectedRole != null">
-          <label for="Location">Area</label>
-          <p>{{ selectedLocation.name }}</p>
-        </div>
-      </div>
-      <div class="p-formgrid p-grid">
-        <div class="p-field p-col-6">
-          <label for="created"> Created Date</label>
-          <p>{{ product.created }}</p>
-        </div>
-        <div class="p-field p-col-6">
-          <label for="lastModified"> Last Modified</label>
-          <p>{{ product.lastModified }}</p>
+          <label for="Location" class="form-control-label">Area</label>
+          <Dropdown
+            v-if="selectedRole === 'Staff'"
+            v-model="selectedLocation"
+            inputId="locationId"
+            :options="getAvailableLocationStaff"
+            optionLabel="name"
+            placeholder="Select a Area"
+            :filter="true"
+            class="dropdown-list form-control-alternative"
+          />
         </div>
       </div>
       <template #footer>
@@ -372,12 +393,11 @@
           @click="hideDialog"
         />
         <Button
-          label="Update"
-          icon="pi pi-user-edit"
+          label="Update Location"
+          icon="pi pi-times"
           class="p-button-text"
-          @click="UpdateUser"
+          @click="updateLoaction"
         />
-        <p style="color: red" v-if="submitted">{{ warnning }}</p>
       </template>
     </Dialog>
     <Dialog
@@ -604,7 +624,7 @@ export default {
       phone,
       errors,
       meta,
-      validate
+      validate,
     };
   },
 
@@ -644,6 +664,7 @@ export default {
       loading: true,
       role: null,
       admin: false,
+      selectedProduct: null,
     };
   },
 
@@ -743,6 +764,7 @@ export default {
       }
     },
     async UpdateUser() {
+      console.log(this.selectedLocation);
       if (this.meta.valid) {
         await userApi
           .updateUser(
@@ -809,6 +831,7 @@ export default {
       this.submitted = false;
       this.UserDialog = false;
       this.UserUpdateDialog = false;
+      this.StaffDialog = false;
     },
     showAssessmentDialog(product) {
       this.product = { ...product };
@@ -816,7 +839,7 @@ export default {
     },
     findIndexById(id) {
       let index = -1;
-      if (this.role == "Manager") {
+      if (this.selectedRole == "Manager") {
         for (let i = 0; i < this.getLocationList.length; i++) {
           if (this.getLocationList[i].locationId === id) {
             index = i;
@@ -881,9 +904,10 @@ export default {
       ];
     },
     async editProduct(product) {
+      console.log(product);
       var tmpLocation = {
         locationId: 0,
-        name: "<<No Location>>"
+        name: "<<No Location>>",
       };
       this.handleReset();
       this.name = product.name;
@@ -896,8 +920,15 @@ export default {
       this.product.lastModified = this.callDate(product.lastModified);
       this.selectedRole = this.product.role;
       const tmp = this.product.locations;
-      console.log(tmp);
-      if (tmp.length == 1 && this.selectedRole == "Staff") {
+      if (tmp == "" && this.selectedRole == "Staff") {
+        await this.setAvailableLocationStaff(product.userId);
+        this.getAvailableLocationStaff.push(tmpLocation);
+        this.selectedLocation = tmpLocation;
+      } else if (tmp == "" && this.selectedRole == "Manager") {
+        await this.setAvailableLocationManager(product.userId);
+        this.getAvailableLocationManager.push(tmpLocation);
+        this.selectedLocation = tmpLocation;
+      } else if (tmp.length == 1 && this.selectedRole == "Staff") {
         await this.setAvailableLocationStaff(product.userId);
         this.selectedLocation = this.getAvailableLocationStaff[
           this.findIndexById(this.product.locations[0].locationId)
@@ -918,10 +949,11 @@ export default {
       }
       this.UserUpdateDialog = true;
     },
+
     async seeProduct(product) {
       var tmpLocation = {
         locationId: 0,
-        name: "<<No Location>>"
+        name: "<<No Location>>",
       };
       console.log(product);
       this.handleReset();
@@ -935,16 +967,65 @@ export default {
       this.product.lastModified = this.callDate(product.lastModified);
       this.selectedRole = this.product.role;
       const tmp = this.product.locations;
-      if (tmp.length == 1 && this.selectedRole == "Staff") {
+      if (tmp != "") {
         await this.setAvailableLocationStaff(product.userId);
+        this.getAvailableLocationStaff.push(tmpLocation);
         this.selectedLocation = this.getAvailableLocationStaff[
           this.findIndexById(this.product.locations[0].locationId)
         ];
+        console.log(this.getAvailableLocationStaff);
+      } else {
+        await this.setAvailableLocationStaff(product.userId);
         this.getAvailableLocationStaff.push(tmpLocation);
+        this.selectedLocation = tmpLocation;
       }
       this.StaffDialog = true;
     },
+    async updateLoaction() {
+      if (
+        this.selectedLocation.locationId == 0 &&
+        this.product.locations == ""
+      ) {
+        this.$toast.add({
+          severity: "info",
+          detail: "Nothing change",
+          life: 3000,
+        });
+        this.StaffDialog = false;
+      } else if (
+        this.selectedLocation.locationId == this.product.locations[0].locationId
+      ) {
+        this.$toast.add({
+          severity: "info",
+          detail: "Nothing change",
+          life: 3000,
+        });
+        this.StaffDialog = false;
+      } else {
+        await userApi
+          .updateLocationStaff(
+            this.product.userId,
+            this.selectedLocation.locationId
+          )
+          .then(() => {
+            this.$toast.add({
+              severity: "success",
+              detail: "Location changee",
+              life: 3000,
+            });
 
+            this.StaffDialog = false;
+          })
+          .catch(() => {
+            this.$toast.add({
+              severity: "error",
+              detail: "Change Fail",
+              life: 3000,
+            });
+            this.StaffDialog = false;
+          });
+      }
+    },
     initFilters() {
       this.filters = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -972,10 +1053,10 @@ export default {
 </script>
 
 <style scoped>
-::v-deep(.p-multiselect-label-container){
-      margin-top: -7px;
+::v-deep(.p-multiselect-label-container) {
+  margin-top: -7px;
 }
-::v-deep(.p-dropdown .p-dropdown-label){
+::v-deep(.p-dropdown .p-dropdown-label) {
   margin-top: -5px !important;
 }
 ::v-deep(.p-dialog .p-dialog-header) {

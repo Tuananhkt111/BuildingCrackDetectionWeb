@@ -12,7 +12,6 @@
           style="paddint-right:20px"
         />
         <form
-          @submit.prevent="handleSubmit()"
           id="login"
           style="margin:auto"
           class="p-col-5 loginForm"
@@ -38,7 +37,7 @@
             </div>
             <Button
               label="Login"
-              type="submit"
+              @click="handleSubmit"
               class="p-button-raised p-button-info"
               style="width: 270px;"
             />

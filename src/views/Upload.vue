@@ -81,6 +81,7 @@ export default {
     },
     chooseFile() {
       this.file = document.getElementById("choose_file").files[0];
+      console.log(this.file);
       var totalBytes = this.file.size;
       if (totalBytes < 1000000) {
         this.size = Math.floor(totalBytes / 1000) + "KB";

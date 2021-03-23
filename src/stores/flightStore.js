@@ -12,6 +12,11 @@ const flightStore = {
     getFlightList(state) {
       return state.flightList;
     },
+
+    getFlightCount(state) {
+      return state.crackList.filter((crack) => crack.status !== "DetectedFailed").length;
+    },
+
     getConfirmCrackList(state) {
       var tmp = state.crackList.filter((crack) => crack.status !== "Unconfirmed" && crack.status !== "DetectedFailed");
       for (let index = 0; index < tmp.length; index++) {
