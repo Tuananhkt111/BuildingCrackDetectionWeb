@@ -166,8 +166,8 @@ export default {
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
-  background: #fcfcfc;
-  color: #69707a;
+  background: #ffffff;
+  color: #8890b5;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 1px 0;
@@ -176,12 +176,12 @@ export default {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 500;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
   border: 1px solid #e9ecef;
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0 0;
   padding: 1rem 1rem;
 }
 
@@ -249,7 +249,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fcfcfc;
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 1px 0;
   color: #69707a;

@@ -1,28 +1,28 @@
 <template>
   <div>
-    <h5 class="p-m-0" style="font-size:1.25rem; padding-left:25px">
+    <h5 class="p-m-0" style="font-size:1.25rem; padding-left:25px;">
       Manage Flight Details
     </h5>
-    <div class="p-grid">
+    <div class="p-grid" >
       <div class="player-container p-col-4 p-mt-3" v-if="checkNull">
-        <div class="p-col-12">
-          <video :key="url" width="380" height="210" controls>
+        <div class="p-col-12" style="margin-left:8px">
+          <video :key="url" width="390" height="210" controls>
             <source :src="url" type="video/mp4" />
             <source :src="url" type="video/ogg" />
           </video>
         </div>
-        <div class="p-grid p-mt-3 p-ml-3">
+        <div class="p-grid p-mt-3 p-ml-3" style="background-color:#f1f2fb;margin-right:10px;padding-left:20px;padding-top:20px;  border-radius:10px;">
           <div class="p-col-6">
-            <p class="left">Area</p>
-            <p class="left">Collector Name</p>
-            <p class="left">Video</p>
-            <p class="left">Total Cracks</p>
+            <div class="left"><i class="pi pi-circle-on" style="fontSize: 12px; color:#ff786f; margin-right:10px"/>Area</div>
+            <div class="left"><i class="pi pi-circle-on" style="fontSize: 12px; color:#99f6ca; margin-right:10px"/>Collector Name</div>
+            <div class="left"><i class="pi pi-circle-on" style="fontSize: 12px; color:##f699e0; margin-right:10px"/>Video</div>
+            <div class="left"><i class="pi pi-circle-on" style="fontSize: 12px; color:#1e3d73; margin-right:10px"/>Total Cracks</div>
           </div>
           <div class="p-col-6">
             <p class="right">{{ getFlight.locationName }}</p>
             <p class="right">{{ getFlight.dataCollectorName }}</p>
-            <p class="right">{{ getFlight.video }}</p>
-            <p class="right">{{ getFlightCount }}</p>
+            <p class="right p-mb-3">{{ getFlight.video }}</p>
+            <p class="right" >{{ getFlightCount }}</p>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
                 :value="getUnConfirmCrackList"
                 dataKey="id"
                 :paginator="true"
-                :rows="5"
+                :rows="4"
                 :loading="loading"
                 :globalFilterFields="['locationName', 'reporterName']"
                 v-model:filters="filters"
@@ -65,32 +65,56 @@
                     />
                   </template>
                 </Column>
-                <Column field="accuracy" header="Accuracy" dataType="numeric">
-                  <template #body="slotProps">
-                    {{ slotProps.data.accuracy }}%
-                  </template>
-                  <template #filter="{filterModel}">
-                    <InputText
-                      type="text"
-                      v-model="filterModel.value"
-                      class="p-column-filter"
-                      placeholder="Search "
-                    />
-                  </template>
-                </Column>
+               <Column
+          header="Accuracy"
+          field="accuracy"
+          dataType="numeric"
+          :showAddButton="false"
+        >
+          <template #body="slotProps">
+            <div class="single-chart">
+              <svg viewBox="0 0 36 36" class="circular-chart green">
+                <path
+                  class="circle-bg"
+                  d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path
+                  class="circle"
+                  :stroke-dasharray="slotProps.data.accuracy + ', 100'"
+                  d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <text x="18" y="20.35" class="percentage">
+                  {{ slotProps.data.accuracy }}%
+                </text>
+              </svg>
+            </div>
+          </template>
+          <template #filter="{ filterModel }">
+            <InputText
+              type="text"
+              v-model="filterModel.value"
+              class="p-column-filter"
+              placeholder="Search "
+            />
+          </template>
+        </Column>
                 <Column :filterMenuStyle="{ width: '5rem' }">
                   <template #body="slotProps">
                     <Button
                       label="Reject"
                       @click="confirm1($event, slotProps.data)"
                       icon="pi pi-times"
-                      class="p-button-rounded p-button-danger p-mr-3"
+                    style="background-color:#ecf0fb;border:none;color:#6285dd;margin-right:10px"
                     />
                     <Button
                       label="Confirm"
                       @click="showConfirm(slotProps.data)"
                       icon="pi pi-check"
-                      class="p-button-rounded p-button-warning"
+                 style="background-color:#ebf8f1;border:none;color:#4cc788"
                     />
                   </template>
                 </Column>
@@ -118,12 +142,15 @@
                 <template #loading>
                   Loading Crack, please wait...
                 </template>
-                <Column header="No">
+                <Column header="No"           headerStyle="max-width: 40px;"
+          style="max-width: 70px;">
                   <template #body="slotProps">
                     {{ slotProps.data.index }}
                   </template>
                 </Column>
-                <Column header="Image">
+                <Column header="Image"
+                           headerStyle="min-width: 78px;"
+                >
                   <template #body="slotProps">
                     <img
                       :src="slotProps.data.imageThumbnails"
@@ -131,28 +158,56 @@
                       class="product-image"
                       style="width: 80px ; height: 80px"
                       @click="imageClick(slotProps.index, slotProps.data)"
+                      
                     />
                   </template>
                 </Column>
-                <Column field="accuracy" header="Accuracy" dataType="numeric">
-                  <template #body="slotProps">
-                    {{ slotProps.data.accuracy }}%
-                  </template>
-                  <template #filter="{filterModel}">
-                    <InputText
-                      type="text"
-                      v-model="filterModel.value"
-                      class="p-column-filter"
-                      placeholder="Search "
-                    />
-                  </template>
-                </Column>
+             <Column
+          header="Accuracy"
+          field="accuracy"
+          dataType="numeric"
+          :showAddButton="false"
+               headerStyle="min-width: 157px;"
+          style="min-width: 190px;">
+        >
+          <template #body="slotProps">
+            <div class="single-chart">
+              <svg viewBox="0 0 36 36" class="circular-chart green">
+                <path
+                  class="circle-bg"
+                  d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path
+                  class="circle"
+                  :stroke-dasharray="slotProps.data.accuracy + ', 100'"
+                  d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <text x="18" y="20.35" class="percentage">
+                  {{ slotProps.data.accuracy }}%
+                </text>
+              </svg>
+            </div>
+          </template>
+          <template #filter="{ filterModel }">
+            <InputText
+              type="text"
+              v-model="filterModel.value"
+              class="p-column-filter"
+              placeholder="Search "
+            />
+          </template>
+        </Column>
                 <Column
                   header="Severity"
                   filterField="severity"
                   :showFilterMatchModes="false"
                   :filterMenuStyle="{ width: '14rem' }"
-                  headerStyle="width: 2em"
+                            headerStyle="min-width: 159px;"
+          style="min-width: 190px;">
                 >
                   <template #body="{data}">
                     <span :class="stockClass(data)">
@@ -199,7 +254,7 @@
                     </MultiSelect>
                   </template>
                 </Column>
-                <Column :filterMenuStyle="{ width: '5rem' }">
+                <Column :filterMenuStyle="{ width: '5rem' }"                  >
                   <template #body="slotProps">
                     <Button
                       icon="pi pi-eye"
@@ -415,13 +470,13 @@
               label="Cancel"
               @click="confirmCrackDialog = False"
               icon="pi pi-times"
-              class="p-button-rounded p-button-danger p-mr-3 button"
+            style="background-color:#fae9ed;border:none;color:#e15b7a;margin-right:20px"
             />
             <Button
               label="Confirm"
               @click="confirmCrack"
               icon="pi pi-check"
-              class="p-button-rounded p-button-warning"
+         style="background-color:#ebf8f1;border:none;color:#4cc788"
             />
           </div>
         </div>
@@ -686,8 +741,8 @@ export default {
         {
           detectedFailed: data.status === "DetectedFailed",
           unconfirmed: data.status === "Unconfirmed",
-          unscheduled: data.status === "Unscheduled for maintenance",
-          scheduledformaintenace: data.status === "Scheduled for maintenance",
+            unscheduled: data.status === "UnrecordedRepair",
+          scheduledformaintenace: data.status === "RecordedRepair",
           fix: data.status === "Fixed",
         },
       ];
@@ -873,7 +928,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fcfcfc;
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 1px 0;
   color: #69707a;
@@ -1027,22 +1082,22 @@ h5 {
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
-  background: #fcfcfc;
-  color: #69707a;
+  background: #ffffff;
+  color: #8890b5;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0 0;
   text-align: left;
   box-sizing: content-box;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 500;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
   border: 1px solid #e9ecef;
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0 0;
   padding: 1rem 1rem;
 }
 
@@ -1148,5 +1203,60 @@ h5 {
   top: 40px;
   left: 140px;
   color: white;
+}
+
+.flex-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.single-chart {
+  width: 33%;
+  justify-content: space-around;
+}
+
+.circular-chart {
+  display: block;
+  margin: 10px auto;
+  max-width: 80%;
+  max-height: 250px;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+.circular-chart.orange .circle {
+  stroke: #ff9f00;
+}
+
+.circular-chart.green .circle {
+  stroke: #06b5dd;
+}
+
+.circular-chart.blue .circle {
+  stroke: #3c9ee5;
+}
+
+.percentage {
+  fill: #666;
+  font-family: sans-serif;
+  font-size: 0.5em;
+  text-anchor: middle;
 }
 </style>

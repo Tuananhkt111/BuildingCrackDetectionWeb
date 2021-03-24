@@ -52,7 +52,7 @@
             >
               <a class="a-link">
                 <i class="pi pi-fw pi-users"></i>
-                <span>Repairers</span>
+                <span >Repairers</span>
               </a>
             </router-link>
           </li>

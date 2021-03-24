@@ -17,7 +17,12 @@
         currentPageReportTemplate=""
       >
         <div class="table-header" style="background-color: #ffffff">
-          <h5 class="p-m-2" style="color: #143178;font-weight: 400;font-size:25px">Cracks</h5>
+          <h5
+            class="p-m-2"
+            style="color: #143178; font-weight: 400; font-size: 22px"
+          >
+            Cracks
+          </h5>
           <span class="p-input-icon-left" style="margin: 2px">
             <i class="pi pi-search" />
             <InputText
@@ -28,12 +33,16 @@
         </div>
         <template #empty> No Cracks found. </template>
         <template #loading> Loading Crack, please wait... </template>
-        <Column style="max-width: 4rem; " headerStyle="max-width: 2rem;">
+        <Column style="max-width: 4rem" headerStyle="max-width: 2rem;">
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
         </Column>
-        <Column header="Image"  headerStyle="max-width: 140px;" style="max-width: 170px;" >
+        <Column
+          header="Image"
+          headerStyle="max-width: 140px;"
+          style="max-width: 170px"
+        >
           <template #body="slotProps">
             <img
               :src="slotProps.data.imageThumbnails"
@@ -48,10 +57,9 @@
           field="locationName"
           header="Area Name"
           :showFilterMatchModes="false"
-     
           :showAddButton="false"
-                headerStyle="max-width: 170px;"
-          style="max-width: 205px;"
+          headerStyle="max-width: 170px;"
+          style="max-width: 205px"
         >
           <template #body="slotProps">
             {{ slotProps.data.locationName }}
@@ -65,11 +73,12 @@
             />
           </template>
         </Column>
-        <Column header="Accuracy" field="accuracy"
+        <Column
+          header="Accuracy"
+          field="accuracy"
           dataType="numeric"
           :showAddButton="false"
-      
-          >
+        >
           <template #body="slotProps">
             <div class="single-chart">
               <svg viewBox="0 0 36 36" class="circular-chart green">
@@ -81,8 +90,7 @@
                 />
                 <path
                   class="circle"
-     
-                       :stroke-dasharray="slotProps.data.accuracy + ', 100'"
+                  :stroke-dasharray="slotProps.data.accuracy + ', 100'"
                   d="M18 2.0845
           a 15.9155 15.9155 0 0 1 0 31.831
           a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -92,9 +100,8 @@
                 </text>
               </svg>
             </div>
-            
           </template>
-          <template #filter="{filterModel}">
+          <template #filter="{ filterModel }">
             <InputText
               type="text"
               v-model="filterModel.value"
@@ -109,11 +116,10 @@
           :showFilterMatchModes="false"
           :filterMenuStyle="{ width: '14rem' }"
           bodyStyle="text-align: left"
-         headerStyle="max-width: 140px;"
+          headerStyle="max-width: 140px;"
           style="max-width: 170px"
         >
-          <template #body="{ data }" 
-          >
+          <template #body="{ data }">
             <span :class="stockClass(data)">
               {{ data.severity }}
             </span>
@@ -137,7 +143,8 @@
           filterField="status"
           :showFilterMatchModes="false"
           :filterMenuStyle="{ width: '12rem' }"
-          style="min-width: 12rem"
+          headerStyle="max-width: 170px;"
+          style="max-width: 210px"
         >
           <template #body="{ data }">
             <span :class="stockStatus(data)">
@@ -417,8 +424,8 @@ export default {
         {
           detectedFailed: data.status === "DetectedFailed",
           unconfirmed: data.status === "Unconfirmed",
-          unscheduled: data.status === "Unscheduled for maintenance",
-          scheduledformaintenace: data.status === "Scheduled for maintenance",
+          unscheduled: data.status === "UnrecordedRepair",
+          scheduledformaintenace: data.status === "RecordedRepair",
           fix: data.status === "Fixed",
         },
       ];
@@ -517,7 +524,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fcfcfc;
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 0.5px 0;
   color: #69707a;

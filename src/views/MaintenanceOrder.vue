@@ -22,7 +22,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header-main">
-          <h3 class="p-m-2">Repair Records</h3>
+          <h3 class="p-m-2" style="color: #143178;font-weight: 400;font-size:25px">Repair Records</h3>
           <span class="p-input-icon-left">
             <span class="p-input-icon-left" style="margin: 2px">
               <i class="pi pi-search" />
@@ -613,8 +613,8 @@ export default {
         {
           detectedFailed: data.status === "DetectedFailed",
           unconfirmed: data.status === "Unconfirmed",
-          unscheduled: data.status === "Unscheduled for maintenance",
-          scheduledformaintenace: data.status === "Scheduled for maintenance",
+          unscheduled: data.status === "UnrecordedRepair",
+          scheduledformaintenace: data.status === "RecordedRepair",
           fix: data.status === "Fixed",
         },
       ];
@@ -879,8 +879,8 @@ textarea {
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
-  background: #fcfcfc;
-  color: #69707a;
+  background: #ffffff;
+  color: #8890b5;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 1px 0;
@@ -889,12 +889,12 @@ textarea {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 500;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
   border: 1px solid #e9ecef;
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0 0;
   padding: 1rem 1rem;
 }
 
@@ -988,7 +988,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fcfcfc;
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 1px 0;
   color: #69707a;
