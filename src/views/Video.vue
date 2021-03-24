@@ -965,31 +965,41 @@ textarea {
 .low {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color:#66bb6a;
+  color: #25c997;
+  /* background-color:#e2fff6;
+
+    text-align: center;
+  width: 80px; */
 }
 
 .medium {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 13px;
   letter-spacing: 0.3px;
-  color: #ffbe49;
+  color: #ffad44;
+  /* background-color:#fff4de;
+    text-align: center;
+  width: 80px; */
   text-transform: uppercase;
 }
 
 .high {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: #ff2323ba;
+  color: #ff0019;
+  /* text-align: center;
+  width: 80px;
+    background-color:#ffe2e5; */
 }
 .detectedFailed {
   border-radius: 2px;
@@ -1012,31 +1022,39 @@ textarea {
 .unscheduled {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color:#ffa726;
+  color: #fd517d;
+  /* text-align: center;
+  width: 110px;
+    background-color:#b9eee9; */
 }
 .scheduledformaintenace {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  color: rgb(73, 73, 255);
+  color: #3699ff;
+  /* text-align: center;
+  width: 110px;
+    background-color:#e1f0ff; */
 }
 .fix {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  color: #61ff52;
+  color: #316879;
+  /* text-align: center;
+  width: 110px;
+    background-color:#c7d7db; */
 }
-
 h5 {
   font-size: 1.25rem;
 }
