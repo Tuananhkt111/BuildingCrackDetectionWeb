@@ -17,7 +17,7 @@
                   src="/assets/profile-3.png"
                 />
               </a>
-              <ul class="drop-menu ">
+              <ul class="drop-menu">
            
                 <li>
                   <a
@@ -297,17 +297,15 @@ ul.drop-menu li {
   background: white;
   display: none;
   margin-bottom: -2px;
-  
 }
 
 ul.drop-menu li:first-child {
-  border-radius: 12px 12px 0px 0px;
+  border-radius: 24px 24px 0px 0px;
   border-bottom: none;
-
   margin-bottom: -3px;
 }
 ul.drop-menu li:last-child {
-  border-radius: 0px 0px 12px 12px;
+  border-radius: 0px 0px 24px 24px;
   border-bottom: none;
 }
 li:hover > ul.drop-menu.menu-2 li {
@@ -506,8 +504,7 @@ hr {
   color: white;
 }
 .btn-nav {
-  padding: 12px;
-  padding-right: -80px;
+  padding: 12px 12px 12px 0;
   color: #2170e7;
 }
 
@@ -644,7 +641,7 @@ button.close {
   margin-bottom: 2rem;
   position: fixed;
   right: 5px;
-  top: 66px;
+  top: 60px;
   color: rgba(41, 50, 65, 0.8);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
