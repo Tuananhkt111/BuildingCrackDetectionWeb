@@ -562,7 +562,6 @@ import Toast from "primevue/toast";
 import RadioButton from "primevue/radiobutton";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
-import * as fs from "fs-web";
 
 export default {
   setup() {
