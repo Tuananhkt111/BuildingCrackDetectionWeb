@@ -5,10 +5,8 @@ const crackStore = {
   state: {
     crackList: [],
     statuses: [
-      "DetectedFailed",
-      "Unconfirmed",
-      "Unscheduled for maintenance",
-      "Scheduled for maintenance",
+      "UnrecordedRepair",
+      "RecordedRepair",
       "Fixed",
     ],
     severitys: ["Low", "Medium", "High"],

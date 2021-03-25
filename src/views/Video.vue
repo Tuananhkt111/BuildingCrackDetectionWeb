@@ -68,7 +68,7 @@
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 currentPageReportTemplate=""
               >
-                <template #empty> No Cracks found. </template>
+                <template #empty> No cracks found </template>
                 <template #loading>
                   Loading Crack, please wait...
                 </template>
@@ -161,7 +161,9 @@
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 currentPageReportTemplate=""
               >
-                <template #empty> No Cracks found. </template>
+                <template #empty> 
+                  No cracks found
+                </template>
                 <template #loading>
                   Loading Crack, please wait...
                 </template>
@@ -177,7 +179,7 @@
                 <Column
                   header="Image"
                   headerStyle="min-width: 78px;"
-                  bodyStyle="margin-left:-30px"
+                  bodyStyle="margin-left:-15px"
                 >
                   <template #body="slotProps">
                     <img
@@ -318,7 +320,7 @@
       class="dialog"
     >
       <template #header>
-        <h3 class="dialog-title">Crack Information</h3>
+        <h3 class="p-dialog-title">Crack Information</h3>
       </template>
       <div class="p-grid nested-grid">
         <div class="p-col-4">
@@ -391,7 +393,7 @@
                 </div>
               </div>
             </TabPanel>
-            <TabPanel header="Description" :disabled="product.desciption == ''">
+            <TabPanel header="Description" :disabled="product.desciption == '' || product.desciption == null">
               <div class="p-col-12">
                 <p>
                   <span
@@ -443,7 +445,7 @@
       class="dialog"
     >
       <template #header>
-        <h3 class="dialog-title">Verify Crack</h3>
+        <h3 class="p-dialog-title">Verify Crack</h3>
       </template>
       <div class="p-grid nested-grid">
         <div class="p-col-5">
@@ -698,7 +700,7 @@ export default {
     confirm1(event, product) {
       this.$confirm.require({
         target: event.currentTarget,
-        message: "Do you want to reject this cracks?",
+        message: "Do you want to reject this crack?",
         icon: "pi pi-info-circle",
         acceptClass: "p-button-danger",
         accept: async () => {
@@ -706,7 +708,7 @@ export default {
           this.$toast.add({
             severity: "info",
             summary: "Rejected",
-            detail: "Crack rejected",
+            detail: "Crack is rejected",
             life: 3000,
           });
           this.setFlight(this.$route.query.flightId);
@@ -1089,10 +1091,6 @@ h5 {
   font-size: 1.25rem;
 }
 
-.dialog-title {
-  color: #69707a;
-  margin-left: 20px;
-}
 .imagePopup {
   width: 100%;
   height: 100%;
@@ -1112,7 +1110,7 @@ h5 {
 }
 
 .p-m-2::before,
-.dialog-title::before {
+.p-dialog-title::before {
   content: "";
   width: 5px;
   height: 12px;
@@ -1121,7 +1119,6 @@ h5 {
   padding-bottom: 10px;
   position: relative;
   left: -10px;
-  top: 25px;
   background: #007dfe;
 }
 
@@ -1212,6 +1209,14 @@ h5 {
 ::v-deep(.p-dialog .p-dialog-header) {
   border-top-right-radius: 24px;
   border-top-left-radius: 24px;
+}
+
+::v-deep(.p-dialog .p-dialog-header .p-dialog-title) {
+  color: #69707a;
+  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 ::v-deep(.p-dialog) {
