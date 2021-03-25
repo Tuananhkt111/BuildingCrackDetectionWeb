@@ -177,12 +177,18 @@ export default {
     box-shadow 0.2s;
   cursor: pointer;
   font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
   border: 1px solid #e9ecef;
   border-width: 0 0 0 0;
   padding: 1rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 ::v-deep(.p-datatable.p-datatable-hoverable-rows
@@ -257,5 +263,9 @@ export default {
   font-weight: 700;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+}
+
+::v-deep(.p-datatable .p-paginator-bottom) {
+  border-width: 0 0 0 0;
 }
 </style>

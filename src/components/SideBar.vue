@@ -64,7 +64,7 @@
             >
               <a class="a-link">
                 <i class="pi pi-fw pi-upload"></i>
-                <span>Flight</span>
+                <span>Detection Results</span>
               </a>
             </router-link>
           </li>

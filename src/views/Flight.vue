@@ -441,4 +441,8 @@ export default {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
 }
+
+::v-deep(.p-datatable .p-paginator-bottom) {
+  border-width: 0 0 0 0;
+}
 </style>
