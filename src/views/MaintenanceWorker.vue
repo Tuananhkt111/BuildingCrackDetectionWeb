@@ -22,6 +22,7 @@
               icon="pi pi-plus"
               class="p-button-info p-mr-2"
               @click="openNew"
+              v-if="!isStaff"
               style="margin: 2px"
               label="New"
             />
@@ -305,6 +306,7 @@ import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import "yup-phone";
+import webRole from "../util/webRole.js";
 
 export default {
   setup() {
@@ -354,6 +356,13 @@ export default {
     data() {
       return this.getMaintenanceWorkerList;
     },
+
+    isStaff() {
+      let role = JSON.parse(localStorage.getItem("user")).role;
+      if(webRole.STAFF_ROLE === role)
+        return true;
+      return false;
+    }
   },
   data() {
     return {

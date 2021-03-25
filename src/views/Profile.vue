@@ -49,7 +49,7 @@
                     }}<span class="font-weight-light"></span>
                   </h3>
                   <div class="h5 font-weight-300">
-                    <i class="ni location_pin mr-2"></i>{{ getUser.address }}
+                    <i class="ni location_pin mr-2"></i>{{ getLocations }}
                   </div>
                   <div class="h5 mt-4">
                     <i class="ni business_briefcase-24 mr-2"></i
@@ -239,6 +239,10 @@ export default {
 
   computed: {
     ...mapGetters("user", ["getUser"]),
+
+    getLocations() {
+      return this.getUser.locations.map(l => l.name).toString();
+    }
   },
   data() {
     return {
