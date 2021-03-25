@@ -5,14 +5,22 @@
     </h5>
     <div class="p-grid">
       <div class="player-container p-col-4 p-mt-3" v-if="checkNull">
-        <div class="p-col-12 p-d-flex p-jc-center" v-if="url != 'https://bcdsysstorage.blob.core.windows.net/videos/null.mp4'">
+        <div
+          class="p-col-12 p-d-flex p-jc-center"
+          v-if="
+            url != 'https://bcdsysstorage.blob.core.windows.net/videos/null.mp4'
+          "
+        >
           <video :key="url" width="384" height="216" controls>
             <source :src="url" type="video/mp4" />
             <source :src="url" type="video/ogg" />
           </video>
         </div>
         <div class="p-col-12 p-d-flex p-jc-center p-ai-center" v-else>
-          <img src="@/asset/mp4-5.png" style="width: 40px; margin-right: 10px"/>
+          <img
+            src="@/asset/mp4-5.png"
+            style="width: 40px; margin-right: 10px"
+          />
           <span style="font-style: italic; color: #adadad">Video deleted</span>
         </div>
         <div
@@ -32,7 +40,13 @@
                 style="fontSize: 12px; color:#99f6ca; margin-right:10px"
               />Collector Name
             </div>
-            <div class="left">
+            <div
+              class="left"
+              v-if="
+                url !=
+                  'https://bcdsysstorage.blob.core.windows.net/videos/null.mp4'
+              "
+            >
               <i
                 class="pi pi-circle-on"
                 style="fontSize: 12px; color:##f699e0; margin-right:10px"
@@ -48,7 +62,15 @@
           <div class="p-col-6">
             <p class="right">{{ getFlight.locationName }}</p>
             <p class="right">{{ getFlight.dataCollectorName }}</p>
-            <p class="right p-mb-3" >{{ getFlight.video }}</p>
+            <p
+              class="right p-mb-3"
+              v-if="
+                url !=
+                  'https://bcdsysstorage.blob.core.windows.net/videos/null.mp4'
+              "
+            >
+              {{ getFlight.video }}
+            </p>
             <p class="right" style="margin-bottom: 0">{{ getFlightCount }}</p>
           </div>
         </div>
@@ -165,7 +187,7 @@
                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                 currentPageReportTemplate=""
               >
-                <template #empty> 
+                <template #empty>
                   No cracks found
                 </template>
                 <template #loading>
@@ -397,7 +419,10 @@
                 </div>
               </div>
             </TabPanel>
-            <TabPanel header="Description" :disabled="product.desciption == '' || product.desciption == null">
+            <TabPanel
+              header="Description"
+              :disabled="product.desciption == '' || product.desciption == null"
+            >
               <div class="p-col-12">
                 <p>
                   <span
@@ -668,7 +693,9 @@ export default {
   // check video
   async mounted() {
     await this.setFlight(this.$route.query.flightId);
-    this.url = "https://bcdsysstorage.blob.core.windows.net/videos/" + this.getFlight.video;
+    this.url =
+      "https://bcdsysstorage.blob.core.windows.net/videos/" +
+      this.getFlight.video;
     // const fs = require("fs");
     // try {
     //   if (fs.existsSync(this.url)) {
