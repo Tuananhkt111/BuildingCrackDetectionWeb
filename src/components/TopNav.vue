@@ -7,6 +7,16 @@
       ></div>
       <!-- Dropdown Menu -->
       <div class="top-nav-right p-d-flex p-ai-center p-jc-between">
+        <div class="userName-location">
+          <p style="color:red; font-size:0.8rem">{{ getUser.userName }}</p>
+          <p
+            v-for="location in getUser.locations"
+            v-bind:key="location.locationId"
+            style="color:red; font-size:0.5rem"
+          >
+            {{ location.name }}
+          </p>
+        </div>
         <nav>
           <ul>
             <li>
@@ -18,7 +28,6 @@
                 />
               </a>
               <ul class="drop-menu">
-           
                 <li>
                   <a
                     class="dropdown__menu-link"
@@ -82,7 +91,7 @@
                     <ul
                       v-if="
                         !getUnReadNotificationList ||
-                        !getUnReadNotificationList.length
+                          !getUnReadNotificationList.length
                       "
                     >
                       <span style="color: #a2a1a1"
@@ -141,14 +150,14 @@ export default {
     ...mapGetters("user", ["getUser"]),
   },
   async created() {
-    if (this.getUnReadNotificationList != null) {
-      this.showListNoti = true;
-    }
-    await this.setNotificationList();
     this.role = JSON.parse(localStorage.getItem("user")).role;
     if (this.getUser == null) {
       this.setUser(JSON.parse(localStorage.getItem("user")));
     }
+    if (this.getUnReadNotificationList != null) {
+      this.showListNoti = true;
+    }
+    await this.setNotificationList();
   },
 
   mounted() {
@@ -712,5 +721,10 @@ button.close {
 .timeline > a {
   text-decoration: none;
   color: #4f8eec;
+}
+
+.userName-location {
+  text-align: right;
+  position: fix;;
 }
 </style>

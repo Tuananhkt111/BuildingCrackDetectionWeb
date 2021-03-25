@@ -45,6 +45,7 @@
           header="User Name"
           :showFilterMatchModes="false"
           :showAddButton="false"
+          :showFilterOperator="false"
           style="min-width:12rem"
         >
           <template #body="slotProps">
@@ -1266,15 +1267,14 @@ label {
     .p-datatable-tbody
     > tr:not(.p-highlight):hover) {
   text-align: left;
-  border: 1px solid #e9ecef;
-  border-width: 0 0 1px 0;
   padding: 1rem 1rem;
   background: rgba(119, 123, 241, 0.1);
 }
 
-::v-deep(.p-column-filter-menu-button:hover) {
-  color: #2170e7;
+.p-column-filter-menu-button {
+  color: #2170e7 !important;
 }
+
 
 ::v-deep(.p-datatable .p-datatable-tbody > tr) {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,

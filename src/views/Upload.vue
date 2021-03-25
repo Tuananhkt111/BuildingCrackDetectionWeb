@@ -145,8 +145,9 @@ body {
 }
 .file_upload_list li .file_item {
   display: flex;
-  border-bottom: 1px solid #f3f4f8;
+  border: 1px solid #f3f4f8;
   padding: 15px 20px;
+  margin-top: 10px; 
 }
 .file_item .format {
   background: #8178d3;

@@ -602,14 +602,14 @@ export default {
         .max(20)
         .label("Position")
         .required(),
-      description: yup
-        .string()
-        .max(300)
-        .label("Desciption"),
       selectedSeverity: yup
         .string()
         .label("Severity")
         .required(),
+      description: yup
+        .string()
+        .max(300)
+        .label("Desciption"),
     });
     const { errors, meta, handleReset, isSubmitting, validate } = useForm({
       validationSchema: schema,

@@ -11,7 +11,7 @@
           class="p-col-5"
           style="paddint-right:20px"
         />
-        <form
+        <div
           id="login"
           style="margin:auto"
           class="p-col-5 loginForm"
@@ -48,7 +48,7 @@
               >Forgot password?</a
             >
           </div>
-        </form>
+        </div>
         <div
           id="forgotPass"
           class="p-col-5 forgotForm"
@@ -142,12 +142,12 @@ export default {
     const schema = yup.object({
       userName: yup
         .string()
-        .max(10)
-        .required(),
+        .required()
+        .max(10),
       password: yup
         .string()
-        .max(30)
-        .required(),
+        .required()
+        .max(30),
     });
 
     const { errors, meta, handleReset, validate } = useForm({
@@ -162,8 +162,8 @@ export default {
       password,
       errors,
       meta,
-      handleReset,
       validate,
+      handleReset,
     };
   },
   components: {
@@ -199,7 +199,10 @@ export default {
     ...mapActions("user", ["setUser"]),
 
     async handleSubmit() {
-      if (this.meta.valid) {
+      this.validate();
+      console.log(this.meta.valid);
+      if (this.meta.valid ) {
+        console.log("Âa");
         localStorage.clear();
         this.isLoading = true;
         if (this.userName && this.password) {

@@ -29,13 +29,12 @@
             </span>
           </span>
         </div>
-
         <template #empty>
           No Detection Result found.
         </template>
         <Column header="No" style="margin-right:-10rem">
           <template #body="slotProps">
-            {{slotProps.data.index}}
+            {{ slotProps.data.index }}
           </template>
         </Column>
         <Column
@@ -75,7 +74,12 @@
             />
           </template>
         </Column>
-        <Column field="video" header="Video" :showFilterMatchModes="false" :showAddButton="false">
+        <Column
+          field="video"
+          header="Video"
+          :showFilterMatchModes="false"
+          :showAddButton="false"
+        >
           <template #body="slotProps">
             <img src="@/asset/mp4-5.png" style="width: 40px; margin-right: 10px"/>
             <span v-if="slotProps.data.video != 'null.mp4'">{{ slotProps.data.video }}</span>
@@ -185,8 +189,8 @@ export default {
     this.setFlightList();
     console.log(this.getFlightList);
     this.loading = false;
-    const tmp = localStorage.getItem("detecting")
-    if(tmp) {
+    const tmp = localStorage.getItem("detecting");
+    if (tmp) {
       this.setIsDetect(true);
     }
   },
@@ -226,7 +230,7 @@ export default {
       this.productDialog = true;
     },
     // Xoa Video
-    async deleteVideo(product){
+    async deleteVideo(product) {
       await flightApi.removeVideo(product.flightId);
     },
 
@@ -291,7 +295,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background:#ffffff;
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 1px 0;
   color: #69707a;
