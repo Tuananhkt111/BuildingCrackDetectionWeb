@@ -751,6 +751,7 @@ export default {
     showConfirm(product) {
       this.hiddenDialog();
       this.handleReset();
+      this.selectedSeverity = "Medium";
       this.product = product;
       this.position = product.position;
       this.confirmCrackDialog = true;
