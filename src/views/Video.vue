@@ -1,18 +1,18 @@
 <template>
   <div>
     <h5 class="p-m-0" style="font-size:1.25rem; padding-left:25px;">
-      Manage Flight Details
+      Detection Result Details
     </h5>
     <div class="p-grid">
       <div class="player-container p-col-4 p-mt-3" v-if="checkNull">
-        <div class="p-col-12 p-ml-1">
-          <video :key="url" width="350" height="210" controls>
+        <div class="p-col-12 p-d-flex p-jc-center">
+          <video :key="url" width="384" height="216" controls>
             <source :src="url" type="video/mp4" />
             <source :src="url" type="video/ogg" />
           </video>
         </div>
         <div
-          class="p-grid p-mt-3 p-ml-1"
+          class="p-col-12 p-mt-3 p-d-flex p-jc-center"
           style="background-color:#f1f2fb;margin-right:10px;padding-left:20px;padding-top:20px;  border-radius:10px;"
         >
           <div class="p-col-6">
@@ -34,7 +34,7 @@
                 style="fontSize: 12px; color:##f699e0; margin-right:10px"
               />Video
             </div>
-            <div class="left">
+            <div class="left left-last-child">
               <i
                 class="pi pi-circle-on"
                 style="fontSize: 12px; color:#1e3d73; margin-right:10px"
@@ -45,13 +45,13 @@
             <p class="right">{{ getFlight.locationName }}</p>
             <p class="right">{{ getFlight.dataCollectorName }}</p>
             <p class="right p-mb-3" >{{ getFlight.video }}</p>
-            <p class="right">{{ getFlightCount }}</p>
+            <p class="right" style="margin-bottom: 0">{{ getFlightCount }}</p>
           </div>
         </div>
       </div>
       <div class="p-col-8">
         <TabView>
-          <TabPanel header="Not verificated Cracks">
+          <TabPanel header="Unverified Cracks">
             <div class="card">
               <DataTable
                 :rowHover="true"
@@ -144,7 +144,7 @@
               </DataTable>
             </div>
           </TabPanel>
-          <TabPanel header="Verificated Crack">
+          <TabPanel header="Verified Cracks">
             <div class="card">
               <DataTable
                 :rowHover="true"
@@ -662,7 +662,7 @@ export default {
   // check video
   async mounted() {
     await this.setFlight(this.$route.query.flightId);
-    this.url = "assets/CapstoneDetect/videos/" + this.getFlight.video + ".mp4";
+    this.url = "https://bcdsysstorage.blob.core.windows.net/videos/" + this.getFlight.video;
     // const fs = require("fs");
     // try {
     //   if (fs.existsSync(this.url)) {
@@ -943,6 +943,10 @@ export default {
   color: black;
   padding-bottom: 40px;
   font-weight: bold;
+}
+
+.left-last-child {
+  padding-bottom: 0;
 }
 
 .right {

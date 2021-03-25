@@ -18,7 +18,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h5 class="p-m-0" style="font-size:1.25rem;color: #143178;font-weight: 400;font-size:25px">Dection Result</h5>
+          <h5 class="p-m-0" style="font-size:1.25rem;color: #143178;font-weight: 400;font-size:25px">Detection Results</h5>
           <span class="p-input-icon-left">
             <span class="p-input-icon-left" style="margin:2px">
               <i class="pi pi-search" />
