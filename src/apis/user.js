@@ -71,17 +71,26 @@ async function getUserById() {
   return JSON.stringify(user.data);
 }
 
-async function updateUser(id, name, email, phoneNumber, address, location) {
+async function updateUser(
+  id,
+  name,
+  email,
+  phoneNumber,
+  address,
+  location,
+  role
+) {
   var locations = [];
-  if (location.length == 1) {
-    locations[0] = location.locationId;
-  } else if (location[0].locationId == 0) {
-    locations = [];
-  } else {
+  if (role == "Manager") {
     for (let i = 0; i != location.length; i++) {
       locations[i] = location[i].locationId;
     }
+  } else if (location.locationId != 0) {
+    locations[0] = location.locationId;
+  } else {
+    locations = [];
   }
+
   const data = {
     phoneNumber: phoneNumber,
     name: name,
@@ -89,12 +98,7 @@ async function updateUser(id, name, email, phoneNumber, address, location) {
     email: email,
     locationIds: locations,
   };
-  const res = await ApiHelper.post(
-    urlConstants.USER_URL + "/" + id,
-    data
-  ).catch((err) => {
-    console.log(err);
-  });
+  const res = await ApiHelper.post(urlConstants.USER_URL + "/" + id, data);
   return res;
 }
 async function changePassword(id, oldPass, newPass) {
@@ -149,15 +153,19 @@ function deleteUser(id) {
 }
 
 async function updateLocationStaff(id, location) {
-  var payload = [];
+  const payload = [location];
   if (location != 0) {
-    payload = [location];
+    const res = await ApiHelper.post(
+      urlConstants.USER_URL + "/" + id + "/locations",
+      payload
+    );
+    return res;
+  } else {
+    const res = await ApiHelper.delete(
+      urlConstants.USER_URL + "/" + id + "/locations"
+    );
+    return res;
   }
-  const res = await ApiHelper.post(
-    urlConstants.USER_URL + "/" + id + "/locations",
-    { data: payload }
-  );
-  return res;
 }
 
 export default {

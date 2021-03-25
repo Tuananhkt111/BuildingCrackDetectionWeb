@@ -764,7 +764,7 @@ export default {
       }
     },
     async UpdateUser() {
-      console.log(this.selectedLocation);
+      console.log(this.meta.valid);
       if (this.meta.valid) {
         await userApi
           .updateUser(
@@ -773,7 +773,8 @@ export default {
             this.email,
             this.phone,
             this.address,
-            this.selectedLocation
+            this.selectedLocation,
+            this.role
           )
           .then(() => {
             this.$toast.add({
@@ -839,14 +840,7 @@ export default {
     },
     findIndexById(id) {
       let index = -1;
-      if (this.selectedRole == "Manager") {
-        for (let i = 0; i < this.getLocationList.length; i++) {
-          if (this.getLocationList[i].locationId === id) {
-            index = i;
-            break;
-          }
-        }
-      } else if (this.selectedRole == "Staff") {
+      if (this.selectedRole == "Staff") {
         for (let i = 0; i < this.getAvailableLocationStaff.length; i++) {
           if (this.getAvailableLocationStaff[i].locationId === id) {
             index = i;
@@ -982,49 +976,7 @@ export default {
       this.StaffDialog = true;
     },
     async updateLoaction() {
-      if (
-        this.selectedLocation.locationId == 0 &&
-        this.product.locations == ""
-      ) {
-        this.$toast.add({
-          severity: "info",
-          detail: "Nothing change",
-          life: 3000,
-        });
-        this.StaffDialog = false;
-      } else if (
-        this.selectedLocation.locationId == this.product.locations[0].locationId
-      ) {
-        this.$toast.add({
-          severity: "info",
-          detail: "Nothing change",
-          life: 3000,
-        });
-        this.StaffDialog = false;
-      } else {
-        await userApi
-          .updateLocationStaff(
-            this.product.userId,
-            this.selectedLocation.locationId
-          )
-          .then(() => {
-            this.$toast.add({
-              severity: "success",
-              detail: "Location changee",
-              life: 3000,
-            });
-
-            this.StaffDialog = false;
-          })
-          .catch(() => {
-            this.$toast.add({
-              severity: "error",
-              detail: "Change Fail",
-              life: 3000,
-            });
-            this.StaffDialog = false;
-          });
-      }
+      await userApi.updateLocationStaff(this.product.userId, this.selectedLocation.locationId);
     },
     initFilters() {
       this.filters = {

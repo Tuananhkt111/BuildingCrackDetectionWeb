@@ -53,6 +53,7 @@ const flightStore = {
       const res = await flightApi.getAll();
       for (let index = 0; index < res.length; index++) {
         res[index].created = new Date(res[index].created + "Z");
+        res[index].video = res[index].video + ".mp4";
         res[index].index = index + 1;
       }
       if (res) {
@@ -62,7 +63,7 @@ const flightStore = {
     async setFlight({ commit }, id) {
       const res = await flightApi.getById(id);
       if (res) {
-        console.log("res" + res);
+        res.video = res.video + ".mp4";
         commit("setFlight", res);
         if (res.cracks != null) {
           for (let index = 0; index < res.cracks.length; index++) {

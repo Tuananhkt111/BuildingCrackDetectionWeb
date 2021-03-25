@@ -4,6 +4,7 @@ import urlConstants from "../util/urlConstants.js";
 export const flightApi = {
   getAll,
   getById,
+  removeVideo
 };
 
 async function getAll() {
@@ -17,7 +18,12 @@ async function getById(id) {
   } else return null;
 }
 
+async function removeVideo(id) {
+  return await ApiHelper.delete(urlConstants.FLIGHT_URL + "/" + id + "/video");
+}
+
 export default {
   getAll,
   getById,
+  removeVideo
 };

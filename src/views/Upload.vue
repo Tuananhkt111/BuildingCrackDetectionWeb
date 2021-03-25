@@ -39,7 +39,7 @@
               @change="chooseFile"
               accept="video/mp4"
             />
-            <span>Choose Files</span>
+            <span>Choose File</span>
           </label>
         </div>
         <div class="detect p-col-6" @click="detect" >

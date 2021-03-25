@@ -18,7 +18,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h5 class="p-m-0" style="font-size:1.25rem;color: #143178;font-weight: 400;font-size:25px">Flights</h5>
+          <h5 class="p-m-0" style="font-size:1.25rem;color: #143178;font-weight: 400;font-size:25px">Dection Result</h5>
           <span class="p-input-icon-left">
             <span class="p-input-icon-left" style="margin:2px">
               <i class="pi pi-search" />
@@ -31,7 +31,7 @@
         </div>
 
         <template #empty>
-          No Flights found.
+          No Detection Result found.
         </template>
         <Column header="No" style="margin-right:-10rem">
           <template #body="slotProps">
@@ -61,6 +61,7 @@
           header="Collector Name"
           :showFilterMatchModes="false"
           :showAddButton="false"
+          style="display:none"
         >
           <template #body="slotProps">
             {{ slotProps.data.dataCollectorName }}
@@ -88,7 +89,7 @@
           </template>
         </Column>
         <Column
-          header="Created"
+          header="Import Date"
           filterField="created"
           dataType="date"
           style="min-width:10rem"
@@ -113,6 +114,12 @@
               @click="seeProduct(slotProps.data)"
               v-tooltip.bottom="'View Detail'"
             />
+            <Button
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-info p-button-text"
+              @click="deleteVideo(slotProps.data)"
+              v-tooltip.bottom="'Delete Video'"
+            />
           </template>
         </Column>
       </DataTable>
@@ -132,6 +139,7 @@ import Toast from "primevue/toast";
 import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import moment from "moment";
+import { flightApi } from "../apis/flights";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
 import webRole from "../util/webRole.js";
@@ -168,6 +176,7 @@ export default {
   created() {
     this.initFilters();
     this.setFlightList();
+    console.log(this.getFlightList);
     this.loading = false;
     const tmp = localStorage.getItem("detecting")
     if(tmp) {
@@ -179,6 +188,8 @@ export default {
     this.role = JSON.parse(localStorage.getItem("user")).role;
     if (this.role === webRole.STAFF_ROLE) {
       this.staff = true;
+    } else {
+      console.log(document.getElementById("Collector"));
     }
   },
   methods: {
@@ -206,6 +217,10 @@ export default {
       this.product.lastModified = this.callDate(product.lastModified);
       this.submitted = false;
       this.productDialog = true;
+    },
+    // Xoa Video
+    async deleteVideo(product){
+      await flightApi.removeVideo(product.flightId);
     },
 
     callDate(date) {

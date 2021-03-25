@@ -13,7 +13,6 @@ async function getAll() {
 }
 async function deleteNoti(id) {
   const payload = [id];
-  console.log(payload);
   const res = await ApiHelper.delete(urlConstants.NOTIFICATION_URL, {data: payload});
   return res;
 }
