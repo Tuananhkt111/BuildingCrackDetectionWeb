@@ -22,7 +22,7 @@
               icon="pi pi-plus"
               class="p-button-info p-mr-2"
               @click="openNew"
-              v-if="!isStaff"
+              v-if="isAdmin"
               style="margin: 2px"
               label="New"
             />
@@ -357,9 +357,9 @@ export default {
       return this.getMaintenanceWorkerList;
     },
 
-    isStaff() {
+    isAdmin() {
       let role = JSON.parse(localStorage.getItem("user")).role;
-      if(webRole.STAFF_ROLE === role)
+      if(webRole.ADMIN_ROLE === role)
         return true;
       return false;
     }
