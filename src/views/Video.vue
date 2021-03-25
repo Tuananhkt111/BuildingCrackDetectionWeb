@@ -5,11 +5,15 @@
     </h5>
     <div class="p-grid">
       <div class="player-container p-col-4 p-mt-3" v-if="checkNull">
-        <div class="p-col-12 p-d-flex p-jc-center">
+        <div class="p-col-12 p-d-flex p-jc-center" v-if="url != 'https://bcdsysstorage.blob.core.windows.net/videos/null.mp4'">
           <video :key="url" width="384" height="216" controls>
             <source :src="url" type="video/mp4" />
             <source :src="url" type="video/ogg" />
           </video>
+        </div>
+        <div class="p-col-12 p-d-flex p-jc-center p-ai-center" v-else>
+          <img src="@/asset/mp4-5.png" style="width: 40px; margin-right: 10px"/>
+          <span style="font-style: italic; color: #adadad">Video deleted</span>
         </div>
         <div
           class="p-col-12 p-mt-3 p-d-flex p-jc-center"

@@ -77,7 +77,9 @@
         </Column>
         <Column field="video" header="Video" :showFilterMatchModes="false" :showAddButton="false">
           <template #body="slotProps">
-            {{ slotProps.data.video }}
+            <img src="@/asset/mp4-5.png" style="width: 40px; margin-right: 10px"/>
+            <span v-if="slotProps.data.video != 'null.mp4'">{{ slotProps.data.video }}</span>
+            <span v-else style="font-style: italic; color: #adadad">Video deleted</span>
           </template>
           <template #filter="{filterModel}">
             <InputText
@@ -96,7 +98,7 @@
           :showAddButton="false"
         >
           <template #body="{data}">
-            {{ callDate(data.created) }}
+            {{ callDate(data.created) }} <img src="@/asset/calendar.png" style="width: 20px; margin-left: 5px"/>
           </template>
           <template #filter="{filterModel}">
             <Calendar
@@ -112,12 +114,14 @@
               icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text"
               @click="seeProduct(slotProps.data)"
-              v-tooltip.bottom="'View Detail'"
+              v-tooltip.bottom="'View Details'"
             />
             <Button
+              v-if="slotProps.data.video != 'null.mp4'"
               icon="pi pi-trash"
-              class="p-button-rounded p-button-info p-button-text"
-              @click="deleteVideo(slotProps.data)"
+              style="color: red"
+              class="p-button-rounded p-button-alert p-button-text"
+              @click="confirmRemoveVideo($event, slotProps.data)"
               v-tooltip.bottom="'Delete Video'"
             />
           </template>
@@ -125,6 +129,7 @@
       </DataTable>
     </div>
     <Toast position="bottom-right" />
+    <ConfirmPopup></ConfirmPopup>
     <div class="imagePopup" v-if="displayImage" @click="hiddenImage">
       <img
         :src="crack.image"
@@ -145,6 +150,7 @@ import { mapGetters, mapActions } from "vuex";
 import webRole from "../util/webRole.js";
 import Upload from "../views/Upload.vue";
 import Detecting from "../components/Detecting.vue";
+import ConfirmPopup from "primevue/confirmpopup";
 
 export default {
   components: {
@@ -152,7 +158,8 @@ export default {
     Toast,
     Upload,
     Detecting,
-    Calendar
+    Calendar,
+    ConfirmPopup
   },
   computed: {
     ...mapGetters("flight", ["getFlightList"]),
@@ -221,6 +228,26 @@ export default {
     // Xoa Video
     async deleteVideo(product){
       await flightApi.removeVideo(product.flightId);
+    },
+
+    confirmRemoveVideo(event, product) {
+      this.$confirm.require({
+        target: event.currentTarget,
+        message: "Are you sure you want to delete video from this result?",
+        icon: "pi pi-info-circle",
+        acceptClass: "p-button-danger",
+        accept: async () => {
+          await flightApi.removeVideo(product.flightId);
+          this.$toast.add({
+            severity: "success",
+            summary: "Deleted",
+            detail: "Delete video success",
+            life: 3000,
+          });
+          this.setFlightList();
+        },
+        reject: () => {},
+      });
     },
 
     callDate(date) {
@@ -303,6 +330,19 @@ export default {
   background: rgba(0, 0, 0, 0.9);
   left: 0;
   align-content: center;
+}
+
+.p-m-0::before {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 0;
+  background: #007dfe;
 }
 
 .p-m-0::before {
