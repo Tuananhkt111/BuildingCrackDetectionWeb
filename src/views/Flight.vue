@@ -98,7 +98,7 @@
           :showAddButton="false"
         >
           <template #body="{data}">
-            {{ callDate(data.created) }} <img src="@/asset/calendar.png" style="width: 20px; margin-left: 5px"/>
+            {{ callDate(data.created) }}
           </template>
           <template #filter="{filterModel}">
             <Calendar
