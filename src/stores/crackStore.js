@@ -46,7 +46,7 @@ const crackStore = {
         res[index].accuracy = Math.round(res[index].accuracy * 100);
       }
       if (res) {
-        commit("setCrackList", res);
+        commit("setCrackList", res.filter((crack) => !(crack.status === "UnrecordedRepair" && crack.maintenanceOrderId !== null)));
       }
     },
   },

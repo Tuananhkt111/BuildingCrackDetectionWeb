@@ -52,7 +52,7 @@ const maintenanceOrderStore = {
           }
         }
         console.log(res);
-        commit("setMaintenanceOrderList", res);
+        commit("setMaintenanceOrderList", res.filter((mo) => mo.status !== "WaitingForConfirm"));
       }
     },
 

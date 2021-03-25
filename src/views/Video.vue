@@ -499,7 +499,7 @@
             <small class="invalid">{{ errors.position }}</small>
           </div>
           <div class="p-col-12">
-            <label class="form-control-label">Description</label>
+            <label class="form-control-label">Description (Optional)</label>
             <InputText
               v-model.trim="description"
               class="form-control form-control-alternative"

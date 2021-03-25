@@ -178,10 +178,10 @@
               icon="pi pi-video"
               class="p-button-rounded p-button-help p-button-text"
               @click="showVideo(slotProps.data)"
-              v-tooltip.bottom="'Show Video'"
+              v-tooltip.bottom="'View Detection Result'"
             />
             <Button
-              v-if="slotProps.data.maintenanceOrderId != null"
+              v-if="slotProps.data.status != 'DetectedFailed' && slotProps.data.status != 'UnrecordedRepair'"
               icon="pi pi-calendar-minus"
               class="p-button-rounded p-button-danger p-button-text"
               @click="showMaintenanceOrder(slotProps.data)"
@@ -270,7 +270,9 @@
                 </div>
               </div>
             </TabPanel>
-            <TabPanel header="Description">
+            <TabPanel header="Description"
+              :disabled="product.desciption == '' || product.desciption == null"
+            >
               <div class="p-col-12">
                 <p>
                   <span
@@ -406,6 +408,7 @@ export default {
       this.crackInfoDialog = false;
       this.activeIndex = index;
       this.displayCustom = true;
+      console.log(this.getCrackListConfirm);
     },
     stockClass(data) {
       return [

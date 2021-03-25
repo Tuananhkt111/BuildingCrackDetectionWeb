@@ -29,7 +29,7 @@ const flightStore = {
       for (let index = 0; index < tmp.length; index++) {
         tmp[index].index = index + 1;
       }
-      return tmp ;
+      return tmp;
     },
     getFlight(state) {
       return state.flight;
