@@ -70,6 +70,7 @@
           header="Full Name"
           :showFilterMatchModes="false"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.name }}
@@ -89,6 +90,7 @@
           :showFilterMatchModes="false"
           headerStyle="width: 14em"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.email }}
@@ -107,6 +109,7 @@
           header="Phone"
           :showFilterMatchModes="false"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.phoneNumber }}

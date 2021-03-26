@@ -119,6 +119,7 @@
                   field="accuracy"
                   dataType="numeric"
                   :showAddButton="false"
+                  :showFilterOperator="false"
                 >
                   <template #body="slotProps">
                     <div class="single-chart">
@@ -225,6 +226,7 @@
                   headerStyle="min-width: 127px;"
                   style="min-width: 160px;"
                   bodyStyle="margin-left:20px"
+                  :showFilterOperator="false"
                 >
                   >
                   <template #body="slotProps">

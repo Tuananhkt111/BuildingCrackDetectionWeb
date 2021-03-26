@@ -50,6 +50,7 @@
           header="Area Name"
           :showFilterMatchModes="false"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.locationName }}
@@ -68,6 +69,7 @@
           header="Repairer"
           :showFilterMatchModes="false"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.maintenanceWorkerName }}
@@ -87,6 +89,7 @@
           :showFilterMatchModes="false"
           :filterMenuStyle="{ width: '14rem' }"
           style="min-width: 14rem"
+          
         >
           <template #body="{ data }">
             <span :class="stockStatusOrder(data)">
@@ -114,6 +117,7 @@
           style="min-width: 20px"
           headerStyle="width: 13em"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="{ data }">
             {{ callDate(data.maintenanceDate) }}

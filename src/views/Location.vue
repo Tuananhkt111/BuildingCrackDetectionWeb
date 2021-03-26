@@ -54,6 +54,7 @@
           header="Area Name"
           :showFilterMatchModes="false"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.name }}
@@ -72,6 +73,7 @@
           header="Description"
           :showFilterMatchModes="false"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             <span v-if="slotProps.data.description !== '' && slotProps.data.description !== null">{{ slotProps.data.description }}</span>
@@ -91,6 +93,7 @@
           filterField="created"
           dataType="date"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="{data}">
             {{ callDate(data.created) }}
@@ -108,6 +111,7 @@
           filterField="lastModified"
           dataType="date"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="{data}">
             {{ callDate(data.lastModified) }}

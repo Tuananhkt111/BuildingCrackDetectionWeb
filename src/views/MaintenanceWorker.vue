@@ -16,7 +16,12 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h3 class="p-m-2" style="color: #143178;font-weight: 400;font-size:22px">Repairers</h3>
+          <h3
+            class="p-m-2"
+            style="color: #143178;font-weight: 400;font-size:22px"
+          >
+            Repairers
+          </h3>
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
@@ -39,10 +44,16 @@
         <template #empty> No Repairer found. </template>
         <Column header="No" style="margin-right:-10rem">
           <template #body="slotProps">
-            {{slotProps.data.index}}
+            {{ slotProps.data.index }}
           </template>
         </Column>
-        <Column field="name" header="Name" :showFilterMatchModes="false" :showAddButton="false">
+        <Column
+          field="name"
+          header="Name"
+          :showFilterMatchModes="false"
+          :showAddButton="false"
+          :showFilterOperator="false"
+        >
           <template #body="slotProps">
             {{ slotProps.data.name }}
           </template>
@@ -55,7 +66,13 @@
             />
           </template>
         </Column>
-        <Column field="phone" header="Phone" :showFilterMatchModes="false" :showAddButton="false">
+        <Column
+          field="phone"
+          header="Phone"
+          :showFilterMatchModes="false"
+          :showAddButton="false"
+          :showFilterOperator="false"
+        >
           <template #body="slotProps">
             {{ slotProps.data.phone }}
           </template>
@@ -68,7 +85,13 @@
             />
           </template>
         </Column>
-        <Column field="email" header="Email" :showFilterMatchModes="false" :showAddButton="false">
+        <Column
+          field="email"
+          header="Email"
+          :showFilterMatchModes="false"
+          :showAddButton="false"
+          :showFilterOperator="false"
+        >
           <template #body="slotProps">
             {{ slotProps.data.email }}
           </template>
@@ -81,7 +104,13 @@
             />
           </template>
         </Column>
-        <Column field="address" header="Address" :showFilterMatchModes="false" :showAddButton="false">
+        <Column
+          field="address"
+          header="Address"
+          :showFilterMatchModes="false"
+          :showAddButton="false"
+          :showFilterOperator="false"
+        >
           <template #body="slotProps">
             {{ slotProps.data.address }}
           </template>
@@ -325,8 +354,15 @@ import webRole from "../util/webRole.js";
 export default {
   setup() {
     const schema = yup.object({
-      email: yup.string().label("Email").required().email(),
-      address: yup.string().max(30).label("Address"),
+      email: yup
+        .string()
+        .label("Email")
+        .required()
+        .email(),
+      address: yup
+        .string()
+        .max(30)
+        .label("Address"),
       name: yup
         .string()
         .required("Worker Name can't be blank")
@@ -356,7 +392,7 @@ export default {
       phone,
       errors,
       meta,
-      validate
+      validate,
     };
   },
 
@@ -373,10 +409,9 @@ export default {
 
     isAdmin() {
       let role = JSON.parse(localStorage.getItem("user")).role;
-      if(webRole.ADMIN_ROLE === role)
-        return true;
+      if (webRole.ADMIN_ROLE === role) return true;
       return false;
-    }
+    },
   },
   data() {
     return {
@@ -775,7 +810,7 @@ label {
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
   border: 1px solid #e9ecef;
-   border-width: 0 0 0 0;
+  border-width: 0 0 0 0;
   padding: 1rem 1rem;
   display: flex;
   justify-content: center;

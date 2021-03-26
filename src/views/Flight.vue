@@ -42,6 +42,7 @@
           header="Area Name"
           :showFilterMatchModes="false"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.locationName }}
@@ -61,6 +62,7 @@
           :showFilterMatchModes="false"
           :showAddButton="false"
           style="display:none"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.dataCollectorName }}
@@ -79,6 +81,7 @@
           header="Video"
           :showFilterMatchModes="false"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             <img src="@/asset/mp4-5.png" style="width: 40px; margin-right: 10px"/>
@@ -100,6 +103,7 @@
           dataType="date"
           style="min-width:10rem"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="{data}">
             {{ callDate(data.created) }}

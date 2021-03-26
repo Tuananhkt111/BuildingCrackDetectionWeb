@@ -60,6 +60,7 @@
           :showAddButton="false"
           headerStyle="max-width: 170px;"
           style="max-width: 205px"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             {{ slotProps.data.locationName }}
@@ -78,6 +79,7 @@
           field="accuracy"
           dataType="numeric"
           :showAddButton="false"
+          :showFilterOperator="false"
         >
           <template #body="slotProps">
             <div class="single-chart">
