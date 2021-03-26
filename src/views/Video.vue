@@ -54,15 +54,15 @@
             </div>
             <div class="left">
               <i
-                class="pi pi-circle-on"
-                style="fontSize: 12px; color:#1e3d73; margin-right:10px"
-              />Total Cracks
-            </div>
-            <div class="left left-last-child">
-              <i
                 class="pi pi-circle-on "
                 style="fontSize: 12px; color:#1e3d73; margin-right:10px"
               />Import Date
+            </div>
+            <div class="left left-last-child">
+              <i
+                class="pi pi-circle-on"
+                style="fontSize: 12px; color:rgb(90 126 189); margin-right:10px"
+              />Total Cracks
             </div>
           </div>
           <div class="p-col-6">
@@ -77,8 +77,8 @@
             >
               {{ getFlight.video }}
             </p>
+            <p class="right">{{ callDate(getFlight.created) }}</p>
             <p class="right" style="margin-bottom: 0">{{ getFlightCount }}</p>
-            <p class="right" style="margin-bottom: 0; padding-top:40px">{{ callDate(getFlight.created) }}</p>
           </div>
         </div>
       </div>
@@ -165,12 +165,14 @@
                       label="Reject"
                       @click="confirm1($event, slotProps.data)"
                       icon="pi pi-times"
+                      v-if="isStaff"
                       style="background-color:#ecf0fb;border:none;color:#6285dd;margin-right:10px"
                     />
                     <Button
                       label="Confirm"
                       @click="showConfirm(slotProps.data)"
                       icon="pi pi-check"
+                      v-if="isStaff"
                       style="background-color:#ebf8f1;border:none;color:#4cc788"
                     />
                   </template>
@@ -449,17 +451,7 @@
             >
               <div class="p-col-12">
                 <p>
-                  <span
-                    style="font-weight: bold"
-                    v-if="product.description != ''"
-                    >{{ product.description }}</span
-                  >
-                  <span
-                    style="font-weight: bold"
-                    v-if="product.description == ''"
-                  >
-                    <span style="font-weight: normal">N/A</span></span
-                  >
+                  <span style="font-weight: bold">{{ product.description }}</span>
                 </p>
               </div>
             </TabPanel>
@@ -524,10 +516,12 @@
           </div>
           <div class="p-col-12">
             <label class="form-control-label">Description (Optional)</label>
-            <InputText
+            <Textarea
               v-model.trim="description"
               class="form-control form-control-alternative"
-              style="width:100%"
+              rows="3"
+              cols="20"
+              style="width:100%; height: auto;"
               placeholder="Description"
             />
             <small class="invalid">{{ errors.description }}</small>
@@ -599,10 +593,12 @@
           </div>
           <div class="p-col-12">
             <label class="form-control-label">Description (Optional)</label>
-            <InputText
+            <Textarea
               v-model.trim="description"
               class="form-control form-control-alternative"
-              style="width:100%"
+              rows="3"
+              cols="20"
+              style="width:100%; height: auto;"
               placeholder="Description"
             />
             <small class="invalid">{{ errors.description }}</small>

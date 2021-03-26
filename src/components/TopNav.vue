@@ -75,8 +75,8 @@
                   <div class="card timeline">
                     <div class="card-header">
                       <div class="card-title">
-                        <h6>Unread</h6>
-                        <p class="subtitle">Notifications</p>
+                        <h4>Unread</h4>
+                        <p class="subtitle" style="font-size: 16px;">Notifications</p>
                       </div>
                       <a
                         href="#"

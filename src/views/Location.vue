@@ -176,11 +176,12 @@
         <label for="description" class="form-control-label"
           >Description (optional)</label
         >
-        <InputText
-          id="description"
+        <Textarea
           v-model.trim="description"
-          required="true"
           class="form-control form-control-alternative"
+          rows="3"
+          cols="20"
+          style="width:100%; height: auto;"
           placeholder="Description"
         />
         <small class="invalid">{{ errors.description }}</small>
@@ -224,11 +225,12 @@
         <label for="description" class="form-control-label"
           >Description (optional)</label
         >
-        <InputText
-          id="description"
+        <Textarea
           v-model.trim="description"
           class="form-control form-control-alternative"
-          :readonly="!admin"
+          rows="3"
+          cols="20"
+          style="width:100%; height: auto;"
           placeholder="Description"
         />
         <small class="invalid"> {{ errors.description }}</small>
