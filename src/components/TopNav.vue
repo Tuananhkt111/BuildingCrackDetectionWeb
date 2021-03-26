@@ -70,7 +70,7 @@
                 <a
                   href="#"
                   @click="
-                    $router.push('/notis');
+                    $router.push('/notifications');
                     showNoti = false;
                   "
                   >See all</a
@@ -90,7 +90,7 @@
             <li>
               <div class="card timeline" style="width: 200px">
                 <li>
-                  <a @click="$router.push('/profiles')">
+                  <a @click="$router.push('/profile')">
                     <div class="inner-link" style="margin-bottom: 20px">
                       <div class="inner-link-icon">
                         <i class="pi pi-fw pi-user"></i>
@@ -100,7 +100,7 @@
                   </a>
                 </li>
                 <li>
-                  <a @click="$router.push('/notis')">
+                  <a @click="$router.push('/notifications')">
                     <div class="inner-link" style="margin-bottom: 20px">
                       <div class="inner-link-icon">
                         <i class="pi pi-envelope"></i>

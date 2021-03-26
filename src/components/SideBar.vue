@@ -34,12 +34,12 @@
           </li>
           <li>
             <router-link
-              to="/repaireRecords"
+              to="/repair-records"
               tag="li"
               class="t-link nav-btn"
             >
               <a class="a-link">
-                <i class="pi pi-fw pi-shopping-cart"></i>
+                <i class="pi pi-fw pi-calendar-minus"></i>
                 <span>Repair Records</span>
               </a>
             </router-link>
@@ -58,12 +58,12 @@
           </li>
           <li>
             <router-link
-              to="/detectionResult"
+              to="/detection-results"
               tag="li"
               class="t-link nav-btn"
             >
               <a class="a-link">
-                <i class="pi pi-fw pi-upload"></i>
+                <i class="pi pi-fw pi-video"></i>
                 <span>Detection Results</span>
               </a>
             </router-link>

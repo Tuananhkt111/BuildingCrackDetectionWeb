@@ -952,7 +952,7 @@ export default {
     },
     showMaintenanceOrder(product) {
       this.$router.push(
-        "/maintenanceOrders?orderId=" + product.maintenanceOrderId
+        "/repair-records?repairRecordId=" + product.maintenanceOrderId
       );
     },
     async showDetail(product) {

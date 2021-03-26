@@ -552,7 +552,7 @@ setup() {
       ];
     },
     showVideo(product) {
-      this.$router.push("/video?detectionResultId=" + product.flightId);
+      this.$router.push("/detection-result-details?detectionResultId=" + product.flightId);
     },
     stockStatus(data) {
       return [
@@ -573,7 +573,7 @@ setup() {
     showMaintenanceOrder(product) {
       this.product = { ...product };
       this.$router.push(
-        "/maintenanceOrders?orderId=" + this.product.maintenanceOrderId
+        "/repair-records?repairRecordId=" + this.product.maintenanceOrderId
       );
     },
     showDetail(product) {

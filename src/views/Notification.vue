@@ -25,6 +25,7 @@
           @click="markAsRead"
         />
       </div>
+      <template #empty> No Notification found. </template>
       <Column field="title" header="Title" sortable="true" headerStyle="border-radius:20px 0 0 20px">
         <template #body="slotProps">
           <span>{{ slotProps.data.title }}</span>

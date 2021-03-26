@@ -492,7 +492,7 @@ export default {
   },
 
   async created() {
-    this.initFilters(this.$route.query.orderId);
+    this.initFilters(this.$route.query.repairRecordId);
     this.setMaintenanceOrderList();
     this.loading = false;
   },
@@ -620,7 +620,7 @@ export default {
     },
 
     showVideo(product) {
-      this.$router.push("/video?detectionResultId=" + product.flightId);
+      this.$router.push("/detection-result-details?detectionResultId=" + product.flightId);
     },
 
     stockClass(data) {
