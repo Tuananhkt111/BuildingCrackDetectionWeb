@@ -193,6 +193,7 @@
         </div>
       </div>
     </div>
+    <Toast position="bottom-right" />
   </div>
 </template>
 <script>
@@ -200,6 +201,7 @@ import { mapGetters, mapActions } from "vuex";
 import userApi from "../apis/user.js";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
+import Toast from "primevue/toast";
 export default {
   setup() {
     const schema = yup.object({
@@ -235,6 +237,10 @@ export default {
       meta,
       validate
     };
+  },
+
+  components: {
+    Toast,
   },
 
   computed: {
@@ -273,7 +279,7 @@ export default {
           .then((res) => {
             this.$toast.add({
               severity: "success",
-              summary: "Successful",
+              summary: "Change password success",
               detail: res.data,
               life: 3000,
             });
@@ -282,7 +288,7 @@ export default {
           .catch((err) => {
             this.$toast.add({
               severity: "error",
-              summary: "Failed!",
+              summary: "Change password failed",
               detail: err.data,
               life: 3000,
             });

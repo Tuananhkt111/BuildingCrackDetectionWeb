@@ -368,7 +368,7 @@
       class="dialog"
     >
       <template #header>
-        <h3 class="p-dialog-title">Update Crack</h3>
+        <h3 class="dialog-title" style="margin-left: 10px;">Update Crack</h3>
       </template>
       <div class="p-grid nested-grid">
         <div class="p-col-5">
@@ -436,6 +436,7 @@
         </div>
       </div>
     </Dialog>
+    <Toast position="bottom-right" />
   </div>
 </template>
 
@@ -454,6 +455,7 @@ import crackApi from "../apis/cracks.js";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import webRole from "../util/webRole.js";
+import Toast from "primevue/toast";
 
 export default {
 setup() {
@@ -500,6 +502,7 @@ setup() {
     TabView,
     TabPanel,
     Galleria,
+    Toast,
   },
   computed: {
     ...mapGetters("crack", [
@@ -699,6 +702,76 @@ setup() {
 </script>
 
 <style scoped>
+.serverity {
+  margin-bottom: 10rem;
+  text-align: center;
+}
+.p-field-radiobutton {
+  display: inline-block;
+  margin-right: 3.4rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #525f7f;
+}
+.form-control-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #525f7f;
+}
+.form-control:-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control::placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control:focus:-ms-input-placeholder {
+  color: #adb5bd;
+}
+.form-control:focus::placeholder {
+  color: #adb5bd;
+}
+.form-control {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  display: block;
+  width: 100%;
+  height: calc(2.75rem + 2px);
+  padding: 0.625rem 0.75rem;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  color: #8898aa;
+  border: 1px solid #cad1d7;
+  border-radius: 0.375rem;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: none;
+}
+.form-control:focus {
+  color: #8898aa;
+  border-color: rgba(50, 151, 211, 0.25);
+  outline: 0;
+  background-color: #fff;
+  box-shadow: none, none;
+}
+
+.focused .form-control {
+  border-color: rgba(50, 151, 211, 0.25);
+}
+.form-control:disabled,
+.form-control[readonly] {
+  opacity: 1;
+  background-color: #ebf0f5;
+}
+.form-control-alternative {
+  transition: box-shadow 0.15s ease;
+  border: 0;
+  box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15), 0 1px 0 rgba(0, 0, 0, 0.02);
+}
+.form-control-alternative:focus {
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
 .table-header {
   display: flex;
   align-items: center;
