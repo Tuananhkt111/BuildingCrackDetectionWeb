@@ -18,7 +18,7 @@
         </div>
         <div class="p-col-12 p-d-flex p-jc-center p-ai-center" v-else>
           <img
-            src="@/asset/mp4-5.png"
+            src="@/asset/mp4-6.png"
             style="width: 40px; margin-right: 10px"
           />
           <span style="font-style: italic; color: #adadad">Video deleted</span>

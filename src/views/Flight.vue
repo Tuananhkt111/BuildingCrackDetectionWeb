@@ -84,7 +84,7 @@
           :showFilterOperator="false"
         >
           <template #body="slotProps">
-            <img src="@/asset/mp4-5.png" style="width: 40px; margin-right: 10px"/>
+            <img src="@/asset/mp4-6.png" style="width: 40px; margin-right: 10px"/>
             <span v-if="slotProps.data.video != 'null.mp4'">{{ slotProps.data.video }}</span>
             <span v-else style="font-style: italic; color: #adadad">Video deleted</span>
           </template>
