@@ -6,11 +6,16 @@ const flightStore = {
     flightList: [],
     crackList: [],
     flight: [],
+    isShow: false
   },
 
   getters: {
     getFlightList(state) {
       return state.flightList;
+    },
+
+    getIsShow(state) {
+      return state.isShow;
     },
 
     getFlightCount(state) {
@@ -46,6 +51,9 @@ const flightStore = {
     setFlight(state, flight) {
       state.flight = flight;
     },
+    setIsShow(state, value) {
+      state.isShow = value;
+    }
   },
 
   actions: {
@@ -63,6 +71,7 @@ const flightStore = {
     async setFlight({ commit }, id) {
       const res = await flightApi.getById(id);
       if (res) {
+        commit("setIsShow", true);
         res.video = res.video + ".mp4";
         commit("setFlight", res);
         if (res.cracks != null) {
@@ -76,6 +85,7 @@ const flightStore = {
         }
       } else {
         commit("setFlight", []);
+        commit("setIsShow", false);
       }
     },
   },

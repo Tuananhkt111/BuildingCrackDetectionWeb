@@ -179,12 +179,18 @@
                   <span>{{ callDate(slotProps.data.created) }}</span>
                 </template>
               </Column>
-              <Column headerStyle="width:4rem">
+              <Column :filterMenuStyle="{ width: '5rem' }">
                 <template #body="slotProps">
                   <Button
                     icon="pi pi-eye"
                     @click="showDetail(slotProps.data)"
                     class="p-button-rounded p-button-info p-button-text"
+                  />
+
+                  <Button
+                    icon="pi pi-video"
+                    @click="showVideo(slotProps.data)"
+                    class="p-button-rounded p-button-help p-button-text"
                   />
                 </template>
               </Column>
@@ -608,6 +614,11 @@ export default {
       }
       return index;
     },
+
+    showVideo(product) {
+      this.$router.push("/video?flightId=" + product.flightId);
+    },
+
     stockClass(data) {
       return [
         {

@@ -3,7 +3,7 @@
     <h3 class="p-m-0" style="padding-left:25px;">
       Detection Result Details
     </h3>
-    <div class="p-grid">
+    <div class="p-grid" v-if="getIsShow">
       <div class="player-container p-col-4 p-mt-3" v-if="checkNull">
         <div
           class="p-col-12 p-d-flex p-jc-center"
@@ -345,6 +345,10 @@
           </TabPanel>
         </TabView>
       </div>
+    </div>
+
+    <div v-else style="margin: 20px;">
+      No Flight Found
     </div>
 
     <Dialog
@@ -737,6 +741,7 @@ export default {
       "getUnConfirmCrackList",
       "getFlight",
       "getFlightCount",
+      "getIsShow"
     ]),
 
     isStaff() {

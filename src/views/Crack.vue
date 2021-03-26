@@ -185,7 +185,7 @@
               class="p-button-rounded p-button-info p-button-text"
               @click="showUpdateCrack(slotProps.data)"
               v-tooltip.bottom="'Update Crack'"
-              v-if="isStaff"
+              v-if="isStaff && slotProps.data.status === 'UnrecordedRepair'"
             />
             <Button
               v-if="
@@ -419,7 +419,7 @@
               style="background-color:#fae9ed;border:none;color:#e15b7a;margin-right:20px"
             />
             <Button
-              label="Confirm"
+              label="Update"
               @click="updateCrack"
               icon="pi pi-check"
               style="background-color:#ebf8f1;border:none;color:#4cc788"
