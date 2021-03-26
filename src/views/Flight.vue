@@ -219,7 +219,7 @@ export default {
     ...mapActions("application", ["setIsDetect"]),
 
     seeProduct(product) {
-      this.$router.push("/video?flightId=" + product.flightId);
+      this.$router.push("/video?detectionResultId=" + product.flightId);
     },
     showImage(crack) {
       document.body.style.overflow = "hidden";

@@ -620,7 +620,7 @@ export default {
     },
 
     showVideo(product) {
-      this.$router.push("/video?flightId=" + product.flightId);
+      this.$router.push("/video?detectionResultId=" + product.flightId);
     },
 
     stockClass(data) {

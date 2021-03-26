@@ -793,7 +793,7 @@ export default {
 
   // check video
   async mounted() {
-    await this.setFlight(this.$route.query.flightId);
+    await this.setFlight(this.$route.query.detectionResultId);
     this.url =
       "https://bcdsysstorage.blob.core.windows.net/videos/" +
       this.getFlight.video;
@@ -833,7 +833,7 @@ export default {
             detail: "Crack is rejected",
             life: 3000,
           });
-          this.setFlight(this.$route.query.flightId);
+          this.setFlight(this.$route.query.detectionResultId);
         },
         reject: () => {},
       });
@@ -862,7 +862,7 @@ export default {
               detail: "Crack is confirmed!",
               life: 3000,
             });
-            this.setFlight(this.$route.query.flightId);
+            this.setFlight(this.$route.query.detectionResultId);
             this.confirmCrackDialog = false;
           })
           .catch(() => {
@@ -924,7 +924,7 @@ export default {
               detail: "Crack is updated!",
               life: 3000,
             });
-            this.setFlight(this.$route.query.flightId);
+            this.setFlight(this.$route.query.detectionResultId);
             this.updateCrackDialog = false;
           })
           .catch(() => {

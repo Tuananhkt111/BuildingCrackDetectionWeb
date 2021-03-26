@@ -552,7 +552,7 @@ setup() {
       ];
     },
     showVideo(product) {
-      this.$router.push("/video?flightId=" + product.flightId);
+      this.$router.push("/video?detectionResultId=" + product.flightId);
     },
     stockStatus(data) {
       return [

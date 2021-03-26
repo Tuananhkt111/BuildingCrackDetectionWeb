@@ -25,7 +25,7 @@
             </router-link>
           </li>
           <li v-if="!staff">
-            <router-link to="/locations" tag="li" class="t-link nav-btn">
+            <router-link to="/areas" tag="li" class="t-link nav-btn">
               <a class="a-link">
                 <i class="pi pi-fw pi-map-marker"></i>
                 <span>Areas</span>
@@ -34,7 +34,7 @@
           </li>
           <li>
             <router-link
-              to="/maintenanceOrders"
+              to="/repaireRecords"
               tag="li"
               class="t-link nav-btn"
             >
@@ -46,7 +46,7 @@
           </li>
           <li>
             <router-link
-              to="/maintenanceWorkers"
+              to="/repairers"
               tag="li"
               class="t-link nav-btn"
             >
@@ -58,7 +58,7 @@
           </li>
           <li>
             <router-link
-              to="/flight"
+              to="/detectionResult"
               tag="li"
               class="t-link nav-btn"
             >
