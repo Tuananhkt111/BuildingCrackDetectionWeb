@@ -181,7 +181,16 @@
               v-tooltip.bottom="'View Detection Result'"
             />
             <Button
-              v-if="slotProps.data.status != 'DetectedFailed' && slotProps.data.status != 'UnrecordedRepair'"
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-info p-button-text"
+              @click="showUpdateCrack(slotProps.data)"
+              v-tooltip.bottom="'Update Crack'"
+            />
+            <Button
+              v-if="
+                slotProps.data.status != 'DetectedFailed' &&
+                  slotProps.data.status != 'UnrecordedRepair'
+              "
               icon="pi pi-calendar-minus"
               class="p-button-rounded p-button-danger p-button-text"
               @click="showMaintenanceOrder(slotProps.data)"
@@ -270,7 +279,8 @@
                 </div>
               </div>
             </TabPanel>
-            <TabPanel header="Description"
+            <TabPanel
+              header="Description"
               :disabled="product.desciption == '' || product.desciption == null"
             >
               <div class="p-col-12">
@@ -350,6 +360,81 @@
         <img :src="slotProps.item.imageThumbnails" style="display: block" />
       </template>
     </Galleria>
+    <Dialog
+      v-model:visible="updateCrackDialog"
+      :style="{ width: '700px' }"
+      :modal="true"
+      class="dialog"
+    >
+      <template #header>
+        <h3 class="p-dialog-title">Update Crack</h3>
+      </template>
+      <div class="p-grid nested-grid">
+        <div class="p-col-5">
+          <img
+            :src="product.imageThumbnails"
+            :alt="product.imageThumbnails"
+            class="product-image"
+            v-if="product.image"
+            @click="imageClick(product.index - 1, product)"
+            style="width:250px; height:97%"
+          />
+        </div>
+        <div class="p-col-7">
+          <div class="p-col-12">
+            <label class="form-control-label">Position</label>
+            <InputText
+              v-model.trim="position"
+              class="form-control form-control-alternative"
+              style="width:100%"
+              placeholder="Position"
+            />
+            <small class="invalid">{{ errors.position }}</small>
+          </div>
+          <div class="p-col-12">
+            <label class="form-control-label">Description (Optional)</label>
+            <InputText
+              v-model.trim="description"
+              class="form-control form-control-alternative"
+              style="width:100%"
+              placeholder="Description"
+            />
+            <small class="invalid">{{ errors.description }}</small>
+          </div>
+          <div class="p-col-12">
+            <label class="form-control-label serverity">Severity</label><br />
+            <div
+              v-for="category of getSeveritysList"
+              :key="category.key"
+              class="p-field-radiobutton"
+            >
+              <RadioButton
+                :id="category.key"
+                name="category"
+                :value="category"
+                v-model="selectedSeverity"
+              />
+              <label :for="category.key">{{ category }}</label>
+            </div>
+            <small class="invalid">{{ errors.selectedSeverity }}</small>
+          </div>
+          <div>
+            <Button
+              label="Cancel"
+              @click="updateCrackDialog = False"
+              icon="pi pi-times"
+              style="background-color:#fae9ed;border:none;color:#e15b7a;margin-right:20px"
+            />
+            <Button
+              label="Confirm"
+              @click="updateCrack"
+              icon="pi pi-check"
+              style="background-color:#ebf8f1;border:none;color:#4cc788"
+            />
+          </div>
+        </div>
+      </div>
+    </Dialog>
   </div>
 </template>
 
@@ -364,8 +449,47 @@ import { mapGetters, mapActions } from "vuex";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import Galleria from "primevue/galleria";
+import crackApi from "../apis/cracks.js";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
 
 export default {
+setup() {
+    const schema = yup.object({
+      position: yup
+        .string()
+        .max(20)
+        .label("Position")
+        .required(),
+      selectedSeverity: yup
+        .string()
+        .label("Severity")
+        .required(),
+      description: yup
+        .string()
+        .max(300)
+        .label("Desciption").nullable(),
+    });
+    const { errors, meta, handleReset, isSubmitting, validate } = useForm({
+      validationSchema: schema,
+    });
+
+    const { value: position } = useField("position");
+    const { value: description } = useField("description");
+    const { value: selectedSeverity } = useField("selectedSeverity");
+
+    return {
+      handleReset,
+      position,
+      description,
+      selectedSeverity,
+      errors,
+      meta,
+      isSubmitting,
+      validate,
+    };
+  },
+
   components: {
     Button,
     Rating,
@@ -395,6 +519,7 @@ export default {
       check: true,
       displayCustom: false,
       activeIndex: 0,
+      updateCrackDialog: false,
     };
   },
   created() {
@@ -459,6 +584,47 @@ export default {
       this.product.created = this.callDate(this.product.created);
       this.product.lastModified = this.callDate(this.product.lastModified);
       this.crackInfoDialog = true;
+    },
+    showUpdateCrack(product) {
+      this.handleReset();
+      this.selectedSeverity = product.severity;
+      this.product = product;
+      this.description = product.description;
+      this.position = product.position;
+      this.updateCrackDialog = true;
+    },
+
+    async updateCrack() {
+      if (this.meta.valid) {
+        await crackApi
+          .verifyCrack(
+            this.product.crackId,
+            this.position,
+            this.description,
+            this.selectedSeverity
+          )
+          .then(() => {
+            this.$toast.add({
+              severity: "info",
+              summary: "Confirmed",
+              detail: "Crack is updated!",
+              life: 3000,
+            });
+            this.setCrackList();
+            this.updateCrackDialog = false;
+          })
+          .catch(() => {
+            this.$toast.add({
+              severity: "error",
+              summary: "Falied",
+              detail: "Updated Failed",
+              life: 3000,
+            });
+            this.updateCrackDialog = false;
+          });
+      } else {
+        this.validate();
+      }
     },
     findIndexById(id) {
       let index = -1;

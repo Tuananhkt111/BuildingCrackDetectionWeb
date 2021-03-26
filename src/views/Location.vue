@@ -307,11 +307,11 @@ import * as yup from "yup";
 export default {
   setup() {
     const schema = yup.object({
-      description: yup.string().label("Description").max(100),
       locationName: yup
         .string().label("Area Name")
         .required("Area Name can't be blank")
         .max(20),
+      description: yup.string().label("Description").max(100).nullable(),
     });
 
     const { errors, meta, handleReset, validate } = useForm({
@@ -370,6 +370,7 @@ export default {
     if (this.role === webRole.ADMIN_ROLE) {
       this.admin = true;
     }
+    console.log(this.getLocationList);
   },
   methods: {
     ...mapActions("location", ["setLocationList"]),
@@ -406,6 +407,8 @@ export default {
             });
             this.ChangePassworDialog = false;
           });
+      } else {
+        this.validate();
       }
     },
     editProduct(product) {

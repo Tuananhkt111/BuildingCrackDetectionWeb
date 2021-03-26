@@ -321,6 +321,13 @@
                       v-tooltip.bottom="'View Crack Details'"
                     />
                     <Button
+                      icon="pi pi-pencil"
+                      class="p-button-rounded p-button-info p-button-text p-mr-2"
+                      @click="showUpdateCrack(slotProps.data)"
+                      style="margin: 2px"
+                      v-tooltip.bottom="'Update Crack'"
+                    />
+                    <Button
                       v-if="
                         slotProps.data.maintenanceOrderId != null &&
                           slotProps.data.maintenanceOrderId != 0
@@ -542,6 +549,81 @@
         </div>
       </div>
     </Dialog>
+    <Dialog
+      v-model:visible="updateCrackDialog"
+      :style="{ width: '700px' }"
+      :modal="true"
+      class="dialog"
+    >
+      <template #header>
+        <h3 class="p-dialog-title">Update Crack</h3>
+      </template>
+      <div class="p-grid nested-grid">
+        <div class="p-col-5">
+          <img
+            :src="product.imageThumbnails"
+            :alt="product.imageThumbnails"
+            class="product-image"
+            v-if="product.image"
+            @click="imageClick(product.index - 1, product)"
+            style="width:250px; height:97%"
+          />
+        </div>
+        <div class="p-col-7">
+          <div class="p-col-12">
+            <label class="form-control-label">Position</label>
+            <InputText
+              v-model.trim="position"
+              class="form-control form-control-alternative"
+              style="width:100%"
+              placeholder="Position"
+            />
+            <small class="invalid">{{ errors.position }}</small>
+          </div>
+          <div class="p-col-12">
+            <label class="form-control-label">Description (Optional)</label>
+            <InputText
+              v-model.trim="description"
+              class="form-control form-control-alternative"
+              style="width:100%"
+              placeholder="Description"
+            />
+            <small class="invalid">{{ errors.description }}</small>
+          </div>
+          <div class="p-col-12">
+            <label class="form-control-label serverity">Severity</label><br />
+            <div
+              v-for="category of getSeveritysList"
+              :key="category.key"
+              class="p-field-radiobutton"
+            >
+              <RadioButton
+                :id="category.key"
+                name="category"
+                :value="category"
+                v-model="selectedSeverity"
+              />
+              <label :for="category.key">{{ category }}</label>
+            </div>
+            <small class="invalid">{{ errors.selectedSeverity }}</small>
+          </div>
+          <div>
+            <Button
+              label="Cancel"
+              @click="updateCrackDialog = False"
+              icon="pi pi-times"
+              style="background-color:#fae9ed;border:none;color:#e15b7a;margin-right:20px"
+            />
+            <Button
+              label="Confirm"
+              @click="updateCrack"
+              icon="pi pi-check"
+              style="background-color:#ebf8f1;border:none;color:#4cc788"
+            />
+          </div>
+        </div>
+      </div>
+    </Dialog>
     <Galleria
       :value="imageList"
       :responsiveOptions="responsiveOptions"
@@ -610,7 +692,7 @@ export default {
       description: yup
         .string()
         .max(300)
-        .label("Desciption"),
+        .label("Desciption").nullable(),
     });
     const { errors, meta, handleReset, isSubmitting, validate } = useForm({
       validationSchema: schema,
@@ -663,6 +745,7 @@ export default {
       filters: {},
       submitted: false,
       confirmCrackDialog: false,
+      updateCrackDialog: false,
       loading: true,
       check: true,
       url: "",
@@ -697,16 +780,6 @@ export default {
     this.url =
       "https://bcdsysstorage.blob.core.windows.net/videos/" +
       this.getFlight.video;
-    // const fs = require("fs");
-    // try {
-    //   if (fs.existsSync(this.url)) {
-    //     console.log("The file exists.");
-    //   } else {
-    //     console.log("The file does not exist.");
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    // }
     if (this.getFlight.length == 0) {
       this.checkNull = false;
     }
@@ -748,7 +821,6 @@ export default {
         reject: () => {},
       });
     },
-
     showConfirm(product) {
       this.hiddenDialog();
       this.handleReset();
@@ -807,6 +879,49 @@ export default {
           fix: data.status === "Fixed",
         },
       ];
+    },
+
+    showUpdateCrack(product) {
+      this.hiddenDialog();
+      this.handleReset();
+      this.selectedSeverity = product.severity;
+      this.product = product;
+      this.description = product.description;
+      this.position = product.position;
+      this.updateCrackDialog = true;
+    },
+
+    async updateCrack() {
+      if (this.meta.valid) {
+        await crackApi
+          .verifyCrack(
+            this.product.crackId,
+            this.position,
+            this.description,
+            this.selectedSeverity
+          )
+          .then(() => {
+            this.$toast.add({
+              severity: "info",
+              summary: "Confirmed",
+              detail: "Crack is updated!",
+              life: 3000,
+            });
+            this.setFlight(this.$route.query.flightId);
+            this.updateCrackDialog = false;
+          })
+          .catch(() => {
+            this.$toast.add({
+              severity: "error",
+              summary: "Falied",
+              detail: "Updated Failed",
+              life: 3000,
+            });
+            this.updateCrackDialog = false;
+          });
+      } else {
+        this.validate();
+      }
     },
     showAssessmentDialog(product) {
       this.product = { ...product };
