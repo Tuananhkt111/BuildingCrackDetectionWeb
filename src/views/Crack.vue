@@ -337,13 +337,14 @@
           :src="slotProps.item.image"
           style="width: 1100px; display: block"
         />
-        <div
-          class="buttonView"
-          v-tooltip.bottom="'View Crack Details'"
+        <button
+          type="button"
+          class="buttonView p-link"
+          v-tooltip.right="'View Crack Details'"
           @click="showDetail(slotProps.item)"
         >
-          <i class="pi pi-fw pi-eye" style="fontsize: 25px"></i>
-        </div>
+          <i class="pi pi-fw pi-eye" style="fontSize: 2rem;"></i>
+        </button>
       </template>
       <template #thumbnail="slotProps">
         <img :src="slotProps.item.imageThumbnails" style="display: block" />
@@ -591,9 +592,23 @@ textarea {
 .buttonView {
   position: fixed;
   z-index: 10000;
-  top: 40px;
-  left: 140px;
+  top: 0;
+  left: 0;
   color: white;
+  background: transparent;
+  width: 4rem;
+  height: 4rem;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  border-radius: 50%;
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonView:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8f9fa;
 }
 
 .high {

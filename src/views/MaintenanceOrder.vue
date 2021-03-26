@@ -22,7 +22,12 @@
         currentPageReportTemplate=""
       >
         <div class="table-header-main">
-          <h3 class="p-m-2" style="color: #143178;font-weight: 400;font-size:25px">Repair Records</h3>
+          <h3
+            class="p-m-2"
+            style="color: #143178;font-weight: 400;font-size:25px"
+          >
+            Repair Records
+          </h3>
           <span class="p-input-icon-left">
             <span class="p-input-icon-left" style="margin: 2px">
               <i class="pi pi-search" />
@@ -35,7 +40,7 @@
         </div>
         <template #empty> No Repair Record found. </template>
         <Column :expander="true" headerStyle="width: 30px" />
-        <Column header="No"  style="width:2rem">
+        <Column header="No" style="width:2rem">
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
@@ -290,7 +295,7 @@
     </Dialog>
     <Dialog
       v-model:visible="crackInfoDialog"
-      :style="{ width: '1000px'}"
+      :style="{ width: '1000px' }"
       :modal="true"
       class="dialog"
     >
@@ -431,7 +436,14 @@
           :src="slotProps.item.image"
           style="width: 1100px; display: block;"
         />
-        <div class="buttonView" v-tooltip.bottom="'View Crack Details'" @click="showDetail(slotProps.item)"><i class="pi pi-fw pi-eye" style="fontSize: 25px;"></i></div>
+        <button
+          type="button"
+          class="buttonView p-link"
+          v-tooltip.right="'View Crack Details'"
+          @click="showDetail(slotProps.item)"
+        >
+          <i class="pi pi-fw pi-eye" style="fontSize: 2rem;"></i>
+        </button>
       </template>
       <template #thumbnail="slotProps">
         <img :src="slotProps.item.imageThumbnails" style="display: block;" />
@@ -464,7 +476,7 @@ export default {
     Rating,
     TabView,
     TabPanel,
-    Galleria
+    Galleria,
   },
 
   computed: {
@@ -505,7 +517,9 @@ export default {
   methods: {
     ...mapActions("maintenanceOrder", ["setMaintenanceOrderList"]),
     onRowExpand(event) {
-      this.expandedRows = this.getMaintenanceOrderList.filter(p => p.maintenanceOrderId == event.data.maintenanceOrderId);
+      this.expandedRows = this.getMaintenanceOrderList.filter(
+        (p) => p.maintenanceOrderId == event.data.maintenanceOrderId
+      );
       console.log(event);
       this.cracks = [];
       this.cracks = event.data.cracks;
@@ -521,7 +535,7 @@ export default {
     },
     showImage(crack) {
       this.crackInfoDialog = false;
-      this.activeIndex = crack.index -1;
+      this.activeIndex = crack.index - 1;
       console.log(this.activeIndex);
       this.displayImage = true;
     },
@@ -1028,12 +1042,26 @@ textarea {
   min-height: 320px;
 }
 
-.buttonView{
+.buttonView {
   position: fixed;
   z-index: 10000;
-  top: 40px;
-  left:140px;
+  top: 0;
+  left: 0;
   color: white;
+  background: transparent;
+  width: 4rem;
+  height: 4rem;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  border-radius: 50%;
+  margin: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonView:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8f9fa;
 }
 
 ::v-deep(.p-datatable .p-paginator-bottom) {
