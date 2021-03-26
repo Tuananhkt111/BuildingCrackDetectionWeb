@@ -326,7 +326,7 @@
                       @click="showUpdateCrack(slotProps.data)"
                       style="margin: 2px"
                       v-tooltip.bottom="'Update Crack'"
-                      v-if="isStaff"
+                      v-if="isStaff && slotProps.data.status === 'UnrecordedRepair'"
                     />
                     <Button
                       v-if="
