@@ -91,30 +91,30 @@
                 <li>
                   <a @click="$router.push('/profiles')">
                     <div class="inner-link" style="margin-bottom: 20px">
-                      <div>Profile</div>
                       <div class="inner-link-icon">
                         <i class="pi pi-fw pi-user"></i>
                       </div>
+                      <div>Profile</div>
                     </div>
                   </a>
                 </li>
                 <li>
                   <a @click="$router.push('/notis')">
                     <div class="inner-link" style="margin-bottom: 20px">
-                      <div>Notifications</div>
                       <div class="inner-link-icon">
                         <i class="pi pi-envelope"></i>
                       </div>
+                      <div>Notifications</div>
                     </div>
                   </a>
                 </li>
                 <li>
                   <a @click="logOut">
                     <div class="inner-link">
-                      <div>Logout</div>
                       <div class="inner-link-icon">
                         <i class="pi pi-fw pi-power-off"></i>
                       </div>
+                      <div>Logout</div>
                     </div>
                   </a>
                 </li>
@@ -270,12 +270,10 @@ export default {
   display: flex;
   flex-direction: row;
   font-size: 18px;
-  justify-content: flex-end;
-  margin: 0 15px;
 }
 
 .inner-link-icon {
-  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .inner-link:hover{
