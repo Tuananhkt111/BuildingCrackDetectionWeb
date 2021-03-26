@@ -166,11 +166,11 @@ export default {
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
-  background: #ffffff;
-  color: #8890b5;
+   background: #f2f9ff;
+  color: #4ca4f9;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0 0;
   text-align: left;
   box-sizing: content-box;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
@@ -251,7 +251,7 @@ export default {
   justify-content: space-between;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0 0;
   color: #69707a;
   padding: 1rem;
   font-weight: 700;

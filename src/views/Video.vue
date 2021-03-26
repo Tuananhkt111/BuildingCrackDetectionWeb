@@ -11,7 +11,7 @@
             url != 'https://bcdsysstorage.blob.core.windows.net/videos/null.mp4'
           "
         >
-          <video :key="url" width="384" height="216" controls>
+          <video :key="url" width="390" height="216" controls>
             <source :src="url" type="video/mp4" />
             <source :src="url" type="video/ogg" />
           </video>
@@ -25,7 +25,7 @@
         </div>
         <div
           class="p-col-12 p-mt-3 p-d-flex p-jc-center"
-          style="background-color:#f1f2fb;margin-right:10px;padding-left:20px;padding-top:20px;  border-radius:10px;"
+          style="background-color:#f2f9ff;width:390px;margin-left:15px;padding-top:20px;  border-radius:10px;"
         >
           <div class="p-col-6">
             <div class="left">
@@ -49,7 +49,7 @@
             >
               <i
                 class="pi pi-circle-on"
-                style="fontSize: 12px; color:##f699e0; margin-right:10px"
+                style="fontSize: 12px; color:#f699e0; margin-right:10px"
               />Video
             </div>
             <div class="left">
@@ -105,7 +105,7 @@
                 <template #loading>
                   Loading Crack, please wait...
                 </template>
-                <Column header="No" style="margin-right:-10rem">
+                <Column header="No" style="margin-right:-10rem"  headerStyle="border-radius:20px 0 0 20px">
                   <template #body="slotProps">
                     {{ slotProps.data.index }}
                   </template>
@@ -159,7 +159,7 @@
                     />
                   </template>
                 </Column>
-                <Column :filterMenuStyle="{ width: '5rem' }">
+                <Column :filterMenuStyle="{ width: '5rem' }"  headerStyle="border-radius:0 20px 20px 0">
                   <template #body="slotProps">
                     <Button
                       label="Reject"
@@ -203,7 +203,7 @@
                 </template>
                 <Column
                   header="No"
-                  headerStyle="max-width: 40px;"
+                  headerStyle="max-width: 40px;border-radius: 20px 0 0 20px "
                   style="max-width: 70px;"
                 >
                   <template #body="slotProps">
@@ -320,7 +320,10 @@
                     </MultiSelect>
                   </template>
                 </Column>
-                <Column :filterMenuStyle="{ width: '5rem' }">
+                <Column :filterMenuStyle="{ width: '5rem' }" 
+                    headerStyle="border-radius:0 20px 20px 0"
+                
+                >
                   <template #body="slotProps">
                     <Button
                       icon="pi pi-eye"
@@ -1134,7 +1137,7 @@ export default {
   justify-content: space-between;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0 0;
   color: #69707a;
   padding: 1rem;
   font-weight: 700;
@@ -1174,10 +1177,10 @@ textarea {
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: #25c997;
-  /* background-color:#e2fff6;
+  background-color:#e2fff6;
 
     text-align: center;
-  width: 80px; */
+  width: 80px;
 }
 
 .medium {
@@ -1187,9 +1190,9 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   color: #ffad44;
-  /* background-color:#fff4de;
+  background-color:#fff4de;
     text-align: center;
-  width: 80px; */
+  width: 80px;
   text-transform: uppercase;
 }
 
@@ -1201,9 +1204,9 @@ textarea {
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: #ff0019;
-  /* text-align: center;
+  text-align: center;
   width: 80px;
-    background-color:#ffe2e5; */
+    background-color:#ffe2e5;
 }
 .detectedFailed {
   border-radius: 2px;
@@ -1301,8 +1304,8 @@ textarea {
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
-  background: #ffffff;
-  color: #8890b5;
+  background: #f2f9ff;
+  color: #4ca4f9;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 0 0;

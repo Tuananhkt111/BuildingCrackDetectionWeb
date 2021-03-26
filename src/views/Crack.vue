@@ -33,15 +33,15 @@
         </div>
         <template #empty> No Cracks found. </template>
         <template #loading> Loading Crack, please wait... </template>
-        <Column style="max-width: 4rem" headerStyle="max-width: 2rem;">
+        <Column style="max-width: 4rem" headerStyle="max-width: 2rem;border-radius:20px 0 0 20px">
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
         </Column>
         <Column
           header="Image"
-          headerStyle="max-width: 140px;"
-          style="max-width: 170px"
+          headerStyle="max-width: 140px"
+          style="max-width: 170px;"
         >
           <template #body="slotProps">
             <img
@@ -167,7 +167,7 @@
             </MultiSelect>
           </template>
         </Column>
-        <Column :filterMenuStyle="{ width: '5rem' }">
+        <Column :filterMenuStyle="{ width: '5rem' }" headerStyle="border-radius:0 20px 20px 0">
           <template #body="slotProps">
             <Button
               icon="pi pi-eye"
@@ -772,7 +772,7 @@ setup() {
   justify-content: space-between;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 0.5px 0;
+  border-width: 0 0 0 0;
   color: #69707a;
   padding: 1rem;
   font-weight: 700;
@@ -812,10 +812,9 @@ textarea {
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: #25c997;
-  /* background-color:#e2fff6;
-
+  background-color:#e2fff6;
     text-align: center;
-  width: 80px; */
+  width: 80px;
 }
 
 .medium {
@@ -825,12 +824,24 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   color: #ffad44;
-  /* background-color:#fff4de;
+  background-color:#fff4de;
     text-align: center;
-  width: 80px; */
+  width: 80px;
   text-transform: uppercase;
 }
 
+.high {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: #ff0019;
+  text-align: center;
+  width: 80px;
+    background-color:#ffe2e5;
+}
 .buttonView {
   position: fixed;
   z-index: 10000;
@@ -853,18 +864,6 @@ textarea {
   color: #f8f9fa;
 }
 
-.high {
-  border-radius: 2px;
-  padding: 0.25em 0.5rem;
-  font-weight: 500;
-  font-size: 13px;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  color: #ff0019;
-  /* text-align: center;
-  width: 80px;
-    background-color:#ffe2e5; */
-}
 .detectedFailed {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
@@ -957,11 +956,11 @@ textarea {
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
-  background: #ffffff;
-  color: #8890b5;
+  background: #f2f9ff;
+  color: #4ca4f9;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 0.5px 0;
+  border-width: 0 0 0 0;
   text-align: left;
   box-sizing: content-box;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,

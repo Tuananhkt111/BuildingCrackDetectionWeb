@@ -39,7 +39,7 @@
           </span>
         </div>
         <template #empty> No Repair Record found. </template>
-        <Column :expander="true" headerStyle="width: 30px" />
+        <Column :expander="true" headerStyle="width: 30px;border-radius: 20px 0 0 20px"  />
         <Column header="No" style="width:2rem">
           <template #body="slotProps">
             {{ slotProps.data.index }}
@@ -130,7 +130,7 @@
             />
           </template>
         </Column>
-        <Column headerStyle="width: 5em">
+        <Column headerStyle="width: 5em;border-radius:0 20px 20px 0">
           <template #body="slotProps">
             <Button
               icon="pi pi-eye"
@@ -139,7 +139,7 @@
               v-tooltip.bottom="'View Record details'"
             />
           </template>
-        </Column>
+        </Column >
         <template #expansion="slotProps">
           <div class="orders-subtable">
             <div class="table-header">
@@ -148,7 +148,7 @@
               >List of Cracks</h3>
             </div>
             <DataTable :value="slotProps.data.cracks">
-              <Column header="No" style="width:3rem">
+              <Column header="No" style="width:3rem" headerStyle="border-radius:20px 0 0 20px">
                 <template #body="slotProps">
                   {{ slotProps.data.index }}
                 </template>
@@ -183,7 +183,7 @@
                   <span>{{ callDate(slotProps.data.created) }}</span>
                 </template>
               </Column>
-              <Column :filterMenuStyle="{ width: '5rem' }">
+              <Column :filterMenuStyle="{ width: '5rem' }"  headerStyle="border-radius:0 20px 20px 0">
                 <template #body="slotProps">
                   <Button
                     icon="pi pi-eye"
@@ -814,10 +814,10 @@ textarea {
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: #25c997;
-  /* background-color:#e2fff6;
+  background-color:#e2fff6;
 
     text-align: center;
-  width: 80px; */
+  width: 80px;
 }
 
 .medium {
@@ -827,9 +827,9 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   color: #ffad44;
-  /* background-color:#fff4de;
+  background-color:#fff4de;
     text-align: center;
-  width: 80px; */
+  width: 80px;
   text-transform: uppercase;
 }
 
@@ -841,9 +841,9 @@ textarea {
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: #ff0019;
-  /* text-align: center;
+  text-align: center;
   width: 80px;
-    background-color:#ffe2e5; */
+    background-color:#ffe2e5;
 }
 .detectedFailed {
   border-radius: 2px;
@@ -930,11 +930,11 @@ textarea {
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
-  background: #ffffff;
-  color: #8890b5;
+  background: #f2f9ff;
+  color: #4ca4f9;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0 0;
   text-align: left;
   box-sizing: content-box;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
@@ -1041,7 +1041,7 @@ textarea {
   justify-content: space-between;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-width: 0 0 1px 0;
+  border-width: 0 0 0 0;
   color: #69707a;
   padding: 1rem;
   font-weight: 700;
