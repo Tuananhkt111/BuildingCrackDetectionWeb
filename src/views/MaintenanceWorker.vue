@@ -97,12 +97,21 @@
         <Column>
           <template #body="slotProps">
             <Button
+              v-if="isAdmin"
               icon="pi pi-pencil"
               class="p-button-rounded p-button-info p-button-text"
               @click="editProduct(slotProps.data)"
               v-tooltip.bottom="'Edit'"
             />
             <Button
+              v-else
+              icon="pi pi-eye"
+              class="p-button-rounded p-button-info p-button-text"
+              @click="editProduct(slotProps.data)"
+              v-tooltip.bottom="'View Details'"
+            />
+            <Button
+              v-if="isAdmin"
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger p-button-text"
               @click="confirmDeleteProduct(slotProps.data)"
@@ -126,6 +135,7 @@
           v-model.trim="name"
           class="form-control form-control-alternative"
           placeholder="Name"
+          :readonly="!isAdmin"
         />
         <small class="invalid">{{ errors.name }}</small>
       </div>
@@ -137,6 +147,7 @@
           v-model.trim="phone"
           class="form-control form-control-alternative"
           placeholder="Phone Number"
+          :readonly="!isAdmin"
         />
         <small class="invalid">{{ errors.phone }}</small>
       </div>
@@ -147,6 +158,7 @@
         <InputText
           name="address"
           v-model="address"
+          :readonly="!isAdmin"
           class="form-control form-control-alternative"
           placeholder="Address"
         />
@@ -157,6 +169,7 @@
         <InputText
           type="email"
           name="email"
+          :readonly="!isAdmin"
           v-model.trim="email"
           class="form-control form-control-alternative"
           placeholder="Email"
@@ -193,6 +206,7 @@
           icon="pi pi-check"
           class="p-button-text"
           @click="editMaintenanceWorker"
+          v-if="isAdmin"
         />
       </template>
     </Dialog>

@@ -16,7 +16,12 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h3 class="p-m-0" style="font-size:22px; color: rgb(20, 49, 120); font-weight: 400">Areas</h3>
+          <h3
+            class="p-m-0"
+            style="font-size:22px; color: rgb(20, 49, 120); font-weight: 400"
+          >
+            Areas
+          </h3>
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
@@ -41,7 +46,7 @@
         </template>
         <Column header="No" style="margin-right: -10rem">
           <template #body="slotProps">
-            {{slotProps.data.index}}
+            {{ slotProps.data.index }}
           </template>
         </Column>
         <Column
@@ -130,7 +135,7 @@
               @click="editProduct(slotProps.data)"
               v-tooltip.bottom="'View Area Details'"
               style="margin: 2px"
-              v-if="!admin"
+              v-else
             />
             <Button
               icon="pi pi-trash"
@@ -157,17 +162,21 @@
           id="locationName"
           v-model.trim="locationName"
           maxlength="30"
-          class="form-control form-control-alternative" placeholder="Area Name"
+          class="form-control form-control-alternative"
+          placeholder="Area Name"
         />
         <small class="invalid">{{ errors.locationName }}</small>
       </div>
       <div class="p-field">
-        <label for="description" class="form-control-label">Description (optional)</label>
+        <label for="description" class="form-control-label"
+          >Description (optional)</label
+        >
         <InputText
           id="description"
           v-model.trim="description"
           required="true"
-          class="form-control form-control-alternative" placeholder="Description"
+          class="form-control form-control-alternative"
+          placeholder="Description"
         />
         <small class="invalid">{{ errors.description }}</small>
       </div>
@@ -200,28 +209,22 @@
           v-model.trim="locationName"
           required="true"
           maxlength="30"
-          class="form-control form-control-alternative" placeholder="Description"
-        />
-        <InputText
-          id="locationName"
-          v-model.trim="locationName"
-          required="true"
-          maxlength="30"
-          disabled
-          v-if="!admin"
-          class="form-control form-control-alternative" placeholder="Description"
+          :readonly="!admin"
+          class="form-control form-control-alternative"
+          placeholder="Description"
         />
         <small class="invalid"> {{ errors.locationName }}</small>
       </div>
       <div class="p-field">
-        <label for="description" class="form-control-label">Description (optional)</label>
-        <InputText id="description" v-model.trim="description" class="form-control form-control-alternative" placeholder="Description"/>
+        <label for="description" class="form-control-label"
+          >Description (optional)</label
+        >
         <InputText
           id="description"
           v-model.trim="description"
-          disabled
-          v-if="!admin"
-          class="form-control form-control-alternative" placeholder="Description"
+          class="form-control form-control-alternative"
+          :readonly="!admin"
+          placeholder="Description"
         />
         <small class="invalid"> {{ errors.description }}</small>
       </div>
@@ -229,21 +232,23 @@
         <div class="p-field p-col-6">
           <label for="created" class="form-control-label"> Created Date</label>
           <InputText
-          v-model.trim="product.created"
-          readonly
-          class="form-control form-control-alternative" 
-        />
+            v-model.trim="product.created"
+            readonly
+            class="form-control form-control-alternative"
+          />
         </div>
         <div class="p-field p-col-6">
-          <label for="lastModified" class="form-control-label"> Last Modified</label>
-           <InputText
-          v-model.trim="product.lastModified"
-          readonly
-          class="form-control form-control-alternative" 
-        />
+          <label for="lastModified" class="form-control-label">
+            Last Modified</label
+          >
+          <InputText
+            v-model.trim="product.lastModified"
+            readonly
+            class="form-control form-control-alternative"
+          />
         </div>
       </div>
-      <template #footer v-if="admin">
+      <template #footer>
         <Button
           label="Cancel"
           icon="pi pi-times"
@@ -254,6 +259,7 @@
           label="Save"
           icon="pi pi-check"
           class="p-button-text"
+          v-if="admin"
           @click="updateLocation"
         />
       </template>
@@ -308,10 +314,15 @@ export default {
   setup() {
     const schema = yup.object({
       locationName: yup
-        .string().label("Area Name")
+        .string()
+        .label("Area Name")
         .required("Area Name can't be blank")
         .max(20),
-      description: yup.string().label("Description").max(100).nullable(),
+      description: yup
+        .string()
+        .label("Description")
+        .max(100)
+        .nullable(),
     });
 
     const { errors, meta, handleReset, validate } = useForm({
@@ -327,7 +338,7 @@ export default {
       errors,
       meta,
       handleReset,
-      validate
+      validate,
     };
   },
 
@@ -696,13 +707,14 @@ label {
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
   background: #ffffff;
-  color:  #8890b5;;
+  color: #8890b5;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 1px 0;
   text-align: center;
   box-sizing: content-box;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
   cursor: pointer;
   font-weight: 500;
   display: flex;
