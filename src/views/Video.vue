@@ -52,11 +52,17 @@
                 style="fontSize: 12px; color:##f699e0; margin-right:10px"
               />Video
             </div>
-            <div class="left left-last-child">
+            <div class="left">
               <i
                 class="pi pi-circle-on"
                 style="fontSize: 12px; color:#1e3d73; margin-right:10px"
               />Total Cracks
+            </div>
+            <div class="left left-last-child">
+              <i
+                class="pi pi-circle-on "
+                style="fontSize: 12px; color:#1e3d73; margin-right:10px"
+              />Import Date
             </div>
           </div>
           <div class="p-col-6">
@@ -72,6 +78,7 @@
               {{ getFlight.video }}
             </p>
             <p class="right" style="margin-bottom: 0">{{ getFlightCount }}</p>
+            <p class="right" style="margin-bottom: 0; padding-top:40px">{{ callDate(getFlight.created) }}</p>
           </div>
         </div>
       </div>

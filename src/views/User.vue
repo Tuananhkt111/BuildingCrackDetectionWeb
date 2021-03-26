@@ -284,7 +284,6 @@
             :filter="true"
             class="multiselect-custom dropdown-list form-control-alternative"
             key="locationId"
-            :disabled="checkAvailable"
           />
           <Dropdown
             v-if="selectedRole === 'Staff'"
@@ -295,7 +294,6 @@
             placeholder="Select a Area"
             :filter="true"
             class="dropdown-list form-control-alternative"
-            :disabled="checkAvailable"
           />
         </div>
       </div>
@@ -393,7 +391,6 @@
             placeholder="Select a Area"
             :filter="true"
             class="dropdown-list form-control-alternative"
-            :disabled="checkAvailable"
           />
         </div>
       </div>
@@ -465,6 +462,7 @@
               }}</span>
             </template>
           </Dropdown>
+          <small class="invalid">{{ errors.selectedRole }}</small>
         </div>
         <div class="p-field p-col-6" v-if="selectedRole != null">
           <label for="Location" class="form-control-label">Area</label>
@@ -611,13 +609,14 @@ export default {
         .string()
         .max(300)
         .label("Address")
-        .required(),
+        .nullable(),
       phone: yup
         .string()
         .required()
         .label("Phone")
         .phone("VN")
         .required(),
+      selectedRole: yup.string().required(),
     });
     const { errors, meta, handleReset, validate } = useForm({
       validationSchema: schema,
@@ -627,6 +626,7 @@ export default {
     const { value: name } = useField("name");
     const { value: address } = useField("address");
     const { value: phone } = useField("phone");
+    const { value: selectedRole } = useField("selectedRole");
 
     return {
       handleReset,
@@ -634,6 +634,7 @@ export default {
       name,
       address,
       phone,
+      selectedRole,
       errors,
       meta,
       validate,
@@ -661,7 +662,6 @@ export default {
       StaffDialog: false,
       changedRole: null,
       selectedLocation: null,
-      selectedRole: null,
       UserDialog: false,
       UserUpdateDialog: false,
       showAssessment: false,
@@ -709,7 +709,7 @@ export default {
       this.setAvailableLocationManager(null);
       this.handleReset();
       this.UserDialog = true;
-      this.selectedRole = null;
+      this.selectedRole = "Staff";
       this.selectedLocation = null;
     },
     ResetPassowrd(product) {
@@ -778,7 +778,6 @@ export default {
       }
     },
     async UpdateUser() {
-      console.log(this.meta.valid);
       if (this.meta.valid) {
         await userApi
           .updateUser(
@@ -999,10 +998,31 @@ export default {
       this.StaffDialog = true;
     },
     async updateLoaction() {
-      await userApi.updateLocationStaff(
-        this.product.userId,
-        this.selectedLocation.locationId
-      );
+      await userApi
+        .updateLocationStaff(
+          this.product.userId,
+          this.selectedLocation.locationId
+        )
+        .then(() => {
+          this.$toast.add({
+            severity: "success",
+            summary: "Success",
+            detail: "Update Location success",
+            life: 3000,
+          });
+          this.StaffDialog = false;
+          this.setUserList();
+        })
+        .catch(() => {
+          this.$toast.add({
+            severity: "error",
+            summary: "Error",
+            detail: "Update Location failed!",
+            life: 3000,
+          });
+          this.StaffDialog = false;
+          this.setUserList();
+        });
     },
     initFilters() {
       this.filters = {

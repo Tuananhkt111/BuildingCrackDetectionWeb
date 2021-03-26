@@ -71,6 +71,7 @@ const flightStore = {
     async setFlight({ commit }, id) {
       const res = await flightApi.getById(id);
       if (res) {
+        res.created = new Date(res.created + "Z");
         commit("setIsShow", true);
         res.video = res.video + ".mp4";
         commit("setFlight", res);
