@@ -139,7 +139,9 @@
         <template #expansion="slotProps">
           <div class="orders-subtable">
             <div class="table-header">
-              <h4 class="p-m-2" id="sub-table-title">List of Cracks</h4>
+              <h3 class="p-m-2" id="sub-table-title"
+                style="color: #143178;font-weight: 400;font-size:18px"
+              >List of Cracks</h3>
             </div>
             <DataTable :value="slotProps.data.cracks">
               <Column header="No" style="width:3rem">
@@ -307,7 +309,7 @@
             class="product-image"
             v-if="product.image"
             @click="showImage(product)"
-            style="width:250px; height:80%"
+            style="width:250px; height: 100%"
           />
         </div>
         <div class="p-col-8">
@@ -746,6 +748,7 @@ textarea {
   width: 150px;
   margin: 0 auto 2rem auto;
   display: block;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
 }
 .small {
   background-color: #66bb6a;
