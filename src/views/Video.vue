@@ -336,7 +336,7 @@
                       icon="pi pi-calendar-minus"
                       class="p-button-rounded p-button-danger p-button-text"
                       @click="showMaintenanceOrder(slotProps.data)"
-                      v-tooltip.bottom="'View Maintenance Order'"
+                      v-tooltip.bottom="'View Repair Record'"
                     />
                   </template>
                 </Column>
