@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h5 class="p-m-0" style="font-size:1.25rem; padding-left:25px;">
+    <h3 class="p-m-0" style="padding-left:25px;">
       Detection Result Details
-    </h5>
+    </h3>
     <div class="p-grid">
       <div class="player-container p-col-4 p-mt-3" v-if="checkNull">
         <div
@@ -326,11 +326,12 @@
                       @click="showUpdateCrack(slotProps.data)"
                       style="margin: 2px"
                       v-tooltip.bottom="'Update Crack'"
+                      v-if="isStaff"
                     />
                     <Button
                       v-if="
-                        slotProps.data.maintenanceOrderId != null &&
-                          slotProps.data.maintenanceOrderId != 0
+                        slotProps.data.status != 'DetectedFailed' &&
+                          slotProps.data.status != 'UnrecordedRepair'
                       "
                       icon="pi pi-calendar-minus"
                       class="p-button-rounded p-button-danger p-button-text"
@@ -428,18 +429,18 @@
             </TabPanel>
             <TabPanel
               header="Description"
-              :disabled="product.desciption == '' || product.desciption == null"
+              :disabled="product.description == '' || product.description == null"
             >
               <div class="p-col-12">
                 <p>
                   <span
                     style="font-weight: bold"
-                    v-if="product.desciption != ''"
+                    v-if="product.description != ''"
                     >{{ product.description }}</span
                   >
                   <span
                     style="font-weight: bold"
-                    v-if="product.desciption == ''"
+                    v-if="product.description == ''"
                   >
                     <span style="font-weight: normal">N/A</span></span
                   >
@@ -615,7 +616,7 @@
               style="background-color:#fae9ed;border:none;color:#e15b7a;margin-right:20px"
             />
             <Button
-              label="Confirm"
+              label="Update"
               @click="updateCrack"
               icon="pi pi-check"
               style="background-color:#ebf8f1;border:none;color:#4cc788"
@@ -676,6 +677,7 @@ import Toast from "primevue/toast";
 import RadioButton from "primevue/radiobutton";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
+import webRole from "../util/webRole.js";
 
 export default {
   setup() {
@@ -692,7 +694,8 @@ export default {
       description: yup
         .string()
         .max(300)
-        .label("Desciption").nullable(),
+        .label("Description")
+        .nullable(),
     });
     const { errors, meta, handleReset, isSubmitting, validate } = useForm({
       validationSchema: schema,
@@ -735,6 +738,13 @@ export default {
       "getFlight",
       "getFlightCount",
     ]),
+
+    isStaff() {
+      let role = JSON.parse(localStorage.getItem("user")).role;
+      if(webRole.STAFF_ROLE === role)
+        return true;
+      return false;
+    }
   },
   data() {
     return {
@@ -1235,9 +1245,6 @@ textarea {
   width: 110px;
     background-color:#c7d7db; */
 }
-h5 {
-  font-size: 1.25rem;
-}
 
 .imagePopup {
   width: 100%;
@@ -1257,7 +1264,12 @@ h5 {
   background: black;
 }
 
-.p-m-2::before,
+.p-m-0 {
+  display: flex;
+  align-items: center;
+}
+
+.p-m-0::before,
 .p-dialog-title::before {
   content: "";
   width: 5px;

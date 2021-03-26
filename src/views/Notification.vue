@@ -142,7 +142,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .row-accessories {
   background-color: #d0e7fa !important;
 }
@@ -177,18 +177,12 @@ export default {
     box-shadow 0.2s;
   cursor: pointer;
   font-weight: 500;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
   border: 1px solid #e9ecef;
   border-width: 0 0 0 0;
   padding: 1rem 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 ::v-deep(.p-datatable.p-datatable-hoverable-rows

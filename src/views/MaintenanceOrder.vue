@@ -24,7 +24,7 @@
         <div class="table-header-main">
           <h3
             class="p-m-2"
-            style="color: #143178;font-weight: 400;font-size:25px"
+            style="color: #143178;font-weight: 400;font-size:22px"
           >
             Repair Records
           </h3>
@@ -250,13 +250,13 @@
                 <p>
                   <span
                     style="font-weight: bold"
-                    v-if="product.desciption != null"
+                    v-if="product.description != null"
                     >{{ product.description }}</span
                   >
                   <span
                     style="font-weight: bold"
                     v-if="
-                      product.desciption == null || product.desciption.isEmpty()
+                      product.description == null || product.description.isEmpty()
                     "
                   >
                     <span style="font-weight: normal">N/A</span></span
@@ -376,13 +376,13 @@
                 <p>
                   <span
                     style="font-weight: bold"
-                    v-if="product.desciption != null"
+                    v-if="product.description != null"
                     >{{ product.description }}</span
                   >
                   <span
                     style="font-weight: bold"
                     v-if="
-                      product.desciption == null || product.desciption.isEmpty()
+                      product.description == null || product.description.isEmpty()
                     "
                   >
                     <span style="font-weight: normal">N/A</span></span

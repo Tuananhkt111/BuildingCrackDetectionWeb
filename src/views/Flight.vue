@@ -18,7 +18,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h5 class="p-m-0" style="font-size:1.25rem;color: #143178;font-weight: 400;font-size:25px">Detection Results</h5>
+          <h3 class="p-m-0 table-title" style="color: #143178;font-weight: 400;font-size:22px">Detection Results</h3>
           <span class="p-input-icon-left">
             <span class="p-input-icon-left" style="margin:2px">
               <i class="pi pi-search" />
@@ -360,6 +360,12 @@ export default {
   left: -10px;
   top: 0;
   background: #007dfe;
+}
+
+.table-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {

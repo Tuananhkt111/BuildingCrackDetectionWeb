@@ -15,7 +15,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h3 class="p-m-2">Users</h3>
+          <h3 class="p-m-2" style="font-size: 22px; font-weight: 400; color: rgb(20, 49, 120);">Users</h3>
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"

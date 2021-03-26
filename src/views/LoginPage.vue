@@ -22,7 +22,7 @@
           >
           <div class="wrap-input100">
             <div class="p-float-label p-mb-5">
-              <InputText type="text" v-model="userName" style="width: 270px" />
+              <InputText type="text" v-model="userName" style="width: 270px" v-on:keyup.enter="handleSubmit"/>
               <label style="padding-left: 55px">Username</label>
               <p class="invalid">{{ errors.userName }}</p>
             </div>
@@ -31,6 +31,7 @@
                 type="password"
                 v-model="password"
                 style="width: 270px"
+                v-on:keyup.enter="handleSubmit"
               />
               <label style="padding-left: 55px;">Password</label>
               <p class="invalid">{{ errors.password }}</p>

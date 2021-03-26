@@ -17,12 +17,12 @@
         currentPageReportTemplate=""
       >
         <div class="table-header" style="background-color: #ffffff">
-          <h5
+          <h3
             class="p-m-2"
             style="color: #143178; font-weight: 400; font-size: 22px"
           >
             Cracks
-          </h5>
+          </h3>
           <span class="p-input-icon-left" style="margin: 2px">
             <i class="pi pi-search" />
             <InputText
@@ -185,6 +185,7 @@
               class="p-button-rounded p-button-info p-button-text"
               @click="showUpdateCrack(slotProps.data)"
               v-tooltip.bottom="'Update Crack'"
+              v-if="isStaff"
             />
             <Button
               v-if="
@@ -281,19 +282,19 @@
             </TabPanel>
             <TabPanel
               header="Description"
-              :disabled="product.desciption == '' || product.desciption == null"
+              :disabled="product.description == '' || product.description == null"
             >
               <div class="p-col-12">
                 <p>
                   <span
                     style="font-weight: bold"
-                    v-if="product.desciption != null"
+                    v-if="product.description != null"
                     >{{ product.description }}</span
                   >
                   <span
                     style="font-weight: bold"
                     v-if="
-                      product.desciption == null || product.desciption.isEmpty()
+                      product.description == null || product.description.isEmpty()
                     "
                   >
                     <span style="font-weight: normal">N/A</span></span
@@ -452,6 +453,7 @@ import Galleria from "primevue/galleria";
 import crackApi from "../apis/cracks.js";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
+import webRole from "../util/webRole.js";
 
 export default {
 setup() {
@@ -468,7 +470,7 @@ setup() {
       description: yup
         .string()
         .max(300)
-        .label("Desciption").nullable(),
+        .label("Description").nullable(),
     });
     const { errors, meta, handleReset, isSubmitting, validate } = useForm({
       validationSchema: schema,
@@ -505,6 +507,13 @@ setup() {
       "getStatusList",
       "getSeveritysList",
     ]),
+
+    isStaff() {
+      let role = JSON.parse(localStorage.getItem("user")).role;
+      if(webRole.STAFF_ROLE === role)
+        return true;
+      return false;
+    }
   },
   data() {
     return {
@@ -842,10 +851,6 @@ textarea {
   /* text-align: center;
   width: 110px;
     background-color:#c7d7db; */
-}
-
-h5 {
-  font-size: 1.25rem;
 }
 
 .dialog-title {

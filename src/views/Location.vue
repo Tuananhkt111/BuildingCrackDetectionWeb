@@ -16,7 +16,7 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h5 class="p-m-0" style="font-size:1.25rem">Areas</h5>
+          <h3 class="p-m-0" style="font-size:22px; color: rgb(20, 49, 120); font-weight: 400">Areas</h3>
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
