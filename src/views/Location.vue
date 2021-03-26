@@ -74,7 +74,8 @@
           :showAddButton="false"
         >
           <template #body="slotProps">
-            {{ slotProps.data.description }}
+            <span v-if="slotProps.data.description !== '' && slotProps.data.description !== null">{{ slotProps.data.description }}</span>
+            <span v-else style="font-style: italic; color: #adadad">No description</span>
           </template>
           <template #filter="{filterModel}">
             <InputText
