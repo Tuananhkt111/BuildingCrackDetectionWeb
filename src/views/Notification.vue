@@ -19,13 +19,18 @@
       <div class="table-header">
         <h3 class="p-m-0" style="width:30%">Notifications</h3>
         <Button
-          label="Mark as Read"
+          label="Mark All as Read"
           icon="pi pi-check"
           class="p-button-info p-mr-2"
           @click="markAsRead"
         />
       </div>
-      <Column field="title" header="Title" sortable="true"></Column>
+      <Column field="title" header="Title" sortable="true" headerStyle="border-radius:20px 0 0 20px">
+        <template #body="slotProps">
+          <span>{{ slotProps.data.title }}</span>
+          <span v-if="!slotProps.data.isRead" class="new-att">NEW</span>
+        </template>
+      </Column>
       <Column field="body" header="Body" sortable="true"></Column>
       <Column
         field="created"
@@ -33,6 +38,7 @@
         filterMatchMode="custom"
         :filterFunction="filterDate"
         sortable="true"
+        headerStyle="border-radius:0 20px 20px 0"
       >
         <template #body="slotProps">
           <span>{{ callDate(slotProps.data.created) }}</span>
@@ -143,6 +149,15 @@ export default {
 </script>
 
 <style scoped>
+.new-att {
+  padding: 1px 8px 3px;
+  border-radius: 24px;
+  background: #e2fff6;
+  width: 20px;
+  color: #25c997;
+  font-weight: 600;
+  margin-left: 10px;
+}
 .row-accessories {
   background-color: #d0e7fa !important;
 }
@@ -166,7 +181,7 @@ export default {
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
-   background: #f2f9ff;
+  background: #f2f9ff;
   color: #4ca4f9;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);

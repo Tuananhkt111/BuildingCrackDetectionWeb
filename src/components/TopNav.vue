@@ -8,14 +8,13 @@
       <!-- Dropdown Menu -->
       <div class="top-nav-right p-d-flex p-ai-center p-jc-between">
         <div class="userName-location">
-          <p style="color:red; font-size:0.8rem">{{ getUser.userName }}</p>
-          <p
+          <p>{{ getUser.userName }}</p>
+          <!-- <p
             v-for="location in getUser.locations"
             v-bind:key="location.locationId"
-            style="color:red; font-size:0.5rem"
           >
             {{ location.name }}
-          </p>
+          </p> -->
         </div>
         <div class="nav-btn-menu">
           <div class="btn-nav">
@@ -58,9 +57,11 @@
                     v-bind:key="item"
                     @click="deleteNoti(item.pushNotificationId)"
                   >
-                    <i class="pi pi-circle-on"></i>
                     <div class="event-content">
+                      <div class="event-title-box">
+                        <i class="pi pi-circle-on"></i>
                       <span class="event-title">{{ item.title }}</span>
+                      </div>
                       <span>{{ item.body }}</span>
                       <span class="time">{{ callDate(item.created) }}</span>
                     </div>
@@ -312,15 +313,6 @@ ul.drop-menu li {
   margin-bottom: -2px;
 }
 
-ul.drop-menu li:first-child {
-  border-radius: 24px 24px 0px 0px;
-  border-bottom: none;
-  margin-bottom: -3px;
-}
-ul.drop-menu li:last-child {
-  border-radius: 0px 0px 24px 24px;
-  border-bottom: none;
-}
 .nav-btn-menu:hover > ul.drop-menu.menu-2 li {
   opacity: 0;
 }
@@ -488,7 +480,7 @@ hr {
   color: white;
 }
 .btn-nav {
-  padding: 8px;
+  padding: 8px 10px;
   color: #2170e7;
   cursor: pointer;
 }
@@ -587,8 +579,8 @@ button.close {
   padding-bottom: 0;
 }
 .count {
-  right: 10px;
-  bottom: 15px;
+  right: 8px;
+  bottom: 22px;
   position: relative;
   padding: 2.5px 5px;
   color: #fff;
@@ -619,14 +611,14 @@ button.close {
   background: #ffffff;
   padding: 20px;
   box-sizing: border-box;
-  box-shadow: 0px 10px 40px rgb(41 50 65 / 6%);
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
   -moz-border-radius: 24px;
   -webkit-border-radius: 24px;
   border-radius: 24px;
   margin-bottom: 2rem;
   position: fixed;
   right: 5px;
-  top: 60px;
+  top: 58px;
   color: rgba(41, 50, 65, 0.8);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
@@ -666,11 +658,11 @@ button.close {
   overflow: auto;
 }
 
-.timeline > ul > li.blue > i {
+.timeline > ul > li.blue > div > div > i {
   color: #297fff;
 }
 
-.timeline > ul > li > i {
+.timeline > ul > li > div > div > i {
   font-size: 8px;
   margin-right: 10px;
   margin-top: 4px;
@@ -680,16 +672,25 @@ button.close {
   color: #3e4754;
 }
 
+.timeline > ul > li {
+  cursor: pointer;
+}
+
+.timeline > ul > li .event-content .event-title-box {
+  display: flex;
+  flex-direction: row;
+}
+
 .timeline > ul > li .event-content span {
   display: block;
   margin-bottom: 4px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
   color: rgba(41, 50, 65, 0.5);
 }
 
 .timeline > ul > li .event-content span.time {
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 400;
   color: rgba(41, 50, 65, 0.5);
 }
@@ -700,7 +701,12 @@ button.close {
 }
 
 .userName-location {
-  text-align: right;
-  position: fix;
+  color: rgb(48, 48, 48);
+  font-weight: 600;
+  margin-right: 20px;
+  padding: 5px 8px;
+  border-radius: 15px;
+  background: #0083fd;
+  color: white;
 }
 </style>
