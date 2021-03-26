@@ -15,7 +15,12 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h3 class="p-m-2" style="font-size: 22px; font-weight: 400; color: rgb(20, 49, 120);">Users</h3>
+          <h3
+            class="p-m-2"
+            style="font-size: 22px; font-weight: 400; color: rgb(20, 49, 120);"
+          >
+            Users
+          </h3>
           <span class="p-input-icon-left">
             <Button
               icon="pi pi-plus"
@@ -276,6 +281,7 @@
             :filter="true"
             class="multiselect-custom dropdown-list form-control-alternative"
             key="locationId"
+            :disabled="checkAvailable"
           />
           <Dropdown
             v-if="selectedRole === 'Staff'"
@@ -286,6 +292,7 @@
             placeholder="Select a Area"
             :filter="true"
             class="dropdown-list form-control-alternative"
+            :disabled="checkAvailable"
           />
         </div>
       </div>
@@ -383,6 +390,7 @@
             placeholder="Select a Area"
             :filter="true"
             class="dropdown-list form-control-alternative"
+            :disabled="checkAvailable"
           />
         </div>
       </div>
@@ -666,6 +674,7 @@ export default {
       role: null,
       admin: false,
       selectedProduct: null,
+      checkAvailable: false,
     };
   },
 
@@ -692,6 +701,7 @@ export default {
     ]),
 
     openNew() {
+      this.checkAvailable = false;
       this.setAvailableLocationStaff(null);
       this.setAvailableLocationManager(null);
       this.handleReset();
@@ -889,7 +899,6 @@ export default {
       }
       return day + "-" + month + "-" + date.getFullYear();
     },
-
     stockRole(role) {
       return [
         {
@@ -899,7 +908,7 @@ export default {
       ];
     },
     async editProduct(product) {
-      console.log(product);
+      this.checkAvailable = false;
       var tmpLocation = {
         locationId: 0,
         name: "<<No Location>>",
@@ -919,17 +928,24 @@ export default {
         await this.setAvailableLocationStaff(product.userId);
         this.getAvailableLocationStaff.push(tmpLocation);
         this.selectedLocation = tmpLocation;
+        console.log(this.getAvailableLocationStaff);
+        if (this.getAvailableLocationStaff.length == 1) {
+          this.checkAvailable = true;
+        }
       } else if (tmp == "" && this.selectedRole == "Manager") {
+        this.selectedLocation = [];
         await this.setAvailableLocationManager(product.userId);
         this.getAvailableLocationManager.push(tmpLocation);
-        this.selectedLocation = tmpLocation;
+        this.selectedLocation.push(tmpLocation);
+        if (this.getAvailableLocationManager.length == 1) {
+          this.checkAvailable = true;
+        }
       } else if (tmp.length == 1 && this.selectedRole == "Staff") {
         await this.setAvailableLocationStaff(product.userId);
         this.selectedLocation = this.getAvailableLocationStaff[
           this.findIndexById(this.product.locations[0].locationId)
         ];
         this.getAvailableLocationStaff.push(tmpLocation);
-        console.log(this.getAvailableLocationStaff);
       } else {
         this.selectedLocation = [];
         await this.setAvailableLocationManager(product.userId);
@@ -946,11 +962,11 @@ export default {
     },
 
     async seeProduct(product) {
+      this.checkAvailable = false;
       var tmpLocation = {
         locationId: 0,
         name: "<<No Location>>",
       };
-      console.log(product);
       this.handleReset();
       this.name = product.name;
       this.email = product.email;
@@ -973,11 +989,17 @@ export default {
         await this.setAvailableLocationStaff(product.userId);
         this.getAvailableLocationStaff.push(tmpLocation);
         this.selectedLocation = tmpLocation;
+        if (this.getAvailableLocationStaff.length == 1) {
+          this.checkAvailable = true;
+        }
       }
       this.StaffDialog = true;
     },
     async updateLoaction() {
-      await userApi.updateLocationStaff(this.product.userId, this.selectedLocation.locationId);
+      await userApi.updateLocationStaff(
+        this.product.userId,
+        this.selectedLocation.locationId
+      );
     },
     initFilters() {
       this.filters = {
@@ -1274,7 +1296,6 @@ label {
 .p-column-filter-menu-button {
   color: #2170e7 !important;
 }
-
 
 ::v-deep(.p-datatable .p-datatable-tbody > tr) {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
