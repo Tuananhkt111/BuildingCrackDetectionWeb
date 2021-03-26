@@ -19,7 +19,7 @@
             <router-link to="/users" tag="li" class="t-link nav-btn">
               <a class="a-link">
                 <i class="pi pi-fw pi-users"></i>
-                <span v-if="role === 'Manager'">Staff</span>
+                <span v-if="role === 'Manager'">Staffs</span>
                 <span v-else>Users</span>
               </a>
             </router-link>

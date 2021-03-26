@@ -291,14 +291,6 @@
                     v-if="product.description != null"
                     >{{ product.description }}</span
                   >
-                  <span
-                    style="font-weight: bold"
-                    v-if="
-                      product.description == null || product.description.isEmpty()
-                    "
-                  >
-                    <span style="font-weight: normal">N/A</span></span
-                  >
                 </p>
               </div>
             </TabPanel>

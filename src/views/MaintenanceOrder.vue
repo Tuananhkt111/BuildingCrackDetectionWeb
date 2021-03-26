@@ -245,21 +245,18 @@
                 </div>
               </div>
             </TabPanel>
-            <TabPanel header="Description">
+            <TabPanel
+              header="Description"
+              :disabled="
+                product.description == '' || product.description == null
+              "
+            >
               <div class="p-col-12">
                 <p>
                   <span
                     style="font-weight: bold"
                     v-if="product.description != null"
                     >{{ product.description }}</span
-                  >
-                  <span
-                    style="font-weight: bold"
-                    v-if="
-                      product.description == null || product.description.isEmpty()
-                    "
-                  >
-                    <span style="font-weight: normal">N/A</span></span
                   >
                 </p>
               </div>
@@ -371,22 +368,18 @@
                 </div>
               </div>
             </TabPanel>
-            <TabPanel header="Description">
+            <TabPanel
+              header="Description"
+              :disabled="
+                product.description == '' || product.description == null
+              "
+            >
               <div class="p-col-12">
                 <p>
                   <span
                     style="font-weight: bold"
                     v-if="product.description != null"
-                    >{{ product.description }}</span
-                  >
-                  <span
-                    style="font-weight: bold"
-                    v-if="
-                      product.description == null || product.description.isEmpty()
-                    "
-                  >
-                    <span style="font-weight: normal">N/A</span></span
-                  >
+                    >{{ product.description }}</span>
                 </p>
               </div>
             </TabPanel>
