@@ -7,14 +7,18 @@
       ></div>
       <!-- Dropdown Menu -->
       <div class="top-nav-right p-d-flex p-ai-center p-jc-between">
-        <div class="userName-location">
-          <p>{{ getUser.userName }}</p>
-          <!-- <p
+        <div class="location-content" v-if="getLocationNames !== ''">
+          <span>Areas: </span>
+          <!-- <span
             v-for="location in getUser.locations"
             v-bind:key="location.locationId"
           >
             {{ location.name }}
-          </p> -->
+          </span> -->
+          <span>{{getLocationNames}}</span>
+        </div>
+        <div class="userName-location">
+          <p>{{ getUser.userName }}</p>
         </div>
         <div class="nav-btn-menu">
           <div class="btn-nav">
@@ -144,6 +148,10 @@ export default {
     ]),
     ...mapGetters("application", ["getIsActive"]),
     ...mapGetters("user", ["getUser"]),
+
+    getLocationNames() {
+      return this.getUser.locations.map(l => l.name).toString();
+    }
   },
   async created() {
     this.role = JSON.parse(localStorage.getItem("user")).role;
@@ -708,5 +716,10 @@ button.close {
   border-radius: 15px;
   background: #0083fd;
   color: white;
+}
+
+.location-content {
+  color: black;
+  margin-right: 50px;
 }
 </style>
