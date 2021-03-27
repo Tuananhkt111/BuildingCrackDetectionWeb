@@ -82,8 +82,15 @@ async function updateUser(
 ) {
   var locations = [];
   if (role == "Manager") {
-    for (let i = 0; i != location.length; i++) {
-      locations[i] = location[i].locationId;
+    if (location.length != 0) {
+      if (location[0].locationId == 0) {
+        location = location.filter(item => item.locationId !== 0);
+      }
+      for (let i = 0; i != location.length; i++) {
+        if (location[i].locationId != 0) {
+          locations[i] = location[i].locationId;
+        }
+      }
     }
   } else if (location.locationId != 0) {
     locations[0] = location.locationId;

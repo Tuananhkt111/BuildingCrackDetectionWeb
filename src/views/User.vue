@@ -794,7 +794,7 @@ export default {
             this.phone,
             this.address,
             this.selectedLocation,
-            this.role
+            this.selectedRole
           )
           .then(() => {
             this.$toast.add({
