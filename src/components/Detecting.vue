@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="detect-loader">
     <div class="loader">Loading...</div>
+    <div class="loader-text">Detecting video...</div>
   </div>
 </template>
 
@@ -106,5 +107,16 @@ export default {};
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+.detect-loader{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-text {
+  font-size: 20px;
 }
 </style>

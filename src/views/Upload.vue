@@ -102,6 +102,7 @@ export default {
         formData.append("video", this.file);
         formData.append("token", token);
         formData.append("locationName", location);
+        formData.append("recordDate", this.file.lastModified);
         const url = urlConstants.PYTHON_URL + "detect";
         axios.post(url, formData, {
           headers: {
