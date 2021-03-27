@@ -40,7 +40,11 @@
             </span>
           </span>
         </div>
-        <Column header="No" style="width:2rem" headerStyle="border-radius: 20px 0 0 20px" >
+        <Column
+          header="No"
+          style="width:2rem"
+          headerStyle="border-radius: 20px 0 0 20px"
+        >
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
@@ -616,7 +620,6 @@ export default {
         .label("Phone")
         .phone("VN")
         .required(),
-      selectedRole: yup.string().required(),
     });
     const { errors, meta, handleReset, validate } = useForm({
       validationSchema: schema,
@@ -626,7 +629,6 @@ export default {
     const { value: name } = useField("name");
     const { value: address } = useField("address");
     const { value: phone } = useField("phone");
-    const { value: selectedRole } = useField("selectedRole");
 
     return {
       handleReset,
@@ -634,7 +636,6 @@ export default {
       name,
       address,
       phone,
-      selectedRole,
       errors,
       meta,
       validate,
@@ -670,6 +671,7 @@ export default {
       ResetPasswordDialog: false,
       filters: {},
       submitted: true,
+      selectedRole: null,
       messages: [],
       roles: ["Manager", "Staff"],
       warnning: null,
@@ -744,7 +746,12 @@ export default {
         });
     },
     async CreateUser() {
-      if (this.meta.valid) {
+      if (
+        this.meta.valid &&
+        this.name != null &&
+        this.email != null &&
+        this.phone != null 
+      ) {
         await userApi
           .createUser(
             this.selectedRole,

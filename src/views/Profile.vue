@@ -209,7 +209,7 @@ export default {
       newPassword: yup
         .string()
         .max(30)
-        .label("Old Password")
+        .label("New Password")
         .required()
         .matches(
           /^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,

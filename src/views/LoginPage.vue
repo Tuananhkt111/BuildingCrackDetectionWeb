@@ -22,7 +22,12 @@
           >
           <div class="wrap-input100">
             <div class="p-float-label p-mb-5">
-              <InputText type="text" v-model="userName" style="width: 270px" v-on:keyup.enter="handleSubmit"/>
+              <InputText
+                type="text"
+                v-model="userName"
+                style="width: 270px"
+                v-on:keyup.enter="handleSubmit"
+              />
               <label style="padding-left: 55px">Username</label>
               <p class="invalid">{{ errors.userName }}</p>
             </div>
@@ -68,6 +73,7 @@
                   style="width: 270px"
                 />
                 <label style="padding-left:55px">USER NAME</label>
+                <p class="invalid">{{ errors.userName }}</p>
               </div>
             </div>
           </div>
@@ -144,11 +150,13 @@ export default {
       userName: yup
         .string()
         .required()
-        .max(10),
+        .max(10)
+        .label("User Name"),
       password: yup
         .string()
         .required()
-        .max(30),
+        .max(30)
+        .label("Password"),
     });
 
     const { errors, meta, handleReset, validate } = useForm({
@@ -200,10 +208,7 @@ export default {
     ...mapActions("user", ["setUser"]),
 
     async handleSubmit() {
-      this.validate();
-      console.log(this.meta.valid);
-      if (this.meta.valid ) {
-        console.log("Âa");
+      if (this.meta.valid && this.userName != null && this.password != null) {
         localStorage.clear();
         this.isLoading = true;
         if (this.userName && this.password) {
@@ -256,30 +261,35 @@ export default {
       this.ChangePasswordDialog = false;
     },
     async confirmForgotPassword() {
-      this.isLoading = true;
-      await userApi
-        .forgotPassword(this.userName)
-        .catch(() => {
-          this.$toast.add({
-            severity: "error",
-            summary: "ERROR",
-            detail: "Your Account is'nt existed!",
-            life: 3000,
+      if (this.userName != null) {
+        this.isLoading = true;
+        await userApi
+          .forgotPassword(this.userName)
+          .catch(() => {
+            this.$toast.add({
+              severity: "error",
+              summary: "ERROR",
+              detail: "Your Account is'nt existed!",
+              life: 3000,
+            });
+            this.isLoading = false;
+          })
+          .then((res) => {
+            this.$toast.add({
+              severity: "success",
+              summary: res.data,
+              life: 3000,
+            });
+            this.isLoading = false;
           });
-          this.isLoading = false;
-        })
-        .then((res) => {
-          this.$toast.add({
-            severity: "success",
-            summary: res.data,
-            life: 3000,
-          });
-          this.isLoading = false;
-        });
-      this.isLoading = false;
-      this.waithide("forgotPass", "login");
+        this.isLoading = false;
+        this.waithide("forgotPass", "login");
+      } else {
+        this.validate();
+      }
     },
     cancelForgotPassword() {
+      this.handleReset();
       this.waithide("forgotPass", "login");
     },
     waithide(div1, div2) {

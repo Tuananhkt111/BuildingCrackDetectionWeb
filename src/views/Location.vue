@@ -44,7 +44,11 @@
         <template #empty>
           No Areas found.
         </template>
-        <Column header="No" style="margin-right: -10rem" headerStyle="width: 30px;border-radius: 20px 0 0 20px" >
+        <Column
+          header="No"
+          style="margin-right: -10rem"
+          headerStyle="width: 30px;border-radius: 20px 0 0 20px"
+        >
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
@@ -76,8 +80,16 @@
           :showFilterOperator="false"
         >
           <template #body="slotProps">
-            <span v-if="slotProps.data.description !== '' && slotProps.data.description !== null">{{ slotProps.data.description }}</span>
-            <span v-else style="font-style: italic; color: #adadad">No description</span>
+            <span
+              v-if="
+                slotProps.data.description !== '' &&
+                  slotProps.data.description !== null
+              "
+              >{{ slotProps.data.description }}</span
+            >
+            <span v-else style="font-style: italic; color: #adadad"
+              >No description</span
+            >
           </template>
           <template #filter="{filterModel}">
             <InputText
@@ -124,7 +136,7 @@
             />
           </template>
         </Column>
-        <Column  headerStyle="border-radius:0 20px 20px 0">
+        <Column headerStyle="border-radius:0 20px 20px 0">
           <template #body="slotProps">
             <Button
               icon="pi pi-pencil"
@@ -402,7 +414,7 @@ export default {
       this.createLocationDiaglog = true;
     },
     async createLocation() {
-      if (this.meta.valid) {
+      if (this.meta.valid && this.locationName != null) {
         await locationApi
           .create(this.locationName, this.description)
           .then(() => {
@@ -717,7 +729,7 @@ label {
   color: #4ca4f9;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
-   border-width: 0 0 0 0;
+  border-width: 0 0 0 0;
   text-align: center;
   box-sizing: content-box;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,

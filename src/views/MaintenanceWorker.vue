@@ -42,7 +42,11 @@
           </span>
         </div>
         <template #empty> No Repairer found. </template>
-        <Column header="No" style="margin-right:-10rem" headerStyle="border-radius: 20px 0 0 20px" >
+        <Column
+          header="No"
+          style="margin-right:-10rem"
+          headerStyle="border-radius: 20px 0 0 20px"
+        >
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
@@ -123,7 +127,7 @@
             />
           </template>
         </Column>
-        <Column  headerStyle="border-radius: 0 20px 20px 0">
+        <Column headerStyle="border-radius: 0 20px 20px 0">
           <template #body="slotProps">
             <Button
               v-if="isAdmin"
@@ -440,7 +444,12 @@ export default {
       this.deleteProductsDialog = true;
     },
     async createMaintenanceWorker() {
-      if (this.meta.valid) {
+      if (
+        this.meta.valid &&
+        this.name != null &&
+        this.phone != null &&
+        this.email != null
+      ) {
         await maintenanceWorkerApi
           .create(this.name, this.address, this.phone, this.email)
           .catch((err) => {
@@ -792,7 +801,7 @@ label {
 }
 
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
-   background: #f2f9ff;
+  background: #f2f9ff;
   color: #4ca4f9;
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
