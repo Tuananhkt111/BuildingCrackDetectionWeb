@@ -860,7 +860,7 @@ export default {
       this.confirmCrackDialog = true;
     },
     async confirmCrack() {
-      if (this.meta.valid) {
+      if (this.meta.valid && this.position != null && this.selectedSeverity != null) {
         await crackApi
           .verifyCrack(
             this.product.crackId,
@@ -922,7 +922,7 @@ export default {
     },
 
     async updateCrack() {
-      if (this.meta.valid) {
+      if (this.meta.valid  && this.position != null && this.selectedSeverity != null) {
         await crackApi
           .verifyCrack(
             this.product.crackId,

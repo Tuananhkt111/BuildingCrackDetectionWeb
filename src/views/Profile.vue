@@ -269,7 +269,7 @@ export default {
     ...mapActions("user", ["setUser"]),
 
     async confirmChangePassword() {
-      if (this.meta.valid) {
+      if (this.meta.valid  && this.oldPassword != null && this.newPassword != null) {
         await userApi
           .changePassword(
             JSON.parse(localStorage.getItem("user")).userId,
