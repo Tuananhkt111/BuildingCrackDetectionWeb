@@ -29,6 +29,16 @@
           </li>
         </ul>
       </div>
+      <div class="des-field">
+        <InputText
+          id="description"
+          v-model.trim="description"
+          required="true"
+          maxlength="40"
+          class="form-control form-control-alternative"
+          placeholder="Description"
+        />
+      </div>
       <div class="p-grid">
         <div class="choose_file p-col-6">
           <label for="choose_file">
@@ -61,6 +71,7 @@ export default {
   data() {
     return {
       file: null,
+      description: null,
       size: null,
       check: false,
     };
@@ -95,13 +106,14 @@ export default {
     },
 
     detect() {
-      if (this.file != null) {
+      if (this.file != null && this.description !== null && this.description !== '') {
         const location = JSON.parse(localStorage.getItem("user")).locations[0]
           .name;
         const token = localStorage.getItem("jwtToken");
         let formData = new FormData();
         formData.append("video", this.file);
         formData.append("token", token);
+        formData.append("description", this.description);
         formData.append("locationName", location);
         formData.append("recordDate", this.file.lastModified);
         const url = urlConstants.PYTHON_URL + "detect";
@@ -258,5 +270,112 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.form-control {
+  font-size: 1rem;
+  line-height: 1.5;
+  display: block;
+  width: 100%;
+  height: calc(2.75rem + 2px);
+  padding: 0.625rem 0.75rem;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  color: #8898aa;
+  border: 1px solid #cad1d7;
+  border-radius: 0.375rem;
+  background-color: #fff;
+  background-clip: padding-box;
+  box-shadow: none;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  .form-control {
+    transition: none;
+  }
+}
+.form-control::-ms-expand {
+  border: 0;
+  background-color: transparent;
+}
+.form-control:focus {
+  color: #8898aa;
+  border-color: rgba(50, 151, 211, 0.25);
+  outline: 0;
+  background-color: #fff;
+  box-shadow: none, none;
+}
+.form-control:-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control::-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control::placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control:disabled,
+.form-control[readonly] {
+  opacity: 1;
+  background-color: #ebf0f5;
+}
+.form-group {
+  margin-bottom: 1.5rem;
+}
+.form-inline {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+@media (min-width: 576px) {
+  .form-inline label {
+    display: flex;
+    margin-bottom: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  .form-inline .form-group {
+    display: flex;
+    margin-bottom: 0;
+    flex: 0 0 auto;
+    flex-flow: row wrap;
+    align-items: center;
+  }
+  .form-inline .form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+  }
+}
+.form-control-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #525f7f;
+}
+.form-control {
+  font-size: 0.875rem;
+}
+.form-control-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #525f7f;
+}
+.form-control:-ms-input-placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control::placeholder {
+  opacity: 1;
+  color: #adb5bd;
+}
+.form-control:focus:-ms-input-placeholder {
+  color: #adb5bd;
+}
+.form-control:focus::placeholder {
+  color: #adb5bd;
+}
+
+.des-field {
+  margin-top: 10px;
 }
 </style>
