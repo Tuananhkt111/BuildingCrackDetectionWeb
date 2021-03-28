@@ -97,7 +97,7 @@
             :showFilterOperator="false"
           >
             <template #body="slotProps">
-              {{ slotProps.data.maintenanceExpense }}
+              {{ slotProps.data.maintenanceExpense.toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
             </template>
             <template #filter="{ filterModel }">
               <InputText
