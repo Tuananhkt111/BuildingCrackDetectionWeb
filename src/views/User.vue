@@ -42,8 +42,8 @@
         <template #empty> No Users found. </template>
         <Column
           header="No"
-          style="width:2rem"
-          headerStyle="border-radius: 20px 0 0 20px"
+          style="max-width:70px"
+          headerStyle="border-radius: 20px 0 0 20px;max-width:40px"
         >
           <template #body="slotProps">
             {{ slotProps.data.index }}
@@ -1321,17 +1321,27 @@ label {
 .staff {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.3px;
-  color: #66bb6a;
+  text-transform: uppercase;
+  font-size:14px;
+  color: #2fa0d3;
+  width: 90px;
+  text-align: center;
+  background-color:#e2f6ff;
 }
 
 .manager {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.3px;
-  color: rgb(73, 73, 255);
+  text-transform: uppercase;
+  font-size:14px;
+  color: #249e9a;
+  width: 90px;
+  text-align: center;
+  background-color:#9cf4c1;
 }
 .invalid {
   color: red;

@@ -925,9 +925,8 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.3px;
-  text-transform: uppercase;
   color: #fd517d;
   /* text-align: center;
   width: 110px;
@@ -937,10 +936,9 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 13px;
-  text-transform: uppercase;
   letter-spacing: 0.3px;
-  color: #3699ff;
+  color: #51bea5;
+  font-size: 14px;
   /* text-align: center;
   width: 110px;
     background-color:#e1f0ff; */
@@ -949,8 +947,7 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 13px;
-  text-transform: uppercase;
+  font-size: 14px;
   letter-spacing: 0.3px;
   color: #316879;
   /* text-align: center;
