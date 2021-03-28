@@ -42,7 +42,7 @@
             <span>Choose File</span>
           </label>
         </div>
-        <div class="detect p-col-6" @click="detect" >
+        <div class="detect p-col-6" @click="detect">
           <label for="detect" id="divDetect">
             <span id="spanDetect">Detect</span>
           </label>
@@ -96,7 +96,8 @@ export default {
 
     detect() {
       if (this.file != null) {
-        const location = JSON.parse(localStorage.getItem("user")).locations[0].name;
+        const location = JSON.parse(localStorage.getItem("user")).locations[0]
+          .name;
         const token = localStorage.getItem("jwtToken");
         let formData = new FormData();
         formData.append("video", this.file);
@@ -110,7 +111,7 @@ export default {
           },
         });
         localStorage.setItem("detecting", true);
-        this.setIsDetect(true); 
+        this.setIsDetect(true);
       }
     },
   },
@@ -131,7 +132,6 @@ body {
 }
 
 .wrapper {
-  margin-left: 350px;
   width: 500px;
   background: #fff;
 }
@@ -148,7 +148,7 @@ body {
   display: flex;
   border: 1px solid #f3f4f8;
   padding: 15px 20px;
-  margin-top: 10px; 
+  margin-top: 10px;
 }
 .file_item .format {
   background: #8178d3;
@@ -254,4 +254,9 @@ body {
   cursor: not-allowed;
 }
 
+.app {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

@@ -39,29 +39,13 @@
           </span>
         </div>
         <template #empty> No Repair Record found. </template>
-        <Column :expander="true" headerStyle="width: 30px;border-radius: 20px 0 0 20px"  />
+        <Column
+          :expander="true"
+          headerStyle="width: 30px;border-radius: 20px 0 0 20px"
+        />
         <Column header="No" style="width:2rem">
           <template #body="slotProps">
             {{ slotProps.data.index }}
-          </template>
-        </Column>
-        <Column
-          field="locationName"
-          header="Area Name"
-          :showFilterMatchModes="false"
-          :showAddButton="false"
-          :showFilterOperator="false"
-        >
-          <template #body="slotProps">
-            {{ slotProps.data.locationName }}
-          </template>
-          <template #filter="{ filterModel }">
-            <InputText
-              type="text"
-              v-model="filterModel.value"
-              class="p-column-filter"
-              placeholder="Search"
-            />
           </template>
         </Column>
         <Column
@@ -83,13 +67,54 @@
             />
           </template>
         </Column>
+        <div v-if="!isStaff">
+          <Column
+            field="locationName"
+            header="Area Name"
+            :showFilterMatchModes="false"
+            :showAddButton="false"
+            :showFilterOperator="false"
+          >
+            <template #body="slotProps">
+              {{ slotProps.data.locationName }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search"
+              />
+            </template>
+          </Column>
+        </div>
+        <div v-else>
+          <Column
+            field="maintenanceExpense"
+            header="Repair Expense"
+            :showFilterMatchModes="false"
+            :showAddButton="false"
+            :showFilterOperator="false"
+          >
+            <template #body="slotProps">
+              {{ slotProps.data.maintenanceExpense }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search"
+              />
+            </template>
+          </Column>
+        </div>
         <Column
           header="Status"
           filterField="status"
           :showFilterMatchModes="false"
           :filterMenuStyle="{ width: '14rem' }"
           style="min-width: 14rem"
-          
         >
           <template #body="{ data }">
             <span :class="stockStatusOrder(data)">
@@ -139,16 +164,24 @@
               v-tooltip.bottom="'View Record details'"
             />
           </template>
-        </Column >
+        </Column>
         <template #expansion="slotProps">
           <div class="orders-subtable">
             <div class="table-header">
-              <h3 class="p-m-2" id="sub-table-title"
+              <h3
+                class="p-m-2"
+                id="sub-table-title"
                 style="color: #143178;font-weight: 400;font-size:18px"
-              >List of Cracks</h3>
+              >
+                List of Cracks
+              </h3>
             </div>
             <DataTable :value="slotProps.data.cracks">
-              <Column header="No" style="width:3rem" headerStyle="border-radius:20px 0 0 20px">
+              <Column
+                header="No"
+                style="width:3rem"
+                headerStyle="border-radius:20px 0 0 20px"
+              >
                 <template #body="slotProps">
                   {{ slotProps.data.index }}
                 </template>
@@ -183,7 +216,10 @@
                   <span>{{ callDate(slotProps.data.created) }}</span>
                 </template>
               </Column>
-              <Column :filterMenuStyle="{ width: '5rem' }"  headerStyle="border-radius:0 20px 20px 0">
+              <Column
+                :filterMenuStyle="{ width: '5rem' }"
+                headerStyle="border-radius:0 20px 20px 0"
+              >
                 <template #body="slotProps">
                   <Button
                     icon="pi pi-eye"
@@ -391,7 +427,8 @@
                   <span
                     style="font-weight: bold"
                     v-if="product.description != null"
-                    >{{ product.description }}</span>
+                    >{{ product.description }}</span
+                  >
                 </p>
               </div>
             </TabPanel>
@@ -471,6 +508,7 @@ import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import crackApi from "../apis/cracks.js";
 import Galleria from "primevue/galleria";
+import webRole from "../util/webRole.js";
 
 export default {
   components: {
@@ -489,6 +527,12 @@ export default {
       "getMaintenanceOrderList",
       "getStatusList",
     ]),
+
+    isStaff() {
+      let role = JSON.parse(localStorage.getItem("user")).role;
+      if (webRole.STAFF_ROLE === role) return true;
+      return false;
+    },
   },
 
   async created() {
@@ -593,9 +637,11 @@ export default {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
         },
-        assessorName: {
+        maintenanceExpense: {
           operator: FilterOperator.AND,
-          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+          constraints: [
+            { value: null, matchMode: FilterMatchMode.GREATER_THAN },
+          ],
         },
         locationName: {
           operator: FilterOperator.AND,
@@ -620,7 +666,9 @@ export default {
     },
 
     showVideo(product) {
-      this.$router.push("/detection-result-details?detectionResultId=" + product.flightId);
+      this.$router.push(
+        "/detection-result-details?detectionResultId=" + product.flightId
+      );
     },
 
     stockClass(data) {
@@ -814,9 +862,9 @@ textarea {
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: #25c997;
-  background-color:#e2fff6;
+  background-color: #e2fff6;
 
-    text-align: center;
+  text-align: center;
   width: 80px;
 }
 
@@ -827,8 +875,8 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   color: #ffad44;
-  background-color:#fff4de;
-    text-align: center;
+  background-color: #fff4de;
+  text-align: center;
   width: 80px;
   text-transform: uppercase;
 }
@@ -843,7 +891,7 @@ textarea {
   color: #ff0019;
   text-align: center;
   width: 80px;
-    background-color:#ffe2e5;
+  background-color: #ffe2e5;
 }
 .detectedFailed {
   border-radius: 2px;

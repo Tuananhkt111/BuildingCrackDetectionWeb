@@ -2,7 +2,7 @@
   <div>
     <div class="card">
       <DataTable
-        :scrollable="false"
+        :scrollable="true"
         ref="dt"
         :value="getUserList"
         dataKey="userId"
@@ -30,7 +30,6 @@
               label="New"
               v-if="admin"
             />
-
             <span class="p-input-icon-left" style="margin: 2px">
               <i class="pi pi-search" />
               <InputText
@@ -40,6 +39,7 @@
             </span>
           </span>
         </div>
+        <template #empty> No Users found. </template>
         <Column
           header="No"
           style="width:2rem"
@@ -108,15 +108,70 @@
             />
           </template>
         </Column>
+        <span v-if="isAdmin">
+          <Column
+            header="Role"
+            filterField="role"
+            :showFilterMatchModes="false"
+          >
+            <template #body="{ data }">
+              <span :class="stockRole(data.role)">{{ data.role }}</span>
+            </template>
+            <template #filter="{ filterModel }">
+              <div class="p-mb-3 p-text-bold">Role Picker</div>
+              <MultiSelect
+                v-model="filterModel.value"
+                :options="roles"
+                placeholder="Any"
+                class="p-column-filter"
+              >
+                <template #option="slotProps">
+                  <span>{{ slotProps.option }}</span>
+                </template>
+              </MultiSelect>
+            </template>
+          </Column>
+        </span>
+        <span v-else>
+          <Column
+            field="phoneNumber"
+            header="Phone"
+            :showFilterMatchModes="false"
+            :showAddButton="false"
+            :showFilterOperator="false"
+          >
+            <template #body="slotProps">
+              {{ slotProps.data.phoneNumber }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search"
+              />
+            </template>
+          </Column>
+        </span>
         <Column
-          field="phoneNumber"
-          header="Phone"
+          field="locations"
+          header="Areas"
           :showFilterMatchModes="false"
           :showAddButton="false"
           :showFilterOperator="false"
         >
           <template #body="slotProps">
-            {{ slotProps.data.phoneNumber }}
+            <span
+              v-if="
+                slotProps.data.locations !== [] &&
+                  slotProps.data.locations !== null
+              "
+            >
+              {{ slotProps.data.locations.map((l) => l.name).toString() }}
+            </span>
+            <span v-else>
+              No area assigned
+            </span>
           </template>
           <template #filter="{ filterModel }">
             <InputText
@@ -125,24 +180,6 @@
               class="p-column-filter"
               placeholder="Search"
             />
-          </template>
-        </Column>
-        <Column header="Role" filterField="role" :showFilterMatchModes="false">
-          <template #body="{ data }">
-            <span :class="stockRole(data.role)">{{ data.role }}</span>
-          </template>
-          <template #filter="{ filterModel }">
-            <div class="p-mb-3 p-text-bold">Role Picker</div>
-            <MultiSelect
-              v-model="filterModel.value"
-              :options="roles"
-              placeholder="Any"
-              class="p-column-filter"
-            >
-              <template #option="slotProps">
-                <span>{{ slotProps.option }}</span>
-              </template>
-            </MultiSelect>
           </template>
         </Column>
         <Column headerStyle="border-radius: 0 20px 20px 0">
@@ -175,7 +212,6 @@
             />
           </template>
         </Column>
-        <template #empty> No Users found. </template>
       </DataTable>
     </div>
     <Dialog
@@ -592,9 +628,11 @@ import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 import { userApi } from "../apis/user";
 import { useForm, useField } from "vee-validate";
-import { FilterMatchMode, FilterOperator } from "primevue/api";
+import { FilterMatchMode, FilterOperator, FilterService } from "primevue/api";
 import * as yup from "yup";
 import "yup-phone";
+
+const AREAS_FILTER = "AREAS_FILTER";
 
 export default {
   setup() {
@@ -656,6 +694,12 @@ export default {
       "getAvailableLocationStaff",
       "getAvailableLocationManager",
     ]),
+
+    isAdmin() {
+      let role = JSON.parse(localStorage.getItem("user")).role;
+      if (webRole.ADMIN_ROLE === role) return true;
+      return false;
+    },
   },
   data() {
     return {
@@ -688,6 +732,7 @@ export default {
     await this.setUserList().then(() => {
       this.loading = false;
     });
+    console.log(this.getUserList);
     await this.setLocationList();
   },
 
@@ -696,6 +741,19 @@ export default {
     if (this.role === webRole.ADMIN_ROLE) {
       this.admin = true;
     }
+    FilterService.register(AREAS_FILTER, (value, filter) => {
+      if (filter === undefined || filter === null) {
+        return true;
+      }
+      if (value.length === 0) return false;
+      if (value === undefined || value === null) {
+        return false;
+      }
+      return value
+        .map((l) => l.name)
+        .toString()
+        .includes(filter.toString());
+    });
   },
   methods: {
     ...mapActions("user", ["setUserList"]),
@@ -750,7 +808,7 @@ export default {
         this.meta.valid &&
         this.name != null &&
         this.email != null &&
-        this.phone != null 
+        this.phone != null
       ) {
         await userApi
           .createUser(
@@ -920,7 +978,7 @@ export default {
       this.checkAvailable = false;
       var tmpLocation = {
         locationId: 0,
-        name: "<<No Location>>",
+        name: "<<No Area>>",
       };
       this.handleReset();
       this.name = product.name;
@@ -974,7 +1032,7 @@ export default {
       this.checkAvailable = false;
       var tmpLocation = {
         locationId: 0,
-        name: "<<No Location>>",
+        name: "<<No Area>>",
       };
       this.handleReset();
       this.name = product.name;
@@ -1049,6 +1107,10 @@ export default {
         phoneNumber: {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        locations: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: AREAS_FILTER }],
         },
         role: { value: null, matchMode: FilterMatchMode.IN },
       };
@@ -1319,7 +1381,6 @@ label {
     .p-datatable-tbody
     > tr:not(.p-highlight):hover) {
   text-align: left;
-  padding: 1rem 1rem;
   background: rgba(119, 123, 241, 0.1);
 }
 

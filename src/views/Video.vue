@@ -11,7 +11,7 @@
             url != 'https://bcdsysstorage.blob.core.windows.net/videos/null.mp4'
           "
         >
-          <video :key="url" width="390" height="216" controls>
+          <video :key="url" width="384" height="216" controls>
             <source :src="url" type="video/mp4" />
             <source :src="url" type="video/ogg" />
           </video>
@@ -25,16 +25,22 @@
         </div>
         <div
           class="p-col-12 p-mt-3 p-d-flex p-jc-center"
-          style="background-color:#f2f9ff;width:390px;margin-left:15px;padding-top:20px;  border-radius:10px;"
+          style="background-color:#f2f9ff; border-radius:10px;"
         >
           <div class="p-col-6">
             <div class="left">
               <i
                 class="pi pi-circle-on"
+                style="fontSize: 12px; color:rgb(255 221 111); margin-right:10px"
+              />Description
+            </div>
+            <div class="left" v-if="!isStaff">
+              <i
+                class="pi pi-circle-on"
                 style="fontSize: 12px; color:#ff786f; margin-right:10px"
               />Area
             </div>
-            <div class="left">
+            <div class="left" v-if="!isStaff">
               <i
                 class="pi pi-circle-on"
                 style="fontSize: 12px; color:#99f6ca; margin-right:10px"
@@ -56,7 +62,7 @@
               <i
                 class="pi pi-circle-on "
                 style="fontSize: 12px; color:#1e3d73; margin-right:10px"
-              />Import Date
+              />Record Date
             </div>
             <div class="left left-last-child">
               <i
@@ -66,8 +72,9 @@
             </div>
           </div>
           <div class="p-col-6">
-            <p class="right">{{ getFlight.locationName }}</p>
-            <p class="right">{{ getFlight.dataCollectorName }}</p>
+            <p class="right">{{ getFlight.description }}</p>
+            <p class="right" v-if="!isStaff">{{ getFlight.locationName }}</p>
+            <p class="right" v-if="!isStaff">{{ getFlight.dataCollectorName }}</p>
             <p
               class="right p-mb-3"
               v-if="
@@ -77,7 +84,7 @@
             >
               {{ getFlight.video }}
             </p>
-            <p class="right">{{ callDate(getFlight.created) }}</p>
+            <p class="right">{{ callDate(getFlight.recordDate) }}</p>
             <p class="right" style="margin-bottom: 0">{{ getFlightCount }}</p>
           </div>
         </div>

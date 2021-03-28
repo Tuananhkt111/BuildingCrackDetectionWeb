@@ -33,7 +33,10 @@
         </div>
         <template #empty> No Cracks found. </template>
         <template #loading> Loading Crack, please wait... </template>
-        <Column style="max-width: 4rem" headerStyle="max-width: 2rem;border-radius:20px 0 0 20px">
+        <Column
+          style="max-width: 4rem"
+          headerStyle="max-width: 2rem;border-radius:20px 0 0 20px"
+        >
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
@@ -53,27 +56,52 @@
             />
           </template>
         </Column>
-        <Column
-          field="locationName"
-          header="Area Name"
-          :showFilterMatchModes="false"
-          :showAddButton="false"
-          headerStyle="max-width: 170px;"
-          style="max-width: 205px"
-          :showFilterOperator="false"
-        >
-          <template #body="slotProps">
-            {{ slotProps.data.locationName }}
-          </template>
-          <template #filter="{ filterModel }">
-            <InputText
-              type="text"
-              v-model="filterModel.value"
-              class="p-column-filter"
-              placeholder="Search"
-            />
-          </template>
-        </Column>
+        <div v-if="!isStaff">
+          <Column
+            field="locationName"
+            header="Area Name"
+            :showFilterMatchModes="false"
+            :showAddButton="false"
+            headerStyle="max-width: 170px;"
+            style="max-width: 205px"
+            :showFilterOperator="false"
+          >
+            <template #body="slotProps">
+              {{ slotProps.data.locationName }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search"
+              />
+            </template>
+          </Column>
+        </div>
+        <div v-else>
+          <Column
+            field="position"
+            header="Position"
+            :showFilterMatchModes="false"
+            :showAddButton="false"
+            headerStyle="max-width: 170px;"
+            style="max-width: 205px"
+            :showFilterOperator="false"
+          >
+            <template #body="slotProps">
+              {{ slotProps.data.position }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search"
+              />
+            </template>
+          </Column>
+        </div>
         <Column
           header="Accuracy"
           field="accuracy"
@@ -167,7 +195,10 @@
             </MultiSelect>
           </template>
         </Column>
-        <Column :filterMenuStyle="{ width: '5rem' }" headerStyle="border-radius:0 20px 20px 0">
+        <Column
+          :filterMenuStyle="{ width: '5rem' }"
+          headerStyle="border-radius:0 20px 20px 0"
+        >
           <template #body="slotProps">
             <Button
               icon="pi pi-eye"
@@ -284,7 +315,9 @@
             </TabPanel>
             <TabPanel
               header="Description"
-              :disabled="product.description == '' || product.description == null"
+              :disabled="
+                product.description == '' || product.description == null
+              "
             >
               <div class="p-col-12">
                 <p>
@@ -452,7 +485,7 @@ import webRole from "../util/webRole.js";
 import Toast from "primevue/toast";
 
 export default {
-setup() {
+  setup() {
     const schema = yup.object({
       position: yup
         .string()
@@ -466,7 +499,8 @@ setup() {
       description: yup
         .string()
         .max(300)
-        .label("Description").nullable(),
+        .label("Description")
+        .nullable(),
     });
     const { errors, meta, handleReset, isSubmitting, validate } = useForm({
       validationSchema: schema,
@@ -507,10 +541,9 @@ setup() {
 
     isStaff() {
       let role = JSON.parse(localStorage.getItem("user")).role;
-      if(webRole.STAFF_ROLE === role)
-        return true;
+      if (webRole.STAFF_ROLE === role) return true;
       return false;
-    }
+    },
   },
   data() {
     return {
@@ -552,7 +585,9 @@ setup() {
       ];
     },
     showVideo(product) {
-      this.$router.push("/detection-result-details?detectionResultId=" + product.flightId);
+      this.$router.push(
+        "/detection-result-details?detectionResultId=" + product.flightId
+      );
     },
     stockStatus(data) {
       return [
@@ -651,6 +686,10 @@ setup() {
       this.filters = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         locationName: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
+        position: {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
         },
@@ -812,8 +851,8 @@ textarea {
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: #25c997;
-  background-color:#e2fff6;
-    text-align: center;
+  background-color: #e2fff6;
+  text-align: center;
   width: 80px;
 }
 
@@ -824,8 +863,8 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   color: #ffad44;
-  background-color:#fff4de;
-    text-align: center;
+  background-color: #fff4de;
+  text-align: center;
   width: 80px;
   text-transform: uppercase;
 }
@@ -840,7 +879,7 @@ textarea {
   color: #ff0019;
   text-align: center;
   width: 80px;
-    background-color:#ffe2e5;
+  background-color: #ffe2e5;
 }
 .buttonView {
   position: fixed;

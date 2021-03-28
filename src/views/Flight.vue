@@ -18,7 +18,12 @@
         currentPageReportTemplate=""
       >
         <div class="table-header">
-          <h3 class="p-m-0 table-title" style="color: #143178;font-weight: 400;font-size:22px">Detection Results</h3>
+          <h3
+            class="p-m-0 table-title"
+            style="color: #143178;font-weight: 400;font-size:22px"
+          >
+            Detection Results
+          </h3>
           <span class="p-input-icon-left">
             <span class="p-input-icon-left" style="margin:2px">
               <i class="pi pi-search" />
@@ -32,30 +37,133 @@
         <template #empty>
           No Detection Result found.
         </template>
-        <Column header="No" style="margin-right:-10rem"  headerStyle="width: 30px;border-radius: 20px 0 0 20px" >
+        <Column
+          header="No"
+          style="margin-right:-10rem"
+          headerStyle="width: 30px;border-radius: 20px 0 0 20px"
+        >
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
         </Column>
         <Column
-          field="locationName"
-          header="Area Name"
+          field="description"
+          header="Description"
           :showFilterMatchModes="false"
           :showAddButton="false"
           :showFilterOperator="false"
         >
           <template #body="slotProps">
-            {{ slotProps.data.locationName }}
+            {{ slotProps.data.description }}
           </template>
           <template #filter="{filterModel}">
             <InputText
               type="text"
               v-model="filterModel.value"
               class="p-column-filter"
-              placeholder="Search by name"
+              placeholder="Search"
             />
           </template>
         </Column>
+        <div v-if="!isStaff">
+          <Column
+            field="locationName"
+            header="Area Name"
+            :showFilterMatchModes="false"
+            :showAddButton="false"
+            :showFilterOperator="false"
+          >
+            <template #body="slotProps">
+              {{ slotProps.data.locationName }}
+            </template>
+            <template #filter="{filterModel}">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search by name"
+              />
+            </template>
+          </Column>
+          <Column
+            field="video"
+            header="Video"
+            :showFilterMatchModes="false"
+            :showAddButton="false"
+            :showFilterOperator="false"
+          >
+            <template #body="slotProps">
+              <img
+                src="@/asset/mp4-6.png"
+                style="width: 40px; margin-right: 10px"
+              />
+              <span v-if="slotProps.data.video != 'null.mp4'">{{
+                slotProps.data.video
+              }}</span>
+              <span v-else style="font-style: italic; color: #adadad"
+                >Video deleted</span
+              >
+            </template>
+            <template #filter="{filterModel}">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search"
+              />
+            </template>
+          </Column>
+        </div>
+        <div v-else>
+          <Column
+            field="video"
+            header="Video"
+            :showFilterMatchModes="false"
+            :showAddButton="false"
+            :showFilterOperator="false"
+          >
+            <template #body="slotProps">
+              <img
+                src="@/asset/mp4-6.png"
+                style="width: 40px; margin-right: 10px"
+              />
+              <span v-if="slotProps.data.video != 'null.mp4'">{{
+                slotProps.data.video
+              }}</span>
+              <span v-else style="font-style: italic; color: #adadad"
+                >Video deleted</span
+              >
+            </template>
+            <template #filter="{filterModel}">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search"
+              />
+            </template>
+          </Column>
+          <Column
+            header="Record Date"
+            filterField="recordDate"
+            dataType="date"
+            style="min-width:10rem"
+            :showAddButton="false"
+            :showFilterOperator="false"
+            :showFilterMatchModes="false"
+          >
+            <template #body="{data}">
+              {{ callDate(data.recordDate) }}
+            </template>
+            <template #filter="{filterModel}">
+              <Calendar
+                v-model="filterModel.value"
+                dateFormat="dd/mm/yy"
+                placeholder="dd/mm/yyyy"
+              />
+            </template>
+          </Column>
+        </div>
         <Column
           field="dataCollectorName"
           header="Collector Name"
@@ -76,47 +184,7 @@
             />
           </template>
         </Column>
-        <Column
-          field="video"
-          header="Video"
-          :showFilterMatchModes="false"
-          :showAddButton="false"
-          :showFilterOperator="false"
-        >
-          <template #body="slotProps">
-            <img src="@/asset/mp4-6.png" style="width: 40px; margin-right: 10px"/>
-            <span v-if="slotProps.data.video != 'null.mp4'">{{ slotProps.data.video }}</span>
-            <span v-else style="font-style: italic; color: #adadad">Video deleted</span>
-          </template>
-          <template #filter="{filterModel}">
-            <InputText
-              type="text"
-              v-model="filterModel.value"
-              class="p-column-filter"
-              placeholder="Search"
-            />
-          </template>
-        </Column>
-        <Column
-          header="Import Date"
-          filterField="created"
-          dataType="date"
-          style="min-width:10rem"
-          :showAddButton="false"
-          :showFilterOperator="false"
-        >
-          <template #body="{data}">
-            {{ callDate(data.created) }}
-          </template>
-          <template #filter="{filterModel}">
-            <Calendar
-              v-model="filterModel.value"
-              dateFormat="mm/dd/yy"
-              placeholder="mm/dd/yyyy"
-            />
-          </template>
-        </Column>
-        <Column  headerStyle="border-radius:0 20px 20px 0">
+        <Column headerStyle="border-radius:0 20px 20px 0">
           <template #body="slotProps">
             <Button
               icon="pi pi-eye"
@@ -153,12 +221,14 @@ import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import moment from "moment";
 import { flightApi } from "../apis/flights";
-import { FilterMatchMode, FilterOperator } from "primevue/api";
+import { FilterMatchMode, FilterOperator, FilterService } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
 import webRole from "../util/webRole.js";
 import Upload from "../views/Upload.vue";
 import Detecting from "../components/Detecting.vue";
 import ConfirmPopup from "primevue/confirmpopup";
+
+const DATE_FILTER = "DATE FILTER";
 
 export default {
   components: {
@@ -167,7 +237,7 @@ export default {
     Upload,
     Detecting,
     Calendar,
-    ConfirmPopup
+    ConfirmPopup,
   },
   computed: {
     ...mapGetters("flight", ["getFlightList"]),
@@ -179,10 +249,15 @@ export default {
 
     isAdmin() {
       let role = JSON.parse(localStorage.getItem("user")).role;
-      if(webRole.ADMIN_ROLE === role)
-        return true;
+      if (webRole.ADMIN_ROLE === role) return true;
       return false;
-    }
+    },
+
+    isStaff() {
+      let role = JSON.parse(localStorage.getItem("user")).role;
+      if (webRole.STAFF_ROLE === role) return true;
+      return false;
+    },
   },
   data() {
     return {
@@ -213,13 +288,28 @@ export default {
     } else {
       console.log(document.getElementById("Collector"));
     }
+    FilterService.register(DATE_FILTER, (value, filter) => {
+      if (filter === undefined || filter === null) {
+        return true;
+      }
+      if (value === undefined || value === null) {
+        return false;
+      }
+      let date = filter.getFullYear() + "-" + ("0" + (filter.getMonth() + 1)).slice(-2) + "-" + ("0" + filter.getDate()).slice(-2);
+      return value
+        .toString()
+        .includes(date);
+    });
   },
+
   methods: {
     ...mapActions("flight", ["setFlightList"]),
     ...mapActions("application", ["setIsDetect"]),
 
     seeProduct(product) {
-      this.$router.push("/detection-result-details?detectionResultId=" + product.flightId);
+      this.$router.push(
+        "/detection-result-details?detectionResultId=" + product.flightId
+      );
     },
     showImage(crack) {
       document.body.style.overflow = "hidden";
@@ -283,6 +373,10 @@ export default {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
         },
+        description: {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
+        },
         dataCollectorName: {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
@@ -291,9 +385,9 @@ export default {
           operator: FilterOperator.AND,
           constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }],
         },
-        created: {
+        recordDate: {
           operator: FilterOperator.AND,
-          constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }],
+          constraints: [{ value: null, matchMode: DATE_FILTER }],
         },
       };
     },
