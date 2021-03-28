@@ -7,22 +7,20 @@
       ></div>
       <!-- Dropdown Menu -->
       <div class="top-nav-right p-d-flex p-ai-center p-jc-between">
-        <div class="location-content" v-if="getLocationNames !== ''">
+        <!-- <div class="location-content" v-if="getLocationNames !== ''">
           <span>Areas: </span>
-          <!-- <span
+          <span
             v-for="location in getUser.locations"
             v-bind:key="location.locationId"
           >
             {{ location.name }}
-          </span> -->
+          </span>
           <span>{{getLocationNames}}</span>
         </div>
-        <div class="userName-location">
-          <p>{{ getUser.userName }}</p>
-        </div>
+       -->
         <div class="nav-btn-menu">
           <div class="btn-nav">
-            <i class="pi pi-envelope">
+            <i class="pi pi-bell" style="font-size:25px;color:black">
               <span class="count" v-if="getCount != 0">{{ getCount }}</span>
             </i>
           </div>
@@ -54,7 +52,7 @@
                 >
                   <span style="color: #a2a1a1">No unread notifications</span>
                 </ul>
-                <ul>
+                <ul>  
                   <li
                     class="blue"
                     v-for="item in getUnReadNotificationList"
@@ -83,33 +81,38 @@
             </li>
           </ul>
         </div>
-        <div class="nav-btn-menu">
+     
+        <div class="nav-btn-menu" >
           <div class="btn-nav">
             <img
               src="/assets/profile-3.png"
-              style="width: 40px; border-radius: 10px;"
+              style="width: 37px; border-radius: 100px;"
             />
           </div>
-          <ul class="drop-menu">
+        <ul class="drop-menu">
             <li>
-              <div class="card timeline" style="width: 200px">
+              <div class="card2" style="width: 200px">
+             <div class="header-info">
+                   <p style="color:white;font-weight:500;font-size:16px">{{ getUser.userName }}</p>
+                   <p style="color:white;font-size:14px">Area: <span>{{getLocationNames}}</span></p>
+                </div>
                 <li>
-                  <a @click="$router.push('/profile')">
-                    <div class="inner-link" style="margin-bottom: 20px">
+                  <a @click="$router.push('/profiles')">
+                    <div class="inner-link" style="margin-bottom: 15px">
                       <div class="inner-link-icon">
-                        <i class="pi pi-fw pi-user"></i>
+                        <i class="pi pi-fw pi-user" style="font-size:14px"></i>
                       </div>
-                      <div>Profile</div>
+                      <div style="font-size:16px;">Profile</div>
                     </div>
                   </a>
                 </li>
                 <li>
-                  <a @click="$router.push('/notifications')">
-                    <div class="inner-link" style="margin-bottom: 20px">
+                  <a @click="$router.push('/notis')">
+                    <div class="inner-link" style="margin-bottom: 15px;margin-left:2px">
                       <div class="inner-link-icon">
-                        <i class="pi pi-envelope"></i>
+                        <i class="pi pi-bell"  style="font-size:14px;"></i>
                       </div>
-                      <div>Notifications</div>
+                      <div  style="font-size:16px;"> Notifications</div>
                     </div>
                   </a>
                 </li>
@@ -117,15 +120,20 @@
                   <a @click="logOut">
                     <div class="inner-link">
                       <div class="inner-link-icon">
-                        <i class="pi pi-fw pi-power-off"></i>
+                        <i class="pi pi-fw pi-power-off"  style="font-size:14px;"></i>
                       </div>
-                      <div>Logout</div>
+                      <div  style="font-size:16px;">Logout</div>
                     </div>
                   </a>
                 </li>
               </div>
             </li>
           </ul>
+        </div>
+         <div class="userName-location"  >
+          <p>{{ getUser.name }}</p>
+           <p style="color:grey;fontWeight:500;font-size:13px">{{ getUser.role }} </p>
+
         </div>
       </div>
     </div>
@@ -150,7 +158,9 @@ export default {
     ...mapGetters("user", ["getUser"]),
 
     getLocationNames() {
-      return this.getUser.locations.map(l => l.name).toString();
+      var tmp = "";
+      this.getUser.locations.map(l => {tmp=tmp+l.name+", "})
+      return tmp;
     }
   },
   async created() {
@@ -315,10 +325,22 @@ ul.drop-menu {
   width: 100%;
   padding: 0;
 }
+
 ul.drop-menu li {
   background: white;
   display: none;
   margin-bottom: -2px;
+}
+
+ul.drop-menu li:first-child {
+  border-radius: 24px 24px 0px 0px;
+  border-bottom: none;
+  margin-bottom: -3px;
+  
+}
+ul.drop-menu li:last-child {
+  border-radius: 0px 0px 24px 24px;
+  border-bottom: none;
 }
 
 .nav-btn-menu:hover > ul.drop-menu.menu-2 li {
@@ -587,8 +609,8 @@ button.close {
   padding-bottom: 0;
 }
 .count {
-  right: 8px;
-  bottom: 22px;
+  right: 10px;
+  bottom: 18px;
   position: relative;
   padding: 2.5px 5px;
   color: #fff;
@@ -596,7 +618,7 @@ button.close {
   font-family: Arial;
   font-weight: bold;
   text-align: center;
-  background-color: #d4453b;
+  background-color: #4f8eec;
   border-radius: 50%;
   z-index: 3;
 }
@@ -613,6 +635,30 @@ button.close {
   padding-bottom: 5px;
   float: right;
   color: blue;
+}
+.card2 {
+  background: white;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  -moz-border-radius: 24px;
+  -webkit-border-radius: 24px;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  position: fixed;
+  right: 5px;
+  top: 58px;
+  color: rgba(41, 50, 65, 0.8);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  font-size: 14px;
+  font-weight: 400;
+  width: 20rem;
+}
+
+.header-info {
+background-color:#7fb4fa;padding:10px 10px 10px 10px;margin-bottom:10px;border-radius:10px
 }
 
 .card {
@@ -709,13 +755,13 @@ button.close {
 }
 
 .userName-location {
-  color: rgb(48, 48, 48);
+  color: #343a40;
   font-weight: 600;
   margin-right: 20px;
   padding: 5px 8px;
   border-radius: 15px;
-  background: #0083fd;
-  color: white;
+font-weight:6500;
+font-size: 14px;
 }
 
 .location-content {
