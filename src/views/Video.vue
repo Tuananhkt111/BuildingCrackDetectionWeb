@@ -124,7 +124,7 @@
                       :alt="slotProps.data.imageThumbnails"
                       class="product-image"
                       style="width: 80px ; height: 80px; margin-left:-1rem"
-                      @click="imageClick(slotProps.index, slotProps.data)"
+                      @click="imageClick(slotProps.data)"
                     />
                   </template>
                 </Column>
@@ -230,7 +230,7 @@
                       :alt="slotProps.data.imageThumbnails"
                       class="product-image"
                       style="width: 80px ; height: 80px"
-                      @click="imageClick(slotProps.index, slotProps.data)"
+                      @click="imageClick(slotProps.data)"
                     />
                   </template>
                 </Column>
@@ -388,7 +388,7 @@
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
-            @click="imageClick(product.index, product)"
+            @click="imageClick(product)"
             style="width:250px; height:100%"
           />
         </div>
@@ -506,7 +506,7 @@
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
-            @click="imageClick(product.index - 1, product)"
+            @click="imageClick(product)"
             style="width:250px; height:97%"
           />
         </div>
@@ -583,7 +583,7 @@
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
-            @click="imageClick(product.index - 1, product)"
+            @click="imageClick(product)"
             style="width:250px; height:97%"
           />
         </div>
@@ -817,14 +817,14 @@ export default {
   methods: {
     ...mapActions("flight", ["setFlight"]),
 
-    imageClick(index, product) {
+    imageClick(product) {
       this.hiddenDialog();
       if (product.status == "Unconfirmed") {
         this.imageList = this.getUnConfirmCrackList;
       } else {
         this.imageList = this.getConfirmCrackList;
       }
-      this.activeIndex = index;
+      this.activeIndex = product.index - 1;
       this.displayCustom = true;
     },
     hiddenDialog() {

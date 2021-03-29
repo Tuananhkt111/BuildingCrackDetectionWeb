@@ -53,7 +53,7 @@
               :alt="slotProps.data.imageThumbnails"
               class="product-image"
               style="width: 80px; height: 80px"
-              @click="imageClick(slotProps.index)"
+              @click="imageClick(slotProps.data.index)"
             />
           </template>
         </Column>
@@ -252,7 +252,7 @@
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
-            @click="imageClick(product.index - 1)"
+            @click="imageClick(product.index)"
             style="width: 250px; height: 100%"
           />
         </div>
@@ -405,7 +405,7 @@
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
-            @click="imageClick(product.index - 1, product)"
+            @click="imageClick(product.index)"
             style="width:250px; height:97%"
           />
         </div>
@@ -562,19 +562,19 @@ export default {
       updateCrackDialog: false,
     };
   },
-  created() {
+  async created() {
     this.initFilters();
-    this.setCrackList();
-    this.loading = false;
+    await this.setCrackList().then(() =>{
+      this.loading = false;
+    });
   },
   methods: {
     ...mapActions("crack", ["setCrackList"]),
 
     imageClick(index) {
       this.crackInfoDialog = false;
-      this.activeIndex = index;
+      this.activeIndex = index - 1;
       this.displayCustom = true;
-      console.log(this.getCrackListConfirm);
     },
     stockClass(data) {
       return [
