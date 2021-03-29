@@ -73,6 +73,7 @@ export default {
           clearInterval(this.polling);
           this.setVideo(null);
           localStorage.removeItem("video");
+          this.setFlightList();
         }
       }, 60000);
       setTimeout(() => {clearInterval(this.polling)}, 36000000);

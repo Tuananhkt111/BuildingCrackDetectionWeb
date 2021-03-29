@@ -115,6 +115,7 @@ export default {
 
   methods: {
     ...mapActions("application", ["setVideo"]),
+    ...mapActions("flight", ["setFlightList"]),
 
     closeFile() {
       this.file = null;
@@ -182,6 +183,7 @@ export default {
           clearInterval(this.polling);
           this.setVideo(null);
           localStorage.removeItem("video");
+          this.setFlightList();
         }
         console.log(res);
       }, 60000);
