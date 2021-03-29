@@ -34,6 +34,7 @@
         <template #empty> No Cracks found. </template>
         <template #loading> Loading Crack, please wait... </template>
         <Column
+         header="No"
           style="max-width: 4rem"
           headerStyle="max-width: 2rem;border-radius:20px 0 0 20px"
         >

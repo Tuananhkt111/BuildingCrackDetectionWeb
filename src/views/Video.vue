@@ -112,7 +112,7 @@
                 <template #loading>
                   Loading Crack, please wait...
                 </template>
-                <Column header="No" style="margin-right:-10rem"  headerStyle="border-radius:20px 0 0 20px">
+                <Column header="No" headerStyle="border-radius:20px 0 0 20px">
                   <template #body="slotProps">
                     {{ slotProps.data.index }}
                   </template>
