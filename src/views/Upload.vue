@@ -34,10 +34,10 @@
           id="description"
           v-model.trim="description"
           required="true"
-          maxlength="40"
           class="form-control form-control-alternative"
           placeholder="Description"
         />
+        <p class="invalid">{{errors.description}}</p>
       </div>
       <div class="p-grid">
         <div class="choose_file p-col-6">
@@ -67,13 +67,38 @@ import { mapGetters, mapActions } from "vuex";
 import urlConstants from "../util/urlConstants";
 import axios from "axios";
 import flightApi from "../apis/flights";
+import * as yup from "yup";
+import { useForm, useField } from "vee-validate";
 
 export default {
+  setup() {
+    const schema = yup.object({
+      description: yup
+        .string()
+        .label("Description")
+        .required()
+        .max(40),
+    });
+
+    const { errors, meta, handleReset, validate } = useForm({
+      validationSchema: schema,
+    });
+
+    const { value: description } = useField("description");
+
+    return {
+      description,
+      errors,
+      meta,
+      handleReset,
+      validate,
+    };
+  },
+
   components: {},
   data() {
     return {
       file: null,
-      description: null,
       size: null,
       check: false,
       polling: null,
@@ -114,7 +139,7 @@ export default {
     },
 
     async detect() {
-      if (
+      if ( this.meta.valid &&
         this.file != null &&
         this.description !== null &&
         this.description !== ""
@@ -145,6 +170,8 @@ export default {
         this.setVideo(videoName);
         localStorage.setItem("video", this.getVideo);
         await this.pollData();
+      } else {
+        this.validate();
       }
     },
 
@@ -412,5 +439,11 @@ body {
 
 .des-field {
   margin-top: 10px;
+}
+
+.invalid {
+  color: red;
+  position: sticky;
+  left: 5px !important;
 }
 </style>
