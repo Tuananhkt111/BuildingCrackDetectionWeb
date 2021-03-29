@@ -22,8 +22,13 @@ async function removeVideo(id) {
   return await ApiHelper.delete(urlConstants.FLIGHT_URL + "/" + id + "/video");
 }
 
+async function checkExists(video) {
+  return await ApiHelper.get(urlConstants.FLIGHT_URL + "/exists?video=" + video);
+}
+
 export default {
   getAll,
   getById,
-  removeVideo
+  removeVideo,
+  checkExists
 };

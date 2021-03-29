@@ -30,6 +30,7 @@ import TopNav from "../src/components/TopNav.vue";
 import SideBar from "../src/components/SideBar.vue";
 // import AppFooter from "../src/components/AppFooter.vue";
 import Login from "../src/views/LoginPage.vue";
+import flightApi from "./apis/flights";
 export default {
   name: "app",
   components: {
@@ -39,16 +40,21 @@ export default {
     // AppFooter
   },
   computed: {
-    ...mapGetters("application", ["getIsActive", "getIsLogin"]),
+    ...mapGetters("application", ["getIsActive", "getIsLogin", "getVideo"]),
   },
   data() {
     return {
       login: false,
+      polling: null
     };
   },
-  created() {
+  async created() {
     if (localStorage.getItem("user")) {
       this.setIsLogin(false);
+    }
+    if(localStorage.getItem("video")) {
+      this.setVideo(localStorage.getItem("video"));
+      await this.pollData();
     }
   },
 
@@ -58,10 +64,18 @@ export default {
     });
   },
   methods: {
-    ...mapActions("application", ["setIsLogin"]),
+    ...mapActions("application", ["setIsLogin", "setVideo"]),
 
-    doSomething() {
-      console.log("AA");
+    async pollData() {
+      this.polling = setInterval(async () => {
+        let res = await flightApi.checkExists(this.getVideo);
+        if(res && res.data === "Video exists") {
+          clearInterval(this.polling);
+          this.setVideo(null);
+          localStorage.removeItem("video");
+        }
+      }, 60000);
+      setTimeout(() => {clearInterval(this.polling)}, 36000000);
     },
   },
 };

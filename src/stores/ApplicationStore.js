@@ -4,7 +4,7 @@ const applicationStore = {
     isActive: false,
     isLogin: true,
     isForgotPassword: false,
-    isDetect: false,
+    video: null
   },
 
   getters: {
@@ -17,8 +17,8 @@ const applicationStore = {
     getIsForgotPassword(state) {
       return state.isForgotPassword;
     },
-    getIsDetect(state) {
-      return state.isDetect;
+    getVideo(state) {
+      return state.video;
     }
   },
 
@@ -32,8 +32,8 @@ const applicationStore = {
     setIsForgotPassword(state, isForgotPassword) {
       state.isForgotPassword = isForgotPassword;
     },
-    setIsDetect(state, isDetect) {
-      state.isDetect = isDetect;
+    setVideo(state, video) {
+      state.video = video;
     },
   },
 
@@ -47,8 +47,8 @@ const applicationStore = {
     setIsForgotPassword({commit}, value) {
       commit("setIsForgotPassword", value);
     },
-    setIsDetect({commit}, value) {
-      commit("setIsDetect", value);
+    setVideo({commit}, value) {
+      commit("setVideo", value);
     },
   }
 };

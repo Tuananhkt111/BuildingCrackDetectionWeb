@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Detecting v-if="getIsDetect && staff"></Detecting>
-    <Upload v-if="!getIsDetect && staff"></Upload>
+    <Detecting v-if="isDetect && staff"></Detecting>
+    <Upload v-if="!isDetect && staff"></Upload>
     <div class="card">
       <DataTable
         :rowHover="true"
@@ -241,7 +241,7 @@ export default {
   },
   computed: {
     ...mapGetters("flight", ["getFlightList"]),
-    ...mapGetters("application", ["getIsDetect"]),
+    ...mapGetters("application", ["getVideo"]),
 
     data() {
       return this.getFlightList;
@@ -258,27 +258,23 @@ export default {
       if (webRole.STAFF_ROLE === role) return true;
       return false;
     },
+
+    isDetect() {
+      return this.getVideo != null;
+    }
   },
   data() {
     return {
       product: {},
       filters: {},
-      loading: true,
       role: null,
       staff: false,
-      isDetect: false,
       displayImage: false,
     };
   },
   created() {
     this.initFilters();
     this.setFlightList();
-    console.log(this.getFlightList);
-    this.loading = false;
-    const tmp = localStorage.getItem("detecting");
-    if (tmp) {
-      this.setIsDetect(true);
-    }
   },
 
   mounted() {
@@ -304,7 +300,6 @@ export default {
 
   methods: {
     ...mapActions("flight", ["setFlightList"]),
-    ...mapActions("application", ["setIsDetect"]),
 
     seeProduct(product) {
       this.$router.push(

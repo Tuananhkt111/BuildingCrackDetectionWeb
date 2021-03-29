@@ -66,6 +66,8 @@
 import { mapGetters, mapActions } from "vuex";
 import urlConstants from "../util/urlConstants";
 import axios from "axios";
+import flightApi from "../apis/flights";
+
 export default {
   components: {},
   data() {
@@ -74,14 +76,20 @@ export default {
       description: null,
       size: null,
       check: false,
+      polling: null,
     };
   },
+
+  created() {
+    this.pollData();
+  },
+
   computed: {
-    ...mapGetters("application", ["getIsDetect"]),
+    ...mapGetters("application", ["getVideo"]),
   },
 
   methods: {
-    ...mapActions("application", ["setIsDetect"]),
+    ...mapActions("application", ["setVideo"]),
 
     closeFile() {
       this.file = null;
@@ -105,8 +113,12 @@ export default {
       document.getElementById("spanDetect").style.color = "#8178d3";
     },
 
-    detect() {
-      if (this.file != null && this.description !== null && this.description !== '') {
+    async detect() {
+      if (
+        this.file != null &&
+        this.description !== null &&
+        this.description !== ""
+      ) {
         const location = JSON.parse(localStorage.getItem("user")).locations[0]
           .name;
         const token = localStorage.getItem("jwtToken");
@@ -122,10 +134,33 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         });
-        localStorage.setItem("detecting", true);
-        this.setIsDetect(true);
+        let user = JSON.parse(localStorage.getItem("user"));
+        let videoName = user.locations[0].name;
+        videoName += " " + ("0" + this.file.lastModifiedDate.getDate()).slice(-2) 
+        + "-" + ("0" + (this.file.lastModifiedDate.getMonth() + 1)).slice(-2) 
+        + "-" + this.file.lastModifiedDate.getFullYear()
+        + " " + ("0" + this.file.lastModifiedDate.getHours()).slice(-2)
+        + "_" + ("0" + this.file.lastModifiedDate.getMinutes()).slice(-2)
+        + "_" + ("0" + this.file.lastModifiedDate.getSeconds()).slice(-2);
+        this.setVideo(videoName);
+        localStorage.setItem("video", this.getVideo);
+        await this.pollData();
       }
     },
+
+    async pollData() {
+      this.polling = setInterval(async () => {
+        let res = await flightApi.checkExists(this.getVideo);
+        if(res && res.data === "Video exists") {
+          clearInterval(this.polling);
+          this.setVideo(null);
+          localStorage.removeItem("video");
+        }
+        console.log(res);
+      }, 60000);
+      setTimeout(() => {clearInterval(this.polling)}, 36000000);
+    },
+
   },
 };
 </script>
