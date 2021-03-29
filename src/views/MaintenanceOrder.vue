@@ -169,7 +169,7 @@
           <div class="orders-subtable">
             <div class="table-header">
               <h3
-                class="p-m-2"
+                class="p-m-3"
                 id="sub-table-title"
                 style="color: #143178;font-weight: 400;font-size:18px"
               >
@@ -180,13 +180,13 @@
               <Column
                 header="No"
                 style="width:3rem"
-                headerStyle="border-radius:20px 0 0 20px"
+                headerStyle="border-radius:20px 0 0 20px;background-color:#e7f5ef;color:#4eca8a"
               >
                 <template #body="slotProps">
                   {{ slotProps.data.index }}
                 </template>
               </Column>
-              <Column header="Image" headerStyle="width: 150px" class="small">
+              <Column header="Image" headerStyle="width: 150px;background-color:#e7f5ef;color:#4eca8a" class="small">
                 <template #body="slotProps">
                   <img
                     :src="slotProps.data.imageThumbnails"
@@ -197,28 +197,28 @@
                   />
                 </template>
               </Column>
-              <Column field="severity" header="Severity" sortable>
+              <Column field="severity" headerStyle="background-color:#e7f5ef;color:#4eca8a" header="Severity" sortable>
                 <template #body="slotProps">
                   <span :class="stockClass(slotProps.data)">
                     {{ slotProps.data.severity }}
                   </span>
                 </template>
               </Column>
-              <Column field="status" header="Status" sortable>
+              <Column field="status" headerStyle="background-color:#e7f5ef;color:#4eca8a" header="Status" sortable>
                 <template #body="slotProps">
                   <span :class="stockStatus(slotProps.data)">
                     {{ slotProps.data.status }}
                   </span>
                 </template>
               </Column>
-              <Column field="created" header="Created Date" sortable>
+              <Column field="created" headerStyle="background-color:#e7f5ef;color:#4eca8a" header="Created Date" sortable>
                 <template #body="slotProps">
                   <span>{{ callDate(slotProps.data.created) }}</span>
                 </template>
               </Column>
-              <Column
+              <Column 
                 :filterMenuStyle="{ width: '5rem' }"
-                headerStyle="border-radius:0 20px 20px 0"
+                headerStyle="border-radius:0 20px 20px 0;background-color:#e7f5ef;color:#4eca8a "
               >
                 <template #body="slotProps">
                   <Button
@@ -694,9 +694,9 @@ export default {
     stockStatusOrder(data) {
       return [
         {
-          detectedFailed: data.status === "Waiting for confirm",
-          unconfirmed: data.status === "Waiting for maintenance",
-          fix: data.status === "Completed",
+          detectedFailed: data.status === "WaitingForConfirm",
+          waitingrepair: data.status === "WaitingForRepair",
+          completed: data.status === "Completed",
         },
       ];
     },
@@ -814,7 +814,7 @@ textarea {
   box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 23%);
 }
 .small {
-  background-color: #66bb6a;
+  background-color: #005204;
 }
 .p-fluid .p-dialog-footer .p-button {
   /* margin-bottom: -10px; */
@@ -907,7 +907,12 @@ textarea {
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.3px;
-  color: rgb(255, 65, 65);
+ color: #0dc8de;
+  text-align: center;
+  text-transform: uppercase;
+
+  width: 110px;
+    background-color:#f8f9ff;
 }
 .unscheduled {
   border-radius: 2px;
@@ -916,6 +921,47 @@ textarea {
   font-size: 14px;
   letter-spacing: 0.3px;
   color: #fd517d;
+  text-transform: uppercase;
+
+  /* text-align: center;
+  width: 110px;
+    background-color:#b9eee9; */
+}
+.waitingrepair {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  color: #8180f5;
+  text-transform: uppercase;
+
+  text-align: center;
+    background-color:#d7d5ff;
+  text-transform: uppercase;
+
+}
+.completed {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+    color: #0dc8de;
+  text-align: center;
+  width: 110px;
+    background-color:#f8f9ff;
+  text-transform: uppercase;
+}
+.unscheduled {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  color: #fd517d;
+  text-transform: uppercase;
+
   /* text-align: center;
   width: 110px;
     background-color:#b9eee9; */
@@ -924,9 +970,11 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 14px;
   letter-spacing: 0.3px;
   color: #51bea5;
+  font-size: 13px;
+  text-transform: uppercase;
+
   /* text-align: center;
   width: 110px;
     background-color:#e1f0ff; */
@@ -935,9 +983,12 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 0.3px;
-  color: #316879;
+  color: #89bfdc;
+
+  text-transform: uppercase;
+
   /* text-align: center;
   width: 110px;
     background-color:#c7d7db; */
@@ -963,11 +1014,28 @@ textarea {
   top: 0;
   background: #007dfe;
 }
+.p-m-3::before {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 0;
+  background: #4eca8a;
+}
 
 .p-m-2 {
   display: flex;
   align-items: center;
 }
+.p-m-3 {
+  display: flex;
+  align-items: center;
+}
+
 
 #sub-table-title {
   font-size: 1.1rem;

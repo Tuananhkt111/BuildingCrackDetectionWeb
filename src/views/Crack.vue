@@ -920,14 +920,17 @@ textarea {
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: rgb(255, 65, 65);
+  text-transform: uppercase;
 }
 .unscheduled {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 0.3px;
   color: #fd517d;
+  text-transform: uppercase;
+
   /* text-align: center;
   width: 110px;
     background-color:#b9eee9; */
@@ -938,7 +941,9 @@ textarea {
   font-weight: 600;
   letter-spacing: 0.3px;
   color: #51bea5;
-  font-size: 14px;
+  font-size: 13px;
+  text-transform: uppercase;
+
   /* text-align: center;
   width: 110px;
     background-color:#e1f0ff; */
@@ -947,9 +952,11 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 0.3px;
-  color: #316879;
+  color: #89bfdc;
+  text-transform: uppercase;
+
   /* text-align: center;
   width: 110px;
     background-color:#c7d7db; */
