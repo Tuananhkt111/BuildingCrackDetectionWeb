@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="main-layout-details p-col-8">
+  <div class="p-grid">
+    <div class="main-layout-details" style="width: 68%">
       <div class="card">
         <DataTable
           :rowHover="true"
@@ -64,8 +64,8 @@
               header="Area Name"
               :showFilterMatchModes="false"
               :showAddButton="false"
-              headerStyle="max-width: 118px;"
-              style="max-width: 150px"
+               headerStyle="max-width: 218px;"
+              style="max-width: 250px"
               :showFilterOperator="false"
             >
               <template #body="slotProps">
@@ -87,8 +87,8 @@
               header="Position"
               :showFilterMatchModes="false"
               :showAddButton="false"
-              headerStyle="max-width: 118px;"
-              style="max-width: 150px"
+              headerStyle="max-width: 218px;"
+              style="max-width: 250px"
               :showFilterOperator="false"
             >
               <template #body="slotProps">
@@ -104,46 +104,7 @@
               </template>
             </Column>
           </div>
-          <Column
-            header="Accuracy"
-            field="accuracy"
-            dataType="numeric"
-            :showAddButton="false"
-            :showFilterOperator="false"
-            headerStyle="max-width: 98px;"
-            style="max-width: 130px"
-          >
-            <template #body="slotProps">
-              <div class="single-chart">
-                <svg viewBox="0 0 36 36" class="circular-chart green">
-                  <path
-                    class="circle-bg"
-                    d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                  <path
-                    class="circle"
-                    :stroke-dasharray="slotProps.data.accuracy + ', 100'"
-                    d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                  <text x="18" y="20.35" class="percentage">
-                    {{ slotProps.data.accuracy }}%
-                  </text>
-                </svg>
-              </div>
-            </template>
-            <template #filter="{ filterModel }">
-              <InputText
-                type="text"
-                v-model="filterModel.value"
-                class="p-column-filter"
-                placeholder="Search "
-              />
-            </template>
-          </Column>
+        
           <Column
             header="Severity"
             filterField="severity"
@@ -474,6 +435,9 @@
         </div>
       </Dialog>
       <Toast position="bottom-right" />
+    </div>
+      <div class="main-layout-details" style="width: 29.7%;margin-left:30px">
+
     </div>
   </div>
 </template>
@@ -1180,9 +1144,8 @@ textarea {
 
 .main-layout-details {
   border-radius: 24px;
-  padding: 20px;
-  width:940px;
   background-color: white;
+  padding: 20px;
   box-shadow: 0px 10px 40px rgb(41 50 65 / 6%);
 }
 .active .main-layout-details {
