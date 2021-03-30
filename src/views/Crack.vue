@@ -202,80 +202,82 @@
       </div>
       <Dialog
         v-model:visible="crackInfoDialog"
-        :style="{ width: '1050px' }"
+        :style="{ width: '800px'}"
         :modal="true"
         :baseZIndex="10000"
+        :showHeader="false"
         class="dialog"
+
       >
-        <template #header>
-          <h3 class="dialog-title">Crack Information</h3>
-        </template>
+       
         <div class="p-grid nested-grid">
-          <div class="p-col-4">
+          <div class="p-col-5">
+            <div class="dialog-title-2">
+            <span style="">Crack Detail</span>
+            </div>
             <img
               :src="product.imageThumbnails"
               :alt="product.imageThumbnails"
               class="product-image"
               v-if="product.image"
               @click="imageClick(product.index)"
-              style="width: 250px; height: 100%"
+              style="width: 270px; height: 73%"
             />
           </div>
-          <div class="p-col-8">
+          <div class="p-col-7">
             <TabView>
               <TabPanel header="Overview">
                 <div class="p-grid">
                   <div class="p-col-6">
-                    <p>
-                      <span style="font-weight: bold">Area Name: </span
-                      >{{ product.locationName }}
-                    </p>
+                      <p style="font-weight: 400;color:grey">Area Name</p
+                      >
+                       <p style="font-weight: 600">{{ product.locationName }}</p
+                      >
                   </div>
                   <div class="p-col-6">
-                    <p>
-                      <span style="font-weight: bold">Position: </span
-                      >{{ product.position }}
-                    </p>
+                
+                      <p style="font-weight: 400;color:grey">Area Name</p
+                      >
+                       <p style="font-weight: 600">{{ product.position }}</p
+                      >
                   </div>
                   <div class="p-col-6">
-                    <p>
-                      <span style="font-weight: bold"> Severity: </span>
-                      <span :class="stockClass(product)">
+                      <p style="font-weight: bold;margin-bottom:5px"> Severity</p>
+                      <p :class="stockClass(product)">
                         {{ product.severity }}
-                      </span>
-                    </p>
+                      </p>
+                    
                   </div>
                   <div class="p-col-6">
-                    <p>
-                      <span style="font-weight: bold">Status: </span>
-                      <span :class="stockStatus(product)">
+                      <p style="font-weight: bold;margin-bottom:5px">Status</p>
+                      <p :class="stockStatus(product)">
                         {{ product.status }}
-                      </span>
-                    </p>
+                      </p>
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                    <p>
-                      <span style="font-weight: bold">Censor Name: </span
-                      >{{ product.censorName }}
-                    </p>
+                      <p style="font-weight: 400;color:grey">Censor Name</p
+                      >
+                       <p style="font-weight: 600">{{ product.censorName }}</p
+                      >
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                    <p>
-                      <span style="font-weight: bold">Updated User: </span
-                      >{{ product.updateUserName }}
-                    </p>
+                
+                        <p style="font-weight: 400;color:grey">Updated User</p
+                      >
+                       <p style="font-weight: 600">{{ product.updateUserName }}</p
+                      >
                   </div>
                   <div class="p-col-6">
-                    <p>
-                      <span style="font-weight: bold">Created Date: </span
-                      >{{ product.created }}
-                    </p>
+                        <p style="font-weight: 400;color:grey">Created Date</p
+                      >
+                       <p style="font-weight: 600">{{ product.created }}</p
+                      >
                   </div>
                   <div class="p-col-6">
-                    <p>
-                      <span style="font-weight: bold">Last Modified: </span
-                      >{{ product.lastModified }}
-                    </p>
+                         <p style="font-weight: 400;color:grey">Last Modified</p
+                      >
+                       <p style="font-weight: 600">{{ product.lastModified }}</p
+                      >
                   </div>
                 </div>
               </TabPanel>
@@ -884,7 +886,7 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: rgb(255, 65, 65);
@@ -892,9 +894,8 @@ textarea {
 }
 .unscheduled {
   border-radius: 2px;
-  padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.3px;
   color: #fd517d;
   text-transform: uppercase;
@@ -905,7 +906,6 @@ textarea {
 }
 .scheduledformaintenace {
   border-radius: 2px;
-  padding: 0.25em 0.5rem;
   font-weight: 600;
   letter-spacing: 0.3px;
   color: #51bea5;
@@ -918,9 +918,8 @@ textarea {
 }
 .fix {
   border-radius: 2px;
-  padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.3px;
   color: #89bfdc;
   text-transform: uppercase;
@@ -936,6 +935,25 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.dialog-title-2 {
+
+  width:150px;height:30px;border-radius:10px;margin:10px 0 40px  25px;
+}
+.dialog-title-2 span{
+padding-top:3px;font-weight:600;  font-size: 18px;font-family: Poppins
+}
+.dialog-title-2 span::before {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 25px;
+  background: #007dfe;
 }
 
 .p-dialog-titlebar {
@@ -1063,9 +1081,11 @@ textarea {
 }
 
 ::v-deep(.p-dialog .p-dialog-content) {
-  border-bottom-right-radius: 24px;
-  border-bottom-left-radius: 24px;
+  border-radius: 24px;
   min-height: 345px;
+}
+::v-deep(.p-tabview .p-tabview-nav) {
+ margin-top:20px;
 }
 
 ::v-deep(.p-tabview .p-tabview-panels) {
