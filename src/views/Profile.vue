@@ -1,5 +1,5 @@
 <template>
-  <div>
+ <div class="main-layout-details">
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
       rel="stylesheet"
@@ -1007,5 +1007,19 @@ p {
   .btn {
     margin-bottom: 10px;
   }
+}
+.main-layout-details {
+  border-radius: 24px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0px 10px 40px rgb(41 50 65 / 6%);
+}
+.active .main-layout-details {
+  margin-left: 266.5px;
+  transition: all 0.2s;
+}
+.inactive .main-layout-details {
+  margin-left: 0;
+  transition: all 0.2s;
 }
 </style>

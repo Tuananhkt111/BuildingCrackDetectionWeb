@@ -1,4 +1,5 @@
 <template>
+ <div  class="main-layout-details">
   <div class="card">
     <DataTable
       :rowHover="true"
@@ -46,6 +47,7 @@
         </template>
       </Column>
     </DataTable>
+  </div>
   </div>
 </template>
 
@@ -277,5 +279,19 @@ export default {
 
 ::v-deep(.p-datatable .p-paginator-bottom) {
   border-width: 0 0 0 0;
+}
+.main-layout-details {
+  border-radius: 24px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0px 10px 40px rgb(41 50 65 / 6%);
+}
+.active .main-layout-details {
+  margin-left: 266.5px;
+  transition: all 0.2s;
+}
+.inactive .main-layout-details {
+  margin-left: 0;
+  transition: all 0.2s;
 }
 </style>

@@ -1,470 +1,480 @@
 <template>
   <div>
-    <div class="card">
-      <DataTable
-        :rowHover="true"
-        :scrollable="true"
-        ref="dt"
-        :value="getCrackListConfirm"
-        dataKey="id"
-        :paginator="true"
-        :rows="5"
-        :loading="loading"
-        :globalFilterFields="['locationName', 'reporterName']"
-        v-model:filters="filters"
-        filterDisplay="menu"
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        currentPageReportTemplate=""
-      >
-        <div class="table-header" style="background-color: #ffffff">
-          <h3
-            class="p-m-2"
-            style="color: #143178; font-weight: 400; font-size: 22px"
-          >
-            Cracks
-          </h3>
-          <span class="p-input-icon-left" style="margin: 2px">
-            <i class="pi pi-search" />
-            <InputText
-              v-model="filters['global'].value"
-              placeholder="Keyword Search"
-            />
-          </span>
-        </div>
-        <template #empty> No Cracks found. </template>
-        <template #loading> Loading Crack, please wait... </template>
-        <Column
-         header="No"
-          style="max-width: 4rem"
-          headerStyle="max-width: 2rem;border-radius:20px 0 0 20px"
+    <div class="main-layout-details p-col-8">
+      <div class="card">
+        <DataTable
+          :rowHover="true"
+          :scrollable="true"
+          ref="dt"
+          :value="getCrackListConfirm"
+          dataKey="id"
+          :paginator="true"
+          :rows="5"
+          :loading="loading"
+          :globalFilterFields="['locationName', 'reporterName']"
+          v-model:filters="filters"
+          filterDisplay="menu"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          currentPageReportTemplate=""
         >
-          <template #body="slotProps">
-            {{ slotProps.data.index }}
-          </template>
-        </Column>
-        <Column
-          header="Image"
-          headerStyle="max-width: 140px"
-          style="max-width: 170px;"
-        >
-          <template #body="slotProps">
-            <img
-              :src="slotProps.data.imageThumbnails"
-              :alt="slotProps.data.imageThumbnails"
-              class="product-image"
-              style="width: 80px; height: 80px"
-              @click="imageClick(slotProps.data.index)"
-            />
-          </template>
-        </Column>
-        <div v-if="!isStaff">
+          <div class="table-header" style="background-color: #ffffff">
+            <h3
+              class="p-m-2"
+              style="color: #143178; font-weight: 400; font-size: 22px"
+            >
+              Cracks
+            </h3>
+            <span class="p-input-icon-left" style="margin: 2px">
+              <i class="pi pi-search" />
+              <InputText
+                v-model="filters['global'].value"
+                placeholder="Keyword Search"
+              />
+            </span>
+          </div>
+          <template #empty> No Cracks found. </template>
+          <template #loading> Loading Crack, please wait... </template>
           <Column
-            field="locationName"
-            header="Area Name"
-            :showFilterMatchModes="false"
-            :showAddButton="false"
-            headerStyle="max-width: 170px;"
-            style="max-width: 205px"
-            :showFilterOperator="false"
+            header="No"
+            style="max-width: 50px"
+            headerStyle="max-width: 30px;border-radius:20px 0 0 20px"
           >
             <template #body="slotProps">
-              {{ slotProps.data.locationName }}
+              {{ slotProps.data.index }}
+            </template>
+          </Column>
+          <Column
+            header="Image"
+            headerStyle="max-width: 66px"
+            style="max-width: 110px"
+          >
+            <template #body="slotProps">
+              <img
+                :src="slotProps.data.imageThumbnails"
+                :alt="slotProps.data.imageThumbnails"
+                class="product-image"
+                style="width: 80px; height: 80px"
+                @click="imageClick(slotProps.data.index)"
+              />
+            </template>
+          </Column>
+          <div v-if="!isStaff">
+            <Column
+              field="locationName"
+              header="Area Name"
+              :showFilterMatchModes="false"
+              :showAddButton="false"
+              headerStyle="max-width: 118px;"
+              style="max-width: 150px"
+              :showFilterOperator="false"
+            >
+              <template #body="slotProps">
+                {{ slotProps.data.locationName }}
+              </template>
+              <template #filter="{ filterModel }">
+                <InputText
+                  type="text"
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search"
+                />
+              </template>
+            </Column>
+          </div>
+          <div v-else>
+            <Column
+              field="position"
+              header="Position"
+              :showFilterMatchModes="false"
+              :showAddButton="false"
+              headerStyle="max-width: 118px;"
+              style="max-width: 150px"
+              :showFilterOperator="false"
+            >
+              <template #body="slotProps">
+                {{ slotProps.data.position }}
+              </template>
+              <template #filter="{ filterModel }">
+                <InputText
+                  type="text"
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search"
+                />
+              </template>
+            </Column>
+          </div>
+          <Column
+            header="Accuracy"
+            field="accuracy"
+            dataType="numeric"
+            :showAddButton="false"
+            :showFilterOperator="false"
+            headerStyle="max-width: 98px;"
+            style="max-width: 130px"
+          >
+            <template #body="slotProps">
+              <div class="single-chart">
+                <svg viewBox="0 0 36 36" class="circular-chart green">
+                  <path
+                    class="circle-bg"
+                    d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    class="circle"
+                    :stroke-dasharray="slotProps.data.accuracy + ', 100'"
+                    d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <text x="18" y="20.35" class="percentage">
+                    {{ slotProps.data.accuracy }}%
+                  </text>
+                </svg>
+              </div>
             </template>
             <template #filter="{ filterModel }">
               <InputText
                 type="text"
                 v-model="filterModel.value"
                 class="p-column-filter"
-                placeholder="Search"
+                placeholder="Search "
               />
             </template>
           </Column>
-        </div>
-        <div v-else>
           <Column
-            field="position"
-            header="Position"
+            header="Severity"
+            filterField="severity"
             :showFilterMatchModes="false"
-            :showAddButton="false"
-            headerStyle="max-width: 170px;"
-            style="max-width: 205px"
-            :showFilterOperator="false"
+            :filterMenuStyle="{ width: '14rem' }"
+            bodyStyle="text-align: left"
+            headerStyle="max-width: 93px;"
+            style="max-width: 125px"
           >
-            <template #body="slotProps">
-              {{ slotProps.data.position }}
+            <template #body="{ data }">
+              <span :class="stockClass(data)">
+                {{ data.severity }}
+              </span>
             </template>
             <template #filter="{ filterModel }">
-              <InputText
-                type="text"
+              <div class="p-mb-3 p-text-bold">Severity Picker</div>
+              <MultiSelect
                 v-model="filterModel.value"
+                :options="getSeveritysList"
+                placeholder="Any"
                 class="p-column-filter"
-                placeholder="Search"
-              />
-            </template>
-          </Column>
-        </div>
-        <Column
-          header="Accuracy"
-          field="accuracy"
-          dataType="numeric"
-          :showAddButton="false"
-          :showFilterOperator="false"
-        >
-          <template #body="slotProps">
-            <div class="single-chart">
-              <svg viewBox="0 0 36 36" class="circular-chart green">
-                <path
-                  class="circle-bg"
-                  d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <path
-                  class="circle"
-                  :stroke-dasharray="slotProps.data.accuracy + ', 100'"
-                  d="M18 2.0845
-          a 15.9155 15.9155 0 0 1 0 31.831
-          a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <text x="18" y="20.35" class="percentage">
-                  {{ slotProps.data.accuracy }}%
-                </text>
-              </svg>
-            </div>
-          </template>
-          <template #filter="{ filterModel }">
-            <InputText
-              type="text"
-              v-model="filterModel.value"
-              class="p-column-filter"
-              placeholder="Search "
-            />
-          </template>
-        </Column>
-        <Column
-          header="Severity"
-          filterField="severity"
-          :showFilterMatchModes="false"
-          :filterMenuStyle="{ width: '14rem' }"
-          bodyStyle="text-align: left"
-          headerStyle="max-width: 140px;"
-          style="max-width: 170px"
-        >
-          <template #body="{ data }">
-            <span :class="stockClass(data)">
-              {{ data.severity }}
-            </span>
-          </template>
-          <template #filter="{ filterModel }">
-            <div class="p-mb-3 p-text-bold">Severity Picker</div>
-            <MultiSelect
-              v-model="filterModel.value"
-              :options="getSeveritysList"
-              placeholder="Any"
-              class="p-column-filter"
-            >
-              <template #option="slotProps">
-                <span>{{ slotProps.option }}</span>
-              </template>
-            </MultiSelect>
-          </template>
-        </Column>
-        <Column
-          header="Status"
-          filterField="status"
-          :showFilterMatchModes="false"
-          :filterMenuStyle="{ width: '12rem' }"
-          headerStyle="max-width: 170px;"
-          style="max-width: 210px"
-        >
-          <template #body="{ data }">
-            <span :class="stockStatus(data)">
-              {{ data.status }}
-            </span>
-          </template>
-          <template #filter="{ filterModel }">
-            <div class="p-mb-3 p-text-bold">Status Picker</div>
-            <MultiSelect
-              v-model="filterModel.value"
-              :options="getStatusList"
-              placeholder="Any"
-              class="p-column-filter"
-            >
-              <template #option="slotProps">
-                <span>{{ slotProps.option }}</span>
-              </template>
-            </MultiSelect>
-          </template>
-        </Column>
-        <Column
-          :filterMenuStyle="{ width: '5rem' }"
-          headerStyle="border-radius:0 20px 20px 0"
-        >
-          <template #body="slotProps">
-            <Button
-              icon="pi pi-eye"
-              class="p-button-rounded p-button-info p-button-text p-mr-2"
-              @click="showDetail(slotProps.data)"
-              style="margin: 2px"
-              v-tooltip.bottom="'View Crack Details'"
-            />
-            <Button
-              icon="pi pi-video"
-              class="p-button-rounded p-button-help p-button-text"
-              @click="showVideo(slotProps.data)"
-              v-tooltip.bottom="'View Detection Result'"
-            />
-            <Button
-              icon="pi pi-pencil"
-              class="p-button-rounded p-button-info p-button-text"
-              @click="showUpdateCrack(slotProps.data)"
-              v-tooltip.bottom="'Update Crack'"
-              v-if="isStaff && slotProps.data.status === 'UnrecordedRepair'"
-            />
-            <Button
-              v-if="
-                slotProps.data.status != 'DetectedFailed' &&
-                  slotProps.data.status != 'UnrecordedRepair'
-              "
-              icon="pi pi-calendar-minus"
-              class="p-button-rounded p-button-danger p-button-text"
-              @click="showMaintenanceOrder(slotProps.data)"
-              v-tooltip.bottom="'View Repair Record'"
-            />
-          </template>
-        </Column>
-      </DataTable>
-    </div>
-    <Dialog
-      v-model:visible="crackInfoDialog"
-      :style="{ width: '1050px' }"
-      :modal="true"
-      :baseZIndex="10000"
-      class="dialog"
-    >
-      <template #header>
-        <h3 class="dialog-title">Crack Information</h3>
-      </template>
-      <div class="p-grid nested-grid">
-        <div class="p-col-4">
-          <img
-            :src="product.imageThumbnails"
-            :alt="product.imageThumbnails"
-            class="product-image"
-            v-if="product.image"
-            @click="imageClick(product.index)"
-            style="width: 250px; height: 100%"
-          />
-        </div>
-        <div class="p-col-8">
-          <TabView>
-            <TabPanel header="Overview">
-              <div class="p-grid">
-                <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold">Area Name: </span
-                    >{{ product.locationName }}
-                  </p>
-                </div>
-                <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold">Position: </span
-                    >{{ product.position }}
-                  </p>
-                </div>
-                <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold"> Severity: </span>
-                    <span :class="stockClass(product)">
-                      {{ product.severity }}
-                    </span>
-                  </p>
-                </div>
-                <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold">Status: </span>
-                    <span :class="stockStatus(product)">
-                      {{ product.status }}
-                    </span>
-                  </p>
-                </div>
-                <div class="p-col-6" v-if="product.censorName != null">
-                  <p>
-                    <span style="font-weight: bold">Censor Name: </span
-                    >{{ product.censorName }}
-                  </p>
-                </div>
-                <div class="p-col-6" v-if="product.censorName != null">
-                  <p>
-                    <span style="font-weight: bold">Updated User: </span
-                    >{{ product.updateUserName }}
-                  </p>
-                </div>
-                <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold">Created Date: </span
-                    >{{ product.created }}
-                  </p>
-                </div>
-                <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold">Last Modified: </span
-                    >{{ product.lastModified }}
-                  </p>
-                </div>
-              </div>
-            </TabPanel>
-            <TabPanel
-              header="Description"
-              :disabled="
-                product.description == '' || product.description == null
-              "
-            >
-              <div class="p-col-12">
-                <p>
-                  <span
-                    style="font-weight: bold"
-                    v-if="product.description != null"
-                    >{{ product.description }}</span
-                  >
-                </p>
-              </div>
-            </TabPanel>
-            <TabPanel header="Assessment" :disabled="check">
-              <div class="p-col-12">
-                <span style="font-weight: bold">Assessment </span>
-                <Rating
-                  :modelValue="product.assessmentResult"
-                  :readonly="true"
-                  :stars="5"
-                  :cancel="false"
-                  class="p-col-9"
-                />
-              </div>
-              <div
-                class="p-col-12 p-mt-0"
-                v-if="product.assessmentDescription != null"
               >
-                <p style="font-weight: bold">Assessment Descripton</p>
-                <Textarea
-                  id="description"
-                  v-model="product.assessmentDescription"
-                  required="true"
-                  rows="2"
-                  cols="20"
-                  disabled
-                />
-              </div>
-            </TabPanel>
-          </TabView>
-        </div>
-      </div>
-    </Dialog>
-    <Galleria
-      :value="getCrackListConfirm"
-      :numVisible="7"
-      containerStyle="max-width: 850px"
-      :circular="true"
-      :fullScreen="true"
-      :showItemNavigators="true"
-      :showThumbnails="false"
-      v-model:visible="displayCustom"
-      v-model:activeIndex="activeIndex"
-    >
-      <template #item="slotProps">
-        <img
-          :src="slotProps.item.image"
-          style="width: 1100px; display: block"
-        />
-        <button
-          type="button"
-          class="buttonView p-link"
-          v-tooltip.right="'View Crack Details'"
-          @click="showDetail(slotProps.item)"
-        >
-          <i class="pi pi-fw pi-eye" style="fontSize: 2rem;"></i>
-        </button>
-      </template>
-      <template #thumbnail="slotProps">
-        <img :src="slotProps.item.imageThumbnails" style="display: block" />
-      </template>
-    </Galleria>
-    <Dialog
-      v-model:visible="updateCrackDialog"
-      :style="{ width: '700px' }"
-      :modal="true"
-      class="dialog"
-    >
-      <template #header>
-        <h3 class="dialog-title" style="margin-left: 10px;">Update Crack</h3>
-      </template>
-      <div class="p-grid nested-grid">
-        <div class="p-col-5">
-          <img
-            :src="product.imageThumbnails"
-            :alt="product.imageThumbnails"
-            class="product-image"
-            v-if="product.image"
-            @click="imageClick(product.index)"
-            style="width:250px; height:97%"
-          />
-        </div>
-        <div class="p-col-7">
-          <div class="p-col-12">
-            <label class="form-control-label">Position</label>
-            <InputText
-              v-model.trim="position"
-              class="form-control form-control-alternative"
-              style="width:100%"
-              placeholder="Position"
-            />
-            <small class="invalid">{{ errors.position }}</small>
-          </div>
-          <div class="p-col-12">
-            <label class="form-control-label">Description (Optional)</label>
-            <InputText
-              v-model.trim="description"
-              class="form-control form-control-alternative"
-              style="width:100%"
-              placeholder="Description"
-            />
-            <small class="invalid">{{ errors.description }}</small>
-          </div>
-          <div class="p-col-12">
-            <label class="form-control-label serverity">Severity</label><br />
-            <div
-              v-for="category of getSeveritysList"
-              :key="category.key"
-              class="p-field-radiobutton"
-            >
-              <RadioButton
-                :id="category.key"
-                name="category"
-                :value="category"
-                v-model="selectedSeverity"
+                <template #option="slotProps">
+                  <span>{{ slotProps.option }}</span>
+                </template>
+              </MultiSelect>
+            </template>
+          </Column>
+          <Column
+            header="Status"
+            filterField="status"
+            :showFilterMatchModes="false"
+            :filterMenuStyle="{ width: '12rem' }"
+            headerStyle="max-width: 126px;"
+            style="max-width: 158px"
+          >
+            <template #body="{ data }">
+              <span :class="stockStatus(data)">
+                {{ data.status }}
+              </span>
+            </template>
+            <template #filter="{ filterModel }">
+              <div class="p-mb-3 p-text-bold">Status Picker</div>
+              <MultiSelect
+                v-model="filterModel.value"
+                :options="getStatusList"
+                placeholder="Any"
+                class="p-column-filter"
+              >
+                <template #option="slotProps">
+                  <span>{{ slotProps.option }}</span>
+                </template>
+              </MultiSelect>
+            </template>
+          </Column>
+          <Column
+            :filterMenuStyle="{ width: '5rem' }"
+            headerStyle="border-radius:0 20px 20px 0;max-width: 126px;"
+            style="max-width: 158px"
+          >
+            <template #body="slotProps">
+              <Button
+                icon="pi pi-eye"
+                class="p-button-rounded p-button-info p-button-text p-mr-2"
+                @click="showDetail(slotProps.data)"
+                style="margin: 2px"
+                v-tooltip.bottom="'View Crack Details'"
               />
-              <label :for="category.key">{{ category }}</label>
-            </div>
-            <small class="invalid">{{ errors.selectedSeverity }}</small>
+              <Button
+                icon="pi pi-video"
+                class="p-button-rounded p-button-help p-button-text"
+                @click="showVideo(slotProps.data)"
+                v-tooltip.bottom="'View Detection Result'"
+              />
+              <Button
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-info p-button-text"
+                @click="showUpdateCrack(slotProps.data)"
+                v-tooltip.bottom="'Update Crack'"
+                v-if="isStaff && slotProps.data.status === 'UnrecordedRepair'"
+              />
+              <Button
+                v-if="
+                  slotProps.data.status != 'DetectedFailed' &&
+                  slotProps.data.status != 'UnrecordedRepair'
+                "
+                icon="pi pi-calendar-minus"
+                class="p-button-rounded p-button-danger p-button-text"
+                @click="showMaintenanceOrder(slotProps.data)"
+                v-tooltip.bottom="'View Repair Record'"
+              />
+            </template>
+          </Column>
+        </DataTable>
+      </div>
+      <Dialog
+        v-model:visible="crackInfoDialog"
+        :style="{ width: '1050px' }"
+        :modal="true"
+        :baseZIndex="10000"
+        class="dialog"
+      >
+        <template #header>
+          <h3 class="dialog-title">Crack Information</h3>
+        </template>
+        <div class="p-grid nested-grid">
+          <div class="p-col-4">
+            <img
+              :src="product.imageThumbnails"
+              :alt="product.imageThumbnails"
+              class="product-image"
+              v-if="product.image"
+              @click="imageClick(product.index)"
+              style="width: 250px; height: 100%"
+            />
           </div>
-          <div>
-            <Button
-              label="Cancel"
-              @click="updateCrackDialog = False"
-              icon="pi pi-times"
-              style="background-color:#fae9ed;border:none;color:#e15b7a;margin-right:20px"
-            />
-            <Button
-              label="Update"
-              @click="updateCrack"
-              icon="pi pi-check"
-              style="background-color:#ebf8f1;border:none;color:#4cc788"
-            />
+          <div class="p-col-8">
+            <TabView>
+              <TabPanel header="Overview">
+                <div class="p-grid">
+                  <div class="p-col-6">
+                    <p>
+                      <span style="font-weight: bold">Area Name: </span
+                      >{{ product.locationName }}
+                    </p>
+                  </div>
+                  <div class="p-col-6">
+                    <p>
+                      <span style="font-weight: bold">Position: </span
+                      >{{ product.position }}
+                    </p>
+                  </div>
+                  <div class="p-col-6">
+                    <p>
+                      <span style="font-weight: bold"> Severity: </span>
+                      <span :class="stockClass(product)">
+                        {{ product.severity }}
+                      </span>
+                    </p>
+                  </div>
+                  <div class="p-col-6">
+                    <p>
+                      <span style="font-weight: bold">Status: </span>
+                      <span :class="stockStatus(product)">
+                        {{ product.status }}
+                      </span>
+                    </p>
+                  </div>
+                  <div class="p-col-6" v-if="product.censorName != null">
+                    <p>
+                      <span style="font-weight: bold">Censor Name: </span
+                      >{{ product.censorName }}
+                    </p>
+                  </div>
+                  <div class="p-col-6" v-if="product.censorName != null">
+                    <p>
+                      <span style="font-weight: bold">Updated User: </span
+                      >{{ product.updateUserName }}
+                    </p>
+                  </div>
+                  <div class="p-col-6">
+                    <p>
+                      <span style="font-weight: bold">Created Date: </span
+                      >{{ product.created }}
+                    </p>
+                  </div>
+                  <div class="p-col-6">
+                    <p>
+                      <span style="font-weight: bold">Last Modified: </span
+                      >{{ product.lastModified }}
+                    </p>
+                  </div>
+                </div>
+              </TabPanel>
+              <TabPanel
+                header="Description"
+                :disabled="
+                  product.description == '' || product.description == null
+                "
+              >
+                <div class="p-col-12">
+                  <p>
+                    <span
+                      style="font-weight: bold"
+                      v-if="product.description != null"
+                      >{{ product.description }}</span
+                    >
+                  </p>
+                </div>
+              </TabPanel>
+              <TabPanel header="Assessment" :disabled="check">
+                <div class="p-col-12">
+                  <span style="font-weight: bold">Assessment </span>
+                  <Rating
+                    :modelValue="product.assessmentResult"
+                    :readonly="true"
+                    :stars="5"
+                    :cancel="false"
+                    class="p-col-9"
+                  />
+                </div>
+                <div
+                  class="p-col-12 p-mt-0"
+                  v-if="product.assessmentDescription != null"
+                >
+                  <p style="font-weight: bold">Assessment Descripton</p>
+                  <Textarea
+                    id="description"
+                    v-model="product.assessmentDescription"
+                    required="true"
+                    rows="2"
+                    cols="20"
+                    disabled
+                  />
+                </div>
+              </TabPanel>
+            </TabView>
           </div>
         </div>
-      </div>
-    </Dialog>
-    <Toast position="bottom-right" />
+      </Dialog>
+      <Galleria
+        :value="getCrackListConfirm"
+        :numVisible="7"
+        containerStyle="max-width: 850px"
+        :circular="true"
+        :fullScreen="true"
+        :showItemNavigators="true"
+        :showThumbnails="false"
+        v-model:visible="displayCustom"
+        v-model:activeIndex="activeIndex"
+      >
+        <template #item="slotProps">
+          <img
+            :src="slotProps.item.image"
+            style="width: 1100px; display: block"
+          />
+          <button
+            type="button"
+            class="buttonView p-link"
+            v-tooltip.right="'View Crack Details'"
+            @click="showDetail(slotProps.item)"
+          >
+            <i class="pi pi-fw pi-eye" style="fontsize: 2rem"></i>
+          </button>
+        </template>
+        <template #thumbnail="slotProps">
+          <img :src="slotProps.item.imageThumbnails" style="display: block" />
+        </template>
+      </Galleria>
+      <Dialog
+        v-model:visible="updateCrackDialog"
+        :style="{ width: '700px' }"
+        :modal="true"
+        class="dialog"
+      >
+        <template #header>
+          <h3 class="dialog-title" style="margin-left: 10px">Update Crack</h3>
+        </template>
+        <div class="p-grid nested-grid">
+          <div class="p-col-5">
+            <img
+              :src="product.imageThumbnails"
+              :alt="product.imageThumbnails"
+              class="product-image"
+              v-if="product.image"
+              @click="imageClick(product.index)"
+              style="width: 250px; height: 97%"
+            />
+          </div>
+          <div class="p-col-7">
+            <div class="p-col-12">
+              <label class="form-control-label">Position</label>
+              <InputText
+                v-model.trim="position"
+                class="form-control form-control-alternative"
+                style="width: 100%"
+                placeholder="Position"
+              />
+              <small class="invalid">{{ errors.position }}</small>
+            </div>
+            <div class="p-col-12">
+              <label class="form-control-label">Description (Optional)</label>
+              <InputText
+                v-model.trim="description"
+                class="form-control form-control-alternative"
+                style="width: 100%"
+                placeholder="Description"
+              />
+              <small class="invalid">{{ errors.description }}</small>
+            </div>
+            <div class="p-col-12">
+              <label class="form-control-label serverity">Severity</label><br />
+              <div
+                v-for="category of getSeveritysList"
+                :key="category.key"
+                class="p-field-radiobutton"
+              >
+                <RadioButton
+                  :id="category.key"
+                  name="category"
+                  :value="category"
+                  v-model="selectedSeverity"
+                />
+                <label :for="category.key">{{ category }}</label>
+              </div>
+              <small class="invalid">{{ errors.selectedSeverity }}</small>
+            </div>
+            <div>
+              <Button
+                label="Cancel"
+                @click="updateCrackDialog = False"
+                icon="pi pi-times"
+                style="
+                  background-color: #fae9ed;
+                  border: none;
+                  color: #e15b7a;
+                  margin-right: 20px;
+                "
+              />
+              <Button
+                label="Update"
+                @click="updateCrack"
+                icon="pi pi-check"
+                style="background-color: #ebf8f1; border: none; color: #4cc788"
+              />
+            </div>
+          </div>
+        </div>
+      </Dialog>
+      <Toast position="bottom-right" />
+    </div>
   </div>
 </template>
 
@@ -488,20 +498,9 @@ import Toast from "primevue/toast";
 export default {
   setup() {
     const schema = yup.object({
-      position: yup
-        .string()
-        .max(20)
-        .label("Position")
-        .required(),
-      selectedSeverity: yup
-        .string()
-        .label("Severity")
-        .required(),
-      description: yup
-        .string()
-        .max(300)
-        .label("Description")
-        .nullable(),
+      position: yup.string().max(20).label("Position").required(),
+      selectedSeverity: yup.string().label("Severity").required(),
+      description: yup.string().max(300).label("Description").nullable(),
     });
     const { errors, meta, handleReset, isSubmitting, validate } = useForm({
       validationSchema: schema,
@@ -564,7 +563,7 @@ export default {
   },
   async created() {
     this.initFilters();
-    await this.setCrackList().then(() =>{
+    await this.setCrackList().then(() => {
       this.loading = false;
     });
   },
@@ -637,7 +636,11 @@ export default {
     },
 
     async updateCrack() {
-      if (this.meta.valid && this.position != null && this.selectedSeverity != null) {
+      if (
+        this.meta.valid &&
+        this.position != null &&
+        this.selectedSeverity != null
+      ) {
         await crackApi
           .verifyCrack(
             this.product.crackId,
@@ -1012,8 +1015,8 @@ textarea {
   cursor: pointer;
   font-weight: 500;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: left;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
@@ -1021,8 +1024,9 @@ textarea {
   border-width: 0 0 0 0;
   padding: 1rem 1rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
+
+  justify-content: left;
+  align-items: left;
 }
 
 ::v-deep(.p-datatable.p-datatable-hoverable-rows
@@ -1172,5 +1176,21 @@ textarea {
 
 ::v-deep(.p-datatable .p-paginator-bottom) {
   border-width: 0 0 0 0;
+}
+
+.main-layout-details {
+  border-radius: 24px;
+  padding: 20px;
+  width:940px;
+  background-color: white;
+  box-shadow: 0px 10px 40px rgb(41 50 65 / 6%);
+}
+.active .main-layout-details {
+  margin-left: 266.5px;
+  transition: all 0.2s;
+}
+.inactive .main-layout-details {
+  margin-left: 0;
+  transition: all 0.2s;
 }
 </style>

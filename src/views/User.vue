@@ -55,7 +55,8 @@
           :showFilterMatchModes="false"
           :showAddButton="false"
           :showFilterOperator="false"
-          style="min-width:12rem"
+           headerStyle="max-width: 116px"
+          style="max-width:150px"
         >
           <template #body="slotProps">
             {{ slotProps.data.userName }}
@@ -92,7 +93,9 @@
           field="email"
           header="Email"
           :showFilterMatchModes="false"
-          headerStyle="width: 14em"
+          headerStyle="min-width: 243px;max-width: 270px"
+          style="min-width:280px;max-width:300px"
+
           :showAddButton="false"
           :showFilterOperator="false"
         >
@@ -1379,12 +1382,19 @@ label {
     box-shadow 0.2s;
   cursor: pointer;
   font-weight: 500;
+    display: flex;
+  justify-content: left;
+  align-items: left;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
   border: 1px solid #e9ecef;
   border-width: 0 0 0 0;
   padding: 1rem 1rem;
+   display: flex;
+
+  justify-content: left;
+  align-items: left;
 }
 
 ::v-deep(.p-datatable.p-datatable-hoverable-rows

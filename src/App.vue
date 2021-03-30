@@ -10,7 +10,7 @@
         <div class="main-layout-container p-d-flex">
             <SideBar></SideBar>
           <div class="main-layout">
-            <div class="main-layout-details">
+            <div>
               <router-view class="view"></router-view>
             </div>
           </div>
@@ -117,12 +117,6 @@ export default {
   box-shadow: 3px 0 6px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s;
 }
-.main-layout-details {
-  border-radius: 24px;
-  padding: 20px;
-  background-color: white;
-  box-shadow: 0px 10px 40px rgb(41 50 65 / 6%);
-}
 .main-layout {
   background-color:  #f5f6ff;
   padding: 50px;
@@ -136,14 +130,6 @@ export default {
 .inactive .layout-menu {
   transform: translateX(-100%);
   transition: transform 0.2s;
-}
-.active .main-layout-details {
-  margin-left: 266.5px;
-  transition: all 0.2s;
-}
-.inactive .main-layout-details {
-  margin-left: 0;
-  transition: all 0.2s;
 }
 .active .top-nav-layout {
   margin-left: 250px;
