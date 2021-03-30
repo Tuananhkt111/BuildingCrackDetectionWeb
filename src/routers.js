@@ -11,6 +11,7 @@ import ForgotPassword from "./views/ForgotPassword.vue";
 import Flight from "./views/Flight.vue";
 import Video from "./views/Video.vue";
 import Upload from "./views/Upload.vue";
+import DashBoard from "./views/DashBoard.vue";
 
 const router = new createRouter({
   history: createWebHistory(),
@@ -22,6 +23,7 @@ const router = new createRouter({
     { path: "/profile", name: "profile", component: Project },
     { path: "/detection-result-details", name: "video", component: Video },
     { path: "/detection-results", name: "flight", component: Flight },
+    { path: "/dashboard", name: "dashboard", component: DashBoard },
     {
       path: "/repair-records",
       name: "maintenanceOrder",

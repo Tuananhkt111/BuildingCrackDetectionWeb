@@ -8,7 +8,15 @@
             <span class="appName">BCD System</span>
           </div>
           <li>
-            <router-link to="/cracks" tag="li" class="t-link nav-btn p-mt-4">
+            <router-link to="/dashboard" tag="li" class="t-link nav-btn p-mt-4">
+              <a class="a-link">
+                <i class="pi pi-fw pi-exclamation-triangle"></i>
+                <span>Dash Board</span>
+              </a>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/cracks" tag="li" class="t-link nav-btn">
               <a class="a-link">
                 <i class="pi pi-fw pi-exclamation-triangle"></i>
                 <span>Cracks</span>

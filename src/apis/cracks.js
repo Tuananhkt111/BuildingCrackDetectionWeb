@@ -6,6 +6,9 @@ export const crackApi = {
   getById,
   rejectCrack,
   verifyCrack,
+  countCrackByStatus,
+  countCrackBySeverity,
+  countCrackByAssessment,
 };
 
 async function getAll() {
@@ -32,9 +35,60 @@ async function verifyCrack(id, position, description, severity) {
   return res;
 }
 
+async function countCrackByStatus(locationId, status, period, year) {
+  const res = await ApiHelper.get(
+    urlConstants.CRACK_URL +
+      "/count/status?period=" +
+      period +
+      "&year=" +
+      year +
+      "&locationIdsStr=" +
+      locationId +
+      "&status=" +
+      status
+  );
+  if (res != null) {
+    return res.data;
+  } else return 0;
+}
+
+async function countCrackBySeverity(locationId, period, year) {
+  const res = await ApiHelper.get(
+    urlConstants.CRACK_URL +
+      "/count/severity?period=" +
+      period +
+      "&year=" +
+      year +
+      "&locationIdsStr=" +
+      locationId
+  );
+  console.log(res);
+  if (res != null) {
+    return res.data;
+  } else return null;
+}
+
+async function countCrackByAssessment(locationId, period, year) {
+  const res = await ApiHelper.get(
+    urlConstants.CRACK_URL +
+      "/count/assessment?period=" +
+      period +
+      "&year=" +
+      year +
+      "&locationIdsStr=" +
+      locationId
+  );
+  if (res != null) {
+    return res.data;
+  } else return null;
+}
+
 export default {
   getAll,
   getById,
   rejectCrack,
   verifyCrack,
+  countCrackByStatus,
+  countCrackBySeverity,
+  countCrackByAssessment,
 };
