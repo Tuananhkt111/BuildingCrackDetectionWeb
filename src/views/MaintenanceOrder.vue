@@ -180,13 +180,13 @@
               <Column
                 header="No"
                 style="width:3rem"
-                headerStyle="border-radius:20px 0 0 20px;background-color:#e7f5ef;color:#4eca8a"
+                headerStyle="border-radius:20px 0 0 20px"
               >
                 <template #body="slotProps">
                   {{ slotProps.data.index }}
                 </template>
               </Column>
-              <Column header="Image" headerStyle="width: 150px;background-color:#e7f5ef;color:#4eca8a" class="small">
+              <Column header="Image" headerStyle="width: 150px;" class="small">
                 <template #body="slotProps">
                   <img
                     :src="slotProps.data.imageThumbnails"
@@ -197,28 +197,28 @@
                   />
                 </template>
               </Column>
-              <Column field="severity" headerStyle="background-color:#e7f5ef;color:#4eca8a" header="Severity" sortable>
+              <Column field="severity" headerStyle="" header="Severity" sortable>
                 <template #body="slotProps">
                   <span :class="stockClass(slotProps.data)">
                     {{ slotProps.data.severity }}
                   </span>
                 </template>
               </Column>
-              <Column field="status" headerStyle="background-color:#e7f5ef;color:#4eca8a" header="Status" sortable>
+              <Column field="status" headerStyle="" header="Status" sortable>
                 <template #body="slotProps">
                   <span :class="stockStatus(slotProps.data)">
                     {{ slotProps.data.status }}
                   </span>
                 </template>
               </Column>
-              <Column field="created" headerStyle="background-color:#e7f5ef;color:#4eca8a" header="Created Date" sortable>
+              <Column field="created" headerStyle="" header="Created Date" sortable>
                 <template #body="slotProps">
                   <span>{{ callDate(slotProps.data.created) }}</span>
                 </template>
               </Column>
               <Column 
                 :filterMenuStyle="{ width: '5rem' }"
-                headerStyle="border-radius:0 20px 20px 0;background-color:#e7f5ef;color:#4eca8a "
+                headerStyle="border-radius:0 20px 20px 0; "
               >
                 <template #body="slotProps">
                   <Button
@@ -255,12 +255,6 @@
               <div class="p-grid">
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">Repairer: </span
-                    >{{ product.maintenanceWorkerName }}
-                  </p>
-                </div>
-                <div class="p-col-6">
-                  <p>
                     <span style="font-weight: bold">Area Name: </span
                     >{{ product.locationName }}
                   </p>
@@ -273,6 +267,12 @@
                     </span>
                   </p>
                 </div>
+                <div class="p-col-12">
+                  <p>
+                    <span style="font-weight: bold">Repairer: </span
+                    >{{ product.maintenanceWorkerName }}
+                  </p>
+                </div>
                 <div class="p-col-6">
                   <p>
                     <span style="font-weight: bold">Repair Date: </span
@@ -281,14 +281,32 @@
                 </div>
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">Assessor Name: </span
-                    >{{ product.assessorName }}
+                    <span style="font-weight: bold">Expense: </span
+                    >{{ product.maintenanceExpense.toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
                   </p>
                 </div>
                 <div class="p-col-6">
                   <p>
-                    <span style="font-weight: bold">Expense: </span
-                    >{{ product.maintenanceExpense }}
+                    <span style="font-weight: bold">Create User: </span
+                    >{{ product.createUserName }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Update User: </span
+                    >{{ product.updateUserName }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Created: </span
+                    >{{ callDate(product.created) }}
+                  </p>
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Last Modified: </span
+                    >{{ callDate(product.lastModified) }}
                   </p>
                 </div>
               </div>
@@ -318,6 +336,12 @@
                     :stars="5"
                     :cancel="false"
                   />
+                </div>
+                <div class="p-col-6">
+                  <p>
+                    <span style="font-weight: bold">Assessor Name: </span
+                    >{{ product.assessorName }}
+                  </p>
                 </div>
                 <div class="p-field">
                   <label for="assessmentDescription"
@@ -1024,7 +1048,7 @@ textarea {
   position: relative;
   left: -10px;
   top: 0;
-  background: #4eca8a;
+  background: #007dfe;
 }
 
 .p-m-2 {
