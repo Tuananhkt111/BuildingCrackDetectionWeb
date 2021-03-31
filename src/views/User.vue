@@ -334,7 +334,7 @@
             inputId="locationId"
             :options="getAvailableLocationStaff"
             optionLabel="name"
-            placeholder="Select a Area"
+            placeholder="Select an Area"
             :filter="true"
             class="dropdown-list form-control-alternative"
           />
@@ -431,7 +431,7 @@
             inputId="locationId"
             :options="getAvailableLocationStaff"
             optionLabel="name"
-            placeholder="Select a Area"
+            placeholder="Select an Area"
             :filter="true"
             class="dropdown-list form-control-alternative"
           />
@@ -523,7 +523,7 @@
             v-model="selectedLocation"
             :options="getAvailableLocationStaff"
             optionLabel="name"
-            placeholder="Select a Area"
+            placeholder="Select an Area"
             :filter="true"
             class="dropdown-list form-control-alternative"
           />
