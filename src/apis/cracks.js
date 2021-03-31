@@ -47,7 +47,7 @@ async function countCrackByStatus(locationId, status, period, year) {
       "&status=" +
       status
   );
-  if (res != null) {
+  if (res.status == 200) {
     return res.data;
   } else return 0;
 }
@@ -62,7 +62,7 @@ async function countCrackByStatusList(locationId, period, year) {
       "&locationIdsStr=" +
       locationId
   );
-  if (res != null) {
+  if (res.status == 200) {
     return res.data;
   } else return 0;
 }
@@ -78,7 +78,7 @@ async function countCrackBySeverity(locationId, period, year) {
       locationId
   );
   console.log(res);
-  if (res != null) {
+  if (res.status == 200) {
     return res.data;
   } else return null;
 }
@@ -93,7 +93,7 @@ async function countCrackByAssessment(locationId, period, year) {
       "&locationIdsStr=" +
       locationId
   );
-  if (res != null) {
+  if (res.status == 200) {
     return res.data;
   } else return null;
 }
