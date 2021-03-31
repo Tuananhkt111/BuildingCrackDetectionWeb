@@ -55,7 +55,7 @@
           :showFilterMatchModes="false"
           :showAddButton="false"
           :showFilterOperator="false"
-           headerStyle="max-width: 116px"
+          headerStyle="max-width: 116px"
           style="max-width:150px"
         >
           <template #body="slotProps">
@@ -95,7 +95,6 @@
           :showFilterMatchModes="false"
           headerStyle="min-width: 243px;max-width: 270px"
           style="min-width:280px;max-width:300px"
-
           :showAddButton="false"
           :showFilterOperator="false"
         >
@@ -170,7 +169,7 @@
                   slotProps.data.locations !== null
               "
             >
-              {{ slotProps.data.locations.map((l) => l.name).toString() }}
+              {{ slotProps.data.locations.map((l) => " " + l.name).toString() }}
             </span>
             <span v-else>
               No area assigned
@@ -198,7 +197,7 @@
               icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text"
               @click="seeProduct(slotProps.data)"
-              v-tooltip.bottom="'View Crack Detail'"
+              v-tooltip.bottom="'View Staff Detail'"
               v-if="!admin"
             />
             <Button
@@ -617,7 +616,6 @@
     </Dialog>
     <Toast position="bottom-right" />
   </div>
-  
 </template>
 
 <script>
@@ -786,16 +784,26 @@ export default {
         .catch((err) => {
           console.log(err);
         })
-        .then(() => {
-          this.$toast.add({
-            severity: "success",
-            summary: contentNoti.SUCCESS_SUMMARY,
-            detail: contentNoti.USER_RESETPASSWORK_SUCCESS,
-            life: 3000,
-          });
-          this.setUserList();
-          this.submitted = false;
-          this.ResetPasswordDialog = false;
+        .then((res) => {
+          if (res.status == 200) {
+            this.$toast.add({
+              severity: "success",
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.USER_RESETPASSWORK_SUCCESS,
+              life: 3000,
+            });
+            this.setUserList();
+            this.submitted = false;
+            this.ResetPasswordDialog = false;
+          } else {
+            this.$toast.add({
+              severity: "error",
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.USER_RESETPASSWORK_FAILED,
+              life: 3000,
+            });
+            this.ResetPasswordDialog = false;
+          }
         })
         .catch(() => {
           this.$toast.add({
@@ -823,15 +831,25 @@ export default {
             this.address,
             this.selectedLocation
           )
-          .then(() => {
-            this.$toast.add({
-              severity: "success",
-              summary: contentNoti.SUCCESS_SUMMARY,
-              detail: contentNoti.USER_CREATE_SUCCESS,
-              life: 3000,
-            });
-            this.setUserList();
-            this.UserDialog = false;
+          .then((res) => {
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                summary: contentNoti.SUCCESS_SUMMARY,
+                detail: contentNoti.USER_CREATE_SUCCESS,
+                life: 3000,
+              });
+              this.setUserList();
+              this.UserDialog = false;
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.USER_CREATE_FAILED,
+                life: 3000,
+              });
+              this.UserDialog = false;
+            }
           })
           .catch((err) => {
             this.$toast.add({
@@ -858,15 +876,26 @@ export default {
             this.selectedLocation,
             this.selectedRole
           )
-          .then(() => {
-            this.$toast.add({
-              severity: "success",
-              summary: contentNoti.SUCCESS_SUMMARY,
-              detail: contentNoti.USER_EDIT_SUCCESS,
-              life: 3000,
-            });
-            this.setUserList();
-            this.UserUpdateDialog = false;
+          .then((res) => {
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                summary: contentNoti.SUCCESS_SUMMARY,
+                detail: contentNoti.USER_EDIT_SUCCESS,
+                life: 3000,
+              });
+              this.setUserList();
+              this.UserUpdateDialog = false;
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.USER_EDIT_FAILED,
+                life: 3000,
+              });
+              this.setUserList();
+              this.UserUpdateDialog = false;
+            }
           })
           .catch(() => {
             this.$toast.add({
@@ -889,15 +918,25 @@ export default {
     async DisableAccount() {
       await userApi
         .deleteUser(this.product.userId)
-        .then(() => {
-          this.$toast.add({
-            severity: "success",
-            summary: contentNoti.SUCCESS_SUMMARY,
-            detail: contentNoti.USER_DISABLE_SUCCESS,
-            life: 3000,
-          });
-          this.setUserList();
-          this.DisableDialog = false;
+        .then((res) => {
+          if (res.status == 200) {
+            this.$toast.add({
+              severity: "success",
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.USER_DISABLE_SUCCESS,
+              life: 3000,
+            });
+            this.setUserList();
+            this.DisableDialog = false;
+          } else {
+            this.$toast.add({
+              severity: "error",
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.USER_DISABLE_FAILED,
+              life: 3000,
+            });
+            this.DisableDialog = false;
+          }
         })
         .catch(() => {
           this.$toast.add({
@@ -1072,15 +1111,26 @@ export default {
           this.product.userId,
           this.selectedLocation.locationId
         )
-        .then(() => {
-          this.$toast.add({
-            severity: "success",
-            summary: "Success",
-            detail: "Update Area success",
-            life: 3000,
-          });
-          this.StaffDialog = false;
-          this.setUserList();
+        .then((res) => {
+          if (res.status == 200) {
+            this.$toast.add({
+              severity: "success",
+              summary: "Success",
+              detail: "Update Area success",
+              life: 3000,
+            });
+            this.StaffDialog = false;
+            this.setUserList();
+          } else {
+            this.$toast.add({
+              severity: "error",
+              summary: "Error",
+              detail: "Update Area failed!",
+              life: 3000,
+            });
+            this.StaffDialog = false;
+            this.setUserList();
+          }
         })
         .catch(() => {
           this.$toast.add({
@@ -1328,11 +1378,11 @@ label {
   font-weight: 500;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  font-size:14px;
+  font-size: 14px;
   color: #2fa0d3;
   width: 90px;
   text-align: center;
-  background-color:#e2f6ff;
+  background-color: #e2f6ff;
 }
 
 .manager {
@@ -1341,11 +1391,11 @@ label {
   font-weight: 500;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  font-size:14px;
+  font-size: 14px;
   color: #249e9a;
   width: 90px;
   text-align: center;
-  background-color:#9cf4c1;
+  background-color: #9cf4c1;
 }
 .invalid {
   color: red;
@@ -1383,7 +1433,7 @@ label {
     box-shadow 0.2s;
   cursor: pointer;
   font-weight: 500;
-    display: flex;
+  display: flex;
   justify-content: left;
   align-items: left;
 }
@@ -1392,7 +1442,7 @@ label {
   border: 1px solid #e9ecef;
   border-width: 0 0 0 0;
   padding: 1rem 1rem;
-   display: flex;
+  display: flex;
 
   justify-content: left;
   align-items: left;

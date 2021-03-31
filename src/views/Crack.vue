@@ -206,6 +206,7 @@
         :modal="true"
         :baseZIndex="10000"
         :showHeader="false"
+        :dismissableMask="true"
         class="dialog"
       >
         <div class="p-grid nested-grid">
@@ -661,15 +662,25 @@ export default {
             this.description,
             this.selectedSeverity
           )
-          .then(() => {
-            this.$toast.add({
-              severity: "info",
-              summary: "Confirmed",
-              detail: "Crack is updated!",
-              life: 3000,
-            });
-            this.setCrackList();
-            this.updateCrackDialog = false;
+          .then((res) => {
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "info",
+                summary: "Confirmed",
+                detail: "Crack is updated!",
+                life: 3000,
+              });
+              this.setCrackList();
+              this.updateCrackDialog = false;
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: "Falied",
+                detail: "Updated Failed",
+                life: 3000,
+              });
+              this.updateCrackDialog = false;
+            }
           })
           .catch(() => {
             this.$toast.add({

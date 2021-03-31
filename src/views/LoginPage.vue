@@ -227,7 +227,7 @@ export default {
             this.isLoading = false;
             this.$toast.add({
               severity: "warn",
-              summary: "User or Password is wrong!! Try again ",
+              summary: "Sign-in Failed !!",
               life: 3000,
             });
           }
@@ -275,12 +275,22 @@ export default {
             this.isLoading = false;
           })
           .then((res) => {
-            this.$toast.add({
-              severity: "success",
-              summary: res.data,
-              life: 3000,
-            });
-            this.isLoading = false;
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                summary: res.data,
+                life: 3000,
+              });
+              this.isLoading = false;
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: "ERROR",
+                detail: "Your Account is'nt existed!",
+                life: 3000,
+              });
+              this.isLoading = false;
+            }
           });
         this.isLoading = false;
         this.waithide("forgotPass", "login");

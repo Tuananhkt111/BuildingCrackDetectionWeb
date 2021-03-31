@@ -261,7 +261,7 @@ export default {
 
     isDetect() {
       return this.getVideo != null;
-    }
+    },
   },
   data() {
     return {
@@ -291,10 +291,13 @@ export default {
       if (value === undefined || value === null) {
         return false;
       }
-      let date = filter.getFullYear() + "-" + ("0" + (filter.getMonth() + 1)).slice(-2) + "-" + ("0" + filter.getDate()).slice(-2);
-      return value
-        .toString()
-        .includes(date);
+      let date =
+        filter.getFullYear() +
+        "-" +
+        ("0" + (filter.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + filter.getDate()).slice(-2);
+      return value.toString().includes(date);
     });
   },
 
@@ -325,10 +328,6 @@ export default {
       this.submitted = false;
       this.productDialog = true;
     },
-    // Xoa Video
-    async deleteVideo(product) {
-      await flightApi.removeVideo(product.flightId);
-    },
 
     confirmRemoveVideo(event, product) {
       this.$confirm.require({
@@ -337,14 +336,24 @@ export default {
         icon: "pi pi-info-circle",
         acceptClass: "p-button-danger",
         accept: async () => {
-          await flightApi.removeVideo(product.flightId);
-          this.$toast.add({
-            severity: "success",
-            summary: "Deleted",
-            detail: "Delete video success",
-            life: 3000,
+          await flightApi.removeVideo(product.flightId).then((res) => {
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                summary: "Deleted",
+                detail: "Delete video success",
+                life: 3000,
+              });
+              this.setFlightList();
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: "Delete Failed",
+                detail: "Delete video failed",
+                life: 3000,
+              });
+            }
           });
-          this.setFlightList();
         },
         reject: () => {},
       });

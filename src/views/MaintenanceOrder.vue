@@ -225,12 +225,14 @@
                     icon="pi pi-eye"
                     @click="showDetail(slotProps.data)"
                     class="p-button-rounded p-button-info p-button-text"
+                    v-tooltip.bottom="'View Record details'"
                   />
 
                   <Button
                     icon="pi pi-video"
                     @click="showVideo(slotProps.data)"
                     class="p-button-rounded p-button-help p-button-text"
+                    v-tooltip.bottom="'View Detection Result'"
                   />
                 </template>
               </Column>
@@ -244,6 +246,7 @@
       :style="{ width: '700px' }"
       :modal="true"
       :showHeader="false"
+      :dismissableMask=true
       class="dialog"
     >
       <template #header>
@@ -376,6 +379,7 @@
       :style="{ width: '800px' }"
       :modal="true"
       :showHeader="false"
+      :dismissableMask=true
       class="dialog"
     >
         <div class="p-grid nested-grid">

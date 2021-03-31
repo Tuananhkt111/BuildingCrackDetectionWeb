@@ -12,10 +12,10 @@
           style="width: 270px"
         />
         <label style="padding-left: 5px;" class="">New Password</label>
-        <br/>
-        <small class="p-invalid" >{{ errors.newPassword }}</small>
+        <br />
+        <small class="p-invalid">{{ errors.newPassword }}</small>
       </div>
-      
+
       <div class="p-float-label p-mb-5">
         <InputText
           id="confirmPassword"
@@ -23,11 +23,11 @@
           v-model="confirmPassword"
           style="width: 270px"
         />
-        <label style="padding-left: 5px;"  >Confirm Password</label>
-        <br/>
-        <small class="p-invalid" >{{ errors.confirmPassword }}</small>
+        <label style="padding-left: 5px;">Confirm Password</label>
+        <br />
+        <small class="p-invalid">{{ errors.confirmPassword }}</small>
       </div>
-      
+
       <Button
         label="Change Password"
         class="p-button-raised p-button-info"
@@ -46,7 +46,7 @@
         <p @click="closeToLogin">Will back to Login Page in {{ countDown }}</p>
       </Dialog>
     </div>
-    <Toast position="bottom-right"/>
+    <Toast position="bottom-right" />
   </div>
 </template>
 
@@ -75,7 +75,7 @@ export default {
         .required("Please confirm your password")
         .oneOf([yup.ref("newPassword"), null], "Passwords don't match."),
     });
-    const { errors, meta, handleReset , validate} = useForm({
+    const { errors, meta, handleReset, validate } = useForm({
       validationSchema: schema,
     });
 
@@ -88,7 +88,7 @@ export default {
       confirmPassword,
       errors,
       meta,
-      validate
+      validate,
     };
   },
 
@@ -115,16 +115,25 @@ export default {
             this.$route.query.token,
             this.newPassword
           )
-          .then(() => {
-            this.$toast.add({
-              severity: "success",
-              summary: contentNoti.SUCCESS_SUMMARY,
-              detail: contentNoti.USER_FORGOTPASS_SUCCESS,
-              life: 3000,
-            });
-            this.ChangePassworDialog = false;
-            this.successForgotPass = true;
-            this.countDownTimer();
+          .then((res) => {
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                summary: contentNoti.SUCCESS_SUMMARY,
+                detail: contentNoti.USER_FORGOTPASS_SUCCESS,
+                life: 3000,
+              });
+              this.ChangePassworDialog = false;
+              this.successForgotPass = true;
+              this.countDownTimer();
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.USER_FORGOTPASS_FAILED,
+                life: 3000,
+              });
+            }
           })
           .catch(() => {
             this.$toast.add({

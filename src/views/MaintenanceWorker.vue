@@ -1,5 +1,5 @@
 <template>
- <div  class="main-layout-details">
+  <div class="main-layout-details">
     <div class="card">
       <DataTable
         :rowHover="true"
@@ -42,10 +42,7 @@
           </span>
         </div>
         <template #empty> No Repairer found. </template>
-        <Column
-          header="No"
-          headerStyle="border-radius: 20px 0 0 20px"
-        >
+        <Column header="No" headerStyle="border-radius: 20px 0 0 20px">
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
@@ -454,15 +451,25 @@ export default {
           .catch((err) => {
             alert(err);
           })
-          .then(() => {
-            this.$toast.add({
-              severity: "success",
-              summary: contentNoti.SUCCESS_SUMMARY,
-              detail: contentNoti.MAINTENANCEWORKER_CREATE_SUCCESS,
-              life: 3000,
-            });
-            this.setMaintenanceWorkerList();
-            this.hideDialog();
+          .then((res) => {
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                summary: contentNoti.SUCCESS_SUMMARY,
+                detail: contentNoti.MAINTENANCEWORKER_CREATE_SUCCESS,
+                life: 3000,
+              });
+              this.setMaintenanceWorkerList();
+              this.hideDialog();
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.MAINTENANCEWORKER_CREATE_FAILED,
+                life: 3000,
+              });
+              this.hideDialog();
+            }
           })
           .catch(() => {
             this.$toast.add({
@@ -487,15 +494,25 @@ export default {
             this.phone,
             this.email
           )
-          .then(() => {
-            this.$toast.add({
-              severity: "success",
-              summary: contentNoti.SUCCESS_SUMMARY,
-              detail: contentNoti.MAINTENANCEWORKER_EDIT_SUCCESS,
-              life: 3000,
-            });
-            this.setMaintenanceWorkerList();
-            this.productDialog = false;
+          .then((res) => {
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                summary: contentNoti.SUCCESS_SUMMARY,
+                detail: contentNoti.MAINTENANCEWORKER_EDIT_SUCCESS,
+                life: 3000,
+              });
+              this.setMaintenanceWorkerList();
+              this.productDialog = false;
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.MAINTENANCEWORKER_EDIT_FAILED,
+                life: 3000,
+              });
+              this.productDialog = false;
+            }
           })
           .catch(() => {
             this.$toast.add({
@@ -540,15 +557,25 @@ export default {
     async deleteSelectedProducts() {
       await maintenanceWorkerApi
         .disable(this.product.maintenanceWorkerId)
-        .then(() => {
-          this.$toast.add({
-            severity: "success",
-            summary: contentNoti.SUCCESS_SUMMARY,
-            detail: contentNoti.MAINTENANCEWORKER_DISABLE_SUCCESS,
-            life: 3000,
-          });
-          this.setMaintenanceWorkerList();
-          this.hideDialog();
+        .then((res) => {
+          if (res.status == 200) {
+            this.$toast.add({
+              severity: "success",
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.MAINTENANCEWORKER_DISABLE_SUCCESS,
+              life: 3000,
+            });
+            this.setMaintenanceWorkerList();
+            this.hideDialog();
+          } else {
+            this.$toast.add({
+              severity: "error",
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.MAINTENANCEWORKER_DISABLE_FAILED,
+              life: 3000,
+            });
+            this.hideDialog();
+          }
         })
         .catch(() => {
           this.$toast.add({

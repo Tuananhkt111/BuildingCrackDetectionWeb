@@ -29,7 +29,7 @@ async function login(userName, password) {
     urlConstants.USER_URL + "/authenticate",
     data
   );
-  if (res != null) {
+  if (res != null && res.status === 200) {
     localStorage.setItem("jwtToken", res.data.jwtToken);
     const user = await ApiHelper.get(
       urlConstants.USER_URL + "/" + res.data.userId
