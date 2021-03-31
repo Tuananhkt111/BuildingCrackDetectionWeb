@@ -64,7 +64,7 @@
               header="Area Name"
               :showFilterMatchModes="false"
               :showAddButton="false"
-               headerStyle="max-width: 218px;"
+              headerStyle="max-width: 218px;"
               style="max-width: 250px"
               :showFilterOperator="false"
             >
@@ -104,7 +104,7 @@
               </template>
             </Column>
           </div>
-        
+
           <Column
             header="Severity"
             filterField="severity"
@@ -189,7 +189,7 @@
               <Button
                 v-if="
                   slotProps.data.status != 'DetectedFailed' &&
-                  slotProps.data.status != 'UnrecordedRepair'
+                    slotProps.data.status != 'UnrecordedRepair'
                 "
                 icon="pi pi-calendar-minus"
                 class="p-button-rounded p-button-danger p-button-text"
@@ -202,18 +202,16 @@
       </div>
       <Dialog
         v-model:visible="crackInfoDialog"
-        :style="{ width: '800px'}"
+        :style="{ width: '800px' }"
         :modal="true"
         :baseZIndex="10000"
         :showHeader="false"
         class="dialog"
-
       >
-       
         <div class="p-grid nested-grid">
           <div class="p-col-5">
             <div class="dialog-title-2">
-            <span style="">Crack Detail</span>
+              <span style="">Crack Details</span>
             </div>
             <img
               :src="product.imageThumbnails"
@@ -229,55 +227,40 @@
               <TabPanel header="Overview">
                 <div class="p-grid">
                   <div class="p-col-6">
-                      <p style="font-weight: 400;color:grey">Area Name</p
-                      >
-                       <p style="font-weight: 600">{{ product.locationName }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Area Name</p>
+                    <p style="font-weight: 600">{{ product.locationName }}</p>
                   </div>
                   <div class="p-col-6">
-                
-                      <p style="font-weight: 400;color:grey">Area Name</p
-                      >
-                       <p style="font-weight: 600">{{ product.position }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Area Name</p>
+                    <p style="font-weight: 600">{{ product.position }}</p>
                   </div>
                   <div class="p-col-6">
-                      <p style="font-weight: bold;margin-bottom:5px"> Severity</p>
-                      <p :class="stockClass(product)">
-                        {{ product.severity }}
-                      </p>
-                    
+                    <p style="font-weight: bold;margin-bottom:5px">Severity</p>
+                    <p :class="stockClass(product)">
+                      {{ product.severity }}
+                    </p>
                   </div>
                   <div class="p-col-6">
-                      <p style="font-weight: bold;margin-bottom:5px">Status</p>
-                      <p :class="stockStatus(product)">
-                        {{ product.status }}
-                      </p>
+                    <p style="font-weight: bold;margin-bottom:5px">Status</p>
+                    <p :class="stockStatus(product)">
+                      {{ product.status }}
+                    </p>
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                      <p style="font-weight: 400;color:grey">Censor Name</p
-                      >
-                       <p style="font-weight: 600">{{ product.censorName }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Censor Name</p>
+                    <p style="font-weight: 600">{{ product.censorName }}</p>
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                
-                        <p style="font-weight: 400;color:grey">Updated User</p
-                      >
-                       <p style="font-weight: 600">{{ product.updateUserName }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Updated User</p>
+                    <p style="font-weight: 600">{{ product.updateUserName }}</p>
                   </div>
                   <div class="p-col-6">
-                        <p style="font-weight: 400;color:grey">Created Date</p
-                      >
-                       <p style="font-weight: 600">{{ product.created }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Created Date</p>
+                    <p style="font-weight: 600">{{ product.created }}</p>
                   </div>
                   <div class="p-col-6">
-                         <p style="font-weight: 400;color:grey">Last Modified</p
-                      >
-                       <p style="font-weight: 600">{{ product.lastModified }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Last Modified</p>
+                    <p style="font-weight: 600">{{ product.lastModified }}</p>
                   </div>
                 </div>
               </TabPanel>
@@ -438,9 +421,10 @@
       </Dialog>
       <Toast position="bottom-right" />
     </div>
-      <div class="main-layout-details" style="width: 29.7%;margin-left:30px">
-
-    </div>
+    <div
+      class="main-layout-details"
+      style="width: 29.7%;margin-left:30px"
+    ></div>
   </div>
 </template>
 
@@ -464,9 +448,20 @@ import Toast from "primevue/toast";
 export default {
   setup() {
     const schema = yup.object({
-      position: yup.string().max(20).label("Position").required(),
-      selectedSeverity: yup.string().label("Severity").required(),
-      description: yup.string().max(300).label("Description").nullable(),
+      position: yup
+        .string()
+        .max(20)
+        .label("Position")
+        .required(),
+      selectedSeverity: yup
+        .string()
+        .label("Severity")
+        .required(),
+      description: yup
+        .string()
+        .max(300)
+        .label("Description")
+        .nullable(),
     });
     const { errors, meta, handleReset, isSubmitting, validate } = useForm({
       validationSchema: schema,
@@ -937,11 +932,16 @@ textarea {
   justify-content: center;
 }
 .dialog-title-2 {
-
-  width:150px;height:30px;border-radius:10px;margin:10px 0 40px  25px;
+  width: 150px;
+  height: 30px;
+  border-radius: 10px;
+  margin: 10px 0 40px 25px;
 }
-.dialog-title-2 span{
-padding-top:3px;font-weight:600;  font-size: 18px;font-family: Poppins
+.dialog-title-2 span {
+  padding-top: 3px;
+  font-weight: 600;
+  font-size: 18px;
+  font-family: Poppins;
 }
 .dialog-title-2 span::before {
   content: "";
@@ -1085,7 +1085,7 @@ padding-top:3px;font-weight:600;  font-size: 18px;font-family: Poppins
   min-height: 345px;
 }
 ::v-deep(.p-tabview .p-tabview-nav) {
- margin-top:20px;
+  margin-top: 20px;
 }
 
 ::v-deep(.p-tabview .p-tabview-panels) {
@@ -1166,7 +1166,7 @@ padding-top:3px;font-weight:600;  font-size: 18px;font-family: Poppins
   border-radius: 24px;
   background-color: white;
   padding: 20px;
-  box-shadow: 0px 10px 40px rgb(41 50 65 / 6%);
+  box-shadow:rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .active .main-layout-details {
   margin-left: 266.5px;

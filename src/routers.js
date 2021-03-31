@@ -16,7 +16,7 @@ import DashBoard from "./views/DashBoard.vue";
 const router = new createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", name: "home", component: Crack },
+    { path: "/", name: "home", component: DashBoard },
     { path: "/login", name: "login", component: Login },
     { path: "/cracks", name: "crack", component: Crack },
     { path: "/areas", name: "location", component: Location },

@@ -1250,7 +1250,7 @@ padding-top:3px;font-weight:600;  font-size: 18px;font-family: Poppins
   border-radius: 24px;
   padding: 20px;
   background-color: white;
-  box-shadow: 0px 10px 40px rgb(41 50 65 / 6%);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .active .main-layout-details {
   margin-left: 266.5px;

@@ -10,8 +10,8 @@
           <li>
             <router-link to="/dashboard" tag="li" class="t-link nav-btn p-mt-4">
               <a class="a-link">
-                <i class="pi pi-fw pi-exclamation-triangle"></i>
-                <span>Dash Board</span>
+                <i class="pi pi-fw pi-chart-line"></i>
+                <span>Dashboard</span>
               </a>
             </router-link>
           </li>
