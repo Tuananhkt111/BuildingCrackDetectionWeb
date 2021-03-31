@@ -1,391 +1,410 @@
 <template>
- <div  class="main-layout-details">
-    <div class="card">
-      <DataTable
-        ref="dt"
-        dataKey="maintenanceOrderId"
-        :value="getMaintenanceOrderList"
-        v-model:expandedRows="expandedRows"
-        @row-expand="onRowExpand"
-        @row-collapse="onRowCollapse"
-        :paginator="true"
-        :rows="5"
-        :rowHover="true"
-        v-model:filters="filters"
-        filterDisplay="menu"
-        :globalFilterFields="[
-          'maintenanceWorkerName',
-          'locationName',
-          'status',
-        ]"
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        currentPageReportTemplate=""
-      >
-        <div class="table-header-main">
-          <h3
-            class="p-m-2"
-            style="color: #143178;font-weight: 400;font-size:22px"
-          >
-            Repair Records
-          </h3>
-          <span class="p-input-icon-left">
-            <span class="p-input-icon-left" style="margin: 2px">
-              <i class="pi pi-search" />
-              <InputText
-                v-model="filters['global'].value"
-                placeholder="Keyword Search"
-              />
-            </span>
-          </span>
+  <div class="p-grid as">
+    <div style="width: 34%;margin-right:20px">
+      <div class="main-layout-details" style="margin-bottom: 20px">
+        <div class="chart-title">
+          <span>Repair Records By Status {{ getCurrentPeriod }}</span>
         </div>
-        <template #empty> No Repair Record found. </template>
-        <Column
-          :expander="true"
-          headerStyle="width: 30px;border-radius: 20px 0 0 20px"
-        />
-        <Column header="No" style="width:2rem">
-          <template #body="slotProps">
-            {{ slotProps.data.index }}
-          </template>
-        </Column>
-        <Column
-          field="maintenanceWorkerName"
-          header="Repairer"
-          :showFilterMatchModes="false"
-          :showAddButton="false"
-          :showFilterOperator="false"
-        >
-          <template #body="slotProps">
-            {{ slotProps.data.maintenanceWorkerName }}
-          </template>
-          <template #filter="{ filterModel }">
-            <InputText
-              type="text"
-              v-model="filterModel.value"
-              class="p-column-filter"
-              placeholder="Search"
-            />
-          </template>
-        </Column>
-        <div v-if="!isStaff">
-          <Column
-            field="locationName"
-            header="Area Name"
-            :showFilterMatchModes="false"
-            :showAddButton="false"
-            :showFilterOperator="false"
-          >
-            <template #body="slotProps">
-              {{ slotProps.data.locationName }}
-            </template>
-            <template #filter="{ filterModel }">
-              <InputText
-                type="text"
-                v-model="filterModel.value"
-                class="p-column-filter"
-                placeholder="Search"
-              />
-            </template>
-          </Column>
-        </div>
-        <div v-else>
-          <Column
-            field="maintenanceExpense"
-            header="Repair Expense"
-            :showFilterMatchModes="false"
-            :showAddButton="false"
-            :showFilterOperator="false"
-          >
-            <template #body="slotProps">
-              {{ slotProps.data.maintenanceExpense.toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
-            </template>
-            <template #filter="{ filterModel }">
-              <InputText
-                type="text"
-                v-model="filterModel.value"
-                class="p-column-filter"
-                placeholder="Search"
-              />
-            </template>
-          </Column>
-        </div>
-        <Column
-          header="Status"
-          filterField="status"
-          :showFilterMatchModes="false"
-          :filterMenuStyle="{ width: '14rem' }"
-          style="min-width: 14rem"
-        >
-          <template #body="{ data }">
-            <span :class="stockStatusOrder(data)">
-              {{ data.status }}
-            </span>
-          </template>
-          <template #filter="{ filterModel }">
-            <div class="p-mb-3 p-text-bold">Status Picker</div>
-            <MultiSelect
-              v-model="filterModel.value"
-              :options="getStatusList"
-              placeholder="Any"
-              class="p-column-filter"
-            >
-              <template #option="slotProps">
-                <span>{{ slotProps.option }}</span>
-              </template>
-            </MultiSelect>
-          </template>
-        </Column>
-        <Column
-          header="Repair Date"
-          filterField="maintenanceDate"
-          dataType="date"
-          style="min-width: 20px"
-          headerStyle="width: 13em"
-          :showAddButton="false"
-          :showFilterOperator="false"
-        >
-          <template #body="{ data }">
-            {{ callDate(data.maintenanceDate) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <Calendar
-              v-model="filterModel.value"
-              dateFormat="mm/dd/yy"
-              placeholder="mm/dd/yyyy"
-            />
-          </template>
-        </Column>
-        <Column headerStyle="width: 5em;border-radius:0 20px 20px 0">
-          <template #body="slotProps">
-            <Button
-              icon="pi pi-eye"
-              class="p-button-rounded p-button-info p-button-text"
-              @click="editProduct(slotProps.data)"
-              v-tooltip.bottom="'View Record details'"
-            />
-          </template>
-        </Column>
-        <template #expansion="slotProps">
-          <div class="orders-subtable">
-            <div class="table-header">
-              <h3
-                class="p-m-3"
-                id="sub-table-title"
-                style="color: #143178;font-weight: 400;font-size:18px"
-              >
-                List of Cracks
-              </h3>
-            </div>
-            <DataTable :value="slotProps.data.cracks">
-              <Column
-                header="No"
-                style="width:3rem"
-                headerStyle="border-radius:20px 0 0 20px"
-              >
-                <template #body="slotProps">
-                  {{ slotProps.data.index }}
-                </template>
-              </Column>
-              <Column header="Image" headerStyle="width: 150px;" class="small">
-                <template #body="slotProps">
-                  <img
-                    :src="slotProps.data.imageThumbnails"
-                    :alt="slotProps.data.imageThumbnails"
-                    class="product-image"
-                    style="width:80px; height: 80px;"
-                    @click="showImage(slotProps.data)"
-                  />
-                </template>
-              </Column>
-              <Column field="severity" headerStyle="" header="Severity" sortable>
-                <template #body="slotProps">
-                  <span :class="stockClass(slotProps.data)">
-                    {{ slotProps.data.severity }}
-                  </span>
-                </template>
-              </Column>
-              <Column field="status" headerStyle="" header="Status" sortable>
-                <template #body="slotProps">
-                  <span :class="stockStatus(slotProps.data)">
-                    {{ slotProps.data.status }}
-                  </span>
-                </template>
-              </Column>
-              <Column field="created" headerStyle="" header="Created Date" sortable>
-                <template #body="slotProps">
-                  <span>{{ callDate(slotProps.data.created) }}</span>
-                </template>
-              </Column>
-              <Column 
-                :filterMenuStyle="{ width: '5rem' }"
-                headerStyle="border-radius:0 20px 20px 0; "
-              >
-                <template #body="slotProps">
-                  <Button
-                    icon="pi pi-eye"
-                    @click="showDetail(slotProps.data)"
-                    class="p-button-rounded p-button-info p-button-text"
-                    v-tooltip.bottom="'View Record details'"
-                  />
-
-                  <Button
-                    icon="pi pi-video"
-                    @click="showVideo(slotProps.data)"
-                    class="p-button-rounded p-button-help p-button-text"
-                    v-tooltip.bottom="'View Detection Result'"
-                  />
-                </template>
-              </Column>
-            </DataTable>
-          </div>
-        </template>
-      </DataTable>
+        <ChartStatus :data="filterChart" :key="filterChart.check"></ChartStatus>
+      </div>
     </div>
-    <Dialog
-      v-model:visible="productDialog"
-      :style="{ width: '700px' }"
-      :modal="true"
-      :showHeader="false"
-      :dismissableMask=true
-      class="dialog"
-    >
-      <template #header>
-        <h3 class="dialog-title-order">Repair Record Details</h3>
-      </template>
-      <div class="p-col-12 order-detail">
-        <div class="p-grid nested-grid">
-          <TabView>
-            <TabPanel header="Overview">
-              <div class="p-grid">
-                <div class="p-col-6">
-                      <p class="header-detail">Repairer</p
-                      >
-                       <p style="font-weight: 600">{{ product.maintenanceWorkerName }}</p
-                      >
-                </div>
-                <div class="p-col-6">
-                      <p class="header-detail">Area Name</p
-                      >
-                       <p style="font-weight: 600">{{ product.locationName }}</p
-                      >
-                </div>
-                <div class="p-col-6">
-           
+    <div class="main-layout-details">
+      <div class="card">
+        <DataTable
+          ref="dt"
+          dataKey="maintenanceOrderId"
+          :value="getMaintenanceOrderList"
+          v-model:expandedRows="expandedRows"
+          @row-expand="onRowExpand"
+          @row-collapse="onRowCollapse"
+          :paginator="true"
+          :rows="5"
+          :rowHover="true"
+          v-model:filters="filters"
+          filterDisplay="menu"
+          :globalFilterFields="[
+            'maintenanceWorkerName',
+            'locationName',
+            'status',
+          ]"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          currentPageReportTemplate=""
+        >
+          <div class="table-header-main">
+            <h3
+              class="p-m-2"
+              style="color: #143178;font-weight: 400;font-size:22px"
+            >
+              Repair Records
+            </h3>
+            <span class="p-input-icon-left">
+              <span class="p-input-icon-left" style="margin: 2px">
+                <i class="pi pi-search" />
+                <InputText
+                  v-model="filters['global'].value"
+                  placeholder="Keyword Search"
+                />
+              </span>
+            </span>
+          </div>
+          <template #empty> No Repair Record found. </template>
+          <Column
+            :expander="true"
+            headerStyle="width: 30px;border-radius: 20px 0 0 20px"
+          />
+          <Column header="No" style="width:2rem">
+            <template #body="slotProps">
+              {{ slotProps.data.index }}
+            </template>
+          </Column>
+          <Column
+            field="maintenanceWorkerName"
+            header="Repairer"
+            :showFilterMatchModes="false"
+            :showAddButton="false"
+            :showFilterOperator="false"
+          >
+            <template #body="slotProps">
+              {{ slotProps.data.maintenanceWorkerName }}
+            </template>
+            <template #filter="{ filterModel }">
+              <InputText
+                type="text"
+                v-model="filterModel.value"
+                class="p-column-filter"
+                placeholder="Search"
+              />
+            </template>
+          </Column>
+          <div v-if="!isStaff">
+            <Column
+              field="locationName"
+              header="Area Name"
+              :showFilterMatchModes="false"
+              :showAddButton="false"
+              :showFilterOperator="false"
+            >
+              <template #body="slotProps">
+                {{ slotProps.data.locationName }}
+              </template>
+              <template #filter="{ filterModel }">
+                <InputText
+                  type="text"
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search"
+                />
+              </template>
+            </Column>
+          </div>
+          <div v-else>
+            <Column
+              field="maintenanceExpense"
+              header="Repair Expense"
+              :showFilterMatchModes="false"
+              :showAddButton="false"
+              :showFilterOperator="false"
+            >
+              <template #body="slotProps">
+                {{
+                  slotProps.data.maintenanceExpense.toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })
+                }}
+              </template>
+              <template #filter="{ filterModel }">
+                <InputText
+                  type="text"
+                  v-model="filterModel.value"
+                  class="p-column-filter"
+                  placeholder="Search"
+                />
+              </template>
+            </Column>
+          </div>
+          <Column
+            header="Status"
+            filterField="status"
+            :showFilterMatchModes="false"
+            :filterMenuStyle="{ width: '14rem' }"
+            style="min-width: 14rem"
+          >
+            <template #body="{ data }">
+              <span :class="stockStatusOrder(data)">
+                {{ data.status }}
+              </span>
+            </template>
+            <template #filter="{ filterModel }">
+              <div class="p-mb-3 p-text-bold">Status Picker</div>
+              <MultiSelect
+                v-model="filterModel.value"
+                :options="getStatusList"
+                placeholder="Any"
+                class="p-column-filter"
+              >
+                <template #option="slotProps">
+                  <span>{{ slotProps.option }}</span>
+                </template>
+              </MultiSelect>
+            </template>
+          </Column>
+          <Column
+            header="Repair Date"
+            filterField="maintenanceDate"
+            dataType="date"
+            style="min-width: 20px"
+            headerStyle="width: 13em"
+            :showAddButton="false"
+            :showFilterOperator="false"
+          >
+            <template #body="{ data }">
+              {{ callDate(data.maintenanceDate) }}
+            </template>
+            <template #filter="{ filterModel }">
+              <Calendar
+                v-model="filterModel.value"
+                dateFormat="mm/dd/yy"
+                placeholder="mm/dd/yyyy"
+              />
+            </template>
+          </Column>
+          <Column headerStyle="width: 5em;border-radius:0 20px 20px 0">
+            <template #body="slotProps">
+              <Button
+                icon="pi pi-eye"
+                class="p-button-rounded p-button-info p-button-text"
+                @click="editProduct(slotProps.data)"
+                v-tooltip.bottom="'View Record details'"
+              />
+            </template>
+          </Column>
+          <template #expansion="slotProps">
+            <div class="orders-subtable">
+              <div class="table-header">
+                <h3
+                  class="p-m-3"
+                  id="sub-table-title"
+                  style="color: #143178;font-weight: 400;font-size:18px"
+                >
+                  List of Cracks
+                </h3>
+              </div>
+              <DataTable :value="slotProps.data.cracks">
+                <Column
+                  header="No"
+                  style="width:3rem"
+                  headerStyle="border-radius:20px 0 0 20px"
+                >
+                  <template #body="slotProps">
+                    {{ slotProps.data.index }}
+                  </template>
+                </Column>
+                <Column
+                  header="Image"
+                  headerStyle="width: 150px;"
+                  class="small"
+                >
+                  <template #body="slotProps">
+                    <img
+                      :src="slotProps.data.imageThumbnails"
+                      :alt="slotProps.data.imageThumbnails"
+                      class="product-image"
+                      style="width:80px; height: 80px;"
+                      @click="showImage(slotProps.data)"
+                    />
+                  </template>
+                </Column>
+                <Column
+                  field="severity"
+                  headerStyle=""
+                  header="Severity"
+                  sortable
+                >
+                  <template #body="slotProps">
+                    <span :class="stockClass(slotProps.data)">
+                      {{ slotProps.data.severity }}
+                    </span>
+                  </template>
+                </Column>
+                <Column field="status" headerStyle="" header="Status" sortable>
+                  <template #body="slotProps">
+                    <span :class="stockStatus(slotProps.data)">
+                      {{ slotProps.data.status }}
+                    </span>
+                  </template>
+                </Column>
+                <Column
+                  field="created"
+                  headerStyle=""
+                  header="Created Date"
+                  sortable
+                >
+                  <template #body="slotProps">
+                    <span>{{ callDate(slotProps.data.created) }}</span>
+                  </template>
+                </Column>
+                <Column
+                  :filterMenuStyle="{ width: '5rem' }"
+                  headerStyle="border-radius:0 20px 20px 0; "
+                >
+                  <template #body="slotProps">
+                    <Button
+                      icon="pi pi-eye"
+                      @click="showDetail(slotProps.data)"
+                      class="p-button-rounded p-button-info p-button-text"
+                      v-tooltip.bottom="'View Crack Details'"
+                    />
+
+                    <Button
+                      icon="pi pi-video"
+                      @click="showVideo(slotProps.data)"
+                      class="p-button-rounded p-button-help p-button-text"
+                      v-tooltip.bottom="'View Detection Result'"
+                    />
+                  </template>
+                </Column>
+              </DataTable>
+            </div>
+          </template>
+        </DataTable>
+      </div>
+      <Dialog
+        v-model:visible="productDialog"
+        :style="{ width: '700px' }"
+        :modal="true"
+        :showHeader="false"
+        :dismissableMask="true"
+        class="dialog"
+      >
+        <template #header>
+          <h3 class="dialog-title-order">Repair Record Details</h3>
+        </template>
+        <div class="p-col-12 order-detail">
+          <div class="p-grid nested-grid">
+            <TabView>
+              <TabPanel header="Overview">
+                <div class="p-grid">
+                  <div class="p-col-6">
+                    <p class="header-detail">Repairer</p>
+                    <p style="font-weight: 600">
+                      {{ product.maintenanceWorkerName }}
+                    </p>
+                  </div>
+                  <div class="p-col-6">
+                    <p class="header-detail">Area Name</p>
+                    <p style="font-weight: 600">{{ product.locationName }}</p>
+                  </div>
+                  <div class="p-col-6">
                     <p class="header-detail">Status</p>
                     <p :class="stockStatusOrder(product)" style="width:150px">
                       {{ product.status }}
                     </p>
-            
+                  </div>
+
+                  <div class="p-col-6">
+                    <p class="header-detail">Repair Date</p>
+                    <p style="font-weight: 600">
+                      {{ product.maintenanceDate }}
+                    </p>
+                  </div>
+                  <div class="p-col-6">
+                    <p class="header-detail">Expense</p>
+                    <p style="font-weight: 600">
+                      {{
+                        product.maintenanceExpense.toLocaleString("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                        })
+                      }}
+                    </p>
+                  </div>
+
+                  <div class="p-col-6">
+                    <p class="header-detail">Created</p>
+                    <p style="font-weight: 600">
+                      {{ callDate(product.created) }}
+                    </p>
+                  </div>
+                  <div class="p-col-6">
+                    <p class="header-detail">Last Modified</p>
+                    <p style="font-weight: 600">
+                      {{ callDate(product.lastModified) }}
+                    </p>
+                  </div>
+                  <div class="p-col-6">
+                    <p class="header-detail">Create User</p>
+                    <p style="font-weight: 600">{{ product.createUserName }}</p>
+                  </div>
+                  <div class="p-col-6">
+                    <p class="header-detail">Update User</p>
+                    <p style="font-weight: 600">{{ product.updateUserName }}</p>
+                  </div>
                 </div>
-             
-                <div class="p-col-6">
-               
-                      <p class="header-detail">Repair Date</p
-                      >
-                       <p style="font-weight: 600">{{ product.maintenanceDate }}</p
-                      >
-             
-                </div>
-                <div class="p-col-6">
-                   <p class="header-detail">Expense</p
-                      >
-                       <p style="font-weight: 600">{{ product.maintenanceExpense.toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}</p
-                      >
-                </div>
-               
-             
-                <div class="p-col-6">
-                      <p class="header-detail">Created</p
-                      >
-                       <p style="font-weight: 600">{{ callDate(product.created) }}</p
-                      >
-                  
-                </div>
-                <div class="p-col-6">
-                     <p class="header-detail">Last Modified</p
-                      >
-                       <p style="font-weight: 600">{{ callDate(product.lastModified) }}</p
-                      >
-               
-                </div>
-                 <div class="p-col-6">
-                  
-                      <p class="header-detail">Create User</p
-                      >
-                       <p style="font-weight: 600">{{ product.createUserName }}</p
-                      >
-                </div>
-                   <div class="p-col-6">
-                      <p class="header-detail">Update User</p
-                      >
-                       <p style="font-weight: 600">{{ product.updateUserName }}</p
-                      >
-                </div>
-              </div>
-            </TabPanel>
-            <TabPanel
-              header="Description"
-              :disabled="
-                product.description == '' || product.description == null
-              "
-            >
-              <div class="p-col-12">
-                <p>
-                  <span
-                    style="font-weight: bold"
-                    v-if="product.description != null"
-                    >{{ product.description }}</span
-                  >
-                </p>
-              </div>
-            </TabPanel>
-            <TabPanel header="Assessment" :disabled="check">
-              <div class="p-col-12">
-                <div class="p-field">
-                  <Rating
-                    :modelValue="product.assessmentResult"
-                    :readonly="true"
-                    :stars="5"
-                    :cancel="false"
-                  />
-                </div>
-                <div class="p-col-6">
+              </TabPanel>
+              <TabPanel
+                header="Description"
+                :disabled="
+                  product.description == '' || product.description == null
+                "
+              >
+                <div class="p-col-12">
                   <p>
-                    <span style="font-weight: bold">Assessor Name: </span
-                    >{{ product.assessorName }}
+                    <span
+                      style="font-weight: bold"
+                      v-if="product.description != null"
+                      >{{ product.description }}</span
+                    >
                   </p>
                 </div>
-                <div class="p-field">
-                  <label for="assessmentDescription"
-                    >Assessment Description</label
-                  >
-                  <Textarea
-                    id="description"
-                    v-model="product.assessmentDescription"
-                    required="true"
-                    rows="2"
-                    cols="20"
-                    disabled
-                  />
+              </TabPanel>
+              <TabPanel header="Assessment" :disabled="check">
+                <div class="p-col-12">
+                  <div class="p-field">
+                    <Rating
+                      :modelValue="product.assessmentResult"
+                      :readonly="true"
+                      :stars="5"
+                      :cancel="false"
+                    />
+                  </div>
+                  <div class="p-col-6">
+                    <p>
+                      <span style="font-weight: bold">Assessor Name: </span
+                      >{{ product.assessorName }}
+                    </p>
+                  </div>
+                  <div class="p-field">
+                    <label for="assessmentDescription"
+                      >Assessment Description</label
+                    >
+                    <Textarea
+                      id="description"
+                      v-model="product.assessmentDescription"
+                      required="true"
+                      rows="2"
+                      cols="20"
+                      disabled
+                    />
+                  </div>
                 </div>
-              </div>
-            </TabPanel>
-          </TabView>
+              </TabPanel>
+            </TabView>
+          </div>
         </div>
-      </div>
-    </Dialog>
-    <Dialog
-      v-model:visible="crackInfoDialog"
-      :style="{ width: '800px' }"
-      :modal="true"
-      :showHeader="false"
-      :dismissableMask=true
-      class="dialog"
-    >
+      </Dialog>
+      <Dialog
+        v-model:visible="crackInfoDialog"
+        :style="{ width: '800px' }"
+        :modal="true"
+        :showHeader="false"
+        :dismissableMask="true"
+        class="dialog"
+      >
         <div class="p-grid nested-grid">
           <div class="p-col-5">
             <div class="dialog-title-2">
-            <span style="">Crack Detail</span>
+              <span style="">Crack Detail</span>
             </div>
             <img
               :src="product.imageThumbnails"
@@ -401,55 +420,40 @@
               <TabPanel header="Overview">
                 <div class="p-grid">
                   <div class="p-col-6">
-                      <p style="font-weight: 400;color:grey">Area Name</p
-                      >
-                       <p style="font-weight: 600">{{ product.locationName }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Area Name</p>
+                    <p style="font-weight: 600">{{ product.locationName }}</p>
                   </div>
                   <div class="p-col-6">
-                
-                      <p style="font-weight: 400;color:grey">Position</p
-                      >
-                       <p style="font-weight: 600">{{ product.position }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Position</p>
+                    <p style="font-weight: 600">{{ product.position }}</p>
                   </div>
                   <div class="p-col-6">
-                      <p style="font-weight: bold;margin-bottom:5px"> Severity</p>
-                      <p :class="stockClass(product)">
-                        {{ product.severity }}
-                      </p>
-                    
+                    <p style="font-weight: bold;margin-bottom:5px">Severity</p>
+                    <p :class="stockClass(product)">
+                      {{ product.severity }}
+                    </p>
                   </div>
                   <div class="p-col-6">
-                      <p style="font-weight: bold;margin-bottom:5px">Status</p>
-                      <p :class="stockStatus(product)">
-                        {{ product.status }}
-                      </p>
+                    <p style="font-weight: bold;margin-bottom:5px">Status</p>
+                    <p :class="stockStatus(product)">
+                      {{ product.status }}
+                    </p>
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                      <p style="font-weight: 400;color:grey">Censor Name</p
-                      >
-                       <p style="font-weight: 600">{{ product.censorName }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Censor Name</p>
+                    <p style="font-weight: 600">{{ product.censorName }}</p>
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                
-                        <p style="font-weight: 400;color:grey">Updated User</p
-                      >
-                       <p style="font-weight: 600">{{ product.updateUserName }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Updated User</p>
+                    <p style="font-weight: 600">{{ product.updateUserName }}</p>
                   </div>
                   <div class="p-col-6">
-                        <p style="font-weight: 400;color:grey">Created Date</p
-                      >
-                       <p style="font-weight: 600">{{ product.created }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Created Date</p>
+                    <p style="font-weight: 600">{{ product.created }}</p>
                   </div>
                   <div class="p-col-6">
-                         <p style="font-weight: 400;color:grey">Last Modified</p
-                      >
-                       <p style="font-weight: 600">{{ product.lastModified }}</p
-                      >
+                    <p style="font-weight: 400;color:grey">Last Modified</p>
+                    <p style="font-weight: 600">{{ product.lastModified }}</p>
                   </div>
                 </div>
               </TabPanel>
@@ -498,37 +502,38 @@
             </TabView>
           </div>
         </div>
-    </Dialog>
-    <Galleria
-      :value="cracks"
-      :numVisible="7"
-      containerStyle="max-width: 850px"
-      :circular="true"
-      :fullScreen="true"
-      :showItemNavigators="true"
-      :showThumbnails="false"
-      v-model:visible="displayImage"
-      v-model:activeIndex="activeIndex"
-    >
-      <template #item="slotProps">
-        <img
-          :src="slotProps.item.image"
-          style="width: 1100px; display: block;"
-        />
-        <button
-          type="button"
-          class="buttonView p-link"
-          v-tooltip.right="'View Crack Details'"
-          @click="showDetail(slotProps.item)"
-        >
-          <i class="pi pi-fw pi-eye" style="fontSize: 2rem;"></i>
-        </button>
-      </template>
-      <template #thumbnail="slotProps">
-        <img :src="slotProps.item.imageThumbnails" style="display: block;" />
-      </template>
-    </Galleria>
-    <Toast position="bottom-right" />
+      </Dialog>
+      <Galleria
+        :value="cracks"
+        :numVisible="7"
+        containerStyle="max-width: 850px"
+        :circular="true"
+        :fullScreen="true"
+        :showItemNavigators="true"
+        :showThumbnails="false"
+        v-model:visible="displayImage"
+        v-model:activeIndex="activeIndex"
+      >
+        <template #item="slotProps">
+          <img
+            :src="slotProps.item.image"
+            style="width: 1100px; display: block;"
+          />
+          <button
+            type="button"
+            class="buttonView p-link"
+            v-tooltip.right="'View Crack Details'"
+            @click="showDetail(slotProps.item)"
+          >
+            <i class="pi pi-fw pi-eye" style="fontSize: 2rem;"></i>
+          </button>
+        </template>
+        <template #thumbnail="slotProps">
+          <img :src="slotProps.item.imageThumbnails" style="display: block;" />
+        </template>
+      </Galleria>
+      <Toast position="bottom-right" />
+    </div>
   </div>
 </template>
 
@@ -546,6 +551,7 @@ import TabPanel from "primevue/tabpanel";
 import crackApi from "../apis/cracks.js";
 import Galleria from "primevue/galleria";
 import webRole from "../util/webRole.js";
+import ChartStatus from "../chart/OrderByStatusSmall.vue";
 
 export default {
   components: {
@@ -557,6 +563,7 @@ export default {
     TabView,
     TabPanel,
     Galleria,
+    ChartStatus
   },
 
   computed: {
@@ -570,12 +577,22 @@ export default {
       if (webRole.STAFF_ROLE === role) return true;
       return false;
     },
+
+    getCurrentPeriod() {
+      return (
+        " Period " +
+        this.filterChart.period +
+        "/" +
+        this.filterChart.selectedYear
+      );
+    },
   },
 
   async created() {
     this.initFilters(this.$route.query.repairRecordId);
     this.setMaintenanceOrderList();
     this.loading = false;
+    await this.filter();
   },
 
   data() {
@@ -597,11 +614,39 @@ export default {
       displayImage: false,
       check: true,
       activeIndex: 0,
+      filterChart: {
+        selectedYear: null,
+        selectedLocation: [],
+        period: "",
+        data: null,
+        check: 0,
+      },
     };
   },
 
   methods: {
     ...mapActions("maintenanceOrder", ["setMaintenanceOrderList"]),
+
+    async filter() {
+      let date = new Date();
+      this.filterChart.selectedYear = date.getFullYear();
+      if (date.getMonth() < 5) {
+        this.filterChart.period = 1;
+      } else if (date.getMonth() < 9) {
+        this.filterChart.period = 2;
+      } else if (date.getMonth() < 13) {
+        this.filterChart.period = 3;
+      }
+      let user = JSON.parse(localStorage.getItem("user"));
+      this.filterChart.selectedLocation = user.locations.map(
+        (l) => l.locationId
+      );
+      this.filterChart.data = this.filterChart.selectedLocation.slice();
+      this.filterChart.data.push(this.filterChart.period);
+      this.filterChart.data.push(this.filterChart.selectedYear);
+      this.filterChart.check++;
+    },
+
     onRowExpand(event) {
       this.expandedRows = this.getMaintenanceOrderList.filter(
         (p) => p.maintenanceOrderId == event.data.maintenanceOrderId
@@ -943,12 +988,12 @@ textarea {
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.3px;
- color: #0dc8de;
+  color: #0dc8de;
   text-align: center;
   text-transform: uppercase;
 
   width: 110px;
-    background-color:#f8f9ff;
+  background-color: #f8f9ff;
 }
 .unscheduled {
   border-radius: 2px;
@@ -973,9 +1018,8 @@ textarea {
   text-transform: uppercase;
 
   text-align: center;
-    background-color:#f8f9ff;
+  background-color: #f8f9ff;
   text-transform: uppercase;
-
 }
 .completed {
   border-radius: 2px;
@@ -983,10 +1027,10 @@ textarea {
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.3px;
-    color: #00e04b;
+  color: #00e04b;
   text-align: center;
   width: 110px;
-    background-color:#e8fcee;
+  background-color: #e8fcee;
   text-transform: uppercase;
 }
 .unscheduled {
@@ -1073,14 +1117,19 @@ textarea {
 }
 
 .dialog-title-2 {
-
-  width:150px;height:30px;border-radius:10px;margin:10px 0 40px  25px;
+  width: 150px;
+  height: 30px;
+  border-radius: 10px;
+  margin: 10px 0 40px 25px;
 }
-.dialog-title-2 span{
-padding-top:3px;font-weight:600;  font-size: 18px;font-family: Poppins
+.dialog-title-2 span {
+  padding-top: 3px;
+  font-weight: 600;
+  font-size: 18px;
+  font-family: Poppins;
 }
 ::v-deep(.p-tabview .p-tabview-nav) {
- margin-top:20px;
+  margin-top: 20px;
 }
 .dialog-title-2 span::before {
   content: "";
@@ -1203,8 +1252,10 @@ padding-top:3px;font-weight:600;  font-size: 18px;font-family: Poppins
 ::v-deep(.p-tabview.p-component) {
   width: 100%;
 }
-.header-detail{
-  font-weight: 400;color:grey;margin-bottom:5px
+.header-detail {
+  font-weight: 400;
+  color: grey;
+  margin-bottom: 5px;
 }
 .table-header-main {
   display: flex;
@@ -1263,5 +1314,13 @@ padding-top:3px;font-weight:600;  font-size: 18px;font-family: Poppins
 .inactive .main-layout-details {
   margin-left: 0;
   transition: all 0.2s;
+}
+
+.chart-title {
+  color: gray;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 </style>

@@ -18,8 +18,16 @@
           <h3
             class="p-m-2"
             style="font-size: 22px; font-weight: 400; color: rgb(20, 49, 120);"
+            v-if="isAdmin"
           >
             Users
+          </h3>
+          <h3
+            class="p-m-2"
+            style="font-size: 22px; font-weight: 400; color: rgb(20, 49, 120);"
+            v-else
+          >
+            Staffs
           </h3>
           <span class="p-input-icon-left">
             <Button
@@ -197,7 +205,7 @@
               icon="pi pi-eye"
               class="p-button-rounded p-button-info p-button-text"
               @click="seeProduct(slotProps.data)"
-              v-tooltip.bottom="'View Staff Detail'"
+              v-tooltip.bottom="'View Staff Details'"
               v-if="!admin"
             />
             <Button
@@ -216,42 +224,6 @@
         </Column>
       </DataTable>
     </div>
-    <Dialog
-      v-model:visible="showAssessment"
-      :style="{ width: '450px' }"
-      header="Assessment"
-      :modal="true"
-      :dismissableMask="true"
-      class="p-fluid"
-    >
-      <div class="p-field">
-        <Rating
-          :modelValue="product.AssessmentResult.Rating"
-          :readonly="true"
-          :stars="5"
-          :cancel="false"
-        />
-      </div>
-      <div class="p-field">
-        <label for="description">Description</label>
-        <Textarea
-          id="description"
-          v-model="product.AssessmentResult.Description"
-          required="true"
-          rows="3"
-          cols="20"
-          disabled
-        />
-      </div>
-      <template #footer>
-        <Button
-          label="Close"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="hideDialog"
-        />
-      </template>
-    </Dialog>
     <Dialog
       v-model:visible="UserUpdateDialog"
       :style="{ width: '450px' }"
@@ -622,7 +594,6 @@
 import Button from "primevue/button";
 import Toast from "primevue/toast";
 import Dropdown from "primevue/dropdown";
-import Rating from "primevue/rating";
 import MultiSelect from "primevue/multiselect";
 import contentNoti from "../util/contentNoti.js";
 import webRole from "../util/webRole.js";
@@ -686,7 +657,6 @@ export default {
     Button,
     Toast,
     Dropdown,
-    Rating,
     MultiSelect,
   },
   computed: {

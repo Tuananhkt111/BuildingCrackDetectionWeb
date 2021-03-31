@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="p-mb-4 main-layout-details">
-      <div class="p-inputgroup">
+      <div class="p-inputgroup" style="color: grey;">
         <Dropdown v-model="period" :options="periods"> </Dropdown>
         <Dropdown v-model="selectedYear" :options="years"></Dropdown>
         <MultiSelect
@@ -28,7 +28,7 @@
           <span class="box-name">Unrecorded Repair Cracks</span>
           <span class="box-count">{{ getCountCrackUnrecordedRepair }}</span>
         </div>
-        <img class="box-img" src="../asset/box2.png"/>
+        <img class="box-img" src="../asset/box2.png" />
       </div>
       <div class="box box3">
         <div class="box-title">
@@ -42,7 +42,7 @@
           <span class="box-name">Fixed Cracks</span>
           <span class="box-count">{{ getCountCrackFixed }}</span>
         </div>
-        <img class="box-img" src="../asset/box4.png"/>
+        <img class="box-img" src="../asset/box4.png" />
       </div>
     </div>
     <div class="p-d-flex p-al-center p-jc-between">
@@ -224,9 +224,9 @@ export default {
   height: 100px;
 }
 ::v-deep(.p-button) {
-  background: #007dfe;
+  background: #3b9cff;
   color: #ffffff;
-  border: 1px solid #007dfe;
+  border: 1px solid#3b9cff;
   margin: 0;
   outline: 0 none;
   border-radius: 6px;
@@ -252,8 +252,8 @@ export default {
 .main-layout-details {
   border-radius: 24px;
   background-color: white;
-  padding: 4px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   width: 50%;
 }
 
@@ -290,5 +290,8 @@ export default {
 .p-inputgroup > .p-inputwrapper:last-child > .p-inputtext {
   border-top-right-radius: 24px;
   border-bottom-right-radius: 24px;
+}
+::v-deep(.p-inputtext) {
+  color: grey;
 }
 </style>

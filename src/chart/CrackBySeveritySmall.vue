@@ -1,5 +1,12 @@
 <template>
-  <Chart type="doughnut" :data="basicData" :options="options" :key="check" />
+  <div :key="check">
+    <div v-if="getChartSeverity != null && getChartSeverity.length > 0">
+      <Chart type="doughnut" :data="basicData" :options="options" />
+    </div>
+    <div v-else class="p-d-flex p-ai-center p-jc-center">
+      <img src="../asset/2953962.jpg" style="width: 50%;" />
+    </div>
+  </div>
 </template>
 
 <script>

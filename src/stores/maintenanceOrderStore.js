@@ -6,6 +6,7 @@ const maintenanceOrderStore = {
     maintenanceOrderList: [],
     status: ["Waiting for confirm", "Waiting for maintenance", "Completed"],
     schedule: [],
+    chartStatus: []
   },
 
   getters: {
@@ -29,11 +30,17 @@ const maintenanceOrderStore = {
       }
       return state.schedule;
     },
+    getChartStatus(state) {
+      return state.chartStatus;
+    },
   },
 
   mutations: {
     setMaintenanceOrderList(state, maintenanceOrderList) {
       state.maintenanceOrderList = maintenanceOrderList;
+    },
+    setChartStatus(state, chartStatus) {
+      state.chartStatus = chartStatus;
     },
   },
 
@@ -63,6 +70,21 @@ const maintenanceOrderStore = {
       }
       if (res) {
         commit("setMaintenanceOrderList", res);
+      }
+    },
+
+    async setChartStatus({ commit }, filterChart) {
+      if (location != null) {
+        const res = await maintenanceOrderApi.countOrderByStatus(
+          filterChart.selectedLocation.toString(),
+          filterChart.period,
+          filterChart.selectedYear
+        );
+        if (res) {
+          commit("setChartStatus", res);
+        } else {
+          commit("setChartStatus", null);
+        }
       }
     },
   },

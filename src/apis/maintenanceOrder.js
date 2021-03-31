@@ -3,7 +3,8 @@ import urlConstants from '../util/urlConstants.js';
 
 export const mainteanceOrderApi = {
   getAll,
-  getById
+  getById,
+  countOrderByStatus
 };
 
 
@@ -17,7 +18,23 @@ async function getById(id){
     return res.data;
 }
 
+async function countOrderByStatus(locationId, period, year) {
+  const res = await ApiHelper.get(
+    urlConstants.MAINTEANANCE_ORDER_URL +
+      "/count/status?period=" +
+      period +
+      "&year=" +
+      year +
+      "&locationIdsStr=" +
+      locationId
+  );
+  if (res.status == 200) {
+    return res.data;
+  } else return 0;
+}
+
 export default {
   getAll,
-  getById
+  getById,
+  countOrderByStatus
 }

@@ -9,6 +9,7 @@ export const crackApi = {
   countCrackByStatus,
   countCrackBySeverity,
   countCrackByAssessment,
+  countCrackByStatusList
 };
 
 async function getAll() {

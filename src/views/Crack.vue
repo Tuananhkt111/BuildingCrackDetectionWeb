@@ -425,13 +425,16 @@
     <div style="width: 34%;margin-left:20px">
       <div class="main-layout-details" style="margin-bottom: 20px">
         <div class="chart-title">
-          <span>Cracks By Severity {{getCurrentPeriod}}</span>
+          <span>Cracks By Severity {{ getCurrentPeriod }}</span>
         </div>
-        <ChartSeverity :data="filterChart.data" :key="filterChart.check"></ChartSeverity>
+        <ChartSeverity
+          :data="filterChart.data"
+          :key="filterChart.check"
+        ></ChartSeverity>
       </div>
       <div class="main-layout-details">
         <div class="chart-title">
-          <span>Cracks By Status {{getCurrentPeriod}}</span>
+          <span>Cracks By Status {{ getCurrentPeriod }}</span>
         </div>
         <ChartStatus :data="filterChart" :key="filterChart.check"></ChartStatus>
       </div>
@@ -506,7 +509,7 @@ export default {
     Galleria,
     Toast,
     ChartSeverity,
-    ChartStatus
+    ChartStatus,
   },
   computed: {
     ...mapGetters("crack", [
