@@ -47,7 +47,7 @@
     </div>
     <div class="p-d-flex p-al-center p-jc-between">
       <div class="main-layout-details-chart" style="width: 49%">
-        <Chart :data="data" :key="check1"></Chart>
+        <Chart :data="data" :key="check1" :showTitle="true"></Chart>
       </div>
       <div class="p-col-6 main-layout-details-chart" style="width: 49%">
         <ChartAssessment :data="data" :key="check2"></ChartAssessment>

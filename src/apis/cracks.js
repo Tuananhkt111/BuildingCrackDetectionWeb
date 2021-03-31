@@ -52,6 +52,21 @@ async function countCrackByStatus(locationId, status, period, year) {
   } else return 0;
 }
 
+async function countCrackByStatusList(locationId, period, year) {
+  const res = await ApiHelper.get(
+    urlConstants.CRACK_URL +
+      "/count/status-list?period=" +
+      period +
+      "&year=" +
+      year +
+      "&locationIdsStr=" +
+      locationId
+  );
+  if (res != null) {
+    return res.data;
+  } else return 0;
+}
+
 async function countCrackBySeverity(locationId, period, year) {
   const res = await ApiHelper.get(
     urlConstants.CRACK_URL +
@@ -91,4 +106,5 @@ export default {
   countCrackByStatus,
   countCrackBySeverity,
   countCrackByAssessment,
+  countCrackByStatusList
 };

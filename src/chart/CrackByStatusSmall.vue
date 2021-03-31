@@ -1,5 +1,5 @@
 <template>
-  <Chart type="doughnut" :data="basicData" :options="options" :key="check"/>
+  <Chart type="horizontalBar" :data="basicData" :options="options" :key="check" />
 </template>
 
 <script>
@@ -11,13 +11,13 @@ export default {
   },
   props: ["data", "showTitle"],
   async mounted() {
-    await this.setChartSeverity(this.data);
-    if (this.getChartSeverity != null) {
-      this.getChartSeverity.forEach((x) => {
+    await this.setChartStatus(this.data);
+    if (this.setChartStatus != null) {
+      this.getChartStatus.forEach((x) => {
         this.basicData.labels.push(x.key);
         this.basicData.datasets[0].data.push(x.value);
       });
-      this.options.title.text = "Cracks by Severity";
+      this.options.title.text = "Cracks by Status";
     } else {
       this.options.title.text = "No Data";
     }
@@ -25,10 +25,10 @@ export default {
     this.check++;
   },
   computed: {
-    ...mapGetters("crack", ["getChartSeverity"]),
+    ...mapGetters("crack", ["getChartStatus"]),
   },
   methods: {
-    ...mapActions("crack", ["setChartSeverity"]),
+    ...mapActions("crack", ["setChartStatus"]),
   },
 
   data() {
@@ -39,26 +39,29 @@ export default {
           {
             data: [],
             backgroundColor: [
-              "rgb(255 74 92)",
+              "rgb(137 191 220)",
               "rgb(81 216 175)",
               "rgb(255 180 85)",
+              "rgb(253 81 125)",
             ],
             hoverBackgroundColor: [
-              "rgba(255,74,92,0.7)",
+              "rgba(137, 191, 220, 0.7)",
               "rgba(81, 216, 175, 0.7)",
               "rgba(255, 180, 85, 0.7)",
+              "rgba(253, 81, 125, 0.7)",
             ],
-            borderWidth: 1,
+            categoryPercentage: 0.9
           },
         ],
       },
       options: {
         legend: {
-          position: "top",
+          position: "right",
           labels: {
-            boxWidth: 50,
+            boxWidth: 40,
             fontSize: 14,
           },
+          display: false
         },
         tooltips: {
           bodyFontSize: 16,
@@ -70,24 +73,12 @@ export default {
           position: "top",
         },
         scales: {
-          yAxes: [
-            {
-              ticks: {
-                display: false,
-              },
-              gridLines: {
-                display: false,
-              },
-            },
-          ],
           xAxes: [
             {
               ticks: {
-                display: false,
+                beginAtZero: true,
               },
-              gridLines: {
-                display: false,
-              },
+              
             },
           ],
         },

@@ -1,5 +1,5 @@
 <template>
-  <Chart type="doughnut" :data="basicData" :options="options" :key="check"/>
+  <Chart type="doughnut" :data="basicData" :options="options" :key="check" />
 </template>
 
 <script>
@@ -54,9 +54,9 @@ export default {
       },
       options: {
         legend: {
-          position: "top",
+          position: "right",
           labels: {
-            boxWidth: 50,
+            boxWidth: 40,
             fontSize: 14,
           },
         },

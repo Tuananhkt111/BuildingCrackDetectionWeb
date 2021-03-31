@@ -965,11 +965,11 @@ textarea {
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.3px;
-  color: #8180f5;
+  color: #0dc8de;
   text-transform: uppercase;
 
   text-align: center;
-    background-color:#d7d5ff;
+    background-color:#f8f9ff;
   text-transform: uppercase;
 
 }
@@ -979,10 +979,10 @@ textarea {
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.3px;
-    color: #0dc8de;
+    color: #00e04b;
   text-align: center;
   width: 110px;
-    background-color:#f8f9ff;
+    background-color:#e8fcee;
   text-transform: uppercase;
 }
 .unscheduled {

@@ -12,6 +12,7 @@ const crackStore = {
     countCrackUnConfirm: 0,
     chartSeverity: [],
     chartAssessment: [],
+    chartStatus: []
   },
 
   getters: {
@@ -51,6 +52,9 @@ const crackStore = {
     getChartAssessment(state) {
       return state.chartAssessment;
     },
+    getChartStatus(state) {
+      return state.chartStatus;
+    },
   },
 
   mutations: {
@@ -75,6 +79,9 @@ const crackStore = {
     },
     setChartAssessment(state, chartAssessment) {
       state.chartAssessment = chartAssessment;
+    },
+    setChartStatus(state, chartStatus) {
+      state.chartStatus = chartStatus;
     },
   },
 
@@ -212,6 +219,21 @@ const crackStore = {
           commit("setChartAssessment", res);
         } else {
           commit("setChartAssessment", null);
+        }
+      }
+    },
+
+    async setChartStatus({ commit }, filterChart) {
+      if (location != null) {
+        const res = await crackApi.countCrackByStatusList(
+          filterChart.selectedLocation.toString(),
+          filterChart.period,
+          filterChart.selectedYear
+        );
+        if (res) {
+          commit("setChartStatus", res);
+        } else {
+          commit("setChartStatus", null);
         }
       }
     },

@@ -1,6 +1,6 @@
 <template>
   <div class="p-grid">
-    <div class="main-layout-details" style="width: 68%">
+    <div class="main-layout-details" style="width: 64.5%">
       <div class="card">
         <DataTable
           :rowHover="true"
@@ -421,10 +421,20 @@
       </Dialog>
       <Toast position="bottom-right" />
     </div>
-    <div
-      class="main-layout-details"
-      style="width: 29.7%;margin-left:30px"
-    ></div>
+    <div style="width: 34%;margin-left:20px">
+      <div class="main-layout-details" style="margin-bottom: 20px">
+        <div class="chart-title">
+          <span>Cracks By Severity {{getCurrentPeriod}}</span>
+        </div>
+        <ChartSeverity :data="filterChart.data" :key="filterChart.check"></ChartSeverity>
+      </div>
+      <div class="main-layout-details">
+        <div class="chart-title">
+          <span>Cracks By Status {{getCurrentPeriod}}</span>
+        </div>
+        <ChartStatus :data="filterChart" :key="filterChart.check"></ChartStatus>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -444,6 +454,8 @@ import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import webRole from "../util/webRole.js";
 import Toast from "primevue/toast";
+import ChartSeverity from "../chart/CrackBySeveritySmall.vue";
+import ChartStatus from "../chart/CrackByStatusSmall.vue";
 
 export default {
   setup() {
@@ -492,6 +504,8 @@ export default {
     TabPanel,
     Galleria,
     Toast,
+    ChartSeverity,
+    ChartStatus
   },
   computed: {
     ...mapGetters("crack", [
@@ -504,6 +518,15 @@ export default {
       let role = JSON.parse(localStorage.getItem("user")).role;
       if (webRole.STAFF_ROLE === role) return true;
       return false;
+    },
+
+    getCurrentPeriod() {
+      return (
+        " Period " +
+        this.filterChart.period +
+        "/" +
+        this.filterChart.selectedYear
+      );
     },
   },
   data() {
@@ -520,6 +543,13 @@ export default {
       displayCustom: false,
       activeIndex: 0,
       updateCrackDialog: false,
+      filterChart: {
+        selectedYear: null,
+        selectedLocation: [],
+        period: "",
+        data: null,
+        check: 0,
+      },
     };
   },
   async created() {
@@ -527,6 +557,7 @@ export default {
     await this.setCrackList().then(() => {
       this.loading = false;
     });
+    await this.filter();
   },
   methods: {
     ...mapActions("crack", ["setCrackList"]),
@@ -536,6 +567,27 @@ export default {
       this.activeIndex = index - 1;
       this.displayCustom = true;
     },
+
+    async filter() {
+      let date = new Date();
+      this.filterChart.selectedYear = date.getFullYear();
+      if (date.getMonth() < 5) {
+        this.filterChart.period = 1;
+      } else if (date.getMonth() < 9) {
+        this.filterChart.period = 2;
+      } else if (date.getMonth() < 13) {
+        this.filterChart.period = 3;
+      }
+      let user = JSON.parse(localStorage.getItem("user"));
+      this.filterChart.selectedLocation = user.locations.map(
+        (l) => l.locationId
+      );
+      this.filterChart.data = this.filterChart.selectedLocation.slice();
+      this.filterChart.data.push(this.filterChart.period);
+      this.filterChart.data.push(this.filterChart.selectedYear);
+      this.filterChart.check++;
+    },
+
     stockClass(data) {
       return [
         {
@@ -1166,7 +1218,7 @@ textarea {
   border-radius: 24px;
   background-color: white;
   padding: 20px;
-  box-shadow:rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 .active .main-layout-details {
   margin-left: 266.5px;
@@ -1178,5 +1230,12 @@ textarea {
 }
 .single-chart {
   width: 70px;
+}
+.chart-title {
+  color: gray;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 </style>
