@@ -43,7 +43,14 @@ export default {
         title: {
           display: true,
           text: "Cracks",
-          fontSize: 18,
+          fontSize: 24,
+        },
+        legend: {
+          position: "top",
+          labels: {
+            boxWidth: 50,
+            fontSize: 14,
+          },
         },
         scales: {
           yAxes: [

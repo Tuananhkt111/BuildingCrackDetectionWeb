@@ -17,9 +17,9 @@ export default {
         this.basicData.labels.push(x.key);
         this.basicData.datasets[0].data.push(x.value);
       });
-      this.options.title.text = "Crack";
+      this.options.title.text = "Cracks by Severity";
     } else {
-      this.options.title.text = "No Crack Found";
+      this.options.title.text = "No Data";
     }
 
     this.check++;
@@ -38,17 +38,36 @@ export default {
         datasets: [
           {
             data: [],
-            backgroundColor: ["#42A5F5", "#66BB6A", "#FFA726"],
-            hoverBackgroundColor: ["#64B5F6", "#81C784", "#FFB74D"],
+            backgroundColor: [
+              "rgb(255 74 92)",
+              "rgb(81 216 175)",
+              "rgb(255 180 85)",
+            ],
+            hoverBackgroundColor: [
+              "rgba(255,74,92,0.7)",
+              "rgba(81, 216, 175, 0.7)",
+              "rgba(255, 180, 85, 0.7)",
+            ],
             borderWidth: 1,
           },
         ],
       },
       options: {
+        legend: {
+          position: "top",
+          labels: {
+            boxWidth: 50,
+            fontSize: 14,
+          },
+        },
+        tooltips: {
+          bodyFontSize: 16,
+        },
         title: {
           display: true,
-          text: "Cracks",
-          fontSize: 18,
+          text: "Cracks by Severity",
+          fontSize: 24,
+          position: "top",
         },
         scales: {
           yAxes: [
@@ -78,4 +97,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>
