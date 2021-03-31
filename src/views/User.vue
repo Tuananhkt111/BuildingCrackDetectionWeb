@@ -445,7 +445,7 @@
           @click="hideDialog"
         />
         <Button
-          label="Update Location"
+          label="Update Area"
           icon="pi pi-times"
           class="p-button-text"
           @click="updateLoaction"
@@ -1076,7 +1076,7 @@ export default {
           this.$toast.add({
             severity: "success",
             summary: "Success",
-            detail: "Update Location success",
+            detail: "Update Area success",
             life: 3000,
           });
           this.StaffDialog = false;
@@ -1086,7 +1086,7 @@ export default {
           this.$toast.add({
             severity: "error",
             summary: "Error",
-            detail: "Update Location failed!",
+            detail: "Update Area failed!",
             life: 3000,
           });
           this.StaffDialog = false;
