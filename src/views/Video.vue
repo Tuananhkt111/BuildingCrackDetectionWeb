@@ -80,7 +80,9 @@
           <div class="p-col-6">
             <p class="right">{{ getFlight.description }}</p>
             <p class="right" v-if="!isStaff">{{ getFlight.locationName }}</p>
-            <p class="right" v-if="!isStaff">{{ getFlight.dataCollectorName }}</p>
+            <p class="right" v-if="!isStaff">
+              {{ getFlight.dataCollectorName }}
+            </p>
             <p
               class="right p-mb-3"
               v-if="
@@ -173,7 +175,10 @@
                     />
                   </template>
                 </Column>
-                <Column :filterMenuStyle="{ width: '5rem' }"  headerStyle="border-radius:0 20px 20px 0">
+                <Column
+                  :filterMenuStyle="{ width: '5rem' }"
+                  headerStyle="border-radius:0 20px 20px 0"
+                >
                   <template #body="slotProps">
                     <Button
                       label="Reject"
@@ -336,9 +341,9 @@
                     </MultiSelect>
                   </template>
                 </Column>
-                <Column :filterMenuStyle="{ width: '5rem' }" 
-                    headerStyle="border-radius:0 20px 20px 0"
-                
+                <Column
+                  :filterMenuStyle="{ width: '5rem' }"
+                  headerStyle="border-radius:0 20px 20px 0"
                 >
                   <template #body="slotProps">
                     <Button
@@ -354,7 +359,9 @@
                       @click="showUpdateCrack(slotProps.data)"
                       style="margin: 2px"
                       v-tooltip.bottom="'Update Crack'"
-                      v-if="isStaff && slotProps.data.status === 'UnrecordedRepair'"
+                      v-if="
+                        isStaff && slotProps.data.status === 'UnrecordedRepair'
+                      "
                     />
                     <Button
                       v-if="
@@ -461,11 +468,15 @@
             </TabPanel>
             <TabPanel
               header="Description"
-              :disabled="product.description == '' || product.description == null"
+              :disabled="
+                product.description == '' || product.description == null
+              "
             >
               <div class="p-col-12">
                 <p>
-                  <span style="font-weight: bold">{{ product.description }}</span>
+                  <span style="font-weight: bold">{{
+                    product.description
+                  }}</span>
                 </p>
               </div>
             </TabPanel>
@@ -763,15 +774,14 @@ export default {
       "getUnConfirmCrackList",
       "getFlight",
       "getFlightCount",
-      "getIsShow"
+      "getIsShow",
     ]),
 
     isStaff() {
       let role = JSON.parse(localStorage.getItem("user")).role;
-      if(webRole.STAFF_ROLE === role)
-        return true;
+      if (webRole.STAFF_ROLE === role) return true;
       return false;
-    }
+    },
   },
   data() {
     return {
@@ -867,7 +877,11 @@ export default {
       this.confirmCrackDialog = true;
     },
     async confirmCrack() {
-      if (this.meta.valid && this.position != null && this.selectedSeverity != null) {
+      if (
+        this.meta.valid &&
+        this.position != null &&
+        this.selectedSeverity != null
+      ) {
         await crackApi
           .verifyCrack(
             this.product.crackId,
@@ -875,15 +889,39 @@ export default {
             this.description,
             this.selectedSeverity
           )
-          .then(() => {
-            this.$toast.add({
-              severity: "info",
-              summary: "Confirmed",
-              detail: "Crack is confirmed!",
-              life: 3000,
-            });
-            this.setFlight(this.$route.query.detectionResultId);
-            this.confirmCrackDialog = false;
+          .then(async (res) => {
+            if (res.status == 200) {
+              if (this.selectedSeverity === "High") {
+                await crackApi
+                  .addHighSeverityToQueue(this.product.crackId)
+                  .then((res1) => {
+                    if (res1.status == 200) {
+                      this.$toast.add({
+                        severity: "info",
+                        summary: "Confirmed",
+                        detail: "Crack is confirmed!",
+                        life: 3000,
+                      });
+                    }
+                  });
+              } else {
+                this.$toast.add({
+                  severity: "info",
+                  summary: "Confirmed",
+                  detail: "Crack is confirmed!",
+                  life: 3000,
+                });
+              }
+              this.setFlight(this.$route.query.detectionResultId);
+              this.confirmCrackDialog = false;
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: "Falied",
+                detail: "Confirm Failed",
+                life: 3000,
+              });
+            }
           })
           .catch(() => {
             this.$toast.add({
@@ -929,7 +967,11 @@ export default {
     },
 
     async updateCrack() {
-      if (this.meta.valid  && this.position != null && this.selectedSeverity != null) {
+      if (
+        this.meta.valid &&
+        this.position != null &&
+        this.selectedSeverity != null
+      ) {
         await crackApi
           .verifyCrack(
             this.product.crackId,
@@ -1187,9 +1229,9 @@ textarea {
   letter-spacing: 0.3px;
   text-transform: uppercase;
   color: #25c997;
-  background-color:#e2fff6;
+  background-color: #e2fff6;
 
-    text-align: center;
+  text-align: center;
   width: 80px;
 }
 
@@ -1200,8 +1242,8 @@ textarea {
   font-size: 13px;
   letter-spacing: 0.3px;
   color: #ffad44;
-  background-color:#fff4de;
-    text-align: center;
+  background-color: #fff4de;
+  text-align: center;
   width: 80px;
   text-transform: uppercase;
 }
@@ -1216,7 +1258,7 @@ textarea {
   color: #ff0019;
   text-align: center;
   width: 80px;
-    background-color:#ffe2e5;
+  background-color: #ffe2e5;
 }
 .detectedFailed {
   border-radius: 2px;
@@ -1235,7 +1277,6 @@ textarea {
   letter-spacing: 0.3px;
   color: rgb(255, 65, 65);
   text-transform: uppercase;
-
 }
 .unscheduled {
   border-radius: 2px;

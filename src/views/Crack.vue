@@ -583,7 +583,8 @@ export default {
         this.filterChart.period = 3;
       }
       let user = JSON.parse(localStorage.getItem("user"));
-      this.filterChart.selectedLocation = user.locations.map(
+      
+      this.filterChart.selectedLocation.locationId = user.locations.map(
         (l) => l.locationId
       );
       this.filterChart.data = this.filterChart.selectedLocation.slice();

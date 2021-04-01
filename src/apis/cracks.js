@@ -9,7 +9,8 @@ export const crackApi = {
   countCrackByStatus,
   countCrackBySeverity,
   countCrackByAssessment,
-  countCrackByStatusList
+  countCrackByStatusList,
+  addHighSeverityToQueue
 };
 
 async function getAll() {
@@ -99,6 +100,15 @@ async function countCrackByAssessment(locationId, period, year) {
   } else return null;
 }
 
+async function addHighSeverityToQueue(crackId) {
+  const payload = [crackId];
+  const res = await ApiHelper.post(urlConstants.MAINTEANANCE_ORDER_URL + "/queue" ,payload);
+  console.log(res);
+  if (res.status == 200) {
+    return res.data;
+  } else return res;
+}
+
 export default {
   getAll,
   getById,
@@ -107,5 +117,6 @@ export default {
   countCrackByStatus,
   countCrackBySeverity,
   countCrackByAssessment,
-  countCrackByStatusList
+  countCrackByStatusList,
+  addHighSeverityToQueue
 };

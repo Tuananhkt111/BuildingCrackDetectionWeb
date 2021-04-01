@@ -8,6 +8,7 @@
           v-model="selectedLocation"
           :options="getLocationList"
           optionLabel="name"
+          v-if="role != 'Staff'"
         >
         </MultiSelect>
         <Button label="Filter" icon="pi pi-filter" class="" @click="filter" />
@@ -81,6 +82,7 @@ export default {
       data: null,
       check1: 0,
       check2: 0,
+      role: null,
     };
   },
 
@@ -161,6 +163,7 @@ export default {
     await this.setLocationList();
     this.selectedLocation = this.getLocationList;
     await this.setDefault();
+    this.role = JSON.parse(localStorage.getItem("user")).role;
   },
 };
 </script>

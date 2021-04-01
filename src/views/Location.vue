@@ -242,6 +242,7 @@
           class="form-control form-control-alternative"
           rows="3"
           cols="20"
+          :readonly="!admin"
           style="width:100%; height: auto;"
           placeholder="Description"
           :readonly="!admin"
