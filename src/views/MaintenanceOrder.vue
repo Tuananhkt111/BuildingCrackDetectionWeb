@@ -1,11 +1,17 @@
 <template>
-  <div class="p-grid as">
-    <div style="width: 34%;margin-right:20px">
-      <div class="main-layout-details" style="margin-bottom: 20px">
+  <div class="p-grid">
+    <div class="chart-box">
+      <div class="main-layout-details" style="width: 29%">
         <div class="chart-title">
           <span>Repair Records By Status {{ getCurrentPeriod }}</span>
         </div>
         <ChartStatus :data="filterChart" :key="filterChart.check"></ChartStatus>
+      </div>
+      <div class="main-layout-details" style="width: 70%">
+        <div class="chart-title">
+          <span>Repair Records Timeline</span>
+        </div>
+        <OrderTimeline></OrderTimeline>
       </div>
     </div>
     <div class="main-layout-details">
@@ -552,6 +558,7 @@ import crackApi from "../apis/cracks.js";
 import Galleria from "primevue/galleria";
 import webRole from "../util/webRole.js";
 import ChartStatus from "../chart/OrderByStatusSmall.vue";
+import OrderTimeline from "../chart/OrderRecordTimeline.vue";
 
 export default {
   components: {
@@ -563,7 +570,8 @@ export default {
     TabView,
     TabPanel,
     Galleria,
-    ChartStatus
+    ChartStatus,
+    OrderTimeline
   },
 
   computed: {
@@ -1322,5 +1330,13 @@ textarea {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
+}
+
+.chart-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%;
 }
 </style>
