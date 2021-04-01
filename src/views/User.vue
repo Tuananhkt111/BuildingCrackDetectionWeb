@@ -173,14 +173,14 @@
           <template #body="slotProps">
             <span
               v-if="
-                slotProps.data.locations !== [] &&
-                  slotProps.data.locations !== null
+                slotProps.data.locations !== null &&
+                  slotProps.data.locations.length > 0
               "
             >
               {{ slotProps.data.locations.map((l) => " " + l.name).toString() }}
             </span>
-            <span v-else>
-              No area assigned
+            <span v-else style="font-style: italic; color: #adadad">
+              No Area assigned
             </span>
           </template>
           <template #filter="{ filterModel }">
