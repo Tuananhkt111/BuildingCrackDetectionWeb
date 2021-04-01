@@ -917,7 +917,7 @@ export default {
             } else {
               this.$toast.add({
                 severity: "error",
-                summary: "Falied",
+                summary: "Failed",
                 detail: "Confirm Failed",
                 life: 3000,
               });
@@ -926,7 +926,7 @@ export default {
           .catch(() => {
             this.$toast.add({
               severity: "error",
-              summary: "Falied",
+              summary: "Failed",
               detail: "Confirm Failed",
               life: 3000,
             });
@@ -992,7 +992,7 @@ export default {
           .catch(() => {
             this.$toast.add({
               severity: "error",
-              summary: "Falied",
+              summary: "Failed",
               detail: "Updated Failed",
               life: 3000,
             });
