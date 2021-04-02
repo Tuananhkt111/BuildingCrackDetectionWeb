@@ -1584,4 +1584,7 @@ textarea {
   margin-left: 0;
   transition: all 0.2s;
 }
+.single-chart {
+  width: 80px;
+}
 </style>
