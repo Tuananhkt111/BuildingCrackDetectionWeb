@@ -38,9 +38,9 @@ export default {
           {
             label: "Repair Expense",
             data: [],
-            fill: true,
+            fill: false,
             borderColor: "#2196f3",
-            backgroundColor: 'rgb(117 190 248)'
+            lineTension: 0,
           },
         ],
       },
