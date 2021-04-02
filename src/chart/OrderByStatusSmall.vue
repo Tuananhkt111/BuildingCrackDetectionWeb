@@ -51,12 +51,12 @@ export default {
           {
             data: [],
             backgroundColor: [
-              "rgb(122 241 255)",
               "rgb(99 255 151)",
+              "rgb(122 241 255)",
             ],
             hoverBackgroundColor: [
-              "rgba(122, 241, 255, 0.7)",
               "rgba(99, 255, 151, 0.7)",
+              "rgba(122, 241, 255, 0.7)",
             ],
             borderWidth: 1
           },

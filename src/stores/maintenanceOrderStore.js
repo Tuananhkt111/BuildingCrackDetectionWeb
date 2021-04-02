@@ -6,7 +6,11 @@ const maintenanceOrderStore = {
     maintenanceOrderList: [],
     status: ["Waiting for confirm", "Waiting for maintenance", "Completed"],
     schedule: [],
-    chartStatus: []
+    chartStatus: [],
+    chartExpense: [],
+    countOrders: 0,
+    expenseTotal: 0,
+    averageAssessment: 0
   },
 
   getters: {
@@ -33,6 +37,18 @@ const maintenanceOrderStore = {
     getChartStatus(state) {
       return state.chartStatus;
     },
+    getChartExpense(state) {
+      return state.chartExpense;
+    },
+    getOrdersCount(state) {
+      return state.countOrders;
+    },
+    getExpenseTotal(state) {
+      return state.expenseTotal;
+    },
+    getAverageAssessment(state) {
+      return state.averageAssessment;
+    },
   },
 
   mutations: {
@@ -41,6 +57,18 @@ const maintenanceOrderStore = {
     },
     setChartStatus(state, chartStatus) {
       state.chartStatus = chartStatus;
+    },
+    setChartExpense(state, chartExpense) {
+      state.chartExpense = chartExpense;
+    },
+    setOrdersCount(state, value) {
+      state.countOrders = value;
+    },
+    setExpenseTotal(state, value) {
+      state.expenseTotal = value;
+    },
+    setAverageAssessment(state, value) {
+      state.averageAssessment = value;
     },
   },
 
@@ -58,7 +86,6 @@ const maintenanceOrderStore = {
             res[index].cracks[index2].index = index2 + 1;            
           }
         }
-        console.log(res);
         commit("setMaintenanceOrderList", res.filter((mo) => mo.status !== "WaitingForConfirm"));
       }
     },
@@ -74,7 +101,7 @@ const maintenanceOrderStore = {
     },
 
     async setChartStatus({ commit }, filterChart) {
-      if (location != null) {
+      if (filterChart != null) {
         const res = await maintenanceOrderApi.countOrderByStatus(
           filterChart.selectedLocation.toString(),
           filterChart.period,
@@ -84,6 +111,62 @@ const maintenanceOrderStore = {
           commit("setChartStatus", res);
         } else {
           commit("setChartStatus", null);
+        }
+      }
+    },
+
+    async setChartExpense({ commit }, filterChart) {
+      if (filterChart != null) {
+        const res = await maintenanceOrderApi.getExpensesOrder(
+          filterChart.selectedLocation.locationId,
+          filterChart.selectedYear
+        );
+        if (res) {
+          commit("setChartExpense", res);
+        } else {
+          commit("setChartExpense", null);
+        }
+      }
+    },
+
+    async setOrdersCount({ commit }, filterChart) {
+      if (filterChart != null) {
+        const res = await maintenanceOrderApi.getOrdersCount(
+          filterChart.selectedLocation.locationId,
+          filterChart.selectedYear
+        );
+        if (res) {
+          commit("setOrdersCount", res);
+        } else {
+          commit("setOrdersCount", 0);
+        }
+      }
+    },
+
+    async setExpenseTotal({ commit }, filterChart) {
+      if (filterChart != null) {
+        const res = await maintenanceOrderApi.getExpensesOrderTotal(
+          filterChart.selectedLocation.locationId,
+          filterChart.selectedYear
+        );
+        if (res) {
+          commit("setExpenseTotal", res);
+        } else {
+          commit("setExpenseTotal", 0);
+        }
+      }
+    },
+
+    async setAverageAssessment({ commit }, filterChart) {
+      if (filterChart != null) {
+        const res = await maintenanceOrderApi.getAverageAssessment(
+          filterChart.selectedLocation.locationId,
+          filterChart.selectedYear
+        );
+        if (res) {
+          commit("setAverageAssessment", res);
+        } else {
+          commit("setAverageAssessment", 0);
         }
       }
     },

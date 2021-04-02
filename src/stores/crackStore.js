@@ -6,13 +6,10 @@ const crackStore = {
     crackList: [],
     statuses: ["UnrecordedRepair", "RecordedRepair", "Fixed"],
     severitys: ["Low", "Medium", "High"],
-    countCrackFixed: 0,
-    countCrackRecordedRepair: 0,
-    countCrackUnrecordedRepair: 0,
-    countCrackUnConfirm: 0,
+    countCrack: 0,
     chartSeverity: [],
-    chartAssessment: [],
-    chartStatus: []
+    chartLocationsAndSeverity: [],
+    chartStatus: [],
   },
 
   getters: {
@@ -34,23 +31,14 @@ const crackStore = {
     getSeveritysList(state) {
       return state.severitys;
     },
-    getCountCrackFixed(state) {
-      return state.countCrackFixed;
-    },
-    getCountCrackRecordedRepair(state) {
-      return state.countCrackRecordedRepair;
-    },
-    getCountCrackUnrecordedRepair(state) {
-      return state.countCrackUnrecordedRepair;
-    },
-    getCountCrackUnConfirm(state) {
-      return state.countCrackUnConfirm;
+    getCountCrack(state) {
+      return state.countCrack;
     },
     getChartSeverity(state) {
       return state.chartSeverity;
     },
-    getChartAssessment(state) {
-      return state.chartAssessment;
+    getChartLocationsAndSeverity(state) {
+      return state.chartLocationsAndSeverity;
     },
     getChartStatus(state) {
       return state.chartStatus;
@@ -61,24 +49,14 @@ const crackStore = {
     setCrackList(state, crackList) {
       state.crackList = crackList;
     },
-    setCountCrackFixed(state, countCrackFixed) {
-      state.countCrackFixed = countCrackFixed;
-    },
-
-    setCountCrackRecordedRepair(state, countCrackRecordedRepair) {
-      state.countCrackRecordedRepair = countCrackRecordedRepair;
-    },
-    setCountCrackUnrecordedRepair(state, countCrackUnrecordedRepair) {
-      state.countCrackUnrecordedRepair = countCrackUnrecordedRepair;
-    },
-    setCountCrackUnConfirm(state, countCrackUnConfirm) {
-      state.countCrackUnConfirm = countCrackUnConfirm;
+    setCountCrack(state, countCrack) {
+      state.countCrack = countCrack;
     },
     setChartSeverity(state, chartSeverity) {
       state.chartSeverity = chartSeverity;
     },
-    setChartAssessment(state, chartAssessment) {
-      state.chartAssessment = chartAssessment;
+    setChartLocationsAndSeverity(state, chartLocationsAndSeverity) {
+      state.chartLocationsAndSeverity = chartLocationsAndSeverity;
     },
     setChartStatus(state, chartStatus) {
       state.chartStatus = chartStatus;
@@ -106,76 +84,18 @@ const crackStore = {
         );
       }
     },
-    async setCountCrackFixed({ commit }, location) {
-      var locationId = [];
-      var tmp = 0;
-      for (let index = 0; index < location.length - 2; index++) {
-        locationId[index] = location[index].locationId;
-        tmp++;
+    async setCountCrack({ commit }, data) {
+      if (data != null) {
+        const res = await crackApi.countCrack(
+          data.selectedLocation.locationId,
+          data.selectedYear
+        );
+        if (res) {
+          commit("setCountCrack", res);
+        } else {
+          commit("setCountCrack", 0);
+        }
       }
-      var period = location[tmp];
-      var year = location[tmp + 1];
-      const fixed = await crackApi.countCrackByStatus(
-        locationId.toString(),
-        "Fixed",
-        period,
-        year
-      );
-      commit("setCountCrackFixed", fixed);
-    },
-
-    async setCountCrackUnrecordedRepair({ commit }, location) {
-      var locationId = [];
-      var tmp = 0;
-      for (let index = 0; index < location.length - 2; index++) {
-        locationId[index] = location[index].locationId;
-        tmp++;
-      }
-      var period = location[tmp];
-      var year = location[tmp + 1];
-      const UnrecordedRepair = await crackApi.countCrackByStatus(
-        locationId.toString(),
-        "UnrecordedRepair",
-        period,
-        year
-      );
-      commit("setCountCrackUnrecordedRepair", UnrecordedRepair);
-    },
-
-    async setCountCrackRecordedRepair({ commit }, location) {
-      var locationId = [];
-      var tmp = 0;
-      for (let index = 0; index < location.length - 2; index++) {
-        locationId[index] = location[index].locationId;
-        tmp++;
-      }
-      var period = location[tmp];
-      var year = location[tmp + 1];
-      const RecordedRepair = await crackApi.countCrackByStatus(
-        locationId.toString(),
-        "RecordedRepair",
-        period,
-        year
-      );
-      commit("setCountCrackRecordedRepair", RecordedRepair);
-    },
-
-    async setCountCrackUnConfirm({ commit }, location) {
-      var locationId = [];
-      var tmp = 0;
-      for (let index = 0; index < location.length - 2; index++) {
-        locationId[index] = location[index].locationId;
-        tmp++;
-      }
-      var period = location[tmp];
-      var year = location[tmp + 1];
-      const unConfirmed = await crackApi.countCrackByStatus(
-        locationId.toString(),
-        "UnConfirmed",
-        period,
-        year
-      );
-      commit("setCountCrackUnConfirm", unConfirmed);
     },
 
     async setChartSeverity({ commit }, location) {
@@ -200,31 +120,22 @@ const crackStore = {
         }
       }
     },
-    async setChartAssessment({ commit }, location) {
-      if (location != null) {
-        var locationId = [];
-        var tmp = 0;
-        for (let index = 0; index < location.length - 2; index++) {
-          locationId[index] = location[index].locationId;
-          tmp++;
-        }
-        var period = location[tmp];
-        var year = location[tmp + 1];
-        const res = await crackApi.countCrackByAssessment(
-          locationId.toString(),
-          period,
-          year
+    async setChartLocationsAndSeverity({ commit }, data) {
+      if (data != null) {
+        const res = await crackApi.countCrackByLocationsAndSeverity(
+          data.selectedLocation.locationId,
+          data.selectedYear
         );
         if (res) {
-          commit("setChartAssessment", res);
+          commit("setChartLocationsAndSeverity", res);
         } else {
-          commit("setChartAssessment", null);
+          commit("setChartLocationsAndSeverity", null);
         }
       }
     },
 
     async setChartStatus({ commit }, filterChart) {
-      if (location != null) {
+      if (filterChart != null) {
         const res = await crackApi.countCrackByStatusList(
           filterChart.selectedLocation.toString(),
           filterChart.period,

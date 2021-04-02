@@ -2,23 +2,22 @@
   <div>
     <div class="p-mb-4 main-layout-details">
       <div class="p-inputgroup" style="color: grey;">
-        <Dropdown v-model="period" :options="periods"> </Dropdown>
-        <Dropdown v-model="selectedYear" :options="years"></Dropdown>
-        <MultiSelect
-          v-model="selectedLocation"
+        <Dropdown v-model="data.selectedYear" :options="years"></Dropdown>
+        <Dropdown
+          v-model="data.selectedLocation"
           :options="getLocationList"
           optionLabel="name"
           v-if="role != 'Staff'"
         >
-        </MultiSelect>
+        </Dropdown>
         <Button label="Filter" icon="pi pi-filter" class="" @click="filter" />
       </div>
     </div>
     <div class="p-d-flex p-al-center p-jc-around">
       <div class="box box1">
         <div class="box-title">
-          <span class="box-name">Unconfirm Cracks</span>
-          <span class="box-count">{{ getCountCrackUnConfirm }}</span>
+          <span class="box-name">Cracks Total</span>
+          <span class="box-count">{{ getCountCrack }}</span>
         </div>
         <div>
           <img class="box-img" src="../asset/box1.png" />
@@ -26,22 +25,27 @@
       </div>
       <div class="box box2">
         <div class="box-title">
-          <span class="box-name">Unrecorded Repair Cracks</span>
-          <span class="box-count">{{ getCountCrackUnrecordedRepair }}</span>
+          <span class="box-name">Repair Records Total</span>
+          <span class="box-count">{{ getOrdersCount }}</span>
         </div>
         <img class="box-img" src="../asset/box2.png" />
       </div>
       <div class="box box3">
         <div class="box-title">
-          <span class="box-name">Recorded Repair Cracks</span>
-          <span class="box-count">{{ getCountCrackRecordedRepair }}</span>
+          <span class="box-name">Repair Expense Total</span>
+          <span class="box-count">{{
+            getExpenseTotal.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })
+          }}</span>
         </div>
         <img class="box-img" src="../asset/box3.png" />
       </div>
       <div class="box box4">
         <div class="box-title">
-          <span class="box-name">Fixed Cracks</span>
-          <span class="box-count">{{ getCountCrackFixed }}</span>
+          <span class="box-name">Average Asessment</span>
+          <span class="box-count">{{ (getAverageAssessment*100).toFixed(2) }} %</span>
         </div>
         <img class="box-img" src="../asset/box4.png" />
       </div>
@@ -51,7 +55,10 @@
         <Chart :data="data" :key="check1" :showTitle="true"></Chart>
       </div>
       <div class="p-col-6 main-layout-details-chart" style="width: 49%">
-        <ChartAssessment :data="data" :key="check2"></ChartAssessment>
+        <ChartLocationsAndSeverity
+          :data="data"
+          :key="check2"
+        ></ChartLocationsAndSeverity>
       </div>
     </div>
   </div>
@@ -59,27 +66,23 @@
 
 <script>
 import Dropdown from "primevue/dropdown";
-import MultiSelect from "primevue/multiselect";
-import Chart from "../chart/CrackBySeverity.vue";
+import Chart from "../chart/OrderExpense.vue";
 import { mapGetters, mapActions } from "vuex";
-import ChartAssessment from "../chart/CrackByAssessment.vue";
+import ChartLocationsAndSeverity from "../chart/CrackByLocationAndSeverity.vue";
 export default {
   components: {
     Dropdown,
-    MultiSelect,
     Chart,
-    ChartAssessment,
+    ChartLocationsAndSeverity,
   },
 
   data() {
     return {
       years: [],
-      selectedYear: null,
-      selectedLocation: [],
-      periods: [],
-      period: "",
-      tmpPeriod: 0,
-      data: null,
+      data: {
+        selectedYear: null,
+        selectedLocation: null,
+      },
       check1: 0,
       check2: 0,
       role: null,
@@ -88,71 +91,44 @@ export default {
 
   computed: {
     ...mapGetters("location", ["getLocationList"]),
-    ...mapGetters("crack", [
-      "getCountCrackFixed",
-      "getCountCrackRecordedRepair",
-      "getCountCrackUnrecordedRepair",
-      "getCountCrackUnConfirm",
+    ...mapGetters("crack", ["getCountCrack"]),
+    ...mapGetters("maintenanceOrder", [
+      "getAverageAssessment",
+      "getExpenseTotal",
+      "getOrdersCount",
     ]),
   },
 
   methods: {
     ...mapActions("location", ["setLocationList"]),
-    ...mapActions("crack", [
-      "setCountCrackUnConfirm",
-      "setCountCrackFixed",
-      "setCountCrackUnrecordedRepair",
-      "setCountCrackRecordedRepair",
+    ...mapActions("crack", ["setCountCrack"]),
+    ...mapActions("maintenanceOrder", [
+      "setAverageAssessment",
+      "setExpenseTotal",
+      "setOrdersCount",
     ]),
 
     async filter() {
-      if (this.period == "Period 1") {
-        this.tmpPeriod = 1;
-      } else if (this.period == "Period 2") {
-        this.tmpPeriod = 2;
-      } else if (this.period == "Period 3") {
-        this.tmpPeriod = 3;
-      }
-      this.data = this.selectedLocation.slice();
-      this.data.push(this.tmpPeriod);
-      this.data.push(this.selectedYear);
       Promise.all([
-        this.setCountCrackFixed(this.data),
-        this.setCountCrackUnrecordedRepair(this.data),
-        this.setCountCrackRecordedRepair(this.data),
-        await this.setCountCrackUnConfirm(this.data),
+        this.setCountCrack(this.data),
+        this.setAverageAssessment(this.data),
+        this.setExpenseTotal(this.data),
+        this.setOrdersCount(this.data),
       ]);
       this.check1++;
       this.check2++;
     },
     async setDefault() {
       var d = new Date();
-      this.selectedYear = d.getFullYear();
-      this.years.push(this.selectedYear);
-      this.years.push(this.selectedYear - 1);
-      this.years.push(this.selectedYear - 2);
-      var n = d.getMonth();
-      this.periods.push("Period 1");
-      this.periods.push("Period 2");
-      this.periods.push("Period 3");
-      if (n > 0 && n < 5) {
-        this.period = "Period 1";
-        this.tmpPeriod = 1;
-      } else if (n >= 5 && n < 8) {
-        this.period = "Period 2";
-        this.tmpPeriod = 2;
-      } else if (n >= 8 && n <= 12) {
-        this.period = "Period 3";
-        this.tmpPeriod = 3;
-      }
-      this.data = this.selectedLocation.slice();
-      this.data.push(this.tmpPeriod);
-      this.data.push(this.selectedYear);
+      this.data.selectedYear = d.getFullYear();
+      this.years.push(this.data.selectedYear);
+      this.years.push(this.data.selectedYear - 1);
+      this.years.push(this.data.selectedYear - 2);
       Promise.all([
-        this.setCountCrackFixed(this.data),
-        this.setCountCrackUnrecordedRepair(this.data),
-        this.setCountCrackRecordedRepair(this.data),
-        await this.setCountCrackUnConfirm(this.data),
+        this.setCountCrack(this.data),
+        this.setAverageAssessment(this.data),
+        this.setExpenseTotal(this.data),
+        this.setOrdersCount(this.data),
       ]);
       this.check1++;
       this.check2++;
@@ -161,7 +137,7 @@ export default {
 
   async created() {
     await this.setLocationList();
-    this.selectedLocation = this.getLocationList;
+    this.data.selectedLocation = this.getLocationList[0];
     await this.setDefault();
     this.role = JSON.parse(localStorage.getItem("user")).role;
   },
@@ -257,7 +233,7 @@ export default {
   background-color: white;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  width: 50%;
+  width: 35%;
 }
 
 .main-layout-details-chart {
