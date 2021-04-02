@@ -3,12 +3,12 @@
     <div>
       <div class="layout-profile">
         <ul>
-          <div>
+          <div class="p-mb-4">
             <img src="../asset/bcd2.png" class="logo" />
             <span class="appName">BCD System</span>
           </div>
-          <li>
-            <router-link to="/dashboard" tag="li" class="t-link nav-btn p-mt-4">
+          <li v-if="!staff">
+            <router-link to="/dashboard" tag="li" class="t-link nav-btn">
               <a class="a-link">
                 <i class="pi pi-fw pi-chart-line"></i>
                 <span>Dashboard</span>

@@ -217,7 +217,10 @@ export default {
               this.setIsLogin(!this.getIsLogin);
               this.setUser(JSON.parse(res));
               this.isLoading = false;
-              this.$router.push("/");
+              if(user.role === "Staff")
+                this.$router.push("/cracks");
+              else
+                this.$router.push("/dashboard");
             }
           } else {
             this.isLoading = false;

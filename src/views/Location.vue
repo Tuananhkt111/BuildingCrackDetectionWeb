@@ -244,6 +244,7 @@
           cols="20"
           style="width:100%; height: auto;"
           placeholder="Description"
+          :readonly="!admin"
         />
         <small class="invalid"> {{ errors.description }}</small>
       </div>
