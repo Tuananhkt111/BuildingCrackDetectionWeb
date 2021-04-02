@@ -213,12 +213,14 @@
               icon="pi pi-lock"
               class="p-button-rounded p-button-warning p-button-text"
               @click="ResetPassowrd(slotProps.data)"
+              v-tooltip.bottom="'Reset Password'"
             />
             <Button
               v-if="admin"
               icon="pi pi-ban"
               class="p-button-rounded p-button-danger p-button-text"
               @click="Disable(slotProps.data)"
+              v-tooltip.bottom="'Disable Account'"
             />
           </template>
         </Column>
@@ -299,16 +301,9 @@
             class="multiselect-custom dropdown-list form-control-alternative"
             key="locationId"
           />
-          <Dropdown
-            v-if="selectedRole === 'Staff'"
-            v-model="selectedLocation"
-            inputId="locationId"
-            :options="getAvailableLocationStaff"
-            optionLabel="name"
-            placeholder="Select an Area"
-            :filter="true"
-            class="dropdown-list form-control-alternative"
-          />
+          <p class="dropdown-list form-control-alternative" v-if="selectedRole === 'Staff'">
+            {{ selectedLocation.name }}
+          </p>
         </div>
       </div>
       <template #footer>
@@ -478,7 +473,7 @@
           </Dropdown>
           <small class="invalid">{{ errors.selectedRole }}</small>
         </div>
-        <div class="p-field p-col-6" v-if="selectedRole != null">
+        <div class="p-field p-col-6" v-if="selectedRole == 'Manager'">
           <label for="Location" class="form-control-label">Area</label>
           <MultiSelect
             v-if="selectedRole === 'Manager'"
@@ -488,15 +483,6 @@
             placeholder="Select Areas"
             :filter="true"
             class="multiselect-custom dropdown-list form-control-alternative"
-          />
-          <Dropdown
-            v-if="selectedRole === 'Staff'"
-            v-model="selectedLocation"
-            :options="getAvailableLocationStaff"
-            optionLabel="name"
-            placeholder="Select an Area"
-            :filter="true"
-            class="dropdown-list form-control-alternative"
           />
         </div>
       </div>
@@ -630,6 +616,7 @@ export default {
         .required()
         .label("Phone")
         .phone("VN")
+        .max(10, "Phone must be at most 10 numbers")
         .required(),
     });
     const { errors, meta, handleReset, validate } = useForm({
@@ -848,6 +835,15 @@ export default {
           )
           .then((res) => {
             if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                summary: contentNoti.SUCCESS_SUMMARY,
+                detail: contentNoti.USER_EDIT_SUCCESS,
+                life: 3000,
+              });
+              this.setUserList();
+              this.UserUpdateDialog = false;
+            } else if (res.status == 500) {
               this.$toast.add({
                 severity: "success",
                 summary: contentNoti.SUCCESS_SUMMARY,

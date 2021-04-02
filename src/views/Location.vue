@@ -206,7 +206,7 @@
           @click="hideDialog"
         />
         <Button
-          label="Save"
+          label="Create"
           icon="pi pi-check"
           class="p-button-text"
           @click="createLocation"
@@ -244,7 +244,6 @@
           cols="20"
           style="width:100%; height: auto;"
           placeholder="Description"
-          :readonly="!admin"
         />
         <small class="invalid"> {{ errors.description }}</small>
       </div>

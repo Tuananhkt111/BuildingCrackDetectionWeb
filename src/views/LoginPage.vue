@@ -105,14 +105,11 @@
     >
       <div class="p-field">
         <label for="newPassword">New Password</label>
-        <Password v-model="newPassword" />
+        <InputText type="password" v-model="newPassword" maxlength="30" />
       </div>
       <div class="p-field">
-        <label for="confirmPassword">Confirm Password</label>
-        <Password v-model="confirmPassword" />
-        <small class="p-invalid" v-if="newPassword != confirmPassword"
-          >New Password and Confirm Password must be match.</small
-        >
+        <label for="newPassword">New Password</label>
+        <InputText type="password" v-model="confirmPassword" maxlength="30" />
       </div>
       <template #footer>
         <Button
@@ -125,7 +122,6 @@
           label="Confirm"
           icon="pi pi-check"
           class="p-button-text"
-          v-if="newPassword == confirmPassword"
           @click="changePassword"
         />
       </template>
@@ -136,7 +132,6 @@
 <script>
 import { userApi } from "../apis/user";
 import Toast from "primevue/toast";
-import Password from "primevue/password";
 import Button from "primevue/button";
 import { mapGetters, mapActions } from "vuex";
 import ForgotPassword from "../views/ForgotPassword.vue";
@@ -177,7 +172,6 @@ export default {
   },
   components: {
     Toast,
-    Password,
     Button,
     ForgotPassword,
     LoadingScreen,
@@ -214,8 +208,10 @@ export default {
         if (this.userName && this.password) {
           const res = await userApi.login(this.userName, this.password);
           if (res != null) {
-            if (res.isNewUser) {
+            var user = JSON.parse(res);
+            if (user.isNewUser) {
               this.ChangePasswordDialog = true;
+              this.setUser(JSON.parse(res));
               this.isLoading = false;
             } else {
               this.setIsLogin(!this.getIsLogin);
@@ -246,9 +242,24 @@ export default {
             this.password,
             this.newPassword
           )
-          .then(() => {
-            this.$router.push("/");
-            this.$router.go();
+          .then((res) => {
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                summary: "Change Password Success !!",
+                life: 3000,
+              });
+              this.ChangePasswordDialog = false;
+              this.setIsLogin(!this.getIsLogin);
+              this.$router.push("/");
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: "Change Password Failed !!",
+                life: 3000,
+              });
+              this.ChangePasswordDialog = false;
+            }
           });
       }
     },
