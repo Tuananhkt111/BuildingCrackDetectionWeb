@@ -220,7 +220,7 @@
               class="product-image"
               v-if="product.image"
               @click="imageClick(product.index)"
-              style="width: 270px; height: 73%"
+              style="width: 270px; height: 76%"
             />
           </div>
           <div class="p-col-7">
@@ -228,39 +228,39 @@
               <TabPanel header="Overview">
                 <div class="p-grid">
                   <div class="p-col-6">
-                    <p style="font-weight: 400;color:grey">Area Name</p>
+                    <p class="header-dialog-crack">Area Name</p>
                     <p style="font-weight: 600">{{ product.locationName }}</p>
                   </div>
                   <div class="p-col-6">
-                    <p style="font-weight: 400;color:grey">Area Name</p>
+                    <p class="header-dialog-crack">Position</p>
                     <p style="font-weight: 600">{{ product.position }}</p>
                   </div>
                   <div class="p-col-6">
-                    <p style="font-weight: bold;margin-bottom:5px">Severity</p>
+                    <p class="header-dialog-crack" >Severity</p>
                     <p :class="stockClass(product)">
                       {{ product.severity }}
                     </p>
                   </div>
                   <div class="p-col-6">
-                    <p style="font-weight: bold;margin-bottom:5px">Status</p>
+                    <p class="header-dialog-crack">Status</p>
                     <p :class="stockStatus(product)">
                       {{ product.status }}
                     </p>
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                    <p style="font-weight: 400;color:grey">Censor Name</p>
+                    <p class="header-dialog-crack" >Censor Name</p>
                     <p style="font-weight: 600">{{ product.censorName }}</p>
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                    <p style="font-weight: 400;color:grey">Updated User</p>
+                    <p class="header-dialog-crack" >Updated User</p>
                     <p style="font-weight: 600">{{ product.updateUserName }}</p>
                   </div>
                   <div class="p-col-6">
-                    <p style="font-weight: 400;color:grey">Created Date</p>
+                    <p class="header-dialog-crack" >Created Date</p>
                     <p style="font-weight: 600">{{ product.created }}</p>
                   </div>
                   <div class="p-col-6">
-                    <p style="font-weight: 400;color:grey">Last Modified</p>
+                    <p class="header-dialog-crack">Last Modified</p>
                     <p style="font-weight: 600">{{ product.lastModified }}</p>
                   </div>
                 </div>
@@ -282,29 +282,20 @@
                 </div>
               </TabPanel>
               <TabPanel header="Assessment" :disabled="check">
-                <div class="p-col-12">
-                  <span style="font-weight: bold">Assessment </span>
-                  <Rating
-                    :modelValue="product.assessmentResult"
-                    :readonly="true"
-                    :stars="5"
-                    :cancel="false"
-                    class="p-col-9"
-                  />
+                   <div class="p-grid">
+                <div class="p-col-4">
+                <Knob v-model="product.assessmentResult" :max="100" :min="0" :size="120" />
                 </div>
                 <div
-                  class="p-col-12 p-mt-0"
+                  class="p-col-8"
                   v-if="product.assessmentDescription != null"
-                >
-                  <p style="font-weight: bold">Assessment Descripton</p>
-                  <Textarea
-                    id="description"
-                    v-model="product.assessmentDescription"
-                    required="true"
-                    rows="2"
-                    cols="20"
-                    disabled
-                  />
+                > 
+                     <p class="header-dialog-crack">Point</p>
+                    <p style="font-weight: 600;margin-bottom:10px">{{product.assessmentResult}} /100</p>
+                     <p class="header-dialog-crack">Assessment description</p>
+                    <p style="font-weight: 600">{{product.assessmentDescription }}</p>
+             
+                </div>
                 </div>
               </TabPanel>
             </TabView>
@@ -443,10 +434,11 @@
 </template>
 
 <script>
+import Knob from 'primevue/knob';
 import Button from "primevue/button";
 import MultiSelect from "primevue/multiselect";
-import Rating from "primevue/rating";
-import Textarea from "primevue/textarea";
+//import Rating from "primevue/rating";
+//import Textarea from "primevue/textarea";
 import moment from "moment";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
@@ -502,11 +494,12 @@ export default {
 
   components: {
     Button,
-    Rating,
-    Textarea,
+  //  Rating,
+  //  Textarea,
     MultiSelect,
     TabView,
     TabPanel,
+    Knob,
     Galleria,
     Toast,
     ChartSeverity,
@@ -530,7 +523,7 @@ export default {
         " Period " +
         this.filterChart.period +
         "/" +
-        this.filterChart.selectedYear
+        this.filterChart.selectedYears
       );
     },
   },
@@ -548,6 +541,7 @@ export default {
       displayCustom: false,
       activeIndex: 0,
       updateCrackDialog: false,
+
       filterChart: {
         selectedYear: null,
         selectedLocation: [],
@@ -859,6 +853,7 @@ export default {
 
 .p-dialog .product-image {
   width: 150px;
+  min-height: 320px;
   margin: 0 auto 2rem auto;
   display: block;
 }
@@ -966,6 +961,9 @@ textarea {
   /* text-align: center;
   width: 110px;
     background-color:#b9eee9; */
+}
+.header-dialog-crack{
+  font-weight: 400;color:grey;margin-bottom:5px
 }
 .scheduledformaintenace {
   border-radius: 2px;
@@ -1150,7 +1148,7 @@ textarea {
 
 ::v-deep(.p-dialog .p-dialog-content) {
   border-radius: 24px;
-  min-height: 345px;
+  min-height: 470px;
 }
 ::v-deep(.p-tabview .p-tabview-nav) {
   margin-top: 20px;

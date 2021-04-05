@@ -1,5 +1,5 @@
 <template>
-  <div class="main-layout-details">
+  <div  class="main-layout-details">
     <div class="card">
       <DataTable
         :rowHover="true"
@@ -418,26 +418,16 @@ export default {
       if (this.meta.valid && this.locationName != null) {
         await locationApi
           .create(this.locationName, this.description)
-          .then((res) => {
-            if (res.status == 200) {
-              this.$toast.add({
-                severity: "success",
-                summary: contentNoti.SUCCESS_SUMMARY,
-                detail: contentNoti.LOCATION_CREATE_SUCCESS,
-                life: 3000,
-              });
-              this.setLocationList();
-              this.submitted = false;
-              this.hideDialog();
-            } else {
-              this.$toast.add({
-                severity: "error",
-                summary: contentNoti.FAIL_SUMMARY,
-                detail: contentNoti.LOCATION_CREATE_FAILED,
-                life: 3000,
-              });
-              this.ChangePassworDialog = false;
-            }
+          .then(() => {
+            this.$toast.add({
+              severity: "success",
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.LOCATION_CREATE_SUCCESS,
+              life: 3000,
+            });
+            this.setLocationList();
+            this.submitted = false;
+            this.hideDialog();
           })
           .catch(() => {
             this.$toast.add({
@@ -476,26 +466,15 @@ export default {
     async deleteSelectedLocation() {
       await locationApi
         .disable(this.product.locationId)
-        .then((res) => {
-          console.log(res);
-          if (res.status != 200) {
-            this.$toast.add({
-              severity: "error",
-              summary: contentNoti.FAIL_SUMMARY,
-              detail: contentNoti.LOCATION_DISABLE_FAILED,
-              life: 3000,
-            });
-            this.hideDialog();
-          } else {
-            this.$toast.add({
-              severity: "success",
-              summary: contentNoti.SUCCESS_SUMMARY,
-              detail: contentNoti.LOCATION_DISABLE_SUCCESS,
-              life: 3000,
-            });
-            this.setLocationList();
-            this.hideDialog();
-          }
+        .then(() => {
+          this.$toast.add({
+            severity: "success",
+            summary: contentNoti.SUCCESS_SUMMARY,
+            detail: contentNoti.LOCATION_DISABLE_SUCCESS,
+            life: 3000,
+          });
+          this.setLocationList();
+          this.hideDialog();
         })
         .catch(() => {
           this.$toast.add({
@@ -511,26 +490,16 @@ export default {
       if (this.meta.valid) {
         await locationApi
           .update(this.product.locationId, this.locationName, this.description)
-          .then((res) => {
-            if (res.status == 200) {
-              this.$toast.add({
-                severity: "success",
-                summary: contentNoti.SUCCESS_SUMMARY,
-                detail: contentNoti.LOCATION_EDIT_SUCCESS,
-                life: 3000,
-              });
-              this.setLocationList();
-              this.productDialog = false;
-              this.setLocationList();
-            } else {
-              this.$toast.add({
-                severity: "error",
-                summary: contentNoti.FAIL_SUMMARY,
-                detail: contentNoti.LOCATION_EDIT_FAILED,
-                life: 3000,
-              });
-              this.ChangePassworDialog = false;
-            }
+          .then(() => {
+            this.$toast.add({
+              severity: "success",
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.LOCATION_EDIT_SUCCESS,
+              life: 3000,
+            });
+            this.setLocationList();
+            this.productDialog = false;
+            this.setLocationList();
           })
           .catch(() => {
             this.$toast.add({
