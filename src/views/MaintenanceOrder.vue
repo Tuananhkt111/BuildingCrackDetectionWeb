@@ -781,7 +781,6 @@ export default {
     stockStatusOrder(data) {
       return [
         {
-          detectedFailed: data.status === "WaitingForConfirm",
           waitingrepair: data.status === "WaitingForRepair",
           completed: data.status === "Completed",
         },

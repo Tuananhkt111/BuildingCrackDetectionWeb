@@ -4,7 +4,7 @@ const maintenanceOrderStore = {
   namespaced: true,
   state: {
     maintenanceOrderList: [],
-    status: ["Waiting for confirm", "Waiting for maintenance", "Completed"],
+    status: ["WaitingForRepair", "Completed"],
     schedule: [],
     chartStatus: [],
     chartExpense: [],
