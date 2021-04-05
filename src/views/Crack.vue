@@ -938,7 +938,7 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.3px;
   color: #ff5252;
@@ -975,7 +975,7 @@ textarea {
   font-weight: 600;
   letter-spacing: 0.3px;
   color: #51bea5;
-  font-size: 13px;
+  font-size: 14px;
   text-transform: uppercase;
 
   /* text-align: center;
