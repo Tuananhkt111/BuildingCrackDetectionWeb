@@ -301,7 +301,10 @@
             class="multiselect-custom dropdown-list form-control-alternative"
             key="locationId"
           />
-          <p class="dropdown-list form-control-alternative" v-if="selectedRole === 'Staff'">
+          <p
+            class="dropdown-list form-control-alternative"
+            v-if="selectedRole === 'Staff'"
+          >
             {{ selectedLocation.name }}
           </p>
         </div>
@@ -412,7 +415,7 @@
         />
         <Button
           label="Update Area"
-          icon="pi pi-times"
+          icon="pi pi-user-edit"
           class="p-button-text"
           @click="updateLoaction"
         />
@@ -1081,8 +1084,8 @@ export default {
           if (res.status == 200) {
             this.$toast.add({
               severity: "success",
-              summary: "Success",
-              detail: "Update Area success",
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.USER_UPDATE_AREA_SUCCESS,
               life: 3000,
             });
             this.StaffDialog = false;
@@ -1090,8 +1093,8 @@ export default {
           } else {
             this.$toast.add({
               severity: "error",
-              summary: "Error",
-              detail: "Update Area failed!",
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.USER_UPDATE_AREA_FAILED,
               life: 3000,
             });
             this.StaffDialog = false;
@@ -1101,8 +1104,8 @@ export default {
         .catch(() => {
           this.$toast.add({
             severity: "error",
-            summary: "Error",
-            detail: "Update Area failed!",
+            summary: contentNoti.FAIL_SUMMARY,
+            detail: contentNoti.USER_UPDATE_AREA_FAILED,
             life: 3000,
           });
           this.StaffDialog = false;

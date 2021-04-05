@@ -373,6 +373,7 @@ export default {
         .required()
         .label("Phone")
         .phone("VN")
+        .max(10, "Phone must be at most 10 numbers")
         .required(),
     });
     const { errors, meta, handleReset, validate } = useForm({

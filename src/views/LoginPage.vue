@@ -138,6 +138,7 @@ import ForgotPassword from "../views/ForgotPassword.vue";
 import LoadingScreen from "../components/PreLoader.vue";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
+import contentNoti from "../util/contentNoti.js";
 
 export default {
   setup() {
@@ -217,16 +218,14 @@ export default {
               this.setIsLogin(!this.getIsLogin);
               this.setUser(JSON.parse(res));
               this.isLoading = false;
-              if(user.role === "Staff")
-                this.$router.push("/cracks");
-              else
-                this.$router.push("/dashboard");
+              if (user.role === "Staff") this.$router.push("/cracks");
+              else this.$router.push("/dashboard");
             }
           } else {
             this.isLoading = false;
             this.$toast.add({
               severity: "warn",
-              summary: "Sign-in Failed !!",
+              detail: contentNoti.USER_LOGIN_FAILED,
               life: 3000,
             });
           }
@@ -249,7 +248,7 @@ export default {
             if (res.status == 200) {
               this.$toast.add({
                 severity: "success",
-                summary: "Change Password Success !!",
+                detail: contentNoti.USER_CHANGE_PASSWORD_SUCCESS,
                 life: 3000,
               });
               this.ChangePasswordDialog = false;
@@ -258,7 +257,7 @@ export default {
             } else {
               this.$toast.add({
                 severity: "error",
-                summary: "Change Password Failed !!",
+                detail: contentNoti.USER_CHANGE_PASSWORD_FAILED,
                 life: 3000,
               });
               this.ChangePasswordDialog = false;
@@ -282,8 +281,8 @@ export default {
           .catch(() => {
             this.$toast.add({
               severity: "error",
-              summary: "ERROR",
-              detail: "Your Account is'nt existed!",
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.USER_CHANGE_CONFIRM_FORGOTPASSWORD_FAILED,
               life: 3000,
             });
             this.isLoading = false;
@@ -292,15 +291,16 @@ export default {
             if (res.status == 200) {
               this.$toast.add({
                 severity: "success",
-                summary: res.data,
+                summary: contentNoti.SUCCESS_SUMMARY,
+                detail: contentNoti.USER_CHANGE_CONFIRM_FORGOTPASSWORD_SUCCESS,
                 life: 3000,
               });
               this.isLoading = false;
             } else {
               this.$toast.add({
                 severity: "error",
-                summary: "ERROR",
-                detail: "Your Account is'nt existed!",
+                summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.USER_CHANGE_CONFIRM_FORGOTPASSWORD_FAILED,
                 life: 3000,
               });
               this.isLoading = false;

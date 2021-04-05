@@ -55,6 +55,7 @@
 import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 import { notificationApi } from "../apis/notification";
+import contentNoti from "../util/contentNoti.js";
 
 export default {
   components: {},
@@ -103,13 +104,22 @@ export default {
       await notificationApi
         .deleteAllNoti(id)
         .catch((err) => console.log(err))
-        .then(() => {
-          this.$toast.add({
-            severity: "success",
-            summary: "Successful",
-            detail: "Clear all Notifications!!",
-            life: 3000,
-          });
+        .then((res) => {
+          if (res.status == 200) {
+            this.$toast.add({
+              severity: "success",
+              summary: contentNoti.SUCCESS_SUMMARY,
+              detail: contentNoti.NOTIFICATION_CLEAR_SUCCESS,
+              life: 3000,
+            });
+          } else {
+            this.$toast.add({
+              severity: "error",
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.NOTIFICATION_CLEAR_FAILED,
+              life: 3000,
+            });
+          }
         });
       await this.setNotificationList();
     },

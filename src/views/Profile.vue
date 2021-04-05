@@ -1,5 +1,5 @@
 <template>
- <div class="main-layout-details">
+  <div class="main-layout-details">
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
       rel="stylesheet"
@@ -202,10 +202,15 @@ import userApi from "../apis/user.js";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import Toast from "primevue/toast";
+import contentNoti from "../util/contentNoti.js";
 export default {
   setup() {
     const schema = yup.object({
-      oldPassword: yup.string().max(30).label("Old Password").required(),
+      oldPassword: yup
+        .string()
+        .max(30)
+        .label("Old Password")
+        .required(),
       newPassword: yup
         .string()
         .max(30)
@@ -235,7 +240,7 @@ export default {
       confirmPassword,
       errors,
       meta,
-      validate
+      validate,
     };
   },
 
@@ -247,8 +252,8 @@ export default {
     ...mapGetters("user", ["getUser"]),
 
     getLocations() {
-      return this.getUser.locations.map(l => l.name).toString();
-    }
+      return this.getUser.locations.map((l) => l.name).toString();
+    },
   },
   data() {
     return {
@@ -269,7 +274,11 @@ export default {
     ...mapActions("user", ["setUser"]),
 
     async confirmChangePassword() {
-      if (this.meta.valid  && this.oldPassword != null && this.newPassword != null) {
+      if (
+        this.meta.valid &&
+        this.oldPassword != null &&
+        this.newPassword != null
+      ) {
         await userApi
           .changePassword(
             JSON.parse(localStorage.getItem("user")).userId,
@@ -277,22 +286,29 @@ export default {
             this.newPassword
           )
           .then((res) => {
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                detail: contentNoti.USER_CHANGE_PASSWORD_SUCCESS,
+                life: 3000,
+              });
+              this.handleReset();
+            } else {
+              this.$toast.add({
+                severity: "error",
+                detail: contentNoti.USER_CHANGE_PASSWORD_FAILED,
+                life: 3000,
+              });
+              this.handleReset();
+            }
+          })
+          .catch(() => {
             this.$toast.add({
-              severity: "success",
-              summary: "Change password success",
-              detail: res.data,
+              severity: "error",
+              detail: contentNoti.USER_CHANGE_PASSWORD_FAILED,
               life: 3000,
             });
             this.handleReset();
-          })
-          .catch((err) => {
-            this.$toast.add({
-              severity: "error",
-              summary: "Change password failed",
-              detail: err.data,
-              life: 3000,
-            });
-            this.ChangePassworDialog = false;
           });
       } else {
         this.validate();
@@ -307,7 +323,6 @@ export default {
   position: sticky;
   left: 30px !important;
 }
-
 
 header,
 main {

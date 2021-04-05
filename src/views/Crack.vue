@@ -460,6 +460,7 @@ import webRole from "../util/webRole.js";
 import Toast from "primevue/toast";
 import ChartSeverity from "../chart/CrackBySeveritySmall.vue";
 import ChartStatus from "../chart/CrackByStatusSmall.vue";
+import contentNoti from "../util/contentNoti.js";
 
 export default {
   setup() {
@@ -583,7 +584,7 @@ export default {
         this.filterChart.period = 3;
       }
       let user = JSON.parse(localStorage.getItem("user"));
-      
+
       this.filterChart.selectedLocation.locationId = user.locations.map(
         (l) => l.locationId
       );
@@ -669,9 +670,9 @@ export default {
           .then((res) => {
             if (res.status == 200) {
               this.$toast.add({
-                severity: "info",
-                summary: "Confirmed",
-                detail: "Crack is updated!",
+                severity: "success",
+                summary: contentNoti.SUCCESS_SUMMARY,
+                detail: contentNoti.CRACK_UPDATE_SUCCESS,
                 life: 3000,
               });
               this.setCrackList();
@@ -679,8 +680,8 @@ export default {
             } else {
               this.$toast.add({
                 severity: "error",
-                summary: "Failed",
-                detail: "Updated Failed",
+                summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.CRACK_UPDATE_FAILED,
                 life: 3000,
               });
               this.updateCrackDialog = false;
@@ -689,8 +690,8 @@ export default {
           .catch(() => {
             this.$toast.add({
               severity: "error",
-              summary: "Failed",
-              detail: "Updated Failed",
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.CRACK_UPDATE_FAILED,
               life: 3000,
             });
             this.updateCrackDialog = false;

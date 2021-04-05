@@ -227,6 +227,7 @@ import webRole from "../util/webRole.js";
 import Upload from "../views/Upload.vue";
 import Detecting from "../components/Detecting.vue";
 import ConfirmPopup from "primevue/confirmpopup";
+import contentNoti from "../util/contentNoti.js";
 
 const DATE_FILTER = "DATE FILTER";
 
@@ -340,16 +341,16 @@ export default {
             if (res.status == 200) {
               this.$toast.add({
                 severity: "success",
-                summary: "Deleted",
-                detail: "Delete video success",
+                summary: contentNoti.SUCCESS_SUMMARY,
+                detail: contentNoti.VIDEO_DELETE_SUCCESS,
                 life: 3000,
               });
               this.setFlightList();
             } else {
               this.$toast.add({
                 severity: "error",
-                summary: "Delete Failed",
-                detail: "Delete video failed",
+                summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.VIDEO_DELETE_FAILED,
                 life: 3000,
               });
             }

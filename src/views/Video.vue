@@ -715,6 +715,7 @@ import RadioButton from "primevue/radiobutton";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import webRole from "../util/webRole.js";
+import contentNoti from "../util/contentNoti.js";
 
 export default {
   setup() {
@@ -859,8 +860,8 @@ export default {
           await crackApi.rejectCrack(product.crackId);
           this.$toast.add({
             severity: "info",
-            summary: "Rejected",
-            detail: "Crack is rejected",
+            summary: contentNoti.SUCCESS_SUMMARY,
+            detail: contentNoti.CRACK_REJECT_SUCCESS,
             life: 3000,
           });
           this.setFlight(this.$route.query.detectionResultId);
@@ -897,18 +898,18 @@ export default {
                   .then((res1) => {
                     if (res1.status == 200) {
                       this.$toast.add({
-                        severity: "info",
-                        summary: "Confirmed",
-                        detail: "Crack is confirmed!",
+                        severity: "success",
+                        summary: contentNoti.SUCCESS_SUMMARY,
+                        detail: contentNoti.CRACK_CONFIRM_SUCCESS,
                         life: 3000,
                       });
                     }
                   });
               } else {
                 this.$toast.add({
-                  severity: "info",
-                  summary: "Confirmed",
-                  detail: "Crack is confirmed!",
+                  severity: "success",
+                  summary: contentNoti.SUCCESS_SUMMARY,
+                  detail: contentNoti.CRACK_CONFIRM_SUCCESS,
                   life: 3000,
                 });
               }
@@ -917,8 +918,8 @@ export default {
             } else {
               this.$toast.add({
                 severity: "error",
-                summary: "Failed",
-                detail: "Confirm Failed",
+                summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.CRACK_CONFIRM_FAILED,
                 life: 3000,
               });
             }
@@ -926,8 +927,8 @@ export default {
           .catch(() => {
             this.$toast.add({
               severity: "error",
-              summary: "Failed",
-              detail: "Confirm Failed",
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.CRACK_CONFIRM_FAILED,
               life: 3000,
             });
           });
@@ -979,21 +980,31 @@ export default {
             this.description,
             this.selectedSeverity
           )
-          .then(() => {
-            this.$toast.add({
-              severity: "info",
-              summary: "Confirmed",
-              detail: "Crack is updated!",
-              life: 3000,
-            });
-            this.setFlight(this.$route.query.detectionResultId);
-            this.updateCrackDialog = false;
+          .then((res) => {
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                summary: contentNoti.SUCCESS_SUMMARY,
+                detail: contentNoti.CRACK_UPDATE_SUCCESS,
+                life: 3000,
+              });
+              this.setFlight(this.$route.query.detectionResultId);
+              this.updateCrackDialog = false;
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.CRACK_UPDATE_FAILED,
+                life: 3000,
+              });
+              this.updateCrackDialog = false;
+            }
           })
           .catch(() => {
             this.$toast.add({
               severity: "error",
-              summary: "Failed",
-              detail: "Updated Failed",
+              summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.CRACK_UPDATE_FAILED,
               life: 3000,
             });
             this.updateCrackDialog = false;
