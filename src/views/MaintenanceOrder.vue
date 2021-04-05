@@ -571,7 +571,7 @@ export default {
     TabPanel,
     Galleria,
     ChartStatus,
-    OrderTimeline
+    OrderTimeline,
   },
 
   computed: {
@@ -611,12 +611,8 @@ export default {
       product: {},
       crack: {},
       cracks: [],
-      selectedProducts: null,
       filters: {},
       submitted: false,
-      messages: [],
-      statuses: ["Waiting for maintenance", "Completed"],
-      severitys: ["Low", "Medium", "High"],
       expandedRows: [],
       loading: true,
       displayImage: false,
@@ -777,6 +773,7 @@ export default {
           unconfirmed: data.status === "Unconfirmed",
           unscheduled: data.status === "UnrecordedRepair",
           scheduledformaintenace: data.status === "RecordedRepair",
+          unqualifiedrepair: data.status === "UnqualifiedRepair",
           fix: data.status === "Fixed",
         },
       ];
@@ -994,7 +991,7 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.3px;
   color: #0dc8de;
   text-align: center;
@@ -1045,7 +1042,7 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.3px;
   color: #fd517d;
   text-transform: uppercase;
@@ -1060,7 +1057,7 @@ textarea {
   font-weight: 600;
   letter-spacing: 0.3px;
   color: #51bea5;
-  font-size: 13px;
+  font-size: 14px;
   text-transform: uppercase;
 
   /* text-align: center;
@@ -1071,15 +1068,22 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.3px;
   color: #89bfdc;
-
   text-transform: uppercase;
-
   /* text-align: center;
   width: 110px;
     background-color:#c7d7db; */
+}
+.unqualifiedrepair {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  color: #ffad44;
+  text-transform: uppercase;
 }
 
 .p-col-12 .nested-grid {

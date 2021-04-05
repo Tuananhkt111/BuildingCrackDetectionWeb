@@ -5,6 +5,7 @@ const crackStore = {
   state: {
     crackList: [],
     statuses: ["UnrecordedRepair", "RecordedRepair", "Fixed"],
+    statusList: ["UnrecordedRepair", "RecordedRepair", "Fixed", "UnqualifiedRepair"],
     severitys: ["Low", "Medium", "High"],
     countCrack: 0,
     chartSeverity: [],
@@ -27,6 +28,9 @@ const crackStore = {
     },
     getStatusList(state) {
       return state.statuses;
+    },
+    getStatusListMore(state) {
+      return state.statusList;
     },
     getSeveritysList(state) {
       return state.severitys;

@@ -331,7 +331,7 @@
                     <div class="p-mb-3 p-text-bold">Status Picker</div>
                     <MultiSelect
                       v-model="filterModel.value"
-                      :options="getStatusList"
+                      :options="getStatusListMore"
                       placeholder="Any"
                       class="p-column-filter"
                     >
@@ -768,7 +768,7 @@ export default {
     RadioButton,
   },
   computed: {
-    ...mapGetters("crack", ["getStatusList", "getSeveritysList"]),
+    ...mapGetters("crack", ["getStatusListMore", "getSeveritysList"]),
 
     ...mapGetters("flight", [
       "getConfirmCrackList",
@@ -791,7 +791,6 @@ export default {
       showAssessment: false,
       product: {},
       filters: {},
-      submitted: false,
       confirmCrackDialog: false,
       updateCrackDialog: false,
       loading: true,
@@ -952,6 +951,7 @@ export default {
           unconfirmed: data.status === "Unconfirmed",
           unscheduled: data.status === "UnrecordedRepair",
           scheduledformaintenace: data.status === "RecordedRepair",
+          unqualifiedrepair: data.status === "UnqualifiedRepair",
           fix: data.status === "Fixed",
         },
       ];
@@ -1004,7 +1004,7 @@ export default {
             this.$toast.add({
               severity: "error",
               summary: contentNoti.FAIL_SUMMARY,
-                detail: contentNoti.CRACK_UPDATE_FAILED,
+              detail: contentNoti.CRACK_UPDATE_FAILED,
               life: 3000,
             });
             this.updateCrackDialog = false;
@@ -1293,7 +1293,7 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.3px;
   color: #fd517d;
   text-transform: uppercase;
@@ -1306,7 +1306,7 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.3px;
   color: #51bea5;
   text-transform: uppercase;
@@ -1319,7 +1319,7 @@ textarea {
   border-radius: 2px;
   padding: 0.25em 0.5rem;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.3px;
   color: #89bfdc;
 
@@ -1328,6 +1328,15 @@ textarea {
   /* text-align: center;
   width: 110px;
     background-color:#c7d7db; */
+}
+.unqualifiedrepair {
+  border-radius: 2px;
+  padding: 0.25em 0.5rem;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  color: #ffad44;
+  text-transform: uppercase;
 }
 
 .imagePopup {

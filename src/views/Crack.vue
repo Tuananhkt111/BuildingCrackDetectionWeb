@@ -236,7 +236,7 @@
                     <p style="font-weight: 600">{{ product.position }}</p>
                   </div>
                   <div class="p-col-6">
-                    <p class="header-dialog-crack" >Severity</p>
+                    <p class="header-dialog-crack">Severity</p>
                     <p :class="stockClass(product)">
                       {{ product.severity }}
                     </p>
@@ -248,15 +248,15 @@
                     </p>
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                    <p class="header-dialog-crack" >Censor Name</p>
+                    <p class="header-dialog-crack">Censor Name</p>
                     <p style="font-weight: 600">{{ product.censorName }}</p>
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                    <p class="header-dialog-crack" >Updated User</p>
+                    <p class="header-dialog-crack">Updated User</p>
                     <p style="font-weight: 600">{{ product.updateUserName }}</p>
                   </div>
                   <div class="p-col-6">
-                    <p class="header-dialog-crack" >Created Date</p>
+                    <p class="header-dialog-crack">Created Date</p>
                     <p style="font-weight: 600">{{ product.created }}</p>
                   </div>
                   <div class="p-col-6">
@@ -282,20 +282,28 @@
                 </div>
               </TabPanel>
               <TabPanel header="Assessment" :disabled="check">
-                   <div class="p-grid">
-                <div class="p-col-4">
-                <Knob v-model="product.assessmentResult" :max="100" :min="0" :size="120" />
-                </div>
-                <div
-                  class="p-col-8"
-                  v-if="product.assessmentDescription != null"
-                > 
-                     <p class="header-dialog-crack">Point</p>
-                    <p style="font-weight: 600;margin-bottom:10px">{{product.assessmentResult}} /100</p>
-                     <p class="header-dialog-crack">Assessment description</p>
-                    <p style="font-weight: 600">{{product.assessmentDescription }}</p>
-             
-                </div>
+                <div class="p-grid">
+                  <div class="p-col-4">
+                    <Knob
+                      v-model="product.assessmentResult"
+                      :max="100"
+                      :min="0"
+                      :size="120"
+                    />
+                  </div>
+                  <div
+                    class="p-col-8"
+                    v-if="product.assessmentDescription != null"
+                  >
+                    <p class="header-dialog-crack">Point</p>
+                    <p style="font-weight: 600;margin-bottom:10px">
+                      {{ product.assessmentResult }} /100
+                    </p>
+                    <p class="header-dialog-crack">Assessment description</p>
+                    <p style="font-weight: 600">
+                      {{ product.assessmentDescription }}
+                    </p>
+                  </div>
                 </div>
               </TabPanel>
             </TabView>
@@ -434,11 +442,9 @@
 </template>
 
 <script>
-import Knob from 'primevue/knob';
+import Knob from "primevue/knob";
 import Button from "primevue/button";
 import MultiSelect from "primevue/multiselect";
-//import Rating from "primevue/rating";
-//import Textarea from "primevue/textarea";
 import moment from "moment";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
@@ -494,8 +500,6 @@ export default {
 
   components: {
     Button,
-  //  Rating,
-  //  Textarea,
     MultiSelect,
     TabView,
     TabPanel,
@@ -541,7 +545,6 @@ export default {
       displayCustom: false,
       activeIndex: 0,
       updateCrackDialog: false,
-
       filterChart: {
         selectedYear: null,
         selectedLocation: [],
@@ -962,8 +965,10 @@ textarea {
   width: 110px;
     background-color:#b9eee9; */
 }
-.header-dialog-crack{
-  font-weight: 400;color:grey;margin-bottom:5px
+.header-dialog-crack {
+  font-weight: 400;
+  color: grey;
+  margin-bottom: 5px;
 }
 .scheduledformaintenace {
   border-radius: 2px;
