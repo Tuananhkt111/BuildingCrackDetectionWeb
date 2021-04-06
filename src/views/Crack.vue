@@ -266,43 +266,67 @@
                 </div>
               </TabPanel>
               <TabPanel
-                header="Description"
+                header="More details"
                 :disabled="
-                  product.description == '' || product.description == null
+                  product.description == '' ||
+                    product.description == null ||
+                    check
                 "
               >
-                <div class="p-col-12">
-                  <p>
-                    <span
-                      style="font-weight: bold"
-                      v-if="product.description != null"
-                      >{{ product.description }}</span
-                    >
-                  </p>
-                </div>
-              </TabPanel>
-              <TabPanel header="Assessment" :disabled="check">
-                <div class="p-grid">
-                  <div class="p-col-4">
-                    <Knob
-                      v-model="product.assessmentResult"
-                      :max="100"
-                      :min="0"
-                      :size="120"
-                    />
-                  </div>
+                <div style="height: 320px">
                   <div
-                    class="p-col-8"
-                    v-if="product.assessmentDescription != null"
+                    class="desc-box"
+                    v-if="
+                      !(
+                        product.description == '' || product.description == null
+                      )
+                    "
                   >
-                    <p class="header-dialog-crack">Point</p>
-                    <p style="font-weight: 600;margin-bottom:10px">
-                      {{ product.assessmentResult }} /100
+                    <p class="header-dialog-crack">Description</p>
+                    <p>
+                      <span
+                        style="font-weight: bold"
+                        v-if="product.description != null"
+                        >{{ product.description }}</span
+                      >
                     </p>
-                    <p class="header-dialog-crack">Assessment description</p>
-                    <p style="font-weight: 600">
-                      {{ product.assessmentDescription }}
-                    </p>
+                  </div>
+                  <div class="assessment-box" v-if="!check">
+                    <p class="header-dialog-crack  p-mb-2">Assessment Result</p>
+                    <div class="assessment-content">
+                      <div class="p-mr-3">
+                        <Knob
+                          v-model="product.assessmentResult"
+                          :max="100"
+                          :min="0"
+                          :size="120"
+                          readonly="true"
+                        />
+                      </div>
+                      <div>
+                        <p class="header-dialog-crack">Point</p>
+                        <p style="font-weight: 600;margin-bottom:10px">
+                          {{ product.assessmentResult }} /100
+                        </p>
+                        <p class="header-dialog-crack">
+                          Assessment description
+                        </p>
+                        <p style="font-weight: 600">
+                          <span
+                            v-if="
+                              product.assessmentDescription != null &&
+                                product.assessmentDescription != ''
+                            "
+                            >{{ product.assessmentDescription }}</span
+                          >
+                          <span
+                            v-else
+                            style="font-style: italic; color: #adadad"
+                            >No description</span
+                          >
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </TabPanel>
@@ -1182,6 +1206,21 @@ textarea {
 .single-chart {
   width: 33%;
   justify-content: space-around;
+}
+
+.assessment-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.assessment-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.desc-box {
+  height: 50%;
 }
 
 .circular-chart {

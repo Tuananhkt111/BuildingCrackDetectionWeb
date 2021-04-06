@@ -45,7 +45,7 @@
       <div class="box box4">
         <div class="box-title">
           <span class="box-name">Average Asessment</span>
-          <span class="box-count">{{ (getAverageAssessment*100).toFixed(2) }} %</span>
+          <span class="box-count">{{ getAverageAssessment }} %</span>
         </div>
         <img class="box-img" src="../asset/box4.png" />
       </div>

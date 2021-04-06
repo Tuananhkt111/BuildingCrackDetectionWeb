@@ -283,9 +283,9 @@
         :dismissableMask="true"
         class="dialog"
       >
-        <template #header>
-          <h3 class="dialog-title-order">Repair Record Details</h3>
-        </template>
+        <div class="dialog-title-2">
+          <span style="">Repair Record Details</span>
+        </div>
         <div class="p-col-12 order-detail">
           <div class="p-grid nested-grid">
             <TabView>
@@ -307,11 +307,20 @@
                       {{ product.status }}
                     </p>
                   </div>
-
                   <div class="p-col-6">
                     <p class="header-detail">Repair Date</p>
                     <p style="font-weight: 600">
                       {{ product.maintenanceDate }}
+                    </p>
+                  </div>
+                  <div class="p-col-6">
+                    <p class="header-detail">Create User</p>
+                    <p style="font-weight: 600">{{ product.createUserName }}</p>
+                  </div>
+                  <div class="p-col-6">
+                    <p class="header-detail">Created</p>
+                    <p style="font-weight: 600">
+                      {{ callDate(product.created) }}
                     </p>
                   </div>
                   <div class="p-col-6">
@@ -325,12 +334,76 @@
                       }}
                     </p>
                   </div>
-
-                  <div class="p-col-6">
-                    <p class="header-detail">Created</p>
-                    <p style="font-weight: 600">
-                      {{ callDate(product.created) }}
+                </div>
+              </TabPanel>
+              <TabPanel header="More details">
+                <div class="p-grid" style="height: 320px">
+                  <div class="desc-box p-col-6">
+                    <p class="header-dialog-crack p-mb-2">Description</p>
+                    <p>
+                      <span
+                        style="font-weight: bold"
+                        v-if="
+                          !(
+                            product.description == '' ||
+                            product.description == null
+                          )
+                        "
+                        >{{ product.description }}</span
+                      >
+                      <span v-else style="font-style: italic; color: #adadad"
+                        >No description</span
+                      >
                     </p>
+                  </div>
+                  <div class="assessment-box p-col-6" v-if="check">
+                    <p class="header-dialog-crack p-mb-2">Assessment Result</p>
+                    <div class="assessment-content">
+                      <span style="font-style: italic; color: #adadad">
+                        No assessment result yet
+                      </span>
+                    </div>
+                  </div>
+                  <div class="assessment-box p-col-6" v-else>
+                    <p class="header-dialog-crack p-mb-2">Assessment Result</p>
+                    <div class="assessment-content">
+                      <div class="p-mr-3">
+                        <Knob
+                          v-model="product.assessmentResult"
+                          :max="100"
+                          :min="0"
+                          :size="120"
+                          readonly="true"
+                        />
+                      </div>
+                      <div>
+                        <p class="header-dialog-crack">Point</p>
+                        <p style="font-weight: 600;margin-bottom:10px">
+                          {{ product.assessmentResult }} /100
+                        </p>
+                        <p class="header-dialog-crack">Assessor Name</p>
+                        <p style="font-weight: 600;margin-bottom:10px">
+                          {{ product.assessorName }}
+                        </p>
+                        <p class="header-dialog-crack">
+                          Assessment description
+                        </p>
+                        <p style="font-weight: 600">
+                          <span
+                            v-if="
+                              product.assessmentDescription != null &&
+                                product.assessmentDescription != ''
+                            "
+                            >{{ product.assessmentDescription }}</span
+                          >
+                          <span
+                            v-else
+                            style="font-style: italic; color: #adadad"
+                            >No description</span
+                          >
+                        </p>
+                      </div>
+                    </div>
                   </div>
                   <div class="p-col-6">
                     <p class="header-detail">Last Modified</p>
@@ -339,59 +412,8 @@
                     </p>
                   </div>
                   <div class="p-col-6">
-                    <p class="header-detail">Create User</p>
-                    <p style="font-weight: 600">{{ product.createUserName }}</p>
-                  </div>
-                  <div class="p-col-6">
                     <p class="header-detail">Update User</p>
                     <p style="font-weight: 600">{{ product.updateUserName }}</p>
-                  </div>
-                </div>
-              </TabPanel>
-              <TabPanel
-                header="Description"
-                :disabled="
-                  product.description == '' || product.description == null
-                "
-              >
-                <div class="p-col-12">
-                  <p>
-                    <span
-                      style="font-weight: bold"
-                      v-if="product.description != null"
-                      >{{ product.description }}</span
-                    >
-                  </p>
-                </div>
-              </TabPanel>
-              <TabPanel header="Assessment" :disabled="check">
-                <div class="p-col-12">
-                  <div class="p-field">
-                    <Rating
-                      :modelValue="product.assessmentResult"
-                      :readonly="true"
-                      :stars="5"
-                      :cancel="false"
-                    />
-                  </div>
-                  <div class="p-col-6">
-                    <p>
-                      <span style="font-weight: bold">Assessor Name: </span
-                      >{{ product.assessorName }}
-                    </p>
-                  </div>
-                  <div class="p-field">
-                    <label for="assessmentDescription"
-                      >Assessment Description</label
-                    >
-                    <Textarea
-                      id="description"
-                      v-model="product.assessmentDescription"
-                      required="true"
-                      rows="2"
-                      cols="20"
-                      disabled
-                    />
                   </div>
                 </div>
               </TabPanel>
@@ -548,7 +570,7 @@ import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import MultiSelect from "primevue/multiselect";
 import Toast from "primevue/toast";
-import Rating from "primevue/rating";
+import Knob from "primevue/knob";
 import { mapGetters, mapActions } from "vuex";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import moment from "moment";
@@ -566,7 +588,7 @@ export default {
     Toast,
     Calendar,
     MultiSelect,
-    Rating,
+    Knob,
     TabView,
     TabPanel,
     Galleria,
@@ -1128,10 +1150,10 @@ textarea {
 }
 
 .dialog-title-2 {
-  width: 150px;
   height: 30px;
   border-radius: 10px;
-  margin: 10px 0 40px 25px;
+  margin-left: 10px;
+  margin-bottom: 5px;
 }
 .dialog-title-2 span {
   padding-top: 3px;
@@ -1154,6 +1176,22 @@ textarea {
   top: 25px;
   background: #007dfe;
 }
+
+.assessment-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.assessment-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.desc-box {
+  height: 50%;
+}
+
 #sub-table-title {
   font-size: 1.1rem;
 }
@@ -1257,7 +1295,7 @@ textarea {
 
 ::v-deep(.p-dialog .p-dialog-content) {
   color: #69707a;
-  min-height: 286px;
+  min-height: 510px;
 }
 
 ::v-deep(.p-tabview.p-component) {

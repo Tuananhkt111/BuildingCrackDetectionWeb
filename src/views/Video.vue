@@ -388,120 +388,128 @@
 
     <Dialog
       v-model:visible="crackInfoDialog"
-      :style="{ width: '1000px' }"
+      :style="{ width: '800px' }"
       :modal="true"
+      :baseZIndex="10000"
+      :showHeader="false"
+      :dismissableMask="true"
       class="dialog"
     >
-      <template #header>
-        <h3 class="p-dialog-title">Crack Information</h3>
-      </template>
       <div class="p-grid nested-grid">
-        <div class="p-col-4">
+        <div class="p-col-5">
+          <div class="dialog-title-2">
+            <span style="">Crack Details</span>
+          </div>
           <img
             :src="product.imageThumbnails"
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
-            @click="imageClick(product)"
-            style="width:250px; height:100%"
+            @click="imageClick(product.index)"
+            style="width: 270px; height: 76%"
           />
         </div>
-        <div class="p-col-8">
+        <div class="p-col-7">
           <TabView>
             <TabPanel header="Overview">
               <div class="p-grid">
                 <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold">Area Name: </span
-                    >{{ product.locationName }}
+                  <p class="header-dialog-crack">Area Name</p>
+                  <p style="font-weight: 600">{{ product.locationName }}</p>
+                </div>
+                <div class="p-col-6">
+                  <p class="header-dialog-crack">Position</p>
+                  <p style="font-weight: 600">{{ product.position }}</p>
+                </div>
+                <div class="p-col-6">
+                  <p class="header-dialog-crack">Severity</p>
+                  <p :class="stockClass(product)">
+                    {{ product.severity }}
                   </p>
                 </div>
                 <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold">Position: </span
-                    >{{ product.position }}
-                  </p>
-                </div>
-                <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold">
-                      Severity:
-                    </span>
-                    <span :class="stockClass(product)">
-                      {{ product.severity }}
-                    </span>
-                  </p>
-                </div>
-                <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold">Status: </span>
-                    <span :class="stockStatus(product)">
-                      {{ product.status }}
-                    </span>
+                  <p class="header-dialog-crack">Status</p>
+                  <p :class="stockStatus(product)">
+                    {{ product.status }}
                   </p>
                 </div>
                 <div class="p-col-6" v-if="product.censorName != null">
-                  <p>
-                    <span style="font-weight: bold">Censor Name: </span
-                    >{{ product.censorName }}
-                  </p>
+                  <p class="header-dialog-crack">Censor Name</p>
+                  <p style="font-weight: 600">{{ product.censorName }}</p>
                 </div>
                 <div class="p-col-6" v-if="product.censorName != null">
-                  <p>
-                    <span style="font-weight: bold">Updated User: </span
-                    >{{ product.updateUserName }}
-                  </p>
+                  <p class="header-dialog-crack">Updated User</p>
+                  <p style="font-weight: 600">{{ product.updateUserName }}</p>
                 </div>
                 <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold">Created Date: </span
-                    >{{ product.created }}
-                  </p>
+                  <p class="header-dialog-crack">Created Date</p>
+                  <p style="font-weight: 600">{{ product.created }}</p>
                 </div>
                 <div class="p-col-6">
-                  <p>
-                    <span style="font-weight: bold">Last Modified: </span
-                    >{{ product.lastModified }}
-                  </p>
+                  <p class="header-dialog-crack">Last Modified</p>
+                  <p style="font-weight: 600">{{ product.lastModified }}</p>
                 </div>
               </div>
             </TabPanel>
             <TabPanel
-              header="Description"
+              header="More details"
               :disabled="
-                product.description == '' || product.description == null
+                product.description == '' ||
+                  product.description == null ||
+                  check
               "
             >
-              <div class="p-col-12">
-                <p>
-                  <span style="font-weight: bold">{{
-                    product.description
-                  }}</span>
-                </p>
-              </div>
-            </TabPanel>
-            <TabPanel header="Assessment" :disabled="check">
-              <div class="p-col-12">
-                <span style="font-weight: bold">Assessment </span>
-                <Rating
-                  :modelValue="product.assessmentResult"
-                  :readonly="true"
-                  :stars="5"
-                  :cancel="false"
-                  class="p-col-9"
-                />
-              </div>
-              <div class="p-col-12 p-mt-0 p-mb-0">
-                <p style="font-weight: bold">Assessment Descripton</p>
-                <span v-if="product.assessmentDescription == null">N/A</span>
-                <Textarea
-                  id="description"
-                  v-model="product.assessmentDescription"
-                  required="true"
-                  rows="2"
-                  cols="20"
-                  disabled
-                />
+              <div style="height: 320px">
+                <div
+                  class="desc-box"
+                  v-if="
+                    !(product.description == '' || product.description == null)
+                  "
+                >
+                  <p class="header-dialog-crack">Description</p>
+                  <p>
+                    <span
+                      style="font-weight: bold"
+                      v-if="product.description != null"
+                      >{{ product.description }}</span
+                    >
+                  </p>
+                </div>
+                <div class="assessment-box" v-if="!check">
+                  <p class="header-dialog-crack p-mb-2">Assessment Result</p>
+                  <div class="assessment-content">
+                    <div class="p-mr-3">
+                      <Knob
+                        v-model="product.assessmentResult"
+                        :max="100"
+                        :min="0"
+                        :size="120"
+                        readonly="true"
+                      />
+                    </div>
+                    <div>
+                      <p class="header-dialog-crack">Point</p>
+                      <p style="font-weight: 600;margin-bottom:10px">
+                        {{ product.assessmentResult }} /100
+                      </p>
+                      <p class="header-dialog-crack">
+                        Assessment description
+                      </p>
+                      <p style="font-weight: 600">
+                        <span
+                          v-if="
+                            product.assessmentDescription != null &&
+                              product.assessmentDescription != ''
+                          "
+                          >{{ product.assessmentDescription }}</span
+                        >
+                        <span v-else style="font-style: italic; color: #adadad"
+                          >No description</span
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </TabPanel>
           </TabView>
@@ -700,7 +708,7 @@
 <script>
 import Button from "primevue/button";
 import MultiSelect from "primevue/multiselect";
-import Rating from "primevue/rating";
+import Knob from "primevue/knob";
 import Textarea from "primevue/textarea";
 import moment from "moment";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
@@ -757,7 +765,6 @@ export default {
 
   components: {
     Button,
-    Rating,
     Textarea,
     MultiSelect,
     TabView,
@@ -766,6 +773,7 @@ export default {
     ConfirmPopup,
     Toast,
     RadioButton,
+    Knob,
   },
   computed: {
     ...mapGetters("crack", ["getStatusListMore", "getSeveritysList"]),
@@ -1215,6 +1223,7 @@ export default {
 
 .p-dialog .product-image {
   width: 150px;
+  min-height: 320px;
   margin: 0 auto 2rem auto;
   display: block;
 }
@@ -1379,6 +1388,12 @@ textarea {
   min-height: 320px;
 }
 
+.header-dialog-crack {
+  font-weight: 400;
+  color: grey;
+  margin-bottom: 5px;
+}
+
 ::v-deep(.p-datatable .p-datatable-thead > tr > th) {
   background: #f2f9ff;
   color: #4ca4f9;
@@ -1470,6 +1485,46 @@ textarea {
   border-top-left-radius: 24px;
 }
 
+.dialog-title-2 {
+  width: 150px;
+  height: 30px;
+  border-radius: 10px;
+  margin: 10px 0 40px 25px;
+}
+.dialog-title-2 span {
+  padding-top: 3px;
+  font-weight: 600;
+  font-size: 18px;
+  font-family: Poppins;
+}
+.dialog-title-2 span::before {
+  content: "";
+  width: 5px;
+  height: 12px;
+  display: block;
+  border-radius: 3px;
+  padding-bottom: 10px;
+  position: relative;
+  left: -10px;
+  top: 25px;
+  background: #007dfe;
+}
+
+.assessment-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.assessment-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.desc-box {
+  height: 50%;
+}
+
 ::v-deep(.p-dialog .p-dialog-header .p-dialog-title) {
   color: #69707a;
   margin-left: 12px;
@@ -1483,11 +1538,12 @@ textarea {
 }
 
 ::v-deep(.p-dialog .p-dialog-content) {
-  border-bottom-right-radius: 24px;
-  border-bottom-left-radius: 24px;
-  min-height: 345px;
+  border-radius: 24px;
+  min-height: 470px;
 }
-
+::v-deep(.p-tabview .p-tabview-nav) {
+  margin-top: 20px;
+}
 ::v-deep(.p-tabview .p-tabview-panels) {
   color: #69707a;
 }
