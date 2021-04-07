@@ -268,9 +268,9 @@
               <TabPanel
                 header="More details"
                 :disabled="
-                  product.description == '' ||
-                    product.description == null ||
-                    check
+                  (product.description == '' ||
+                  product.description == null) &&
+                  check
                 "
               >
                 <div style="height: 320px">
@@ -368,23 +368,25 @@
         :style="{ width: '700px' }"
         :modal="true"
         class="dialog"
+        :showHeader="false"
+        :dismissableMask="true"
       >
-        <template #header>
-          <h3 class="dialog-title" style="margin-left: 10px">Update Crack</h3>
-        </template>
         <div class="p-grid nested-grid">
           <div class="p-col-5">
+            <div class="dialog-title-2">
+              <span style="">Update Crack</span>
+            </div>
             <img
               :src="product.imageThumbnails"
               :alt="product.imageThumbnails"
               class="product-image"
               v-if="product.image"
               @click="imageClick(product.index)"
-              style="width: 250px; height: 97%"
+              style="width: 250px; margin-left: 12px"
             />
           </div>
           <div class="p-col-7">
-            <div class="p-col-12">
+            <div class="p-col-12" style="margin-top:80px">
               <label class="form-control-label">Position</label>
               <InputText
                 v-model.trim="position"

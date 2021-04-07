@@ -454,8 +454,7 @@
             <TabPanel
               header="More details"
               :disabled="
-                product.description == '' ||
-                  product.description == null ||
+                (product.description == '' || product.description == null) &&
                   check
               "
             >
@@ -520,24 +519,26 @@
       v-model:visible="confirmCrackDialog"
       :style="{ width: '700px' }"
       :modal="true"
+      :showHeader="false"
+      :dismissableMask="true"
       class="dialog"
     >
-      <template #header>
-        <h3 class="p-dialog-title">Verify Crack</h3>
-      </template>
       <div class="p-grid nested-grid">
         <div class="p-col-5">
+          <div class="dialog-title-2">
+            <span style="">Verify Crack</span>
+          </div>
           <img
             :src="product.imageThumbnails"
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
             @click="imageClick(product)"
-            style="width:250px; height:97%"
+            style="width:250px;"
           />
         </div>
         <div class="p-col-7">
-          <div class="p-col-12">
+          <div class="p-col-12" style="margin-top: 70px">
             <label class="form-control-label">Position</label>
             <InputText
               v-model.trim="position"
@@ -598,40 +599,40 @@
       :style="{ width: '700px' }"
       :modal="true"
       class="dialog"
+      :showHeader="false"
+      :dismissableMask="true"
     >
-      <template #header>
-        <h3 class="p-dialog-title">Update Crack</h3>
-      </template>
       <div class="p-grid nested-grid">
         <div class="p-col-5">
+          <div class="dialog-title-2">
+            <span style="">Update Crack</span>
+          </div>
           <img
             :src="product.imageThumbnails"
             :alt="product.imageThumbnails"
             class="product-image"
             v-if="product.image"
-            @click="imageClick(product)"
-            style="width:250px; height:97%"
+            @click="imageClick(product.index)"
+            style="width: 250px; margin-left: 12px"
           />
         </div>
         <div class="p-col-7">
-          <div class="p-col-12">
+          <div class="p-col-12" style="margin-top:80px">
             <label class="form-control-label">Position</label>
             <InputText
               v-model.trim="position"
               class="form-control form-control-alternative"
-              style="width:100%"
+              style="width: 100%"
               placeholder="Position"
             />
             <small class="invalid">{{ errors.position }}</small>
           </div>
           <div class="p-col-12">
             <label class="form-control-label">Description (Optional)</label>
-            <Textarea
+            <InputText
               v-model.trim="description"
               class="form-control form-control-alternative"
-              rows="3"
-              cols="20"
-              style="width:100%; height: auto;"
+              style="width: 100%"
               placeholder="Description"
             />
             <small class="invalid">{{ errors.description }}</small>
@@ -658,13 +659,18 @@
               label="Cancel"
               @click="updateCrackDialog = False"
               icon="pi pi-times"
-              style="background-color:#fae9ed;border:none;color:#e15b7a;margin-right:20px"
+              style="
+                  background-color: #fae9ed;
+                  border: none;
+                  color: #e15b7a;
+                  margin-right: 20px;
+                "
             />
             <Button
               label="Update"
               @click="updateCrack"
               icon="pi pi-check"
-              style="background-color:#ebf8f1;border:none;color:#4cc788"
+              style="background-color: #ebf8f1; border: none; color: #4cc788"
             />
           </div>
         </div>
