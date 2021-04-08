@@ -106,10 +106,12 @@
       <div class="p-field">
         <label for="newPassword">New Password</label>
         <InputText type="password" v-model="newPassword" maxlength="30" />
+        <p class="invalid">{{ errors.newPassword }}</p>
       </div>
       <div class="p-field">
-        <label for="newPassword">New Password</label>
+        <label for="confirmPassword">Confirm Password</label>
         <InputText type="password" v-model="confirmPassword" maxlength="30" />
+        <p class="invalid">{{ errors.confirmPassword }}</p>
       </div>
       <template #footer>
         <Button
@@ -153,6 +155,19 @@ export default {
         .required()
         .max(30)
         .label("Password"),
+      newPassword: yup
+        .string()
+        .max(30)
+        .label("New Password")
+        .required()
+        .matches(
+          /^.*(?=.{8,})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+          "Password must contain at least 8 characters, one uppercase, one number"
+        ),
+      confirmPassword: yup
+        .string()
+        .required("Please confirm your password")
+        .oneOf([yup.ref("newPassword"), null], "Passwords don't match."),
     });
 
     const { errors, meta, handleReset, validate } = useForm({
@@ -161,10 +176,14 @@ export default {
 
     const { value: userName } = useField("userName");
     const { value: password } = useField("password");
+    const { value: newPassword } = useField("newPassword");
+    const { value: confirmPassword } = useField("confirmPassword");
 
     return {
       userName,
       password,
+      newPassword,
+      confirmPassword,
       errors,
       meta,
       validate,
@@ -182,17 +201,13 @@ export default {
   },
   data() {
     return {
-      newPassword: "",
-      confirmPassword: "",
       ChangePasswordDialog: false,
       isLoading: false,
     };
   },
-  created() {},
+  async created() {},
   mounted() {
-    const checkForgotPass = /\/users\/[a-zA-Z]+\/forgotpass/.test(
-      window.location.pathname
-    );
+    const checkForgotPass = /\/users\/[a-zA-Z]+/.test(window.location.pathname);
     if (checkForgotPass && localStorage.getItem("user") == null) {
       this.waithide("login", "resetPass");
     }
@@ -203,7 +218,12 @@ export default {
     ...mapActions("user", ["setUser"]),
 
     async handleSubmit() {
-      if (this.meta.valid && this.userName != null && this.password != null) {
+      if (
+        this.userName != null &&
+        this.password != null &&
+        this.errors.userName == null &&
+        this.errors.password == null
+      ) {
         localStorage.clear();
         this.isLoading = true;
         if (this.userName && this.password) {
@@ -235,8 +255,14 @@ export default {
       }
     },
     async changePassword() {
-      if (this.newPassword != this.confirmPassword) {
-        console.log(this.newPassword);
+      if (
+        this.newPassword != this.confirmPassword &&
+        this.errors.newPassword != null &&
+        this.errors.confirmPassword != null &&
+        this.newPassword == "" &&
+        this.newPassword == null
+      ) {
+        this.validate();
       } else {
         await userApi
           .changePassword(
@@ -274,7 +300,7 @@ export default {
       this.ChangePasswordDialog = false;
     },
     async confirmForgotPassword() {
-      if (this.userName != null) {
+      if (this.userName != null && this.errors.userName == null) {
         this.isLoading = true;
         await userApi
           .forgotPassword(this.userName)
@@ -292,7 +318,7 @@ export default {
               this.$toast.add({
                 severity: "success",
                 summary: contentNoti.SUCCESS_SUMMARY,
-                detail: contentNoti.USER_CHANGE_CONFIRM_FORGOTPASSWORD_SUCCESS,
+                detail: res.data,
                 life: 3000,
               });
               this.isLoading = false;
@@ -306,6 +332,7 @@ export default {
               this.isLoading = false;
             }
           });
+        this.handleReset();
         this.isLoading = false;
         this.waithide("forgotPass", "login");
       } else {

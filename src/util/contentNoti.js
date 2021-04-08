@@ -1,5 +1,5 @@
-export const SUCCESS_SUMMARY = "";
-export const FAIL_SUMMARY = "";
+export const SUCCESS_SUMMARY = "Successfully";
+export const FAIL_SUMMARY = "Failed";
 export const USER_CREATE_SUCCESS = "Create Account Success";
 export const USER_CREATE_FAILED = "Create Account Failed";
 export const USER_EDIT_SUCCESS = "Edit Account Success";
@@ -8,8 +8,8 @@ export const USER_RESETPASSWORK_SUCCESS = "Reset Password Success";
 export const USER_RESETPASSWORK_FAILED = "Reset Password Failed";
 export const USER_DISABLE_SUCCESS = "Disable Account Success";
 export const USER_DISABLE_FAILED = "Disable Account Failed";
-export const USER_FORGOTPASS_SUCCESS = "";
-export const USER_FORGOTPASS_FAILED = "";
+export const USER_FORGOTPASS_SUCCESS = "Change Password Success";
+export const USER_FORGOTPASS_FAILED = "Change Password Failed";
 export const LOCATION_CREATE_SUCCESS = "Create Area Success";
 export const LOCATION_CREATE_FAILED = "Create Area Failed";
 export const LOCATION_EDIT_SUCCESS = "Edit Area Success";
@@ -23,28 +23,28 @@ export const MAINTENANCEWORKER_EDIT_FAILED = "Edit Repairer Failed";
 export const MAINTENANCEWORKER_DISABLE_SUCCESS = "Disable Repairer Success";
 export const MAINTENANCEWORKER_DISABLE_FAILED = "Disable Repairer Failed";
 
-export const NOTIFICATION_CLEAR_SUCCESS = "";
-export const NOTIFICATION_CLEAR_FAILED = "";
-export const CRACK_UPDATE_SUCCESS = "";
-export const CRACK_UPDATE_FAILED = "";
+export const NOTIFICATION_CLEAR_SUCCESS = "Mark All As Seen";
+export const NOTIFICATION_CLEAR_FAILED = "Mark All As Seen Failed";
+export const CRACK_UPDATE_SUCCESS = "Update Crack Success";
+export const CRACK_UPDATE_FAILED = "Update Crack Failed";
 
-export const VIDEO_DELETE_SUCCESS = "";
-export const VIDEO_DELETE_FAILED = "";
+export const VIDEO_DELETE_SUCCESS = "Delete Video Success";
+export const VIDEO_DELETE_FAILED = "Delete Video Failed";
 
-export const USER_LOGIN_FAILED = "";
+export const USER_LOGIN_FAILED = "Log In Failed";
 
-export const USER_CHANGE_PASSWORD_SUCCESS = "";
-export const USER_CHANGE_PASSWORD_FAILED = "";
+export const USER_CHANGE_PASSWORD_SUCCESS = "Change Password Success";
+export const USER_CHANGE_PASSWORD_FAILED = "Change Password Failed";
 
 export const USER_CHANGE_CONFIRM_FORGOTPASSWORD_SUCCESS = "";
-export const USER_CHANGE_CONFIRM_FORGOTPASSWORD_FAILED = "";
+export const USER_CHANGE_CONFIRM_FORGOTPASSWORD_FAILED = "Your Account Doesn't Exist";
 
-export const USER_UPDATE_AREA_SUCCESS = "";
-export const USER_UPDATE_AREA_FAILED = "";
+export const USER_UPDATE_AREA_SUCCESS = "Update Area Success";
+export const USER_UPDATE_AREA_FAILED = "Update Area Failed";
 
-export const CRACK_REJECT_SUCCESS = "";
-export const CRACK_CONFIRM_SUCCESS = "";
-export const CRACK_CONFIRM_FAILED = "";
+export const CRACK_REJECT_SUCCESS = "Reject Success";
+export const CRACK_CONFIRM_SUCCESS = "Confirm Crack Success";
+export const CRACK_CONFIRM_FAILED = "Confirm Crack Fail";
 
 export default {
     SUCCESS_SUMMARY,

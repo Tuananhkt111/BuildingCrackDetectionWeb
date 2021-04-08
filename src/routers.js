@@ -38,8 +38,8 @@ const router = new createRouter({
     { path: "/notifications", name: "notification", component: Notification },
     { path: "/upload", name: "upload", component: Upload },
     {
-      path: "/users/:id/forgotpass",
-      name: "fogotpass",
+      path: "/users/:id/forgotpass-w",
+      name: "forgotpass",
       component: ForgotPassword,
     },
   ],
@@ -51,8 +51,11 @@ router.beforeEach((to, from, next) => {
 
   const authRequired = !publicPages.includes(to.path);
 
-  const checkForgotPass = /\/users\/[a-zA-Z]+\/forgotpass/.test(to.path);
+  var checkForgotPass = false;
 
+  if (to.name == "forgotpass") {
+    checkForgotPass = true;
+  }
   const loggedIn = localStorage.getItem("jwtToken");
 
   const user = JSON.parse(localStorage.getItem("user"));

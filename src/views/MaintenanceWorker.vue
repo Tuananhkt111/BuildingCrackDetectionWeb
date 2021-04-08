@@ -365,9 +365,9 @@ export default {
         .label("Address"),
       name: yup
         .string()
-        .required("Worker Name can't be blank")
+        .required()
         .max(20)
-        .label("Name"),
+        .label("Repairer"),
       phone: yup
         .string()
         .required()

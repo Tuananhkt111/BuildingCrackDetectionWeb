@@ -126,7 +126,7 @@ async function changeForgotPassword(id, token, newPass) {
     token: token,
   };
   const res = await ApiHelper.post(
-    urlConstants.USER_URL + "/" + id + "/forgotpass",
+    urlConstants.USER_URL + "/" + id + "/forgotpass-w",
     data
   );
   return res;

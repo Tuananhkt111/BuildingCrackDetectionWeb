@@ -611,7 +611,7 @@ export default {
         .email(),
       address: yup
         .string()
-        .max(300)
+        .max(30)
         .label("Address")
         .nullable(),
       phone: yup
