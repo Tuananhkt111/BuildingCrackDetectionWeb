@@ -109,7 +109,7 @@ export default {
         this.errorValid.newPasswordValid =
           "Password must contain at least 8 characters, one uppercase, one number";
       } else if (this.newPasswordForgot.length > 30) {
-        this.errorValid.newPasswordValid = "Max is 30 characters";
+        this.errorValid.newPasswordValid = "New Password must be at most 30 characters";
       } else {
         this.errorValid.newPasswordValid = "";
       }

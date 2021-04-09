@@ -336,7 +336,7 @@ export default {
       locationName: yup
         .string()
         .label("Area Name")
-        .required("Area Name can't be blank")
+        .required()
         .max(20),
       description: yup
         .string()

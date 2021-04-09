@@ -23,8 +23,8 @@ export const MAINTENANCEWORKER_EDIT_FAILED = "Edit Repairer Failed";
 export const MAINTENANCEWORKER_DISABLE_SUCCESS = "Disable Repairer Success";
 export const MAINTENANCEWORKER_DISABLE_FAILED = "Disable Repairer Failed";
 
-export const NOTIFICATION_CLEAR_SUCCESS = "Mark All As Seen";
-export const NOTIFICATION_CLEAR_FAILED = "Mark All As Seen Failed";
+export const NOTIFICATION_CLEAR_SUCCESS = "Mark All As Read";
+export const NOTIFICATION_CLEAR_FAILED = "Mark All As Read Failed";
 export const CRACK_UPDATE_SUCCESS = "Update Crack Success";
 export const CRACK_UPDATE_FAILED = "Update Crack Failed";
 
@@ -36,13 +36,15 @@ export const USER_LOGIN_FAILED = "Log In Failed";
 export const USER_CHANGE_PASSWORD_SUCCESS = "Change Password Success";
 export const USER_CHANGE_PASSWORD_FAILED = "Change Password Failed";
 
-export const USER_CHANGE_CONFIRM_FORGOTPASSWORD_SUCCESS = "";
+export const USER_CHANGE_CONFIRM_FORGOTPASSWORD_SUCCESS = "Reset password URL has been sent to the email successfully!";
 export const USER_CHANGE_CONFIRM_FORGOTPASSWORD_FAILED = "Your Account Doesn't Exist";
 
 export const USER_UPDATE_AREA_SUCCESS = "Update Area Success";
 export const USER_UPDATE_AREA_FAILED = "Update Area Failed";
 
-export const CRACK_REJECT_SUCCESS = "Reject Success";
+export const CRACK_REJECT_SUCCESS = "Reject Crack Success";
+export const CRACK_REJECT_FAILED = "Reject Crack Failed";
+
 export const CRACK_CONFIRM_SUCCESS = "Confirm Crack Success";
 export const CRACK_CONFIRM_FAILED = "Confirm Crack Fail";
 
@@ -85,5 +87,7 @@ export default {
     USER_UPDATE_AREA_SUCCESS,
     USER_UPDATE_AREA_FAILED,
     CRACK_REJECT_SUCCESS,
+    CRACK_REJECT_FAILED,
+    CRACK_CONFIRM_SUCCESS,
     CRACK_CONFIRM_FAILED
 };

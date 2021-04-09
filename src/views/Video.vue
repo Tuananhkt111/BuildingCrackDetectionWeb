@@ -870,14 +870,24 @@ export default {
         icon: "pi pi-info-circle",
         acceptClass: "p-button-danger",
         accept: async () => {
-          await crackApi.rejectCrack(product.crackId);
-          this.$toast.add({
-            severity: "info",
-            summary: contentNoti.SUCCESS_SUMMARY,
-            detail: contentNoti.CRACK_REJECT_SUCCESS,
-            life: 3000,
+          await crackApi.rejectCrack(product.crackId).the((res) => {
+            if (res.status == 200) {
+              this.$toast.add({
+                severity: "success",
+                summary: contentNoti.SUCCESS_SUMMARY,
+                detail: contentNoti.CRACK_REJECT_SUCCESS,
+                life: 3000,
+              });
+              this.setFlight(this.$route.query.detectionResultId);
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: contentNoti.FAIL_SUMMARY,
+                detail: contentNoti.CRACK_REJECT_FAILED,
+                life: 3000,
+              });
+            }
           });
-          this.setFlight(this.$route.query.detectionResultId);
         },
         reject: () => {},
       });
