@@ -46,7 +46,7 @@ export const CRACK_REJECT_SUCCESS = "Reject Crack Success";
 export const CRACK_REJECT_FAILED = "Reject Crack Failed";
 
 export const CRACK_CONFIRM_SUCCESS = "Confirm Crack Success";
-export const CRACK_CONFIRM_FAILED = "Confirm Crack Fail";
+export const CRACK_CONFIRM_FAILED = "Confirm Crack Failed";
 
 export default {
     SUCCESS_SUMMARY,

@@ -870,7 +870,7 @@ export default {
         icon: "pi pi-info-circle",
         acceptClass: "p-button-danger",
         accept: async () => {
-          await crackApi.rejectCrack(product.crackId).the((res) => {
+          await crackApi.rejectCrack(product.crackId).then((res) => {
             if (res.status == 200) {
               this.$toast.add({
                 severity: "success",
