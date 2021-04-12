@@ -394,7 +394,7 @@
                 style="width: 100%"
                 placeholder="Position"
               />
-              <small class="invalid">{{ errors.position }}</small>
+              <small class="p-invalid">{{ errors.position }}</small>
             </div>
             <div class="p-col-12">
               <label class="form-control-label">Description (Optional)</label>
@@ -404,7 +404,7 @@
                 style="width: 100%"
                 placeholder="Description"
               />
-              <small class="invalid">{{ errors.description }}</small>
+              <small class="p-invalid">{{ errors.description }}</small>
             </div>
             <div class="p-col-12">
               <label class="form-control-label serverity">Severity</label><br />
@@ -421,7 +421,7 @@
                 />
                 <label :for="category.key">{{ category }}</label>
               </div>
-              <small class="invalid">{{ errors.selectedSeverity }}</small>
+              <small class="p-invalid">{{ errors.selectedSeverity }}</small>
             </div>
             <div>
               <Button
@@ -491,7 +491,7 @@ export default {
     const schema = yup.object({
       position: yup
         .string()
-        .max(20)
+        .max(50)
         .label("Position")
         .required(),
       selectedSeverity: yup
@@ -500,7 +500,7 @@ export default {
         .required(),
       description: yup
         .string()
-        .max(300)
+        .max(100)
         .label("Description")
         .nullable(),
     });
@@ -1297,5 +1297,10 @@ textarea {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
+}
+.p-invalid {
+  color: red;
+  font-size: 0.8 rem;
+  text-align: left !important;
 }
 </style>

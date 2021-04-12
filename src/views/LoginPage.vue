@@ -21,7 +21,7 @@
             >Welcome to BCDSystem</span
           >
           <div class="wrap-input100">
-            <div class="p-float-label p-mb-5">
+            <div class="p-float-label" style="margin-bottom:25px">
               <InputText
                 type="text"
                 v-model="userName"
@@ -29,9 +29,9 @@
                 v-on:keyup.enter="handleSubmit"
               />
               <label style="padding-left: 55px">Username</label>
-              <p class="invalid">{{ errors.userName }}</p>
             </div>
-            <div class="p-float-label p-mb-5 p-mt-2">
+            <p class="invalid" style="top:-25px">{{ errors.userName }}</p>
+            <div class="p-float-label " style="margin-bottom:20px">
               <InputText
                 type="password"
                 v-model="password"
@@ -39,8 +39,8 @@
                 v-on:keyup.enter="handleSubmit"
               />
               <label style="padding-left: 55px;">Password</label>
-              <p class="invalid">{{ errors.password }}</p>
             </div>
+            <p class="invalid">{{ errors.password }}</p>
             <Button
               label="Login"
               @click="handleSubmit"
@@ -66,14 +66,14 @@
           >
           <div class="wrap-input100">
             <div class="p-field">
-              <div class="p-float-label p-mb-4">
+              <div class="p-float-label">
                 <InputText
                   type="text"
                   v-model="userName"
                   style="width: 270px"
                 />
                 <label style="padding-left:55px">USER NAME</label>
-                <p class="invalid">{{ errors.userName }}</p>
+              <p class="invalid-forgotPass">{{ errors.userName }}</p>
               </div>
             </div>
           </div>
@@ -83,14 +83,13 @@
             class="p-button-raised p-button-info"
             @click="confirmForgotPassword"
           />
-
           <span
             style="padding-left:30px; color: blue; display: inline-block; vertical-align: middle; line-height: 40px; cursor:pointer"
             @click="cancelForgotPassword"
             >Sign in <i class="pi pi-arrow-right" style=""></i
           ></span>
         </div>
-        <div id="resetPass" class="resetPassFrom">
+        <div id="resetPass" class="p-col-5 resetPassFrom">
           <ForgotPassword></ForgotPassword>
         </div>
       </div>
@@ -106,13 +105,13 @@
       <div class="p-field">
         <label for="newPassword">New Password</label>
         <InputText type="password" v-model="newPassword" maxlength="30" />
-        <p class="invalid">{{ errors.newPassword }}</p>
       </div>
+      <p class="invalid-password">{{ errors.newPassword }}</p>
       <div class="p-field">
         <label for="confirmPassword">Confirm Password</label>
         <InputText type="password" v-model="confirmPassword" maxlength="30" />
-        <p class="invalid">{{ errors.confirmPassword }}</p>
       </div>
+      <p class="invalid-password">{{ errors.confirmPassword }}</p>
       <template #footer>
         <Button
           label="Cancel"
@@ -422,6 +421,7 @@ div {
   justify-content: center;
   align-items: center;
   font-family: Poppins;
+  margin-bottom: 30px;
   width: 100%;
 }
 .loginForm {
@@ -437,13 +437,33 @@ div {
   transition: all 0.3s;
 }
 .resetPassFrom {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: Poppins;
   display: none;
   transition: all 0.3s;
 }
 .invalid {
   color: red;
+  text-align: left !important;
   font-size: 0.8rem;
+  top: -20px;
+  padding-left: 60px;
+  position: relative;
+}
+.invalid-password {
+  color: red;
+  text-align: left !important;
+  font-size: 0.8rem;
+  top: -15px;
+  position: relative;
+}
+.invalid-forgotPass{
+  color: red;
+  text-align: left !important;
+  font-size: 0.8rem;
+  padding-left: 60px;
   position: absolute;
-  left: 60px;
 }
 </style>

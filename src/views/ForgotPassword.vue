@@ -1,40 +1,39 @@
 <template>
   <div>
     <div v-if="ChangePassworDialog" style="padding-top: 100px">
-      <span class="login100-form-title" style="font-weight: bold"
-        >Forgot Password</span
-      >
-      <div class="p-float-label p-mb-5">
-        <InputText
-          id="newPasswordForgot"
-          type="password"
-          v-model="newPasswordForgot"
-          style="width: 270px"
-          @input="checkValidate"
-        />
-        <label>New Password</label>
+      <span class="login100-form-title">Forgot Password</span>
+      <div class="wrap-input100">
+        <div class="p-float-label" style="margin-bottom:30px">
+          <InputText
+            id="newPasswordForgot"
+            type="password"
+            v-model="newPasswordForgot"
+            style="width: 270px"
+            @input="checkValidate"
+          />
+          <label style="padding-left: 55px">New Password</label>
+        </div>
         <p class="invalid">{{ errorValid.newPasswordValid }}</p>
-      </div>
-      <div class="p-float-label" style="margin-top:35px">
-        <InputText
-          id="confirmPassword"
-          type="password"
-          v-model="confirmPassword"
-          style="width: 270px"
-          @input="checkValidate"
+        <div class="p-float-label" style="margin-bottom:25px">
+          <InputText
+            id="confirmPassword"
+            type="password"
+            v-model="confirmPassword"
+            style="width: 270px"
+            @input="checkValidate"
+          />
+          <label style="padding-left: 55px">Confirm Password</label>
+        </div>
+        <p class="invalid" style="top:-25px">{{ errorValid.confirmPasswordValid }}</p>
+        <Button
+          label="Change Password"
+          class="p-button-raised p-button-info"
+          @click="confirmChangePassword"
+          style="width: 270px; margin-top:20px"
         />
-        <label>Confirm Password</label>
-        <p class="invalid">{{ errorValid.confirmPasswordValid }}</p>
-        <br />
       </div>
-      <Button
-        label="Change Password"
-        class="p-button-raised p-button-info"
-        @click="confirmChangePassword"
-        style="width: 270px; margin-top:20px"
-      />
+      <Toast position="bottom-right" />
     </div>
-    <Toast position="bottom-right" />
   </div>
 </template>
 
@@ -109,7 +108,8 @@ export default {
         this.errorValid.newPasswordValid =
           "Password must contain at least 8 characters, one uppercase, one number";
       } else if (this.newPasswordForgot.length > 30) {
-        this.errorValid.newPasswordValid = "New Password must be at most 30 characters";
+        this.errorValid.newPasswordValid =
+          "New Password must be at most 30 characters";
       } else {
         this.errorValid.newPasswordValid = "";
       }
@@ -125,6 +125,7 @@ export default {
 
 <style scoped>
 .login100-form-title {
+  font-weight: bold;
   display: block;
   font-family: Poppins;
   font-size: 23px;
@@ -135,9 +136,17 @@ export default {
 }
 .invalid {
   color: red;
+  text-align: left !important;
   font-size: 0.8rem;
-  position: absolute;
-  left: 0;
-  padding-bottom: 50px;
+  padding-left: 60px;
+}
+
+.wrap-input100 {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-family: Poppins;
+  margin-bottom: 30px;
+  width: 100%;
 }
 </style>
