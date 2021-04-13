@@ -946,7 +946,6 @@ export default {
                 await crackApi
                   .addHighSeverityToQueue(this.product.crackId)
                   .then((res1) => {
-                    console.log(res1);
                     if (res1.status == 200) {
                       this.$toast.add({
                         severity: "success",
@@ -1042,7 +1041,7 @@ export default {
                       this.$toast.add({
                         severity: "success",
                         summary: contentNoti.SUCCESS_SUMMARY,
-                        detail: contentNoti.CRACK_CONFIRM_SUCCESS,
+                        detail: contentNoti.CRACK_UPDATE_SUCCESS,
                         life: 3000,
                       });
                     }
@@ -1051,7 +1050,7 @@ export default {
                 this.$toast.add({
                   severity: "success",
                   summary: contentNoti.SUCCESS_SUMMARY,
-                  detail: contentNoti.CRACK_CONFIRM_SUCCESS,
+                  detail: contentNoti.CRACK_UPDATE_SUCCESS,
                   life: 3000,
                 });
               }
