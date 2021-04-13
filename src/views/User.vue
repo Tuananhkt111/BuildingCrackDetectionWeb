@@ -1415,7 +1415,7 @@ label {
   font-weight: 500;
   display: flex;
   justify-content: left;
-  align-items: left;
+  align-items: center;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
@@ -1423,9 +1423,8 @@ label {
   border-width: 0 0 0 0;
   padding: 1rem 1rem;
   display: flex;
-
   justify-content: left;
-  align-items: left;
+  align-items: center;
 }
 
 ::v-deep(.p-datatable.p-datatable-hoverable-rows

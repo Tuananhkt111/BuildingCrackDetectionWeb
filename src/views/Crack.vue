@@ -1110,7 +1110,7 @@ textarea {
   font-weight: 500;
   display: flex;
   justify-content: left;
-  align-items: left;
+  align-items: center;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
@@ -1120,7 +1120,7 @@ textarea {
   display: flex;
 
   justify-content: left;
-  align-items: left;
+  align-items: center;
 }
 
 ::v-deep(.p-datatable.p-datatable-hoverable-rows

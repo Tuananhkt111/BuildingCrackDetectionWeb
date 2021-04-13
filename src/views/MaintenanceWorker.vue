@@ -673,7 +673,7 @@ export default {
   color: #69707a;
   margin-left: 12px;
   display: flex;
-  align-items: left;
+  align-items: center;
 }
 
 ::v-deep(.p-dialog .p-dialog-footer) {
@@ -772,7 +772,7 @@ label {
 }
 .table-header {
   display: flex;
-  align-items: left;
+  align-items: center;
   justify-content: space-between;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -841,7 +841,7 @@ label {
   font-weight: 500;
   display: flex;
   justify-content: left;
-  align-items: left;
+  align-items: center;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
@@ -850,7 +850,7 @@ label {
   padding: 1rem 1rem;
   display: flex;
   justify-content: left;
-  align-items: left;
+  align-items: center;
 }
 
 ::v-deep(.p-datatable.p-datatable-hoverable-rows
