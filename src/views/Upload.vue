@@ -59,7 +59,6 @@
           </label>
         </div>
       </div>
-      
     </div>
   </div>
 </template>
@@ -71,6 +70,7 @@ import axios from "axios";
 import flightApi from "../apis/flights";
 import * as yup from "yup";
 import { useForm, useField } from "vee-validate";
+import moment from "moment";
 
 export default {
   setup() {
@@ -134,7 +134,6 @@ export default {
       if (tmp.type == "video/mp4") {
         this.wrongFormatFile = "";
         this.file = document.getElementById("choose_file").files[0];
-        console.log(document.getElementById("choose_file").files[0]);
         var totalBytes = this.file.size;
         if (totalBytes < 1000000) {
           this.size = Math.floor(totalBytes / 1000) + "KB";
@@ -175,19 +174,7 @@ export default {
         });
         let user = JSON.parse(localStorage.getItem("user"));
         let videoName = user.locations[0].name;
-        videoName +=
-          " " +
-          ("0" + this.file.lastModifiedDate.getDate()).slice(-2) +
-          "-" +
-          ("0" + (this.file.lastModifiedDate.getMonth() + 1)).slice(-2) +
-          "-" +
-          this.file.lastModifiedDate.getFullYear() +
-          " " +
-          ("0" + this.file.lastModifiedDate.getHours()).slice(-2) +
-          "_" +
-          ("0" + this.file.lastModifiedDate.getMinutes()).slice(-2) +
-          "_" +
-          ("0" + this.file.lastModifiedDate.getSeconds()).slice(-2);
+        videoName += " " + moment(this.file.lastModifiedDate).format("DD-MM-YYYY hh_mm_ss");
         this.setVideo(videoName);
         localStorage.setItem("video", this.getVideo);
         await this.pollData();

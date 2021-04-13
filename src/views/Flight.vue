@@ -193,7 +193,7 @@
               v-tooltip.bottom="'View Details'"
             />
             <Button
-              v-if="slotProps.data.video != 'null.mp4' && isAdmin"
+              v-if="slotProps.data.video != 'null.mp4' && !isStaff"
               icon="pi pi-trash"
               style="color: red"
               class="p-button-rounded p-button-alert p-button-text"
@@ -246,12 +246,6 @@ export default {
 
     data() {
       return this.getFlightList;
-    },
-
-    isAdmin() {
-      let role = JSON.parse(localStorage.getItem("user")).role;
-      if (webRole.ADMIN_ROLE === role) return true;
-      return false;
     },
 
     isStaff() {
