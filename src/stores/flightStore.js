@@ -72,6 +72,7 @@ const flightStore = {
       const res = await flightApi.getById(id);
       if (res) {
         res.created = new Date(res.created + "Z");
+        res.recordDate = new Date(res.recordDate + "Z");
         commit("setIsShow", true);
         res.video = res.video + ".mp4";
         commit("setFlight", res);

@@ -195,6 +195,7 @@
           cols="20"
           style="width:100%; height: auto;"
           placeholder="Description"
+          :autoResize="true"
         />
         <small class="invalid">{{ errors.description }}</small>
       </div>
@@ -245,6 +246,7 @@
           style="width:100%; height: auto;"
           placeholder="Description"
           :readonly="!admin"
+          :autoResize="true"
         />
         <small class="invalid"> {{ errors.description }}</small>
       </div>

@@ -106,7 +106,7 @@ export default {
         )
       ) {
         this.errorValid.newPasswordValid =
-          "Password must contain at least 8 characters, one uppercase, one number";
+          "Password must contain at least 8 characters, 1 uppercase, 1 number";
       } else if (this.newPasswordForgot.length > 30) {
         this.errorValid.newPasswordValid =
           "New Password must be at most 30 characters";
@@ -114,7 +114,7 @@ export default {
         this.errorValid.newPasswordValid = "";
       }
       if (this.newPasswordForgot !== this.confirmPassword) {
-        this.errorValid.confirmPasswordValid = "Passwords don't match";
+        this.errorValid.confirmPasswordValid = "Password does not match";
       } else {
         this.errorValid.confirmPasswordValid = "";
       }

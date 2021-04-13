@@ -557,6 +557,7 @@
               cols="20"
               style="width:100%; height: auto;"
               placeholder="Description"
+              :autoResize="true"
             />
             <small class="p-invalid">{{ errors.description }}</small>
           </div>
@@ -931,6 +932,7 @@ export default {
                 await crackApi
                   .addHighSeverityToQueue(this.product.crackId)
                   .then((res1) => {
+                    console.log(res1);
                     if (res1.status == 200) {
                       this.$toast.add({
                         severity: "success",
@@ -1016,14 +1018,29 @@ export default {
             this.description,
             this.selectedSeverity
           )
-          .then((res) => {
+          .then(async (res) => {
             if (res.status == 200) {
-              this.$toast.add({
-                severity: "success",
-                summary: contentNoti.SUCCESS_SUMMARY,
-                detail: contentNoti.CRACK_UPDATE_SUCCESS,
-                life: 3000,
-              });
+              if (this.selectedSeverity === "High") {
+                await crackApi
+                  .addHighSeverityToQueue(this.product.crackId)
+                  .then((res1) => {
+                    if (res1.status == 200) {
+                      this.$toast.add({
+                        severity: "success",
+                        summary: contentNoti.SUCCESS_SUMMARY,
+                        detail: contentNoti.CRACK_CONFIRM_SUCCESS,
+                        life: 3000,
+                      });
+                    }
+                  });
+              } else {
+                this.$toast.add({
+                  severity: "success",
+                  summary: contentNoti.SUCCESS_SUMMARY,
+                  detail: contentNoti.CRACK_CONFIRM_SUCCESS,
+                  life: 3000,
+                });
+              }
               this.setFlight(this.$route.query.detectionResultId);
               this.updateCrackDialog = false;
             } else {

@@ -8,7 +8,14 @@
         dataKey="userId"
         :paginator="true"
         :rows="5"
-        :globalFilterFields="['userName', 'name','email', 'role','phoneNumber','locations']"
+        :globalFilterFields="[
+          'userName',
+          'name',
+          'email',
+          'role',
+          'phoneNumber',
+          'locations.name',
+        ]"
         v-model:filters="filters"
         :rowHover="true"
         filterDisplay="menu"
@@ -280,6 +287,7 @@
           rows="3"
           cols="20"
           class="form-control form-control-alternative"
+          :autoResize="true"
         />
         <small class="invalid">{{ errors.address }}</small>
       </div>
@@ -383,6 +391,7 @@
           cols="20"
           class="form-control form-control-alternative"
           readonly
+          :autoResize="true"
         />
         <small class="invalid">{{ errors.address }}</small>
       </div>
@@ -501,6 +510,7 @@
           cols="20"
           class="form-control form-control-alternative"
           placeholder="Address"
+          :autoResize="true"
         />
         <small class="invalid">{{ errors.address }}</small>
       </div>

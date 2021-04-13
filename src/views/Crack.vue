@@ -11,7 +11,7 @@
           :paginator="true"
           :rows="5"
           :loading="loading"
-          :globalFilterFields="['locationName', 'reporterName','severity', 'status', 'crackId']"
+          :globalFilterFields="['locationName', 'reporterName','severity', 'status', 'crackId', 'position']"
           v-model:filters="filters"
           filterDisplay="menu"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -690,14 +690,29 @@ export default {
             this.description,
             this.selectedSeverity
           )
-          .then((res) => {
+          .then(async (res) => {
             if (res.status == 200) {
-              this.$toast.add({
-                severity: "success",
-                summary: contentNoti.SUCCESS_SUMMARY,
-                detail: contentNoti.CRACK_UPDATE_SUCCESS,
-                life: 3000,
-              });
+              if (this.selectedSeverity === "High") {
+                await crackApi
+                  .addHighSeverityToQueue(this.product.crackId)
+                  .then((res1) => {
+                    if (res1.status == 200) {
+                      this.$toast.add({
+                        severity: "success",
+                        summary: contentNoti.SUCCESS_SUMMARY,
+                        detail: contentNoti.CRACK_CONFIRM_SUCCESS,
+                        life: 3000,
+                      });
+                    }
+                  });
+              } else {
+                this.$toast.add({
+                  severity: "success",
+                  summary: contentNoti.SUCCESS_SUMMARY,
+                  detail: contentNoti.CRACK_CONFIRM_SUCCESS,
+                  life: 3000,
+                });
+              }
               this.setCrackList();
               this.updateCrackDialog = false;
             } else {

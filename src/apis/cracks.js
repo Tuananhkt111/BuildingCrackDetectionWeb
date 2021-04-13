@@ -97,9 +97,8 @@ async function countCrackByLocationsAndSeverity(locationId, year) {
 async function addHighSeverityToQueue(crackId) {
   const payload = [crackId];
   const res = await ApiHelper.post(urlConstants.MAINTEANANCE_ORDER_URL + "/queue" ,payload);
-  console.log(res);
   if (res.status == 200) {
-    return res.data;
+    return res;
   } else return res;
 }
 

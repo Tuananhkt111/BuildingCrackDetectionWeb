@@ -21,6 +21,9 @@ const crackStore = {
       var tmp = state.crackList.filter(
         (crack) => crack.status !== "Unconfirmed"
       );
+      for (let index = 0; index < tmp.length; index++) {
+        tmp[index].index = index + 1;
+      }
       return tmp;
     },
     getStatusList(state) {
