@@ -761,24 +761,24 @@ label {
   padding: 1rem;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-width: 0 0 0 0;
-  text-align: center;
+  text-align: left;
   box-sizing: content-box;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s,
     box-shadow 0.2s;
   cursor: pointer;
   font-weight: 500;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: left;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
-  text-align: center;
+  text-align: left;
   border: 1px solid #e9ecef;
   border-width: 0 0 0 0;
   padding: 1rem 1rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: left;
 }
 
 ::v-deep(.p-datatable.p-datatable-hoverable-rows

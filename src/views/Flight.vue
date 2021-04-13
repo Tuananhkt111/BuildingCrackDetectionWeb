@@ -12,7 +12,7 @@
         :paginator="true"
         :rows="5"
         v-model:filters="filters"
-        :globalFilterFields="['locationName', 'dataCollectorName']"
+        :globalFilterFields="['locationName', 'dataCollectorName', 'location', 'description', 'video']"
         filterDisplay="menu"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         currentPageReportTemplate=""

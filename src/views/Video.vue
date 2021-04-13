@@ -438,7 +438,7 @@
                   <p style="font-weight: 600">{{ product.censorName }}</p>
                 </div>
                 <div class="p-col-6" v-if="product.censorName != null">
-                  <p class="header-dialog-crack">Updated User</p>
+                  <p class="header-dialog-crack">Update By</p>
                   <p style="font-weight: 600">{{ product.updateUserName }}</p>
                 </div>
                 <div class="p-col-6">
@@ -698,8 +698,18 @@
           class="buttonView p-link"
           v-tooltip.right="'View Crack Details'"
           @click="showDetail(slotProps.item)"
+          v-if="checkShowDetail"
         >
           <i class="pi pi-fw pi-eye" style="fontSize: 2rem;"></i>
+        </button>
+        <button
+          type="button"
+          class="buttonView p-link"
+          v-tooltip.right="'Confirm Crack'"
+          @click="showConfirm(slotProps.item)"
+          v-if="!checkShowDetail && isStaff"
+        >
+          <i class="pi pi-fw pi-check" style="fontSize: 2rem;"></i>
         </button>
       </template>
       <template #thumbnail="slotProps">
@@ -811,6 +821,7 @@ export default {
       check: true,
       url: "",
       displayCustom: false,
+      checkShowDetail: false,
       checkNull: true,
       activeIndex: 0,
       imageList: [],
@@ -851,8 +862,10 @@ export default {
     imageClick(product) {
       this.hiddenDialog();
       if (product.status == "Unconfirmed") {
+        this.checkShowDetail = false;
         this.imageList = this.getUnConfirmCrackList;
       } else {
+        this.checkShowDetail = true;
         this.imageList = this.getConfirmCrackList;
       }
       this.activeIndex = product.index - 1;
@@ -1580,7 +1593,6 @@ textarea {
   font-size: 0.8 rem;
   text-align: left !important;
 }
-
 .buttonView {
   position: fixed;
   z-index: 10000;
@@ -1597,7 +1609,6 @@ textarea {
   justify-content: center;
   align-items: center;
 }
-
 .buttonView:hover {
   background: rgba(255, 255, 255, 0.1);
   color: #f8f9fa;

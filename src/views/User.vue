@@ -8,6 +8,7 @@
         dataKey="userId"
         :paginator="true"
         :rows="5"
+        :globalFilterFields="['userName', 'name','email', 'role','phoneNumber','locations']"
         v-model:filters="filters"
         :rowHover="true"
         filterDisplay="menu"

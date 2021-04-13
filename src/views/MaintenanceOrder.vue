@@ -32,6 +32,8 @@
             'maintenanceWorkerName',
             'locationName',
             'status',
+            'maintenanceOrderId',
+            'maintenanceExpense'
           ]"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           currentPageReportTemplate=""
@@ -58,9 +60,9 @@
             :expander="true"
             headerStyle="width: 30px;border-radius: 20px 0 0 20px"
           />
-          <Column header="No" style="width:2rem">
+          <Column header="Id" style="width:2rem">
             <template #body="slotProps">
-              {{ slotProps.data.index }}
+              {{ slotProps.data.maintenanceOrderId }}
             </template>
           </Column>
           <Column
@@ -284,7 +286,7 @@
         class="dialog"
       >
         <div class="dialog-title-2">
-          <span style="">Repair Record Details</span>
+          <span style="">Repair Record {{product.maintenanceOrderId}}</span>
         </div>
         <div class="p-col-12 order-detail">
           <div class="p-grid nested-grid">
@@ -314,7 +316,7 @@
                     </p>
                   </div>
                   <div class="p-col-6">
-                    <p class="header-detail">Create User</p>
+                    <p class="header-detail">Create By</p>
                     <p style="font-weight: 600">{{ product.createUserName }}</p>
                   </div>
                   <div class="p-col-6">
@@ -412,7 +414,7 @@
                     </p>
                   </div>
                   <div class="p-col-6">
-                    <p class="header-detail">Update User</p>
+                    <p class="header-detail">Update By</p>
                     <p style="font-weight: 600">{{ product.updateUserName }}</p>
                   </div>
                 </div>
@@ -472,7 +474,7 @@
                     <p style="font-weight: 600">{{ product.censorName }}</p>
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                    <p class="header-dialog-crack">Updated User</p>
+                    <p class="header-dialog-crack">Update By</p>
                     <p style="font-weight: 600">{{ product.updateUserName }}</p>
                   </div>
                   <div class="p-col-6">

@@ -11,7 +11,7 @@
           :paginator="true"
           :rows="5"
           :loading="loading"
-          :globalFilterFields="['locationName', 'reporterName']"
+          :globalFilterFields="['locationName', 'reporterName','severity', 'status', 'crackId']"
           v-model:filters="filters"
           filterDisplay="menu"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -35,12 +35,12 @@
           <template #empty> No Cracks found. </template>
           <template #loading> Loading Crack, please wait... </template>
           <Column
-            header="No"
+            header="Id"
             style="max-width: 50px"
             headerStyle="max-width: 30px;border-radius:20px 0 0 20px"
           >
             <template #body="slotProps">
-              {{ slotProps.data.index }}
+              {{ slotProps.data.crackId }}
             </template>
           </Column>
           <Column
@@ -212,7 +212,7 @@
         <div class="p-grid nested-grid">
           <div class="p-col-5">
             <div class="dialog-title-2">
-              <span style="">Crack Details</span>
+              <span style="">Crack {{product.crackId}}</span>
             </div>
             <img
               :src="product.imageThumbnails"
@@ -252,7 +252,7 @@
                     <p style="font-weight: 600">{{ product.censorName }}</p>
                   </div>
                   <div class="p-col-6" v-if="product.censorName != null">
-                    <p class="header-dialog-crack">Updated User</p>
+                    <p class="header-dialog-crack">Update By</p>
                     <p style="font-weight: 600">{{ product.updateUserName }}</p>
                   </div>
                   <div class="p-col-6">
@@ -374,7 +374,7 @@
         <div class="p-grid nested-grid">
           <div class="p-col-5">
             <div class="dialog-title-2">
-              <span style="">Update Crack</span>
+              <span style="">Update Crack {{product.crackId}}</span>
             </div>
             <img
               :src="product.imageThumbnails"
@@ -1029,7 +1029,7 @@ textarea {
   justify-content: center;
 }
 .dialog-title-2 {
-  width: 150px;
+  width: 300px;
   height: 30px;
   border-radius: 10px;
   margin: 10px 0 40px 25px;

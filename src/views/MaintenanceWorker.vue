@@ -10,7 +10,7 @@
         :paginator="true"
         :rows="5"
         v-model:filters="filters"
-        :globalFilterFields="['name', 'phone', 'email', 'created']"
+        :globalFilterFields="['name', 'phone', 'email', 'address']"
         filterDisplay="menu"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         currentPageReportTemplate=""
@@ -673,7 +673,7 @@ export default {
   color: #69707a;
   margin-left: 12px;
   display: flex;
-  align-items: center;
+  align-items: left;
 }
 
 ::v-deep(.p-dialog .p-dialog-footer) {
@@ -772,7 +772,7 @@ label {
 }
 .table-header {
   display: flex;
-  align-items: center;
+  align-items: left;
   justify-content: space-between;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -840,8 +840,8 @@ label {
   cursor: pointer;
   font-weight: 500;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: left;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
   text-align: left;
@@ -849,8 +849,8 @@ label {
   border-width: 0 0 0 0;
   padding: 1rem 1rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: left;
 }
 
 ::v-deep(.p-datatable.p-datatable-hoverable-rows

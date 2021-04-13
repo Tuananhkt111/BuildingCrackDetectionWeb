@@ -30,7 +30,7 @@
               />
               <label style="padding-left: 55px">Username</label>
             </div>
-            <p class="invalid" style="top:-25px">{{ errors.userName }}</p>
+            <p class="invalid" style="top:-25px ; padding-left:60px">{{ errors.userName }}</p>
             <div class="p-float-label " style="margin-bottom:20px">
               <InputText
                 type="password"
@@ -40,7 +40,7 @@
               />
               <label style="padding-left: 55px;">Password</label>
             </div>
-            <p class="invalid">{{ errors.password }}</p>
+            <p class="invalid" style="padding-left:60px">{{ errors.password }}</p>
             <Button
               label="Login"
               @click="handleSubmit"
@@ -86,7 +86,7 @@
           <span
             style="padding-left:30px; color: blue; display: inline-block; vertical-align: middle; line-height: 40px; cursor:pointer"
             @click="cancelForgotPassword"
-            >Sign in <i class="pi pi-arrow-right" style=""></i
+            >Log in <i class="pi pi-arrow-right" style=""></i
           ></span>
         </div>
         <div id="resetPass" class="p-col-5 resetPassFrom">
@@ -449,7 +449,6 @@ div {
   text-align: left !important;
   font-size: 0.8rem;
   top: -20px;
-  padding-left: 60px;
   position: relative;
 }
 .invalid-password {

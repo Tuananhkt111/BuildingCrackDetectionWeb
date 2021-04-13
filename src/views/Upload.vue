@@ -29,6 +29,7 @@
           </li>
         </ul>
       </div>
+      <p class="invalid" style="padding-top: 10px">{{ wrongFormatFile }}</p>
       <div class="des-field">
         <InputText
           id="description"
@@ -37,7 +38,7 @@
           class="form-control form-control-alternative"
           placeholder="Description"
         />
-        <p class="invalid">{{errors.description}}</p>
+        <p class="invalid">{{ errors.description }}</p>
       </div>
       <div class="p-grid">
         <div class="choose_file p-col-6">
@@ -58,6 +59,7 @@
           </label>
         </div>
       </div>
+      
     </div>
   </div>
 </template>
@@ -102,6 +104,7 @@ export default {
       size: null,
       check: false,
       polling: null,
+      wrongFormatFile: "",
     };
   },
 
@@ -119,28 +122,38 @@ export default {
 
     closeFile() {
       this.file = null;
+      document.getElementById("choose_file").value = null;
       document.getElementById("divDetect").style.border = "2px dashed grey";
       document.getElementById("divDetect").style.cursor = "not-allowed";
       document.getElementById("spanDetect").style.cursor = "not-allowed";
       document.getElementById("spanDetect").style.color = "grey";
     },
     chooseFile() {
-      this.file = document.getElementById("choose_file").files[0];
-      console.log(this.file);
-      var totalBytes = this.file.size;
-      if (totalBytes < 1000000) {
-        this.size = Math.floor(totalBytes / 1000) + "KB";
+      this.file = null;
+      const tmp = document.getElementById("choose_file").files[0];
+      if (tmp.type == "video/mp4") {
+        this.wrongFormatFile = "";
+        this.file = document.getElementById("choose_file").files[0];
+        console.log(document.getElementById("choose_file").files[0]);
+        var totalBytes = this.file.size;
+        if (totalBytes < 1000000) {
+          this.size = Math.floor(totalBytes / 1000) + "KB";
+        } else {
+          this.size = Math.floor(totalBytes / 1000000) + "MB";
+        }
+        document.getElementById("divDetect").style.border =
+          "2px dashed #8178d3";
+        document.getElementById("divDetect").style.cursor = "pointer";
+        document.getElementById("spanDetect").style.cursor = "pointer";
+        document.getElementById("spanDetect").style.color = "#8178d3";
       } else {
-        this.size = Math.floor(totalBytes / 1000000) + "MB";
+        this.wrongFormatFile = " Wrong Format File!!";
       }
-      document.getElementById("divDetect").style.border = "2px dashed #8178d3";
-      document.getElementById("divDetect").style.cursor = "pointer";
-      document.getElementById("spanDetect").style.cursor = "pointer";
-      document.getElementById("spanDetect").style.color = "#8178d3";
     },
 
     async detect() {
-      if ( this.meta.valid &&
+      if (
+        this.meta.valid &&
         this.file != null &&
         this.description !== null &&
         this.description !== ""
@@ -162,12 +175,19 @@ export default {
         });
         let user = JSON.parse(localStorage.getItem("user"));
         let videoName = user.locations[0].name;
-        videoName += " " + ("0" + this.file.lastModifiedDate.getDate()).slice(-2) 
-        + "-" + ("0" + (this.file.lastModifiedDate.getMonth() + 1)).slice(-2) 
-        + "-" + this.file.lastModifiedDate.getFullYear()
-        + " " + ("0" + this.file.lastModifiedDate.getHours()).slice(-2)
-        + "_" + ("0" + this.file.lastModifiedDate.getMinutes()).slice(-2)
-        + "_" + ("0" + this.file.lastModifiedDate.getSeconds()).slice(-2);
+        videoName +=
+          " " +
+          ("0" + this.file.lastModifiedDate.getDate()).slice(-2) +
+          "-" +
+          ("0" + (this.file.lastModifiedDate.getMonth() + 1)).slice(-2) +
+          "-" +
+          this.file.lastModifiedDate.getFullYear() +
+          " " +
+          ("0" + this.file.lastModifiedDate.getHours()).slice(-2) +
+          "_" +
+          ("0" + this.file.lastModifiedDate.getMinutes()).slice(-2) +
+          "_" +
+          ("0" + this.file.lastModifiedDate.getSeconds()).slice(-2);
         this.setVideo(videoName);
         localStorage.setItem("video", this.getVideo);
         await this.pollData();
@@ -179,7 +199,7 @@ export default {
     async pollData() {
       this.polling = setInterval(async () => {
         let res = await flightApi.checkExists(this.getVideo);
-        if(res && res.data === "Video exists") {
+        if (res && res.data === "Video exists") {
           clearInterval(this.polling);
           this.setVideo(null);
           localStorage.removeItem("video");
@@ -187,9 +207,10 @@ export default {
         }
         console.log(res);
       }, 60000);
-      setTimeout(() => {clearInterval(this.polling)}, 36000000);
+      setTimeout(() => {
+        clearInterval(this.polling);
+      }, 36000000);
     },
-
   },
 };
 </script>
