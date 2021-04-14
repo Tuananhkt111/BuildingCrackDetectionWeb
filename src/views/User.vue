@@ -794,7 +794,7 @@ export default {
     },
     checkMaxArea() {
       if (this.selectedLocation.length > 3) {
-        this.checkMaxLocation = "Manager only manage at the most three areas";
+        this.checkMaxLocation = "Manager only manages at most 3 areas";
       } else {
         this.checkMaxLocation = "";
       }
@@ -848,7 +848,7 @@ export default {
           });
       } else {
         if (this.selectedLocation.length <= 3) {
-          this.checkMaxLocation = "Manager only manage at the most three areas";
+          this.checkMaxLocation = "Manager only manages at most 3 areas";
         }
         this.validate();
       }
@@ -907,7 +907,7 @@ export default {
           });
       } else {
         if (this.selectedLocation.length <= 3) {
-          this.checkMaxLocation = "Manager only manage at the most three areas";
+          this.checkMaxLocation = "Manager only manages at most 3 areas";
         }
         this.validate();
       }
