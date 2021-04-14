@@ -92,6 +92,9 @@ const maintenanceOrderStore = {
           res[index].lastModified = new Date(
             res[index].lastModified + "Z"
           );
+          res[index].assessmentDate = new Date(
+            res[index].assessmentDate + "Z"
+          );
           res[index].index = index + 1;
           var crack = res[index].cracks;
           for (let index2 = 0; index2 < crack.length; index2++) {

@@ -157,27 +157,39 @@ export default {
         this.description !== null &&
         this.description !== ""
       ) {
-        const location = JSON.parse(localStorage.getItem("user")).locations[0]
-          .name;
-        const token = localStorage.getItem("jwtToken");
-        let formData = new FormData();
-        formData.append("video", this.file);
-        formData.append("token", token);
-        formData.append("description", this.description);
-        formData.append("locationName", location);
-        formData.append("recordDate", this.file.lastModified);
-        const url = urlConstants.PYTHON_URL + "detect";
-        axios.post(url, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
         let user = JSON.parse(localStorage.getItem("user"));
         let videoName = user.locations[0].name;
-        videoName += " " + moment(this.file.lastModifiedDate).format("DD-MM-YYYY hh_mm_ss");
+        videoName +=
+          " " +
+          moment(this.file.lastModifiedDate).format("DD-MM-YYYY hh_mm_ss");
         this.setVideo(videoName);
-        localStorage.setItem("video", this.getVideo);
-        await this.pollData();
+        let res = await flightApi.checkExists(this.getVideo);
+        if (res && res.data === "Video exists") {
+          this.$toast.add({
+            severity: "error",
+            summary: "Failed",
+            detail: "Video exists",
+            life: 3000,
+          });
+        } else {
+          const location = JSON.parse(localStorage.getItem("user")).locations[0]
+            .name;
+          const token = localStorage.getItem("jwtToken");
+          let formData = new FormData();
+          formData.append("video", this.file);
+          formData.append("token", token);
+          formData.append("description", this.description);
+          formData.append("locationName", location);
+          formData.append("recordDate", this.file.lastModified);
+          const url = urlConstants.PYTHON_URL + "detect";
+          axios.post(url, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          localStorage.setItem("video", this.getVideo);
+          await this.pollData();
+        }
       } else {
         this.validate();
       }
@@ -192,7 +204,6 @@ export default {
           localStorage.removeItem("video");
           this.setFlightList();
         }
-        console.log(res);
       }, 60000);
       setTimeout(() => {
         clearInterval(this.polling);

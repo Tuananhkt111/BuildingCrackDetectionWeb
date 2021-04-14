@@ -639,6 +639,7 @@ export default {
           unscheduled: data.status === "UnrecordedRepair",
           scheduledformaintenace: data.status === "RecordedRepair",
           fix: data.status === "Fixed",
+          unqualifiedRepair : data.status === "UnqualifiedRepair"
         },
       ];
     },
@@ -1034,6 +1035,14 @@ textarea {
   /* text-align: center;
   width: 110px;
     background-color:#c7d7db; */
+}
+.unqualifiedRepair {
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  color: #212529;
+  text-transform: uppercase;
 }
 
 .dialog-title {
