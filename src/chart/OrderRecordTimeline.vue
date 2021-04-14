@@ -32,7 +32,6 @@ export default {
         });
       });
     }
-    console.log(this.events);
     let curDate = new Date();
     this.options.initialDate = moment(curDate).format("YYYY-MM-DD");
     this.check++;
