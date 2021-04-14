@@ -553,7 +553,7 @@ export default {
         " Period " +
         this.filterChart.period +
         "/" +
-        this.filterChart.selectedYears
+        this.filterChart.selectedYear
       );
     },
   },
