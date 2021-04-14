@@ -702,7 +702,6 @@ export default {
       this.expandedRows = this.getMaintenanceOrderList.filter(
         (p) => p.maintenanceOrderId == event.data.maintenanceOrderId
       );
-      console.log(event);
       this.cracks = [];
       this.cracks = event.data.cracks;
     },
@@ -718,7 +717,6 @@ export default {
     showImage(crack) {
       this.crackInfoDialog = false;
       this.activeIndex = crack.index - 1;
-      console.log(this.activeIndex);
       this.displayImage = true;
     },
     hiddenImage() {
@@ -741,6 +739,7 @@ export default {
       this.crackInfoDialog = true;
     },
     editProduct(product) {
+      console.log(product);
       this.product = { ...product };
       if (
         this.product.assessmentResult != null &&
@@ -835,7 +834,7 @@ export default {
     },
     callDate(date) {
       const date1 = new Date(date);
-      return moment(date1).format("DD-MM-YYYY hh:mm:ss");
+      return moment(date1).format("DD-MM-YYYY HH:mm:ss");
     },
     filterDate(value, filter) {
       if (

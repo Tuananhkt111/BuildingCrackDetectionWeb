@@ -32,6 +32,7 @@ const userStore = {
         for (let index = 0; index < res.length; index++) {
           res[index].created = new Date(res[index].created +"Z");
           res[index].index = index + 1;
+          res[index].fullLocation = res[index].locations.map((l) => " " + l.name).toString();
         }
         commit("setUserList", res);
       }

@@ -14,7 +14,7 @@
           'email',
           'role',
           'phoneNumber',
-          'locations.name',
+          'fullLocation',
         ]"
         v-model:filters="filters"
         :rowHover="true"
@@ -185,7 +185,7 @@
                   slotProps.data.locations.length > 0
               "
             >
-              {{ slotProps.data.locations.map((l) => " " + l.name).toString() }}
+              {{ slotProps.data.fullLocation }}
             </span>
             <span v-else style="font-style: italic; color: #adadad">
               No Area assigned
@@ -309,7 +309,9 @@
             :filter="true"
             class="multiselect-custom dropdown-list form-control-alternative"
             key="locationId"
+            @change="checkMaxArea"
           />
+          <small class="invalid">{{ checkMaxLocation }}</small>
           <p
             class="dropdown-list form-control-alternative"
             v-if="selectedRole === 'Staff'"
@@ -496,7 +498,9 @@
             placeholder="Select Areas"
             :filter="true"
             class="multiselect-custom dropdown-list form-control-alternative"
+            @change="checkMaxArea"
           />
+          <small class="invalid">{{ checkMaxLocation }}</small>
         </div>
       </div>
       <div class="p-field">
@@ -697,6 +701,7 @@ export default {
       admin: false,
       selectedProduct: null,
       checkAvailable: false,
+      checkMaxLocation: "",
     };
   },
 
@@ -741,6 +746,7 @@ export default {
       this.setAvailableLocationStaff(null);
       this.setAvailableLocationManager(null);
       this.handleReset();
+      this.checkMaxLocation = "";
       this.UserDialog = true;
       this.selectedRole = "Staff";
       this.selectedLocation = null;
@@ -786,12 +792,21 @@ export default {
           this.ResetPasswordDialog = false;
         });
     },
+    checkMaxArea() {
+      if (this.selectedLocation.length > 3) {
+        this.checkMaxLocation = "Manager only manage at the most three areas";
+      } else {
+        this.checkMaxLocation = "";
+      }
+    },
+
     async CreateUser() {
       if (
         this.meta.valid &&
         this.name != null &&
         this.email != null &&
-        this.phone != null
+        this.phone != null &&
+        this.selectedLocation.length <= 3
       ) {
         await userApi
           .createUser(
@@ -832,11 +847,14 @@ export default {
             this.UserDialog = false;
           });
       } else {
+        if (this.selectedLocation.length <= 3) {
+          this.checkMaxLocation = "Manager only manage at the most three areas";
+        }
         this.validate();
       }
     },
     async UpdateUser() {
-      if (this.meta.valid) {
+      if (this.meta.valid && this.selectedLocation.length <= 3) {
         await userApi
           .updateUser(
             this.product.userId,
@@ -888,6 +906,9 @@ export default {
             this.UserUpdateDialog = false;
           });
       } else {
+        if (this.selectedLocation.length <= 3) {
+          this.checkMaxLocation = "Manager only manage at the most three areas";
+        }
         this.validate();
       }
     },
@@ -961,7 +982,7 @@ export default {
 
     callDate(date) {
       const date1 = new Date(date);
-      return moment(date1).format("DD-MM-YYYY hh:mm:ss");
+      return moment(date1).format("DD-MM-YYYY HH:mm:ss");
     },
     filterDate(value, filter) {
       if (
@@ -1004,6 +1025,7 @@ export default {
         name: "<<No Area>>",
       };
       this.handleReset();
+      this.checkMaxLocation = "";
       this.name = product.name;
       this.email = product.email;
       this.phone = product.phoneNumber;
@@ -1018,7 +1040,6 @@ export default {
         await this.setAvailableLocationStaff(product.userId);
         this.getAvailableLocationStaff.push(tmpLocation);
         this.selectedLocation = tmpLocation;
-        console.log(this.getAvailableLocationStaff);
         if (this.getAvailableLocationStaff.length == 1) {
           this.checkAvailable = true;
         }

@@ -30,7 +30,6 @@ const maintenanceOrderStore = {
           "-" +
           this.maintenanceOrderList[index].status;
         tmp.start = this.maintenanceOrderList[index].maintenanceDate;
-        console.log(tmp);
         this.schedule.push(tmp);
       }
       return state.schedule;
@@ -87,6 +86,12 @@ const maintenanceOrderStore = {
           res[index].maintenanceDate = new Date(
             res[index].maintenanceDate + "Z"
           );
+          res[index].created = new Date(
+            res[index].created + "Z"
+          );
+          res[index].lastModified = new Date(
+            res[index].lastModified + "Z"
+          );
           res[index].index = index + 1;
           var crack = res[index].cracks;
           for (let index2 = 0; index2 < crack.length; index2++) {
@@ -100,11 +105,9 @@ const maintenanceOrderStore = {
 
     async setMaintenanceOrder({ commit }, id) {
       const res = await maintenanceOrderApi.getById(id);
-      for (let index = 0; index < res.length; index++) {
-        res[index].maintenanceDate = new Date(res[index].maintenanceDate + "Z");
-        res[index].created = new Date(res[index].created + "Z");
-        res[index].lastModified = new Date(res[index].lastModified + "Z");
-      }
+        res.maintenanceDate = new Date(res.maintenanceDate + "Z");
+        res.created = new Date(res.created + "Z");
+        res.lastModified = new Date(res.lastModified + "Z");
       if (res) {
         commit("setMaintenanceOrder", res);
       }
