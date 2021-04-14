@@ -85,9 +85,8 @@ const flightStore = {
         commit("setIsShow", true);
         res.video = res.video + ".mp4";
         commit("setFlight", res);
-        if (res.cracks != null) {
+        if (res.cracks) {
           for (let index = 0; index < res.cracks.length; index++) {
-            console.log(res.cracks[index]);
             res.cracks[index].index = index + 1;
             res.cracks[index].created = new Date(
               res.cracks[index].created + "Z"
@@ -98,7 +97,7 @@ const flightStore = {
             res.cracks[index].accuracy = Math.round(
               res.cracks[index].accuracy * 100
             );
-            if(res.cracks[index].deleteVideoDate != null){
+            if(res.cracks[index].deleteVideoDate){
               res.cracks[index].deleteVideoDate = new Date(
                 res.cracks[index].deleteVideoDate + "Z"
               );
