@@ -51,6 +51,16 @@ router.beforeEach((to, from, next) => {
 
   const authRequired = !publicPages.includes(to.path);
 
+  const staffPages = [
+    "/detection-result-details",
+    "/detection-results",
+    "/repair-records",
+    "/cracks",
+    "/repairers",
+  ];
+
+  const StaffRequired = !staffPages.includes(to.path);
+
   var checkForgotPass = false;
 
   if (to.name == "forgotpass") {
@@ -63,6 +73,10 @@ router.beforeEach((to, from, next) => {
   if (user != null) {
     if (checkForgotPass) {
       next("/");
+    } else if (to.name == "home" && user.role == "Staff") {
+      next("/cracks");
+    } else if (user.role == "Staff" && StaffRequired) {
+      next("/cracks");
     } else {
       next();
     }

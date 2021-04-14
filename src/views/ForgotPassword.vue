@@ -114,7 +114,7 @@ export default {
         this.errorValid.newPasswordValid = "";
       }
       if (this.newPasswordForgot !== this.confirmPassword) {
-        this.errorValid.confirmPasswordValid = "Password does not match";
+        this.errorValid.confirmPasswordValid = "Password is not matched";
       } else {
         this.errorValid.confirmPasswordValid = "";
       }

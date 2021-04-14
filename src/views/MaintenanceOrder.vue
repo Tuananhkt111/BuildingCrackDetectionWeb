@@ -200,12 +200,12 @@
               </div>
               <DataTable :value="slotProps.data.cracks">
                 <Column
-                  header="No"
+                  header="Id"
                   style="width:3rem"
                   headerStyle="border-radius:20px 0 0 20px"
                 >
                   <template #body="slotProps">
-                    {{ slotProps.data.index }}
+                    {{ slotProps.data.crackId }}
                   </template>
                 </Column>
                 <Column
@@ -434,7 +434,7 @@
         <div class="p-grid nested-grid">
           <div class="p-col-5">
             <div class="dialog-title-2" style="margin-top: 10px; margin-bottom: 15px; height: auto">
-              <span style="">Crack Details</span>
+              <span style="">Crack {{product.crackId}}</span>
             </div>
             <img
               :src="product.imageThumbnails"
@@ -735,8 +735,8 @@ export default {
       } else {
         this.check = true;
       }
-      this.product.created = this.callDate(this.product.created);
-      this.product.lastModified = this.callDate(this.product.lastModified);
+      this.product.created = this.callDate(new Date(this.product.created + "Z"));
+      this.product.lastModified = this.callDate(new Date(this.product.lastModified + "Z"));
       this.product.index = product.index;
       this.crackInfoDialog = true;
     },

@@ -237,12 +237,12 @@
                   Loading Crack, please wait...
                 </template>
                 <Column
-                  header="No"
+                  header="Id"
                   headerStyle="max-width: 40px;border-radius: 20px 0 0 20px "
                   style="max-width: 70px;"
                 >
                   <template #body="slotProps">
-                    {{ slotProps.data.index }}
+                    {{ slotProps.data.crackId }}
                   </template>
                 </Column>
                 <Column
@@ -395,7 +395,6 @@
         </TabView>
       </div>
     </div>
-
     <div v-else style="margin: 20px;">
       No Flight Found
     </div>
@@ -869,7 +868,7 @@ export default {
       this.getFlight.video;
     if (this.getFlight.length == 0) {
       this.checkNull = false;
-    }
+    } 
   },
   methods: {
     ...mapActions("flight", ["setFlight"]),
@@ -1091,6 +1090,8 @@ export default {
     async showDetail(product) {
       this.hiddenDialog();
       this.product = await crackApi.getById(product.crackId);
+      this.product.created = new Date(this.product.created + "Z");
+      this.product.lastModified = new Date(this.product.lastModified + "Z");
       if (
         this.product.assessmentResult != null &&
         this.product.assessmentResult != ""

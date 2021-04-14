@@ -1025,8 +1025,6 @@ export default {
       } else if (tmp == "" && this.selectedRole == "Manager") {
         this.selectedLocation = [];
         await this.setAvailableLocationManager(product.userId);
-        this.getAvailableLocationManager.push(tmpLocation);
-        this.selectedLocation.push(tmpLocation);
         if (this.getAvailableLocationManager.length == 1) {
           this.checkAvailable = true;
         }

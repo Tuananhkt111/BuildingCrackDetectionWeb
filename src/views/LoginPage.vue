@@ -21,26 +21,30 @@
             >Welcome to BCDSystem</span
           >
           <div class="wrap-input100">
-            <div class="p-float-label" style="margin-bottom:25px">
+            <div style="margin-bottom:25px">
+              <p class="input-title">Username</p>
               <InputText
                 type="text"
                 v-model="userName"
                 style="width: 270px"
                 v-on:keyup.enter="handleSubmit"
               />
-              <label style="padding-left: 55px">Username</label>
             </div>
-            <p class="invalid" style="top:-25px ; padding-left:60px">{{ errors.userName }}</p>
-            <div class="p-float-label " style="margin-bottom:20px">
+            <p class="invalid" style="top:-25px ; padding-left:60px">
+              {{ errors.userName }}
+            </p>
+            <div style="margin-bottom:20px">
+              <p class="input-title">Password</p>
               <InputText
                 type="password"
                 v-model="password"
                 style="width: 270px"
                 v-on:keyup.enter="handleSubmit"
               />
-              <label style="padding-left: 55px;">Password</label>
             </div>
-            <p class="invalid" style="padding-left:60px">{{ errors.password }}</p>
+            <p class="invalid" style="padding-left:60px">
+              {{ errors.password }}
+            </p>
             <Button
               label="Login"
               @click="handleSubmit"
@@ -66,14 +70,15 @@
           >
           <div class="wrap-input100">
             <div class="p-field">
-              <div class="p-float-label">
+              <div>
+                <p class="input-title">Username</p>
                 <InputText
                   type="text"
                   v-model="userName"
                   style="width: 270px"
+                  v-on:keyup.enter="handleSubmit"
                 />
-                <label style="padding-left:55px">USER NAME</label>
-              <p class="invalid-forgotPass">{{ errors.userName }}</p>
+                <p class="invalid-forgotPass">{{ errors.userName }}</p>
               </div>
             </div>
           </div>
@@ -166,7 +171,7 @@ export default {
       confirmPassword: yup
         .string()
         .required("Please confirm your password")
-        .oneOf([yup.ref("newPassword"), null], "Passwords don't match."),
+        .oneOf([yup.ref("newPassword"), null], "Password is not matched"),
     });
 
     const { errors, meta, handleReset, validate } = useForm({
@@ -320,7 +325,6 @@ export default {
                 detail: res.data,
                 life: 3000,
               });
-              this.isLoading = false;
             } else {
               this.$toast.add({
                 severity: "error",
@@ -458,11 +462,16 @@ div {
   top: -15px;
   position: relative;
 }
-.invalid-forgotPass{
+.invalid-forgotPass {
   color: red;
   text-align: left !important;
   font-size: 0.8rem;
   padding-left: 60px;
   position: absolute;
+}
+.input-title {
+  text-align: left !important;
+  font-weight: 600;
+  padding-left: 60px;
 }
 </style>
