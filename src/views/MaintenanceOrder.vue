@@ -11,7 +11,7 @@
         <div class="chart-title">
           <span>Repair Records Timeline</span>
         </div>
-        <OrderTimeline></OrderTimeline>
+        <OrderTimeline :parentMethod="editProduct"></OrderTimeline>
       </div>
     </div>
     <div class="main-layout-details">
@@ -183,7 +183,7 @@
                 icon="pi pi-eye"
                 class="p-button-rounded p-button-info p-button-text"
                 @click="editProduct(slotProps.data)"
-                v-tooltip.bottom="'View Record details'"
+                v-tooltip.bottom="'View Record Details'"
               />
             </template>
           </Column>

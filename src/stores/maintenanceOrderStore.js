@@ -10,7 +10,8 @@ const maintenanceOrderStore = {
     chartExpense: [],
     countOrders: 0,
     expenseTotal: 0,
-    averageAssessment: 0
+    averageAssessment: 0,
+    maintenanceOrder: null
   },
 
   getters: {
@@ -49,11 +50,17 @@ const maintenanceOrderStore = {
     getAverageAssessment(state) {
       return state.averageAssessment;
     },
+    getMaintenanceOrder(state) {
+      return state.maintenanceOrder;
+    },
   },
 
   mutations: {
     setMaintenanceOrderList(state, maintenanceOrderList) {
       state.maintenanceOrderList = maintenanceOrderList;
+    },
+    setMaintenanceOrder(state, maintenanceOrder) {
+      state.maintenanceOrder = maintenanceOrder;
     },
     setChartStatus(state, chartStatus) {
       state.chartStatus = chartStatus;
@@ -99,7 +106,7 @@ const maintenanceOrderStore = {
         res[index].lastModified = new Date(res[index].lastModified + "Z");
       }
       if (res) {
-        commit("setMaintenanceOrderList", res);
+        commit("setMaintenanceOrder", res);
       }
     },
 

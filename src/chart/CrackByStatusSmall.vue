@@ -55,11 +55,13 @@ export default {
               "rgb(81 216 175)",
               "rgb(255 180 85)",
               "rgb(253 81 125)",
+              "rgb(253 81 125)",
             ],
             hoverBackgroundColor: [
               "rgba(137, 191, 220, 0.7)",
               "rgba(81, 216, 175, 0.7)",
               "rgba(255, 180, 85, 0.7)",
+              "rgba(253, 81, 125, 0.7)",
               "rgba(253, 81, 125, 0.7)",
             ],
             categoryPercentage: 0.9,

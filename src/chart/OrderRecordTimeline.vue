@@ -19,6 +19,7 @@ export default {
   components: {
     FullCalendar,
   },
+  props:["parentMethod"],
   async mounted() {
     await this.setMaintenanceOrderList(this.data);
     if (this.getMaintenanceOrderList != null) {
@@ -27,6 +28,7 @@ export default {
           title: !this.isStaff ? x.locationName : "",
           start: x.maintenanceDate,
           backgroundColor: x.status !== "Completed" ? 'rgb(122 241 255)' : 'rgb(99 255 151)',
+          id: x.maintenanceOrderId
         });
       });
     }
@@ -36,7 +38,7 @@ export default {
     this.check++;
   },
   computed: {
-    ...mapGetters("maintenanceOrder", ["getMaintenanceOrderList"]),
+    ...mapGetters("maintenanceOrder", ["getMaintenanceOrderList", "getMaintenanceOrder"]),
 
     isStaff() {
       let role = JSON.parse(localStorage.getItem("user")).role;
@@ -45,7 +47,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions("maintenanceOrder", ["setMaintenanceOrderList"]),
+    ...mapActions("maintenanceOrder", ["setMaintenanceOrderList", "setMaintenanceOrder"]),
+    async handleEventClick(arg) {
+      await this.setMaintenanceOrder(arg.event.id);
+      this.parentMethod(this.getMaintenanceOrder);
+    }
   },
 
   data() {
@@ -56,6 +62,7 @@ export default {
         plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
         initialDate: "2019-01-01",
         initialView: "dayGridWeek",
+        eventClick: this.handleEventClick,
         headerToolbar: {
           left: "prev,next",
           center: "",
