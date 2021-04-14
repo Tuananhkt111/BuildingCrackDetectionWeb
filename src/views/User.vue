@@ -14,7 +14,7 @@
           'email',
           'role',
           'phoneNumber',
-          'locations.name',
+          'fullLocation',
         ]"
         v-model:filters="filters"
         :rowHover="true"
@@ -185,7 +185,7 @@
                   slotProps.data.locations.length > 0
               "
             >
-              {{ slotProps.data.locations.map((l) => " " + l.name).toString() }}
+              {{ slotProps.data.fullLocation }}
             </span>
             <span v-else style="font-style: italic; color: #adadad">
               No Area assigned
