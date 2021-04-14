@@ -387,6 +387,10 @@
                         <p style="font-weight: 600;margin-bottom:10px">
                           {{ product.assessorName }}
                         </p>
+                        <p class="header-dialog-crack">Assessment Date</p>
+                        <p style="font-weight: 600;margin-bottom:10px">
+                          {{ callDate(product.assessmentDate) }}
+                        </p>
                         <p class="header-dialog-crack">
                           Assessment description
                         </p>
