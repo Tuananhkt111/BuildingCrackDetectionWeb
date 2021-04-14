@@ -163,7 +163,7 @@ export default {
           " " +
           moment(this.file.lastModifiedDate).format("DD-MM-YYYY hh_mm_ss");
         this.setVideo(videoName);
-        let res = await flightApi.checkExists(this.getVideo);
+        let res = await flightApi.checkExistsInDb(this.getVideo);
         if (res && res.data === "Video exists") {
           this.$toast.add({
             severity: "error",

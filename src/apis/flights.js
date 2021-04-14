@@ -4,7 +4,9 @@ import urlConstants from "../util/urlConstants.js";
 export const flightApi = {
   getAll,
   getById,
-  removeVideo
+  removeVideo,
+  checkExistsInDb,
+  checkExists
 };
 
 async function getAll() {
@@ -26,9 +28,14 @@ async function checkExists(video) {
   return await ApiHelper.get(urlConstants.FLIGHT_URL + "/exists?video=" + video);
 }
 
+async function checkExistsInDb(video) {
+  return await ApiHelper.get(urlConstants.FLIGHT_URL + "/exists-db?video=" + video);
+}
+
 export default {
   getAll,
   getById,
   removeVideo,
-  checkExists
+  checkExists,
+  checkExistsInDb
 };
