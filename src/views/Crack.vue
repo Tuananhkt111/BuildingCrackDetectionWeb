@@ -750,7 +750,7 @@ export default {
     },
     callDate(date) {
       const date1 = new Date(date);
-      return moment(date1).format("DD-MM-YYYY hh:mm:ss");
+      return moment(date1).format("DD-MM-YYYY HH:mm:ss");
     },
 
     initFilters() {
