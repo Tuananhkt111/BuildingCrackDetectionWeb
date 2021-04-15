@@ -42,7 +42,11 @@
           </span>
         </div>
         <template #empty> No Repairer found. </template>
-        <Column header="No" headerStyle="border-radius: 20px 0 0 20px">
+        <Column
+          header="No"
+          headerStyle="max-width: 30px;border-radius: 20px 0 0 20px; min-width: 30px"
+          style="max-width:62px;"
+        >
           <template #body="slotProps">
             {{ slotProps.data.index }}
           </template>
@@ -53,6 +57,8 @@
           :showFilterMatchModes="false"
           :showAddButton="false"
           :showFilterOperator="false"
+          headerStyle="max-width: 230px; "
+          style="max-width:300px; "
         >
           <template #body="slotProps">
             {{ slotProps.data.name }}
@@ -91,6 +97,8 @@
           :showFilterMatchModes="false"
           :showAddButton="false"
           :showFilterOperator="false"
+          headerStyle="min-width: 218px; "
+          style="min-width:250px;"
         >
           <template #body="slotProps">
             {{ slotProps.data.email }}

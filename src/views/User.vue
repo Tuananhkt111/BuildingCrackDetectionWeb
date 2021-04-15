@@ -801,12 +801,18 @@ export default {
     },
 
     async CreateUser() {
+      this.validate();
       if (
+        this.selectedLocation != null &&
+        this.selectedRole != "Staff" &&
+        this.selectedLocation.length > 3
+      ) {
+        this.checkMaxLocation = "Manager only manages at most 3 areas";
+      } else if (
         this.meta.valid &&
         this.name != null &&
         this.email != null &&
-        this.phone != null &&
-        this.selectedLocation.length <= 3
+        this.phone != null
       ) {
         await userApi
           .createUser(
@@ -854,7 +860,14 @@ export default {
       }
     },
     async UpdateUser() {
-      if (this.meta.valid && this.selectedLocation.length <= 3) {
+      this.validate();
+      if (
+        this.selectedLocation != null &&
+        this.selectedRole != "Staff" &&
+        this.selectedLocation.length > 3
+      ) {
+        this.checkMaxLocation = "Manager only manages at most 3 areas";
+      } else if (this.meta.valid) {
         await userApi
           .updateUser(
             this.product.userId,

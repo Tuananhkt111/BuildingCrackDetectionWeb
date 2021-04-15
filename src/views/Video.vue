@@ -135,7 +135,7 @@
                 <template #loading>
                   Loading Crack, please wait...
                 </template>
-                <Column header="No" headerStyle="border-radius:20px 0 0 20px">
+                <Column header="No" headerStyle="border-radius:20px 0 0 20px;">
                   <template #body="slotProps">
                     {{ slotProps.data.index }}
                   </template>
@@ -146,7 +146,7 @@
                       :src="slotProps.data.imageThumbnails"
                       :alt="slotProps.data.imageThumbnails"
                       class="product-image"
-                      style="width: 80px ; height: 80px; margin-left:-1rem"
+                      style="width: 80px ; height: 80px;"
                       @click="imageClick(slotProps.data)"
                     />
                   </template>
@@ -238,8 +238,8 @@
                 </template>
                 <Column
                   header="Id"
-                  headerStyle="max-width: 40px;border-radius: 20px 0 0 20px "
-                  style="max-width: 70px;"
+                  headerStyle="min-width: 26px; max-width: 26px;border-radius: 20px 0 0 20px; "
+                  style="max-width: 58px"
                 >
                   <template #body="slotProps">
                     {{ slotProps.data.crackId }}
@@ -247,8 +247,8 @@
                 </Column>
                 <Column
                   header="Image"
-                  headerStyle="min-width: 78px;"
-                  bodyStyle="margin-left:-15px"
+                  headerStyle="min-width:80px; max-width:80px"
+                  style="min-width:112px; max-width:112px"
                 >
                   <template #body="slotProps">
                     <img
@@ -265,9 +265,8 @@
                   field="accuracy"
                   dataType="numeric"
                   :showAddButton="false"
-                  headerStyle="min-width: 127px;"
-                  style="min-width: 160px;"
-                  bodyStyle="margin-left:20px"
+                  headerStyle="max-width: 100px; min-width: 100px"
+                  style="max-width: 132px; min-width: 132px"
                   :showFilterOperator="false"
                 >
                   >
@@ -868,7 +867,7 @@ export default {
       this.getFlight.video;
     if (this.getFlight.length == 0) {
       this.checkNull = false;
-    } 
+    }
   },
   methods: {
     ...mapActions("flight", ["setFlight"]),
@@ -1263,7 +1262,7 @@ export default {
 
 .table-header {
   display: flex;
-  align-items: center;
+  align-items: left;
   justify-content: space-between;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -1407,20 +1406,6 @@ textarea {
   text-transform: uppercase;
 }
 
-.imagePopup {
-  width: 100%;
-  height: 100%;
-  z-index: 999999;
-  position: fixed;
-  top: 0;
-  background: rgba(0, 0, 0, 0.9);
-  left: 0;
-  align-content: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .p-dialog-titlebar {
   background: black;
 }
@@ -1466,7 +1451,7 @@ textarea {
   cursor: pointer;
   font-weight: 500;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 }
 ::v-deep(.p-datatable .p-datatable-tbody > tr > td) {
@@ -1475,8 +1460,8 @@ textarea {
   border-width: 0 0 0 0;
   padding: 1rem 1rem;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: left;
 }
 
 ::v-deep(.p-datatable.p-datatable-hoverable-rows
@@ -1588,8 +1573,8 @@ textarea {
   color: #69707a;
   margin-left: 12px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  justify-content: left;
 }
 
 ::v-deep(.p-dialog) {
