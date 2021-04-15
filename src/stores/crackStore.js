@@ -4,8 +4,18 @@ const crackStore = {
   namespaced: true,
   state: {
     crackList: [],
-    statuses: ["UnrecordedRepair", "RecordedRepair", "UnqualifiedRepair", "Fixed"],
-    statusList: ["UnrecordedRepair", "RecordedRepair", "Fixed", "UnqualifiedRepair"],
+    statuses: [
+      "UnrecordedRepair",
+      "RecordedRepair",
+      "UnqualifiedRepair",
+      "Fixed",
+    ],
+    statusList: [
+      "UnrecordedRepair",
+      "RecordedRepair",
+      "Fixed",
+      "UnqualifiedRepair",
+    ],
     severitys: ["Low", "Medium", "High"],
     countCrack: 0,
     chartSeverity: [],
@@ -76,16 +86,7 @@ const crackStore = {
         res[index].accuracy = Math.round(res[index].accuracy * 100);
       }
       if (res) {
-        commit(
-          "setCrackList",
-          res.filter(
-            (crack) =>
-              !(
-                crack.status === "UnrecordedRepair" &&
-                crack.maintenanceOrderId !== null
-              )
-          )
-        );
+        commit("setCrackList", res);
       }
     },
     async setCountCrack({ commit }, data) {

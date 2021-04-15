@@ -11,7 +11,14 @@
           :paginator="true"
           :rows="5"
           :loading="loading"
-          :globalFilterFields="['locationName', 'reporterName','severity', 'status', 'crackId', 'position']"
+          :globalFilterFields="[
+            'locationName',
+            'reporterName',
+            'severity',
+            'status',
+            'crackId',
+            'position',
+          ]"
           v-model:filters="filters"
           filterDisplay="menu"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -188,8 +195,9 @@
               />
               <Button
                 v-if="
-                  slotProps.data.status != 'DetectedFailed' &&
-                    slotProps.data.status != 'UnrecordedRepair'
+                  slotProps.data.status == 'RecordedRepair' ||
+                  slotProps.data.status == 'UnqualifiedRepair' ||
+                  slotProps.data.status == 'Fixed'
                 "
                 icon="pi pi-calendar-minus"
                 class="p-button-rounded p-button-danger p-button-text"
@@ -212,7 +220,7 @@
         <div class="p-grid nested-grid">
           <div class="p-col-5">
             <div class="dialog-title-2">
-              <span style="">Crack {{product.crackId}}</span>
+              <span style="">Crack {{ product.crackId }}</span>
             </div>
             <img
               :src="product.imageThumbnails"
@@ -268,9 +276,8 @@
               <TabPanel
                 header="More details"
                 :disabled="
-                  (product.description == '' ||
-                  product.description == null) &&
-                  check
+                  (product.description == '' || product.description == null) &&
+                    check
                 "
               >
                 <div style="height: 320px">
@@ -374,7 +381,7 @@
         <div class="p-grid nested-grid">
           <div class="p-col-5">
             <div class="dialog-title-2">
-              <span style="">Update Crack {{product.crackId}}</span>
+              <span style="">Update Crack {{ product.crackId }}</span>
             </div>
             <img
               :src="product.imageThumbnails"
@@ -639,7 +646,7 @@ export default {
           unscheduled: data.status === "UnrecordedRepair",
           scheduledformaintenace: data.status === "RecordedRepair",
           fix: data.status === "Fixed",
-          unqualifiedRepair : data.status === "UnqualifiedRepair"
+          unqualifiedRepair: data.status === "UnqualifiedRepair",
         },
       ];
     },
@@ -706,7 +713,21 @@ export default {
                       });
                     }
                   });
+              } else if (this.selectedSeverity === "Low") {
+                await crackApi
+                  .remomveLowSeverity(this.product.crackId)
+                  .then((res2) => {
+                    if (res2.status == 200) {
+                      this.$toast.add({
+                        severity: "success",
+                        summary: contentNoti.SUCCESS_SUMMARY,
+                        detail: contentNoti.CRACK_UPDATE_SUCCESS,
+                        life: 3000,
+                      });
+                    }
+                  });
               } else {
+                console.log(res);
                 this.$toast.add({
                   severity: "success",
                   summary: contentNoti.SUCCESS_SUMMARY,

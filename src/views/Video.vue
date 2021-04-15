@@ -1045,6 +1045,19 @@ export default {
                       });
                     }
                   });
+              } else if (this.selectedSeverity === "Low") {
+                await crackApi
+                  .remomveLowSeverity(this.product.crackId)
+                  .then((res1) => {
+                    if (res1.status == 200) {
+                      this.$toast.add({
+                        severity: "success",
+                        summary: contentNoti.SUCCESS_SUMMARY,
+                        detail: contentNoti.CRACK_UPDATE_SUCCESS,
+                        life: 3000,
+                      });
+                    }
+                  });
               } else {
                 this.$toast.add({
                   severity: "success",

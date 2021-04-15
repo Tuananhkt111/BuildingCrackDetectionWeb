@@ -128,23 +128,41 @@ export default {
       document.getElementById("spanDetect").style.cursor = "not-allowed";
       document.getElementById("spanDetect").style.color = "grey";
     },
-    chooseFile() {
+    async chooseFile() {
       this.file = null;
       const tmp = document.getElementById("choose_file").files[0];
+
       if (tmp.type == "video/mp4") {
-        this.wrongFormatFile = "";
         this.file = document.getElementById("choose_file").files[0];
-        var totalBytes = this.file.size;
-        if (totalBytes < 1000000) {
-          this.size = Math.floor(totalBytes / 1000) + "KB";
+        let user = JSON.parse(localStorage.getItem("user"));
+        let videoName = user.locations[0].name;
+        videoName +=
+          " " +
+          moment(this.file.lastModifiedDate).format("DD-MM-YYYY hh_mm_ss");
+        let res = await flightApi.checkExistsInDb(videoName);
+        if (res && res.data === "Video exists") {
+          this.$toast.add({
+            severity: "error",
+            summary: "Failed",
+            detail: "Video exists",
+            life: 3000,
+          });
+          this.file = null;
+          document.getElementById("choose_file").value = null;
         } else {
-          this.size = Math.floor(totalBytes / 1000000) + "MB";
+          this.wrongFormatFile = "";
+          var totalBytes = this.file.size;
+          if (totalBytes < 1000000) {
+            this.size = Math.floor(totalBytes / 1000) + "KB";
+          } else {
+            this.size = Math.floor(totalBytes / 1000000) + "MB";
+          }
+          document.getElementById("divDetect").style.border =
+            "2px dashed #8178d3";
+          document.getElementById("divDetect").style.cursor = "pointer";
+          document.getElementById("spanDetect").style.cursor = "pointer";
+          document.getElementById("spanDetect").style.color = "#8178d3";
         }
-        document.getElementById("divDetect").style.border =
-          "2px dashed #8178d3";
-        document.getElementById("divDetect").style.cursor = "pointer";
-        document.getElementById("spanDetect").style.cursor = "pointer";
-        document.getElementById("spanDetect").style.color = "#8178d3";
       } else {
         this.wrongFormatFile = " Wrong format file";
       }
@@ -157,39 +175,23 @@ export default {
         this.description !== null &&
         this.description !== ""
       ) {
-        let user = JSON.parse(localStorage.getItem("user"));
-        let videoName = user.locations[0].name;
-        videoName +=
-          " " +
-          moment(this.file.lastModifiedDate).format("DD-MM-YYYY hh_mm_ss");
-        this.setVideo(videoName);
-        let res = await flightApi.checkExistsInDb(this.getVideo);
-        if (res && res.data === "Video exists") {
-          this.$toast.add({
-            severity: "error",
-            summary: "Failed",
-            detail: "Video exists",
-            life: 3000,
-          });
-        } else {
-          const location = JSON.parse(localStorage.getItem("user")).locations[0]
-            .name;
-          const token = localStorage.getItem("jwtToken");
-          let formData = new FormData();
-          formData.append("video", this.file);
-          formData.append("token", token);
-          formData.append("description", this.description);
-          formData.append("locationName", location);
-          formData.append("recordDate", this.file.lastModified);
-          const url = urlConstants.PYTHON_URL + "detect";
-          axios.post(url, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
-          localStorage.setItem("video", this.getVideo);
-          await this.pollData();
-        }
+        const location = JSON.parse(localStorage.getItem("user")).locations[0]
+          .name;
+        const token = localStorage.getItem("jwtToken");
+        let formData = new FormData();
+        formData.append("video", this.file);
+        formData.append("token", token);
+        formData.append("description", this.description);
+        formData.append("locationName", location);
+        formData.append("recordDate", this.file.lastModified);
+        const url = urlConstants.PYTHON_URL + "detect";
+        axios.post(url, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        localStorage.setItem("video", this.getVideo);
+        await this.pollData();
       } else {
         this.validate();
       }

@@ -10,7 +10,8 @@ export const crackApi = {
   countCrackBySeverity,
   countCrackByLocationsAndSeverity,
   countCrackByStatusList,
-  addHighSeverityToQueue
+  addHighSeverityToQueue,
+  remomveLowSeverity
 };
 
 async function getAll() {
@@ -102,6 +103,14 @@ async function addHighSeverityToQueue(crackId) {
   } else return res;
 }
 
+async function remomveLowSeverity(crackId) {
+  const payload = [crackId];
+  const res = await ApiHelper.delete(urlConstants.MAINTEANANCE_ORDER_URL + "/queue" ,{data: payload});
+  if (res.status == 200) {
+    return res;
+  } else return res;
+}
+
 export default {
   getAll,
   getById,
@@ -111,5 +120,6 @@ export default {
   countCrackBySeverity,
   countCrackByLocationsAndSeverity,
   countCrackByStatusList,
-  addHighSeverityToQueue
+  addHighSeverityToQueue,
+  remomveLowSeverity
 };
