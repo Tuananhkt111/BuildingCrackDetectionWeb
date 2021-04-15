@@ -191,7 +191,8 @@
                 </Column>
                 <Column
                   :filterMenuStyle="{ width: '5rem' }"
-                  headerStyle="border-radius:0 20px 20px 0"
+                  headerStyle="border-radius:0 20px 20px 0;min-width:218px; max-width:218px"
+                  style="min-width:250px; max-width:250px"
                 >
                   <template #body="slotProps">
                     <Button
