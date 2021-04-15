@@ -146,7 +146,7 @@ export default {
         document.getElementById("spanDetect").style.cursor = "pointer";
         document.getElementById("spanDetect").style.color = "#8178d3";
       } else {
-        this.wrongFormatFile = " Wrong Format File!!";
+        this.wrongFormatFile = " Wrong format file";
       }
     },
 

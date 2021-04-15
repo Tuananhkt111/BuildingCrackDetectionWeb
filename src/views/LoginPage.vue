@@ -18,7 +18,7 @@
           v-if="!isLoading"
         >
           <span class="login100-form-title" style="font-weight: bold"
-            >Welcome to BCDSystem</span
+            >Welcome to BCD System</span
           >
           <div class="wrap-input100">
             <div style="margin-bottom:25px">
