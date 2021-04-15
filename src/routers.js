@@ -57,6 +57,8 @@ router.beforeEach((to, from, next) => {
     "/repair-records",
     "/cracks",
     "/repairers",
+    "/profile",
+    "/notifications"
   ];
 
   const StaffRequired = !staffPages.includes(to.path);
