@@ -131,14 +131,13 @@ export default {
     async chooseFile() {
       this.file = null;
       const tmp = document.getElementById("choose_file").files[0];
-
       if (tmp.type == "video/mp4") {
         this.file = document.getElementById("choose_file").files[0];
         let user = JSON.parse(localStorage.getItem("user"));
         let videoName = user.locations[0].name;
         videoName +=
           " " +
-          moment(this.file.lastModifiedDate).format("DD-MM-YYYY hh_mm_ss");
+          moment(this.file.lastModifiedDate).format("DD-MM-YYYY HH_mm_ss");
         let res = await flightApi.checkExistsInDb(videoName);
         if (res && res.data === "Video exists") {
           this.$toast.add({
@@ -192,7 +191,7 @@ export default {
         });
         let user = JSON.parse(localStorage.getItem("user"));
         let videoName = user.locations[0].name;
-        videoName += " " + moment(this.file.lastModifiedDate).format("DD-MM-YYYY hh_mm_ss");
+        videoName += " " + moment(this.file.lastModifiedDate).format("DD-MM-YYYY HH_mm_ss");
         this.setVideo(videoName);
         localStorage.setItem("video", this.getVideo);
         await this.pollData();

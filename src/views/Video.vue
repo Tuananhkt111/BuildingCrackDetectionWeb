@@ -70,16 +70,16 @@
                 style="fontSize: 12px; color:rgb(90 126 189); margin-right:10px"
               />Import Date
             </div>
-            <div class="left">
+            <div class="left" v-if="getFlight.deleteVideoUserId">
               <i
                 class="pi pi-circle-on "
-                style="fontSize: 12px; color:rgb(90 126 189); margin-right:10px"
+                style="fontSize: 12px; color:rgb(90 189 157); margin-right:10px"
               />Delete Video User
             </div>
-            <div class="left">
+            <div class="left" v-if="getFlight.deleteVideoDate">
               <i
                 class="pi pi-circle-on "
-                style="fontSize: 12px; color:rgb(90 126 189); margin-right:10px"
+                style="fontSize: 12px; color:rgb(137 189 90); margin-right:10px"
               />Delete Video Date
             </div>
             <div class="left left-last-child">
@@ -106,8 +106,8 @@
             </p>
             <p class="right">{{ callDate(getFlight.recordDate) }}</p>
             <p class="right">{{ callDate(getFlight.created) }}</p>
-            <p class="right">{{ getFlight.deleteVideoUserName }}</p>
-            <p class="right">{{ callDate(getFlight.deleteVideoDate) }}</p>
+            <p class="right" v-if="getFlight.deleteVideoUserId">{{ getFlight.deleteVideoUserName }}</p>
+            <p class="right" v-if="getFlight.deleteVideoDate">{{ callDate(getFlight.deleteVideoDate) }}</p>
             <p class="right" style="margin-bottom: 0">{{ getFlightCount }}</p>
           </div>
         </div>
