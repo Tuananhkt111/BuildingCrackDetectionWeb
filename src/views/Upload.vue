@@ -190,6 +190,10 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         });
+        let user = JSON.parse(localStorage.getItem("user"));
+        let videoName = user.locations[0].name;
+        videoName += " " + moment(this.file.lastModifiedDate).format("DD-MM-YYYY hh_mm_ss");
+        this.setVideo(videoName);
         localStorage.setItem("video", this.getVideo);
         await this.pollData();
       } else {
