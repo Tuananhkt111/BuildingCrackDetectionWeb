@@ -113,8 +113,8 @@
           <template #filter="{filterModel}">
             <Calendar
               v-model="filterModel.value"
-              dateFormat="mm/dd/yy"
-              placeholder="mm/dd/yyyy"
+              dateFormat="dd/mm/yy"
+              placeholder="dd/mm/yyyy"
             />
           </template>
         </Column>
@@ -131,8 +131,8 @@
           <template #filter="{filterModel}">
             <Calendar
               v-model="filterModel.value"
-              dateFormat="mm/dd/yy"
-              placeholder="mm/dd/yyyy"
+              dateFormat="dd/mm/yy"
+              placeholder="dd/mm/yyyy"
             />
           </template>
         </Column>

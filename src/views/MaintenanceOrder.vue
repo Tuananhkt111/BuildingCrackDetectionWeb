@@ -172,8 +172,8 @@
             <template #filter="{ filterModel }">
               <Calendar
                 v-model="filterModel.value"
-                dateFormat="mm/dd/yy"
-                placeholder="mm/dd/yyyy"
+                dateFormat="dd/mm/yy"
+                placeholder="dd/mm/yyyy"
               />
             </template>
           </Column>
@@ -839,34 +839,6 @@ export default {
     callDate(date) {
       const date1 = new Date(date);
       return moment(date1).format("DD-MM-YYYY HH:mm:ss");
-    },
-    filterDate(value, filter) {
-      if (
-        filter === undefined ||
-        filter === null ||
-        (typeof filter === "string" && filter.trim() === "")
-      ) {
-        return true;
-      }
-
-      if (value === undefined || value === null) {
-        return false;
-      }
-      let tmp = this.callDate(value).substring(0, 10);
-      return tmp === this.formatDate(filter);
-    },
-    formatDate(date) {
-      let month = date.getMonth() + 1;
-      let day = date.getDate();
-
-      if (month < 10) {
-        month = "0" + month;
-      }
-
-      if (day < 10) {
-        day = "0" + day;
-      }
-      return day + "-" + month + "-" + date.getFullYear();
     },
   },
 };

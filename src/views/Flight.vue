@@ -157,7 +157,7 @@
             </template>
             <template #filter="{filterModel}">
               <Calendar
-                v-model="filterModel.value"
+               v-model="filterModel.value"
                 dateFormat="dd/mm/yy"
                 placeholder="dd/mm/yyyy"
               />
@@ -221,7 +221,7 @@ import Button from "primevue/button";
 import Calendar from "primevue/calendar";
 import moment from "moment";
 import { flightApi } from "../apis/flights";
-import { FilterMatchMode, FilterOperator, FilterService } from "primevue/api";
+import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { mapGetters, mapActions } from "vuex";
 import webRole from "../util/webRole.js";
 import Upload from "../views/Upload.vue";
@@ -229,7 +229,6 @@ import Detecting from "../components/Detecting.vue";
 import ConfirmPopup from "primevue/confirmpopup";
 import contentNoti from "../util/contentNoti.js";
 
-const DATE_FILTER = "DATE FILTER";
 
 export default {
   components: {
@@ -279,21 +278,6 @@ export default {
     } else {
       console.log(document.getElementById("Collector"));
     }
-    FilterService.register(DATE_FILTER, (value, filter) => {
-      if (filter === undefined || filter === null) {
-        return true;
-      }
-      if (value === undefined || value === null) {
-        return false;
-      }
-      let date =
-        filter.getFullYear() +
-        "-" +
-        ("0" + (filter.getMonth() + 1)).slice(-2) +
-        "-" +
-        ("0" + filter.getDate()).slice(-2);
-      return value.toString().includes(date);
-    });
   },
 
   methods: {
@@ -356,7 +340,7 @@ export default {
 
     callDate(date) {
       const date1 = new Date(date);
-      return moment(date1).format("DD/MM/YYYY HH:mm:ss");
+      return moment(date1).format("DD-MM-YYYY HH:mm:ss");
     },
     formatDate(value) {
       return new Date(value).toLocaleDateString("en-US", {
@@ -386,7 +370,7 @@ export default {
         },
         recordDate: {
           operator: FilterOperator.AND,
-          constraints: [{ value: null, matchMode: DATE_FILTER }],
+          constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }],
         },
       };
     },
