@@ -228,7 +228,7 @@
               icon="pi pi-ban"
               class="p-button-rounded p-button-danger p-button-text"
               @click="Disable(slotProps.data)"
-              v-tooltip.bottom="'Disable Account'"
+              v-tooltip.bottom="'Delete Account'"
             />
           </template>
         </Column>
@@ -571,7 +571,7 @@
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
         <span v-if="product"
-          >Are you sure to disable account <b>{{ product.name }}</b
+          >Are you sure to delete account <b>{{ product.name }}</b
           >?</span
         >
       </div>

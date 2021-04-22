@@ -152,7 +152,7 @@
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger p-button-text"
               @click="confirmDeleteProduct(slotProps.data)"
-              v-tooltip.bottom="'Disable'"
+              v-tooltip.bottom="'Delete'"
             />
           </template>
         </Column>
@@ -322,7 +322,7 @@
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
         <span v-if="product"
-          >Are you sure to disable this worker
+          >Are you sure to delete this worker
           <span style="color: red; font-weight: bold">{{ product.name }}</span
           >?</span
         >

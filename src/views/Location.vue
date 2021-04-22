@@ -159,7 +159,7 @@
               class="p-button-rounded p-button-danger p-button-text"
               @click="confirmDeleteProduct(slotProps.data)"
               style="margin: 2px"
-              v-tooltip.bottom="'Disable Area'"
+              v-tooltip.bottom="'Delete Area'"
               v-if="admin"
             />
           </template>
