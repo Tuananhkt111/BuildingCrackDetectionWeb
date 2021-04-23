@@ -152,7 +152,7 @@
               icon="pi pi-trash"
               class="p-button-rounded p-button-danger p-button-text"
               @click="confirmDeleteProduct(slotProps.data)"
-              v-tooltip.bottom="'Delete'"
+              v-tooltip.bottom="'Delete Repairer'"
             />
           </template>
         </Column>

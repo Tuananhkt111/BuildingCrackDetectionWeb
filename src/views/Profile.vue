@@ -33,7 +33,7 @@
                 <div class="col-lg-3 order-lg-2">
                   <div class="card-profile-image">
                     <a href="#">
-                      <img src="..\asset\avt.jpg" class="rounded-circle" />
+                      <img src="/assets/bcd-blue2.png" class="rounded-circle" style="padding-top:5px"/>
                     </a>
                   </div>
                 </div>
@@ -737,7 +737,7 @@ button.bg-white:focus {
   border: 0 !important;
 }
 .rounded-circle {
-  border-radius: 50% !important;
+  background-color: white;
 }
 .d-flex {
   display: flex !important;

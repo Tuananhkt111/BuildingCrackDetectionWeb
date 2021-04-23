@@ -73,8 +73,8 @@
         <div class="nav-btn-menu">
           <div class="btn-nav">
             <img
-              src="/assets/profile-3.png"
-              style="width: 37px; border-radius: 100px;"
+              src="/assets/bcd-blue.png"
+              style="width: 37px; margin-top:5px"
             />
           </div>
           <ul class="drop-menu">
