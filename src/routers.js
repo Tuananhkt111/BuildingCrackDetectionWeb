@@ -12,6 +12,7 @@ import Flight from "./views/Flight.vue";
 import Video from "./views/Video.vue";
 import Upload from "./views/Upload.vue";
 import DashBoard from "./views/DashBoard.vue";
+import LoseInternet from "./views/LoseInternet.vue";
 
 const router = new createRouter({
   history: createWebHistory(),
@@ -42,6 +43,7 @@ const router = new createRouter({
       name: "forgotpass",
       component: ForgotPassword,
     },
+    { path: "/loseInternet", name: "loseInternet", component: LoseInternet },
   ],
 });
 
@@ -58,7 +60,8 @@ router.beforeEach((to, from, next) => {
     "/cracks",
     "/repairers",
     "/profile",
-    "/notifications"
+    "/notifications",
+    "/loseInternet",
   ];
 
   const StaffRequired = !staffPages.includes(to.path);
@@ -71,8 +74,10 @@ router.beforeEach((to, from, next) => {
   const loggedIn = localStorage.getItem("jwtToken");
 
   const user = JSON.parse(localStorage.getItem("user"));
-
-  if (user != null) {
+  console.log(to.name);
+  if (to.name == "loseInternet") {
+    next();
+  } else if (user != null) {
     if (checkForgotPass) {
       next("/");
     } else if (to.name == "home" && user.role == "Staff") {

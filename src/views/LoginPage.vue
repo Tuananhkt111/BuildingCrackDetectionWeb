@@ -76,7 +76,7 @@
                   type="text"
                   v-model="userName"
                   style="width: 270px"
-                  v-on:keyup.enter="handleSubmit"
+                  v-on:keyup.enter="confirmForgotPassword"
                 />
                 <p class="invalid-forgotPass">{{ errors.userName }}</p>
               </div>
@@ -217,7 +217,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions("application", ["setIsActive", "setIsLogin"]),
+    ...mapActions("application", [
+      "setIsActive",
+      "setIsLogin",
+      "setCheckOffline",
+    ]),
 
     ...mapActions("user", ["setUser"]),
 
@@ -232,7 +236,9 @@ export default {
         this.isLoading = true;
         if (this.userName && this.password) {
           const res = await userApi.login(this.userName, this.password);
-          if (res != null) {
+          if (typeof res == "undefined" || res.status == 403) {
+            this.setCheckOffline(true);
+          } else if (res != null) {
             var user = JSON.parse(res);
             if (user.isNewUser) {
               this.ChangePasswordDialog = true;
@@ -275,7 +281,9 @@ export default {
             this.newPassword
           )
           .then((res) => {
-            if (res.status == 200) {
+            if (typeof res == "undefined" || res.status == 403) {
+              this.setCheckOffline(true);
+            } else if (res.status == 200) {
               this.$toast.add({
                 severity: "success",
                 detail: contentNoti.USER_CHANGE_PASSWORD_SUCCESS,
@@ -318,7 +326,9 @@ export default {
             this.isLoading = false;
           })
           .then((res) => {
-            if (res.status == 200) {
+            if (typeof res == "undefined" || res.status == 403) {
+              this.setCheckOffline(true);
+            } else if (res.status == 200) {
               this.$toast.add({
                 severity: "success",
                 summary: contentNoti.SUCCESS_SUMMARY,

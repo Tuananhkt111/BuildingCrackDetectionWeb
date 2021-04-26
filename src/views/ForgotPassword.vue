@@ -24,7 +24,9 @@
           />
           <label style="padding-left: 55px">Confirm Password</label>
         </div>
-        <p class="invalid" style="top:-25px">{{ errorValid.confirmPasswordValid }}</p>
+        <p class="invalid" style="top:-25px">
+          {{ errorValid.confirmPasswordValid }}
+        </p>
         <Button
           label="Change Password"
           class="p-button-raised p-button-info"
@@ -42,6 +44,7 @@ import InputText from "primevue/inputtext";
 import Toast from "primevue/toast";
 import userApi from "../apis/user.js";
 import contentNoti from "../util/contentNoti.js";
+import { mapActions } from "vuex";
 
 export default {
   components: {
@@ -65,13 +68,13 @@ export default {
     };
   },
   methods: {
+    ...mapActions("application", ["setCheckOffline"]),
     async confirmChangePassword() {
       this.checkValidate();
       if (
         this.errorValid.newPasswordValid === "" &&
         this.errorValid.confirmPasswordValid === ""
       ) {
-        console.log("AA");
         await userApi
           .changeForgotPassword(
             this.$route.params.id,
@@ -79,7 +82,9 @@ export default {
             this.newPasswordForgot
           )
           .then((res) => {
-            if (res.status == 200) {
+            if (typeof res == "undefined" || res.status == 403) {
+              this.setCheckOffline(true);
+            } else if (res.status == 200) {
               this.$toast.add({
                 severity: "success",
                 summary: contentNoti.SUCCESS_SUMMARY,

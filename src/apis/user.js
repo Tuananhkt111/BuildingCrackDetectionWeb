@@ -25,20 +25,22 @@ async function login(userName, password) {
     fcmToken: token,
   };
 
-  const res = await ApiHelper.post(
-    urlConstants.USER_URL + "/authenticate",
-    data
-  );
-  if (res != null && res.status === 200) {
-    localStorage.setItem("jwtToken", res.data.jwtToken);
-    const user = await ApiHelper.get(
-      urlConstants.USER_URL + "/" + res.data.userId
-    );
-    localStorage.setItem("user", JSON.stringify(user.data));
-    return JSON.stringify(user.data);
-  } else {
-    return null;
-  }
+  await ApiHelper.post(urlConstants.USER_URL + "/authenticate", data)
+    .then(async (res) => {
+      if (res != null && res.status === 200) {
+        localStorage.setItem("jwtToken", res.data.jwtToken);
+        const user = await ApiHelper.get(
+          urlConstants.USER_URL + "/" + res.data.userId
+        );
+        localStorage.setItem("user", JSON.stringify(user.data));
+        return JSON.stringify(user.data);
+      } else {
+        return null;
+      }
+    })
+    .catch(() => {
+      return null;
+    });
 }
 
 async function createUser(role, name, email, phoneNumber, address, location) {
@@ -84,7 +86,7 @@ async function updateUser(
   if (role == "Manager") {
     if (location.length != 0) {
       if (location[0].locationId == 0) {
-        location = location.filter(item => item.locationId !== 0);
+        location = location.filter((item) => item.locationId !== 0);
       }
       for (let i = 0; i != location.length; i++) {
         if (location[i].locationId != 0) {
@@ -116,7 +118,9 @@ async function changePassword(id, oldPass, newPass) {
   const res = await ApiHelper.post(
     urlConstants.USER_URL + "/" + id + "/password",
     data
-  );
+  ).catch(() => {
+    return null;
+  });
   return res;
 }
 
@@ -128,7 +132,9 @@ async function changeForgotPassword(id, token, newPass) {
   const res = await ApiHelper.post(
     urlConstants.USER_URL + "/" + id + "/forgotpass-w",
     data
-  );
+  ).catch(() => {
+    return null;
+  });
   return res;
 }
 
@@ -141,7 +147,9 @@ async function resetPassword(id) {
 async function forgotPassword(userName) {
   const res = await ApiHelper.post(
     urlConstants.USER_URL + "/forgotpass-confirm-w?userName=" + userName
-  );
+  ).catch(() => {
+    return null;
+  });
   return res;
 }
 function logout() {

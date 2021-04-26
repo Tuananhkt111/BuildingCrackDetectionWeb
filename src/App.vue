@@ -4,11 +4,11 @@
       <div
         class="p-col-12 main-app"
         :class="{ active: getIsActive, inactive: !getIsActive }"
-        v-if="!getIsLogin"
+        v-if="!getIsLogin && !getCheckOffline"
       >
         <TopNav></TopNav>
         <div class="main-layout-container p-d-flex">
-            <SideBar></SideBar>
+          <SideBar></SideBar>
           <div class="main-layout">
             <div>
               <router-view class="view"></router-view>
@@ -17,9 +17,13 @@
         </div>
       </div>
     </div>
-    <div v-if="getIsLogin">
+    <div v-if="getIsLogin && !getCheckOffline">
       <Login></Login>
     </div>
+    <div v-if="getCheckOffline" class="checkOffline">
+      <LoseInternet></LoseInternet>
+    </div>
+
     <!-- <AppFooter></AppFooter> -->
   </div>
 </template>
@@ -30,38 +34,35 @@ import TopNav from "../src/components/TopNav.vue";
 import SideBar from "../src/components/SideBar.vue";
 // import AppFooter from "../src/components/AppFooter.vue";
 import Login from "../src/views/LoginPage.vue";
+import LoseInternet from "../src/views/LoseInternet.vue";
 import flightApi from "./apis/flights";
+
 export default {
   name: "app",
   components: {
     TopNav,
     SideBar,
     Login,
+    LoseInternet,
     // AppFooter
   },
   computed: {
-    ...mapGetters("application", ["getIsActive", "getIsLogin", "getVideo"]),
+    ...mapGetters("application", ["getIsActive", "getIsLogin", "getVideo", "getCheckOffline"]),
   },
   data() {
     return {
       login: false,
-      polling: null
+      polling: null,
     };
   },
   async created() {
     if (localStorage.getItem("user")) {
       this.setIsLogin(false);
     }
-    if(localStorage.getItem("video")) {
+    if (localStorage.getItem("video")) {
       this.setVideo(localStorage.getItem("video"));
       await this.pollData();
     }
-  },
-
-  mounted() {
-    this.$nextTick(() => {
-      console.log("Finished rendering the complete view");
-    });
   },
   methods: {
     ...mapActions("application", ["setIsLogin", "setVideo"]),
@@ -69,23 +70,25 @@ export default {
     async pollData() {
       this.polling = setInterval(async () => {
         let res = await flightApi.checkExists(this.getVideo);
-        if(res && res.data === "Video exists") {
+        if (res && res.data === "Video exists") {
           clearInterval(this.polling);
           this.setVideo(null);
           localStorage.removeItem("video");
           this.setFlightList();
         }
       }, 60000);
-      setTimeout(() => {clearInterval(this.polling)}, 36000000);
+      setTimeout(() => {
+        clearInterval(this.polling);
+      }, 36000000);
     },
   },
 };
 </script>
 <style scoped>
-.all{
+.all {
   overflow: hidden;
 }
-.main-layout{
+.main-layout {
   margin-left: 64.5px;
 }
 .main-app {
@@ -118,7 +121,7 @@ export default {
   transition: transform 0.2s;
 }
 .main-layout {
-  background-color:  #f5f6ff;
+  background-color: #f5f6ff;
   padding: 50px;
   width: 100%;
   height: 100%;
@@ -140,8 +143,9 @@ export default {
   transition: all 0.2s;
 }
 
-.all, #app-main {
-  min-height:100vh;
+.all,
+#app-main {
+  min-height: 100vh;
 }
 
 @media screen and (max-width: 1025px) {
@@ -169,7 +173,12 @@ export default {
 @font-face {
   font-family: "Poppins";
   src: local("Poppins"),
-   url(./fonts/Poppins/Poppins-Light.ttf) format("truetype");
+    url(./fonts/Poppins/Poppins-Light.ttf) format("truetype");
 }
 
+.checkOffline {
+  position: fixed;
+    top: 0;
+    left: 20%;
+}
 </style>

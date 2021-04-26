@@ -4,7 +4,8 @@ const applicationStore = {
     isActive: false,
     isLogin: true,
     isForgotPassword: false,
-    video: null
+    video: null,
+    checkOffline: false,
   },
 
   getters: {
@@ -19,6 +20,9 @@ const applicationStore = {
     },
     getVideo(state) {
       return state.video;
+    },
+    getCheckOffline(state) {
+      return state.checkOffline;
     }
   },
 
@@ -35,6 +39,9 @@ const applicationStore = {
     setVideo(state, video) {
       state.video = video;
     },
+    setOffline(state, offline) {
+      state.checkOffline = offline;
+    },
   },
 
   actions: {
@@ -50,6 +57,9 @@ const applicationStore = {
     setVideo({commit}, value) {
       commit("setVideo", value);
     },
+    setCheckOffline({commit}, value) {
+      commit("setOffline", value)
+    }
   }
 };
 
