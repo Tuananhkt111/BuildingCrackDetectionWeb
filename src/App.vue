@@ -47,7 +47,12 @@ export default {
     // AppFooter
   },
   computed: {
-    ...mapGetters("application", ["getIsActive", "getIsLogin", "getVideo", "getCheckOffline"]),
+    ...mapGetters("application", [
+      "getIsActive",
+      "getIsLogin",
+      "getVideo",
+      "getCheckOffline",
+    ]),
   },
   data() {
     return {
@@ -63,9 +68,14 @@ export default {
       this.setVideo(localStorage.getItem("video"));
       await this.pollData();
     }
+    if (localStorage.getItem("checkOffline") != null) {
+      localStorage.removeItem("checkOffline");
+      this.$router.push("/");
+    }
   },
+  
   methods: {
-    ...mapActions("application", ["setIsLogin", "setVideo"]),
+    ...mapActions("application", ["setIsLogin", "setVideo", "setCheckOffline"]),
 
     async pollData() {
       this.polling = setInterval(async () => {
@@ -178,7 +188,7 @@ export default {
 
 .checkOffline {
   position: fixed;
-    top: 0;
-    left: 20%;
+  top: 0;
+  left: 20%;
 }
 </style>

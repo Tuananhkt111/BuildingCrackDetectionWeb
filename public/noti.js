@@ -23,7 +23,6 @@ messaging
 messaging.onMessage(function(payload) {
   console.log("Message received. ", payload);
   console.log(payload.notification);
-  alert(payload.notification.body);
   // location.reload();
   const notificationTitle = "Background Message Title";
   const notificationOptions = {

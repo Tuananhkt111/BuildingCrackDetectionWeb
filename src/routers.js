@@ -43,7 +43,7 @@ const router = new createRouter({
       name: "forgotpass",
       component: ForgotPassword,
     },
-    { path: "/loseInternet", name: "loseInternet", component: LoseInternet },
+    { path: "/no-connection", name: "no-connection", component: LoseInternet },
   ],
 });
 
@@ -61,7 +61,7 @@ router.beforeEach((to, from, next) => {
     "/repairers",
     "/profile",
     "/notifications",
-    "/loseInternet",
+    "/no-connection",
   ];
 
   const StaffRequired = !staffPages.includes(to.path);
@@ -75,7 +75,7 @@ router.beforeEach((to, from, next) => {
 
   const user = JSON.parse(localStorage.getItem("user"));
   console.log(to.name);
-  if (to.name == "loseInternet") {
+  if (to.name == "no-connection") {
     next();
   } else if (user != null) {
     if (checkForgotPass) {

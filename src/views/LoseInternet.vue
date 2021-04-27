@@ -8,13 +8,13 @@
 
 <script>
 import { mapActions } from "vuex";
+
 export default {
   methods: {
     ...mapActions("application", ["setCheckOffline"]),
-    refresh() {
-      this.setCheckOffline(false);
-      this.$router.go(-1);
-    },
+  },
+  mounted() {
+    this.setCheckOffline(true);
   },
 };
 </script>

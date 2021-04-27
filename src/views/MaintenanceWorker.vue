@@ -457,9 +457,6 @@ export default {
       ) {
         await maintenanceWorkerApi
           .create(this.name, this.address, this.phone, this.email)
-          .catch((err) => {
-            alert(err);
-          })
           .then((res) => {
             if (res.status == 200) {
               this.$toast.add({

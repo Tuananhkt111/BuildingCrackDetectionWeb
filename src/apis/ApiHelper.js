@@ -25,11 +25,13 @@ ApiHelper.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error == "Error: Network Error") {
-      router.push("/loseInternet");
+      router.push("/no-connection");
+      localStorage.setItem("checkOffline", "true");
       return Promise.reject(error);
     }
     if (error.response.status === 403) {
-      router.push("/loseInternet");
+      router.push("/no-connection");
+      localStorage.setItem("checkOffline", "true");
       return Promise.reject(error);
     }
     if (error.response.status === 401) {
