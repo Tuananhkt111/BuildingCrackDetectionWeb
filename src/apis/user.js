@@ -28,6 +28,7 @@ async function login(userName, password) {
 
   await ApiHelper.post(urlConstants.USER_URL + "/authenticate", data)
     .then(async (res) => {
+     
       if (res != null && res.status === 200) {
         localStorage.setItem("jwtToken", res.data.jwtToken);
         const user = await ApiHelper.get(
@@ -36,10 +37,12 @@ async function login(userName, password) {
         localStorage.setItem("user", JSON.stringify(user.data));
         result = JSON.stringify(user.data);
       } else {
-        return res;
+        result = res;
+        return result;
       }
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log("catch" + err);
       return result;
     });
   return result;
