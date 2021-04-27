@@ -13,7 +13,7 @@ export default {
     ...mapActions("application", ["setCheckOffline"]),
     refresh() {
       this.setCheckOffline(false);
-      this.$router.push("/");
+      this.$router.go(-1);
     },
   },
 };
