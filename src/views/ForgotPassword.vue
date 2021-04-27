@@ -82,7 +82,7 @@ export default {
             this.newPasswordForgot
           )
           .then((res) => {
-            if (typeof res == "undefined" || res.status == 403) {
+            if (res == null || res.status == 403) {
               this.setCheckOffline(true);
             } else if (res.status == 200) {
               this.$toast.add({

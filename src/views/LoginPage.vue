@@ -235,30 +235,42 @@ export default {
         localStorage.clear();
         this.isLoading = true;
         if (this.userName && this.password) {
-          const res = await userApi.login(this.userName, this.password);
-          if (typeof res == "undefined" || res.status == 403) {
-            this.setCheckOffline(true);
-          } else if (res != null) {
-            var user = JSON.parse(res);
-            if (user.isNewUser) {
-              this.ChangePasswordDialog = true;
-              this.setUser(JSON.parse(res));
+          await userApi
+            .login(this.userName, this.password)
+            .then((res) => {
+              console.log(res);
+              if (res == null || res.status == 403) {
+                this.setCheckOffline(true);
+              } else if (res != null) {
+                var user = JSON.parse(res);
+                if (user.isNewUser) {
+                  this.ChangePasswordDialog = true;
+                  this.setUser(JSON.parse(res));
+                  this.isLoading = false;
+                } else {
+                  this.setIsLogin(!this.getIsLogin);
+                  this.setUser(JSON.parse(res));
+                  this.isLoading = false;
+                  if (user.role === "Staff") this.$router.push("/cracks");
+                  else this.$router.push("/dashboard");
+                }
+              } else {
+                this.isLoading = false;
+                this.$toast.add({
+                  severity: "warn",
+                  detail: contentNoti.USER_LOGIN_FAILED,
+                  life: 3000,
+                });
+              }
+            })
+            .catch(() => {
               this.isLoading = false;
-            } else {
-              this.setIsLogin(!this.getIsLogin);
-              this.setUser(JSON.parse(res));
-              this.isLoading = false;
-              if (user.role === "Staff") this.$router.push("/cracks");
-              else this.$router.push("/dashboard");
-            }
-          } else {
-            this.isLoading = false;
-            this.$toast.add({
-              severity: "warn",
-              detail: contentNoti.USER_LOGIN_FAILED,
-              life: 3000,
+              this.$toast.add({
+                severity: "warn",
+                detail: contentNoti.USER_LOGIN_FAILED,
+                life: 3000,
+              });
             });
-          }
         }
       } else {
         this.validate();
@@ -281,7 +293,7 @@ export default {
             this.newPassword
           )
           .then((res) => {
-            if (typeof res == "undefined" || res.status == 403) {
+            if (res == null || res.status == 403) {
               this.setCheckOffline(true);
             } else if (res.status == 200) {
               this.$toast.add({
@@ -326,7 +338,7 @@ export default {
             this.isLoading = false;
           })
           .then((res) => {
-            if (typeof res == "undefined" || res.status == 403) {
+            if (res == null || res.status == 403) {
               this.setCheckOffline(true);
             } else if (res.status == 200) {
               this.$toast.add({

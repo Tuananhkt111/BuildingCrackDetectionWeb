@@ -24,6 +24,7 @@ async function login(userName, password) {
     password: password,
     fcmToken: token,
   };
+  var result = null;
 
   await ApiHelper.post(urlConstants.USER_URL + "/authenticate", data)
     .then(async (res) => {
@@ -33,14 +34,15 @@ async function login(userName, password) {
           urlConstants.USER_URL + "/" + res.data.userId
         );
         localStorage.setItem("user", JSON.stringify(user.data));
-        return JSON.stringify(user.data);
+        result = JSON.stringify(user.data);
       } else {
-        return null;
+        return res;
       }
     })
     .catch(() => {
-      return null;
+      return result;
     });
+  return result;
 }
 
 async function createUser(role, name, email, phoneNumber, address, location) {
