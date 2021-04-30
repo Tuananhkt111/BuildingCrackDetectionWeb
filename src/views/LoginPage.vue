@@ -30,7 +30,7 @@
                 v-on:keyup.enter="handleSubmit"
               />
             </div>
-            <p class="invalid" style="top:-25px ; padding-left:60px">
+            <p class="invalid" style="top:-25px ; padding-left:80px">
               {{ errors.userName }}
             </p>
             <div style="margin-bottom:20px">
@@ -42,7 +42,7 @@
                 v-on:keyup.enter="handleSubmit"
               />
             </div>
-            <p class="invalid" style="padding-left:60px">
+            <p class="invalid" style="padding-left:80px">
               {{ errors.password }}
             </p>
             <Button
@@ -486,12 +486,12 @@ div {
   color: red;
   text-align: left !important;
   font-size: 0.8rem;
-  padding-left: 60px;
+  padding-left: 80px;
   position: absolute;
 }
 .input-title {
   text-align: left !important;
   font-weight: 600;
-  padding-left: 60px;
+  padding-left: 80px;
 }
 </style>

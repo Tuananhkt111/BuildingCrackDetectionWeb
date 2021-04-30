@@ -11,7 +11,7 @@
             style="width: 270px"
             @input="checkValidate"
           />
-          <label style="padding-left: 55px">New Password</label>
+          <label style="padding-left: 85px">New Password</label>
         </div>
         <p class="invalid">{{ errorValid.newPasswordValid }}</p>
         <div class="p-float-label" style="margin-bottom:25px">
@@ -22,7 +22,7 @@
             style="width: 270px"
             @input="checkValidate"
           />
-          <label style="padding-left: 55px">Confirm Password</label>
+          <label style="padding-left: 85px">Confirm Password</label>
         </div>
         <p class="invalid" style="top:-25px">
           {{ errorValid.confirmPasswordValid }}
@@ -143,7 +143,7 @@ export default {
   color: red;
   text-align: left !important;
   font-size: 0.8rem;
-  padding-left: 60px;
+  padding-left: 85px;
 }
 
 .wrap-input100 {
