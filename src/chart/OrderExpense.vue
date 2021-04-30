@@ -13,7 +13,6 @@ export default {
   async mounted() {
     await this.setChartExpense(this.data);
     if (this.getChartExpense != null) {
-      console.log(this.getChartExpense);
       this.getChartExpense.forEach((x) => {
         this.basicData.labels.push(x.key);
         this.basicData.datasets[0].data.push(x.value);

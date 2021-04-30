@@ -74,7 +74,6 @@ router.beforeEach((to, from, next) => {
   const loggedIn = localStorage.getItem("jwtToken");
 
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(to.name);
   if (to.name == "no-connection") {
     next();
   } else if (user != null) {

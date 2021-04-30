@@ -76,7 +76,6 @@ async function countCrackBySeverity(locationId, period, year) {
       "&locationIdsStr=" +
       locationId
   );
-  console.log(res);
   if (res.status == 200) {
     return res.data;
   } else return null;

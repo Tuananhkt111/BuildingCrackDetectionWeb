@@ -710,7 +710,6 @@ export default {
     await this.setUserList().then(() => {
       this.loading = false;
     });
-    console.log(this.getUserList);
     await this.setLocationList();
   },
 
@@ -758,8 +757,13 @@ export default {
     async confirmResetPassword() {
       await userApi
         .resetPassword(this.product.userId)
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          this.$toast.add({
+              severity: "error",
+              summary: contentNoti.FAIL_SUMMARY,
+              detail: contentNoti.USER_RESETPASSWORK_FAILED,
+              life: 3000,
+            });
         })
         .then((res) => {
           if (res.status == 200) {
@@ -1106,7 +1110,6 @@ export default {
         this.selectedLocation = this.getAvailableLocationStaff[
           this.findIndexById(this.product.locations[0].locationId)
         ];
-        console.log(this.getAvailableLocationStaff);
       } else {
         await this.setAvailableLocationStaff(product.userId);
         this.getAvailableLocationStaff.push(tmpLocation);

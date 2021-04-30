@@ -232,13 +232,11 @@ export default {
         this.errors.userName == null &&
         this.errors.password == null
       ) {
-        localStorage.clear();
         this.isLoading = true;
         if (this.userName && this.password) {
           await userApi
             .login(this.userName, this.password)
             .then((res) => {
-              console.log(res);
               if (res == null || res.status == 403) {
                 this.setCheckOffline(true);
               } else if (res != null) {

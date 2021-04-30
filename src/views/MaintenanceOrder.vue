@@ -743,7 +743,6 @@ export default {
       this.crackInfoDialog = true;
     },
     editProduct(product) {
-      console.log(product);
       this.product = { ...product };
       if (
         this.product.assessmentResult != null &&

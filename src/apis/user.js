@@ -41,8 +41,7 @@ async function login(userName, password) {
         return result;
       }
     })
-    .catch((err) => {
-      console.log("catch" + err);
+    .catch(() => {
       return result;
     });
   return result;

@@ -27,8 +27,6 @@ async function getAvailable(role, empId) {
   const res = await ApiHelper.get(
     urlConstants.LOCATION_URL + "/available?role=" + role + "&empId=" + empId
   );
-  console.log("link " + urlConstants.LOCATION_URL + "/available?role=" + role + "&empId=" + empId);
-  console.log("data" + res.data);
   return res.data;
 }
 

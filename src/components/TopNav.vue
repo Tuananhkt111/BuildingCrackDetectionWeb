@@ -257,7 +257,7 @@ export default {
         });
     },
     async deleteNoti(id) {
-      await notificationApi.deleteNoti(id).catch((err) => console.log(err));
+      await notificationApi.deleteNoti(id);
       await this.setNotificationList();
     },
     async markAllAsRead() {
@@ -269,10 +269,16 @@ export default {
       ) {
         id[index] = this.getUnReadNotificationList[index].pushNotificationId;
       }
-      console.log(id);
       await notificationApi
         .deleteAllNoti(id)
-        .catch((err) => console.log(err))
+        .catch(() =>
+          this.$toast.add({
+            severity: "error",
+            summary: contentNoti.FAIL_SUMMARY,
+            detail: contentNoti.NOTIFICATION_CLEAR_FAILED,
+            life: 3000,
+          })
+        )
         .then((res) => {
           if (res.status == 200) {
             this.$toast.add({

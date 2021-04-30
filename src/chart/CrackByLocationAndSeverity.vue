@@ -18,7 +18,6 @@ export default {
       this.basicData.datasets[1].data.push(x.values[1]);
       this.basicData.datasets[2].data.push(x.values[2]);
     });
-    console.log(this.basicData);
     this.check++;
   },
   computed: {

@@ -36,6 +36,7 @@ import SideBar from "../src/components/SideBar.vue";
 import Login from "../src/views/LoginPage.vue";
 import LoseInternet from "../src/views/LoseInternet.vue";
 import flightApi from "./apis/flights";
+import firebase from "./util/firebase.js";
 
 export default {
   name: "app",
@@ -73,9 +74,19 @@ export default {
       this.$router.push("/");
     }
   },
-  
+
   methods: {
     ...mapActions("application", ["setIsLogin", "setVideo", "setCheckOffline"]),
+
+    prepareFcm() {
+      firebase.messaging
+        .requestPermission()
+        .then(
+          firebase.messaging.getToken().then(async (fcmToken) => {
+            localStorage.setItem("fcm", fcmToken);
+          })
+        )
+    },
 
     async pollData() {
       this.polling = setInterval(async () => {

@@ -727,7 +727,6 @@ export default {
                     }
                   });
               } else {
-                console.log(res);
                 this.$toast.add({
                   severity: "success",
                   summary: contentNoti.SUCCESS_SUMMARY,

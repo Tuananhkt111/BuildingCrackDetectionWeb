@@ -275,9 +275,7 @@ export default {
     this.role = JSON.parse(localStorage.getItem("user")).role;
     if (this.role === webRole.STAFF_ROLE) {
       this.staff = true;
-    } else {
-      console.log(document.getElementById("Collector"));
-    }
+    } 
   },
 
   methods: {

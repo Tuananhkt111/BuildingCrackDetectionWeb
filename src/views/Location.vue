@@ -403,7 +403,6 @@ export default {
     if (this.role === webRole.ADMIN_ROLE) {
       this.admin = true;
     }
-    console.log(this.getLocationList);
   },
   methods: {
     ...mapActions("location", ["setLocationList"]),
@@ -479,7 +478,6 @@ export default {
       await locationApi
         .disable(this.product.locationId)
         .then((res) => {
-          console.log(res);
           if (res.status != 200) {
             this.$toast.add({
               severity: "error",
