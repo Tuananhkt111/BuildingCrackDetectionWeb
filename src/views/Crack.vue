@@ -606,11 +606,11 @@ export default {
     async filter() {
       let date = new Date();
       this.filterChart.selectedYear = date.getFullYear();
-      if (date.getMonth() < 5) {
+      if (date.getMonth() < 4) {
         this.filterChart.period = 1;
-      } else if (date.getMonth() < 9) {
+      } else if (date.getMonth() < 8) {
         this.filterChart.period = 2;
-      } else if (date.getMonth() < 13) {
+      } else if (date.getMonth() < 12) {
         this.filterChart.period = 3;
       }
       let user = JSON.parse(localStorage.getItem("user"));
@@ -955,7 +955,7 @@ textarea {
   font-weight: 500;
   font-size: 13px;
   letter-spacing: 0.3px;
-  color: #ffad44;
+  color: #ffb455;
   background-color: #fff4de;
   text-align: center;
   width: 80px;
@@ -1012,7 +1012,7 @@ textarea {
   font-size: 14px;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: rgb(255, 65, 65);
+  color: rgb(51, 204, 255);
   text-transform: uppercase;
 }
 .unscheduled {
@@ -1020,7 +1020,7 @@ textarea {
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.3px;
-  color: #fd517d;
+  color: #33ccff;
   text-transform: uppercase;
 
   /* text-align: center;
@@ -1036,7 +1036,7 @@ textarea {
   border-radius: 2px;
   font-weight: 600;
   letter-spacing: 0.3px;
-  color: #51bea5;
+  color: #9933ff;
   font-size: 14px;
   text-transform: uppercase;
 
@@ -1049,7 +1049,7 @@ textarea {
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.3px;
-  color: #89bfdc;
+  color: #00e600;
   text-transform: uppercase;
 
   /* text-align: center;
@@ -1061,7 +1061,7 @@ textarea {
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.3px;
-  color: #212529;
+  color: #ff99ff;
   text-transform: uppercase;
 }
 

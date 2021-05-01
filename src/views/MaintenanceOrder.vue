@@ -685,11 +685,11 @@ export default {
     async filter() {
       let date = new Date();
       this.filterChart.selectedYear = date.getFullYear();
-      if (date.getMonth() < 5) {
+      if (date.getMonth() < 4) {
         this.filterChart.period = 1;
-      } else if (date.getMonth() < 9) {
+      } else if (date.getMonth() < 8) {
         this.filterChart.period = 2;
-      } else if (date.getMonth() < 13) {
+      } else if (date.getMonth() < 12) {
         this.filterChart.period = 3;
       }
       let user = JSON.parse(localStorage.getItem("user"));
@@ -1028,11 +1028,11 @@ textarea {
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.3px;
-  color: #0dc8de;
+  color: #ff0000;
   text-transform: uppercase;
 
   text-align: center;
-  background-color: #f8f9ff;
+  background-color: #ffcccc;
   text-transform: uppercase;
 }
 .completed {
